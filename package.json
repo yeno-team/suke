@@ -1,0 +1,25 @@
+{
+  "name": "suke",
+  "packageManager": "yarn@3.0.0",
+  "private": true,
+  "scripts": {
+    "build": "yarn workspaces foreach run build",
+    "start": "yarn workspaces foreach run start",
+    "lint": "yarn workspaces foreach run eslint . --ext .ts",
+    "prettier": "yarn workspaces foreach run prettier --config .prettierrc 'src/**/*.ts' --write",
+    "clean": "yarn workspaces foreach run clean"
+  },
+  "installConfig": {
+    "pnp": true
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@types/prettier": "^2",
+    "@yarnpkg/pnpify": "^3.0.1-rc.5",
+    "lerna": "^4.0.0",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.3"
+  }
+}
