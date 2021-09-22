@@ -1,0 +1,19 @@
+{
+  "name": "@suke/suke-core",
+  "packageManager": "yarn@3.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "private": true,
+  "scripts": {
+    "build": "tsc -b",
+    "start": "node dist/index.js",
+    "clean": "rm -rf ./dist && rm tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.37"
+  }
+}

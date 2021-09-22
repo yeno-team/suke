@@ -1,0 +1,33 @@
+{
+  "name": "@suke/suke-server",
+  "packageManager": "yarn@3.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "private": true,
+  "scripts": {
+    "build": "tsc -b",
+    "start": "ts-node src/index.ts",
+    "clean": "rm -rf ./dist && rm tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@suke/suke-core": "workspace:packages/suke-core",
+    "@suke/suke-util": "workspace:packages/suke-util",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "pg": "^8.7.1",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.10.0",
+    "typeorm": "^0.2.37",
+    "typeorm-typedi-extensions": "^0.4.1",
+    "typescript": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2",
+    "@types/express": "^4",
+    "@types/pg": "^8"
+  }
+}
