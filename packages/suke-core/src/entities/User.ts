@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, Index, ObjectIdColumn, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from '../Role';
 import { ValueObject } from '../ValueObject';
 import { lowercaseTransformer } from '../transformers/ValueTransformers';
@@ -36,6 +36,7 @@ export class User extends ValueObject implements IUser {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     protected *GetEqualityProperties(): Generator<any, any, unknown> {
         yield this.id;
         yield this.name;

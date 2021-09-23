@@ -1,4 +1,4 @@
-export default function getEnvironmentVariable(varName: string, required?: boolean, defaultValue?: string)  {
+export default function getEnvironmentVariable(varName: string, required?: boolean, defaultValue?: string): string | undefined  {
     if (varName in process.env) {
         return process.env[varName];
     } else if (required) {

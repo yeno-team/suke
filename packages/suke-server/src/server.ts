@@ -1,4 +1,4 @@
-import express, { ErrorRequestHandler } from "express";
+import express from "express";
 import { IConfiguration } from "./config/Configuration";
 import cors from 'cors';
 import { ErrorHandler } from "./middlewares/errorHandler";
@@ -17,7 +17,7 @@ export class Server {
         userController.execute(this.app);
     }
 
-    public start() {
+    public start(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({origin: "*"}));
