@@ -1,4 +1,4 @@
-import { Inject, Service } from 'typedi'
+import { Service } from 'typedi'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 import { User, UserModel } from '@suke/suke-core/src/entities/User'
 import { Repository } from 'typeorm'

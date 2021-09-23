@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from "express";
 
-export const ErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const ErrorHandler: ErrorRequestHandler = (err, req, res) => {
     console.error(err);
 
     return res.status(500).send({

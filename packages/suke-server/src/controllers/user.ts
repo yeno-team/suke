@@ -1,12 +1,12 @@
 import { Service } from "typedi";
 import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
-import { Express, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { User } from "@suke/suke-core/src/entities/User";
 
 @Service()
 export class UserController extends BaseController {
-    public route: string = "/api/user/:id?";
+    public route = "/api/user/:id?";
 
     constructor(
         private userService: UserService
@@ -14,6 +14,7 @@ export class UserController extends BaseController {
         super();
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public Get = async (req: Request, res: Response) => {
         const id = req.params.id;
 
@@ -22,6 +23,7 @@ export class UserController extends BaseController {
         res.send(user);
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public Post = async (req: Request, res: Response) => {
         const userObj = new User(req.body);
 
