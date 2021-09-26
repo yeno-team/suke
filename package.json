@@ -18,24 +18,17 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/preset-env": "^7.15.6",
-    "@babel/preset-typescript": "^7.15.0",
     "@testing-library/jest-dom": "^5.14.1",
-    "@types/babel__preset-env": "^7",
     "@types/eslint": "^7",
     "@types/jest": "^27.0.2",
     "@types/prettier": "^2",
     "@types/react-test-renderer": "^17",
     "@types/testing-library__jest-dom": "^5",
     "@yarnpkg/pnpify": "^3.0.1-rc.5",
-    "babel-jest": "^27.2.2",
-    "babel-plugin-inline-react-svg": "^2.0.1",
-    "babel-preset-es2015": "^6.24.1",
     "eslint": "^7.32.0",
     "jest": "^27.2.1",
     "lerna": "^4.0.0",
     "prettier": "^2.4.1",
-    "react-test-renderer": "^17.0.2",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.3"
   }
