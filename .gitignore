@@ -12,7 +12,7 @@
 
 dist
 node_modules
-
+lerna-debug.log
 
 # TYPESCRIPT
 *.d.ts.map

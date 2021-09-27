@@ -4805,6 +4805,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ansi-escapes@npm:^3.1.0":
+  version: 3.2.0
+  resolution: "ansi-escapes@npm:3.2.0"
+  checksum: 0f94695b677ea742f7f1eed961f7fd8d05670f744c6ad1f8f635362f6681dcfbc1575cb05b43abc7bb6d67e25a75fb8c7ea8f2a57330eb2c76b33f18cb2cef0a
+  languageName: node
+  linkType: hard
+
 "ansi-escapes@npm:^4.2.1, ansi-escapes@npm:^4.3.1":
   version: 4.3.2
   resolution: "ansi-escapes@npm:4.3.2"
@@ -10950,7 +10957,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"is-path-inside@npm:^2.1.0":
+"is-path-inside@npm:^2.0.0, is-path-inside@npm:^2.1.0":
   version: 2.1.0
   resolution: "is-path-inside@npm:2.1.0"
   dependencies:
@@ -11844,6 +11851,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jest-runner-groups@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "jest-runner-groups@npm:2.1.0"
+  peerDependencies:
+    jest-docblock: ">= 24"
+    jest-runner: ">= 24"
+  checksum: 760ae1b47e0d257441843508652bc09d6b9e09c35be2325d81bb14b082bc9c49974df0123c75a4b45a655c04e61d52dc3d4bf32279243fd86b5656fdb582573a
+  languageName: node
+  linkType: hard
+
 "jest-runner@npm:^26.6.0, jest-runner@npm:^26.6.3":
   version: 26.6.3
   resolution: "jest-runner@npm:26.6.3"
@@ -12106,6 +12123,21 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jest-watch-directories@npm:1.1.0":
+  version: 1.1.0
+  resolution: "jest-watch-directories@npm:1.1.0"
+  dependencies:
+    ansi-escapes: ^3.1.0
+    glob: ^7.1.3
+    is-path-inside: ^2.0.0
+    messageformat: ^2.0.4
+    prompts: ^1.1.1
+  peerDependencies:
+    jest: ">= 23.0.0"
+  checksum: 1313e7e54dd1cb4a288148282135b63ca82083e43797c562bcdd1e7c84b80264945ad28868c774fdfbea16c59af06054d1d3ddb7c4d6f9f83b09b7848992258f
+  languageName: node
+  linkType: hard
+
 "jest-watch-typeahead@npm:0.6.1":
   version: 0.6.1
   resolution: "jest-watch-typeahead@npm:0.6.1"
@@ -12137,6 +12169,15 @@ fsevents@^1.2.7:
   peerDependencies:
     jest: ^26.0.0 || ^27.0.0
   checksum: 15a42b0593ed7cbc0273712ed6c4186467fd8d3c6a0d11795b650fb7639e073f1cee6c27ac38fd2ef3a6c27ea43d34daea48f1a1d6202d378b82d8f19daa1f95
+  languageName: node
+  linkType: hard
+
+"jest-watch-yarn-workspaces@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "jest-watch-yarn-workspaces@npm:1.1.0"
+  dependencies:
+    jest-watch-directories: 1.1.0
+  checksum: 0f1e8eb977aaa95562bb2c7eef46fd6054c5ad7f4d12c85588249b7ebb041035841f5ad3895536265fa17fbd0a65e159e2d6c457f6974692fe65314eb241352d
   languageName: node
   linkType: hard
 
@@ -12215,7 +12256,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest@npm:^27.2.1":
+"jest@npm:^27.2.2":
   version: 27.2.2
   resolution: "jest@npm:27.2.2"
   dependencies:
@@ -12528,7 +12569,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"kleur@npm:^3.0.3":
+"kleur@npm:^3.0.0, kleur@npm:^3.0.3":
   version: 3.0.3
   resolution: "kleur@npm:3.0.3"
   checksum: df82cd1e172f957bae9c536286265a5cdbd5eeca487cb0a3b2a7b41ef959fc61f8e7c0e9aeea9c114ccf2c166b6a8dd45a46fd619c1c569d210ecd2765ad5169
@@ -12973,6 +13014,20 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"make-plural@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "make-plural@npm:4.3.0"
+  dependencies:
+    minimist: ^1.2.0
+  dependenciesMeta:
+    minimist:
+      optional: true
+  bin:
+    make-plural: ./bin/make-plural
+  checksum: 1702556e988d7f0b64f10260bf897be3b32e973fbb21b59175ba2ece75ad4d49b9d8caea2ef633dd573e6009051f221fe350907d9f2a904a21e9c9b7b964fba4
+  languageName: node
+  linkType: hard
+
 "makeerror@npm:1.0.x":
   version: 1.0.11
   resolution: "makeerror@npm:1.0.11"
@@ -13101,6 +13156,31 @@ fsevents@^1.2.7:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 7268db63ed5169466540b6fb947aec313200bcf6d40c5ab722c22e242f651994619bcd85601602972d3c85bd2cc45a358a4c61937e9f11a061919a1da569b0c2
+  languageName: node
+  linkType: hard
+
+"messageformat-formatters@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "messageformat-formatters@npm:2.0.1"
+  checksum: 847d034aaf354abd6af2dc8ff3d0f98b165242545916fa060714201afa14b60a4d246951ef354fc8511de9dde36c16b69ca348ed6c79116840f9f0511cf61ab4
+  languageName: node
+  linkType: hard
+
+"messageformat-parser@npm:^4.1.2":
+  version: 4.1.3
+  resolution: "messageformat-parser@npm:4.1.3"
+  checksum: d5a72581116b1813460241672ffb6ff3e2f05c311d48c7d81daf368f5254447dda095756e53830664383c51c707dbf387c21b35cd341b7edd4f2945656ac476f
+  languageName: node
+  linkType: hard
+
+"messageformat@npm:^2.0.4":
+  version: 2.3.0
+  resolution: "messageformat@npm:2.3.0"
+  dependencies:
+    make-plural: ^4.3.0
+    messageformat-formatters: ^2.0.1
+    messageformat-parser: ^4.1.2
+  checksum: 9c336657cbd60c968a64b1895e84d19cb53634124814cdb60a5a87803b9d66844820fe5dae0c823f1d9b7c7776c8b5cfe434c5c45633f5ce3702c5d7a294c9da
   languageName: node
   linkType: hard
 
@@ -16023,6 +16103,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"prompts@npm:^1.1.1":
+  version: 1.2.1
+  resolution: "prompts@npm:1.2.1"
+  dependencies:
+    kleur: ^3.0.0
+    sisteransi: ^1.0.0
+  checksum: 8c8bd7ca213ab60ad72ae661375b2bc01085cccc04501b36c24f61df67397fe9acb2ce6e773fab23db769671be4d430c2b6edf1b06effcd5f97ceb4e4ea3d1c2
+  languageName: node
+  linkType: hard
+
 "prompts@npm:^2.0.1":
   version: 2.4.1
   resolution: "prompts@npm:2.4.1"
@@ -17618,7 +17708,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"sisteransi@npm:^1.0.5":
+"sisteransi@npm:^1.0.0, sisteransi@npm:^1.0.5":
   version: 1.0.5
   resolution: "sisteransi@npm:1.0.5"
   checksum: aba6438f46d2bfcef94cf112c835ab395172c75f67453fe05c340c770d3c402363018ae1ab4172a1026a90c47eaccf3af7b6ff6fa749a680c2929bd7fa2b37a4
@@ -18384,7 +18474,11 @@ resolve@^2.0.0-next.3:
     "@types/testing-library__jest-dom": ^5
     "@yarnpkg/pnpify": ^3.0.1-rc.5
     eslint: ^7.32.0
-    jest: ^27.2.1
+    jest: ^27.2.2
+    jest-docblock: ^27.0.6
+    jest-runner: ^27.2.2
+    jest-runner-groups: ^2.1.0
+    jest-watch-yarn-workspaces: ^1.1.0
     lerna: ^4.0.0
     prettier: ^2.4.1
     ts-jest: ^27.0.5
