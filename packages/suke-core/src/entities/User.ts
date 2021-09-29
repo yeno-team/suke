@@ -1,9 +1,10 @@
-import { BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from '../Role';
 import { ValueObject } from '../ValueObject';
 import { lowercaseTransformer } from '../transformers/ValueTransformers';
 import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
 import { isValidEmail } from '@suke/suke-util';
+import { IUserChannel, UserChannelModel } from "./UserChannel";
 export interface IUser {
     id: number;
     name: string;
@@ -11,6 +12,7 @@ export interface IUser {
     password: string;
     salt: string;
     role: Role;
+    channel: IUserChannel
 }
 
 export class User extends ValueObject implements IUser {
@@ -20,6 +22,7 @@ export class User extends ValueObject implements IUser {
     public password: string;
     public salt: string;
     public role: Role;
+    public channel: IUserChannel;
  
     constructor(user: IUser) {
         super();
@@ -30,20 +33,23 @@ export class User extends ValueObject implements IUser {
         this.password = user.password;
         this.salt = user.salt;
         this.role = user.role;
+        this.channel = user.channel;
 
         if (!this.IsValid()) {
             throw new ValidationError(`User object ${JSON.stringify(user)} is not valid`);
         }
     }
+    
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    protected *GetEqualityProperties(): Generator<any, any, unknown> {
+    protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.id;
         yield this.name;
         yield this.email;
         yield this.password;
         yield this.salt;
         yield this.role;
+
+        return;
     }
 
     protected IsValid(): boolean {
@@ -119,9 +125,12 @@ export class UserModel extends BaseEntity implements IUser  {
         nullable: false,
     })
     public salt!: string;
-    
 
     @Column({ type: 'enum', enum: Role, default: Role.User })
     public role!: Role;
+
+    @OneToOne(() => UserChannelModel)
+    @JoinColumn()
+    public channel!: UserChannelModel;
 }
 
