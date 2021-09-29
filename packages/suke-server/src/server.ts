@@ -5,8 +5,6 @@ import { ErrorHandler } from "./middlewares/errorHandler";
 import { Container } from "typeorm-typedi-extensions";
 import { UserController } from "./controllers/user";
 import { UserChannelController } from "./controllers/channel";
-import { Connection } from "typeorm";
-import { IRateLimiterStoreOptions, RateLimiterPostgres } from "rate-limiter-flexible";
 
 export class Server {
     private app;
