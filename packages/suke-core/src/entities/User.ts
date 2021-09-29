@@ -5,12 +5,12 @@ import { lowercaseTransformer } from '../transformers/ValueTransformers';
 import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
 import { isValidEmail } from '@suke/suke-util';
 import { IUserChannel, UserChannelModel } from "./UserChannel";
+import bcrypt from 'bcrypt';
+
 export interface IUser {
     id: number;
     name: string;
     email: string;
-    password: string;
-    salt: string;
     role: Role;
     channel: IUserChannel
 }
@@ -19,8 +19,6 @@ export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;
     public email: string;
-    public password: string;
-    public salt: string;
     public role: Role;
     public channel: IUserChannel;
  
@@ -30,8 +28,6 @@ export class User extends ValueObject implements IUser {
         this.id = user.id;
         this.name = user.name;
         this.email = user.email;
-        this.password = user.password;
-        this.salt = user.salt;
         this.role = user.role;
         this.channel = user.channel;
 
@@ -45,8 +41,6 @@ export class User extends ValueObject implements IUser {
         yield this.id;
         yield this.name;
         yield this.email;
-        yield this.password;
-        yield this.salt;
         yield this.role;
 
         return;
@@ -55,10 +49,6 @@ export class User extends ValueObject implements IUser {
     protected IsValid(): boolean {
         if (this.id == null) {
             this.id = -1;
-        }
-
-        if (this.salt == null) {
-            this.salt = "";
         }
 
         if (this.role == null) {
@@ -75,14 +65,6 @@ export class User extends ValueObject implements IUser {
 
         if (typeof(this.name) !== 'string') {
             throw new PropertyValidationError('name');
-        }
-
-        if (typeof(this.password) !== 'string') {
-            throw new PropertyValidationError('password');
-        }
-
-        if (typeof(this.salt) !== 'string') {
-            throw new PropertyValidationError('salt');
         }
 
         if (typeof(this.role) !== 'number') {
@@ -118,12 +100,6 @@ export class UserModel extends BaseEntity implements IUser  {
         select: false,
         nullable: false,
     })
-    public password!: string;
-
-    @Column({
-        select: false,
-        nullable: false,
-    })
     public salt!: string;
 
     @Column({ type: 'enum', enum: Role, default: Role.User })
@@ -132,5 +108,9 @@ export class UserModel extends BaseEntity implements IUser  {
     @OneToOne(() => UserChannelModel)
     @JoinColumn()
     public channel!: UserChannelModel;
+
+    public testRawPassword(rawPass: string): Promise<boolean> {
+        return bcrypt.compare(rawPass, this.salt);
+    } 
 }
 
