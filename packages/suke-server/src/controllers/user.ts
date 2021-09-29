@@ -14,27 +14,26 @@ export class UserController extends BaseController {
         super();
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public Get = async (req: Request, res: Response) => {
+    public Get = async (req: Request, res: Response): Promise<void> => {
         const id = req.params.id;
 
-        const user = this.userService.findUserById(parseInt(id));
+        const user = await this.userService.findById(parseInt(id));
 
         res.send(user);
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public Post = async (req: Request, res: Response) => {
-        const userObj = new User(req.body);
+    public Post = async (req: Request, res: Response): Promise<void> => {
+        const userObj = new User({ ...req.body, password: null });
 
-        const createdUser = await this.userService.createUser(userObj);
+        const createdUser = await this.userService.create(userObj, req.body.password);
+        
+        // Removes salt from the response.
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {salt, ...userRes } = createdUser;
 
-        res.status(200).send({
+        res.status(201).send({
             message: 'Created',
-            user: {
-                ...createdUser
-            }
+            user: userRes
         });
     }
-
 }
