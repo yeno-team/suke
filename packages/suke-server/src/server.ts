@@ -4,6 +4,9 @@ import cors from 'cors';
 import { ErrorHandler } from "./middlewares/errorHandler";
 import { Container } from "typeorm-typedi-extensions";
 import { UserController } from "./controllers/user";
+import { UserChannelController } from "./controllers/channel";
+import { Connection } from "typeorm";
+import { IRateLimiterStoreOptions, RateLimiterPostgres } from "rate-limiter-flexible";
 
 export class Server {
     private app;
@@ -12,11 +15,13 @@ export class Server {
         this.app = express();
     }
 
-    private setupControllers() {
+    private setupControllers(): void {
         const userController = Container.get(UserController);
         userController.execute(this.app);
-    }
 
+        const userChannelController = Container.get(UserChannelController);
+        userChannelController.execute(this.app);
+    }
     public start(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
