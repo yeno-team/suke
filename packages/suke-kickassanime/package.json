@@ -1,5 +1,8 @@
 {
   "name": "@suke/suke-kickassanime",
+  "author": {
+    "name": "TheRealLunatite"
+  },
   "packageManager": "yarn@3.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,5 +14,9 @@
     "build": "tsc -b",
     "start": "node dist/index.js",
     "clean": "rm -rf ./dist && rm tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "typedi": "^0.10.0"
   }
 }
