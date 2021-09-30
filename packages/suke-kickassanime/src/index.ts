@@ -13,16 +13,16 @@ export class KickAssAnimeLink extends ValueObject {
         }
     }
 
-    protected* GetEqualityProperties(): Generator<unknown, any, unknown> {
+    public* GetEqualityProperties(): Generator<unknown, any, unknown> {
         yield this.linkRegex
     }
 
-    protected IsValid(): boolean {
+    public IsValid(): boolean {
         return !!this.url && this.linkRegex.test(this.url)
     }
 }
 
-export type KickAssAnimeEpisode = {
+export type KickAssAnimeRawEpisode = {
     epnum : string,
     name : null | string,
     slug : string,
@@ -30,23 +30,31 @@ export type KickAssAnimeEpisode = {
     num : string
 }
 
-async function getEpisodes(kickAssAnimeLink : KickAssAnimeLink) {
-    kickAssAnimeLink.Equals
-    const getEpisodesReq = await axios.get(kickAssAnimeLink.url)
-    const html = getEpisodesReq.data
+export type KickAssAnimeEpisode = {
+    name : string | null,
+    createddate : string,
+    link : string,
+    num : number
+}
 
-    const episodesInStr = /(\[{"epnum":"Episode \d*",.+\]),"types"/.exec(html)
+export default class KickAssAnime {
+    public async getEpisodes(link : KickAssAnimeLink) : Promise<null | Array<KickAssAnimeEpisode>> {
+        const getEpisodesReq = await axios.get(link.url)
+        const html = getEpisodesReq.data
+        
+        const episodesAsString = /\[{"epnum":"Episode \d+","name":.+,"slug":.+,"createddate":.+,"num":"\d+"}\]/gm.exec(html)
 
-    if(episodesInStr) {
-        const arrOfEpisodes : Array<KickAssAnimeEpisode>= JSON.parse(episodesInStr[1])
-
-        return arrOfEpisodes.map(({ name , slug , createddate , num }) => ({
-            name,
-            createddate,
-            link : "https://www2.kickassanime.ro" + slug,
-            epNum : num
-        }))
+        if(episodesAsString) {
+            const arrOfEpisodes : Array<KickAssAnimeRawEpisode>= JSON.parse(episodesAsString[0])
+    
+            return arrOfEpisodes.map(({ name , slug , createddate , num }) => ({
+                name,
+                createddate,
+                num : +num,
+                link : "https://www2.kickassanime.ro" + slug
+            }))
+        }
+    
+        return null
     }
-
-    return null
 }
