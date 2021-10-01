@@ -23,7 +23,7 @@ export class KickAssAnimeLink extends ValueObject {
     }
 }
 
-export type KickAssAnimeRawEpisode = {
+export type RawEpisode = {
     epnum : string,
     name : null | string,
     slug : string,
@@ -31,31 +31,58 @@ export type KickAssAnimeRawEpisode = {
     num : string
 }
 
-export type KickAssAnimeEpisode = {
+export type Episode = {
     name : string | null,
     createddate : string,
-    link : string,
+    url : string,
     num : number
+}
+
+export type AnimeRawSearchResult = {
+    name : string,
+    slug : string,
+    imagePath : string
+}
+
+export type AnimeSearchResult = {
+    name : string,
+    url : string,
+    imageUrl : string
 }
 
 @Service()
 export default class KickAssAnime {
     private episodesRegex = /\[{"epnum":"Episode \d+","name":.+,"slug":.+,"createddate":.+,"num":"\d+"}\]/
 
-    public async getEpisodes(link : KickAssAnimeLink) : Promise<null | Array<KickAssAnimeEpisode>> {
+    public async searchForAnime(keyword : string) : Promise<Array<AnimeSearchResult>> {
+        const req = await axios.post("https://www2.kickassanime.ro/api/anime_search", { keyword })
+        const data : Array<AnimeRawSearchResult> = req.data
+        
+        return Promise.resolve(
+            data.map(({ name , slug , imagePath }) => (
+                {  
+                    name, 
+                    url : "https://www2.kickassanime.ro/" + slug,
+                    imageUrl : "https://www2.kickassanime.ro/" + imagePath
+                }
+            ))
+        )
+    }
+
+    public async getEpisodes(link : KickAssAnimeLink) : Promise<null | Array<Episode>> {
         const getEpisodesReq = await axios.get(link.url)
         const html = getEpisodesReq.data
 
         const episodesAsString = this.episodesRegex.exec(html)
 
         if(episodesAsString) {
-            const arrOfEpisodes : Array<KickAssAnimeRawEpisode> = JSON.parse(episodesAsString[0])
+            const arrOfEpisodes : Array<RawEpisode> = JSON.parse(episodesAsString[0])
     
             return arrOfEpisodes.map(({ name , slug , createddate , num }) => ({
                 name,
                 createddate,
                 num : +num,
-                link : "https://www2.kickassanime.ro" + slug
+                url : "https://www2.kickassanime.ro" + slug
             }))
         }
     
