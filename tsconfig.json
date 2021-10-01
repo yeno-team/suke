@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "baseUrl": ".",
-  
+      "experimentalDecorators": true,
       "declaration": true,
       "declarationMap": true,
       "sourceMap": true,
