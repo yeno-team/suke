@@ -17,3 +17,6 @@ node_modules
 # TYPESCRIPT
 *.d.ts.map
 *.tsbuildinfo
+
+# Jest
+coverage

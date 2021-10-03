@@ -57,17 +57,22 @@ export default class KickAssAnime {
 
     public async searchForAnime(keyword : string) : Promise<Array<AnimeSearchResult> | null> {
         const formData = createFormData({ keyword })
-        const req = await axios({
-            url : "https://www2.kickassanime.ro/api/anime_search",
-            method : "POST",
-            data : formData,
-            headers : {
-                "Content-Type" : "multipart/form-data; boundary=" + formData.getBoundary()
+        const req = await axios.post(
+            "https://www2.kickassanime.ro/api/anime_search",
+            formData,
+            {
+                headers : {
+                    "Content-Type" : "multipart/form-data; boundary=" + formData.getBoundary()
+                }
             }
-        })
+        )
 
         const data : Array<AnimeRawSearchResult> = req.data
         
+        if(!data) {
+            return null
+        }
+
         return Promise.resolve(
             data.map(({ name , slug , image }) => (
                 {  
