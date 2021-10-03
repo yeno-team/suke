@@ -1,9 +1,8 @@
 import { ValidationError } from "@suke/suke-core/src/exceptions/ValidationError"
 import { ValueObject } from "@suke/suke-core/src/ValueObject"
-import { Service , Container } from "typedi";
+import { Service } from "typedi";
 import { createFormData } from "@suke/suke-util/src"
 import axios from "axios"
-import "reflect-metadata"
 
 export class KickAssAnimeLink extends ValueObject {
     private linkRegex = /^(?:http(?:s|)):\/\/www(?:2|).kickassanime.ro\/anime\/(?:[a-zA-Z0-9]+-){1,}\d*(?:\/|)$/
