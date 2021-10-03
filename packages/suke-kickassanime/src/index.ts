@@ -58,30 +58,26 @@ export default class KickAssAnime {
 
     public async searchForAnime(keyword : string) : Promise<Array<AnimeSearchResult> | null> {
         const formData = createFormData({ keyword })
-        // const req = await axios({
-        //     url : "https://www2.kickassanime.ro/api/anime_search",
-        //     method : "POST",
-        //     data : formData,
-        //     headers : {
-        //         "Content-Type" : "multipart/form-data; boundary=" + formData.getBoundary()
-        //     }
-        // })
+        const req = await axios({
+            url : "https://www2.kickassanime.ro/api/anime_search",
+            method : "POST",
+            data : formData,
+            headers : {
+                "Content-Type" : "multipart/form-data; boundary=" + formData.getBoundary()
+            }
+        })
 
-        // const data : Array<AnimeRawSearchResult> = req.data
-    
-        // if(!data) {
-        //     return null
-        // }
+        const data : Array<AnimeRawSearchResult> = req.data
         
-        // return Promise.resolve(
-        //     data.map(({ name , slug , image }) => (
-        //         {  
-        //             name, 
-        //             url : "https://www2.kickassanime.ro" + slug,
-        //             imageUrl : "https://www2.kickassanime.ro/uploads/" + image
-        //         }
-        //     ))
-        // )
+        return Promise.resolve(
+            data.map(({ name , slug , image }) => (
+                {  
+                    name, 
+                    url : "https://www2.kickassanime.ro" + slug,
+                    imageUrl : "https://www2.kickassanime.ro/uploads/" + image
+                }
+            ))
+        )
     }
 
     public async getEpisodes(link : KickAssAnimeLink) : Promise<null | Array<Episode>> {
