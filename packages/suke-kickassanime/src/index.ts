@@ -1,7 +1,9 @@
 import { ValidationError } from "@suke/suke-core/src/exceptions/ValidationError"
 import { ValueObject } from "@suke/suke-core/src/ValueObject"
-import { Service } from "typedi";
+import { Service , Container } from "typedi";
+import { createFormData } from "@suke/suke-util/src"
 import axios from "axios"
+import "reflect-metadata"
 
 export class KickAssAnimeLink extends ValueObject {
     private linkRegex = /^(?:http(?:s|)):\/\/www(?:2|).kickassanime.ro\/anime\/(?:[a-zA-Z0-9]+-){1,}\d*(?:\/|)$/
@@ -41,7 +43,7 @@ export type Episode = {
 export type AnimeRawSearchResult = {
     name : string,
     slug : string,
-    imagePath : string
+    image : string
 }
 
 export type AnimeSearchResult = {
@@ -54,19 +56,32 @@ export type AnimeSearchResult = {
 export default class KickAssAnime {
     private episodesRegex = /\[{"epnum":"Episode \d+","name":.+,"slug":.+,"createddate":.+,"num":"\d+"}\]/
 
-    public async searchForAnime(keyword : string) : Promise<Array<AnimeSearchResult>> {
-        const req = await axios.post("https://www2.kickassanime.ro/api/anime_search", { keyword })
-        const data : Array<AnimeRawSearchResult> = req.data
+    public async searchForAnime(keyword : string) : Promise<Array<AnimeSearchResult> | null> {
+        const formData = createFormData({ keyword })
+        // const req = await axios({
+        //     url : "https://www2.kickassanime.ro/api/anime_search",
+        //     method : "POST",
+        //     data : formData,
+        //     headers : {
+        //         "Content-Type" : "multipart/form-data; boundary=" + formData.getBoundary()
+        //     }
+        // })
+
+        // const data : Array<AnimeRawSearchResult> = req.data
+    
+        // if(!data) {
+        //     return null
+        // }
         
-        return Promise.resolve(
-            data.map(({ name , slug , imagePath }) => (
-                {  
-                    name, 
-                    url : "https://www2.kickassanime.ro/" + slug,
-                    imageUrl : "https://www2.kickassanime.ro/" + imagePath
-                }
-            ))
-        )
+        // return Promise.resolve(
+        //     data.map(({ name , slug , image }) => (
+        //         {  
+        //             name, 
+        //             url : "https://www2.kickassanime.ro" + slug,
+        //             imageUrl : "https://www2.kickassanime.ro/uploads/" + image
+        //         }
+        //     ))
+        // )
     }
 
     public async getEpisodes(link : KickAssAnimeLink) : Promise<null | Array<Episode>> {
