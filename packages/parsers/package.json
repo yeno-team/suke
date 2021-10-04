@@ -1,0 +1,7 @@
+{
+  "name": "parsers",
+  "packageManager": "yarn@3.0.2",
+  "dependencies": {
+    "@suke/suke-core": "workspace:packages/suke-core"
+  }
+}
