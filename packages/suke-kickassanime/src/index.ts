@@ -53,12 +53,13 @@ export type AnimeSearchResult = {
 
 @Service()
 export default class KickAssAnime {
-    private episodesRegex = /\[{"epnum":"Episode \d+","name":.+,"slug":.+,"createddate":.+,"num":"\d+"}\]/
+    private hostname = "https://www2.kickassanime.ro"
+    private getEpisodesRegex = /\[{"epnum":"Episode \d+","name":.+,"slug":.+,"createddate":.+,"num":"\d+"}\]/
 
     public async searchForAnime(keyword : string) : Promise<Array<AnimeSearchResult> | null> {
         const formData = createFormData({ keyword })
         const req = await axios.post(
-            "https://www2.kickassanime.ro/api/anime_search",
+            this.hostname + "/api/anime_search",
             formData,
             {
                 headers : {
@@ -77,8 +78,8 @@ export default class KickAssAnime {
             data.map(({ name , slug , image }) => (
                 {  
                     name, 
-                    url : "https://www2.kickassanime.ro" + slug,
-                    imageUrl : "https://www2.kickassanime.ro/uploads/" + image
+                    url : this.hostname + slug,
+                    imageUrl : this.hostname + "/uploads/" + image
                 }
             ))
         )
@@ -88,7 +89,7 @@ export default class KickAssAnime {
         const getEpisodesReq = await axios.get(link.url)
         const html = getEpisodesReq.data
 
-        const episodesAsString = this.episodesRegex.exec(html)
+        const episodesAsString = this.getEpisodesRegex.exec(html)
 
         if(episodesAsString) {
             const arrOfEpisodes : Array<RawEpisode> = JSON.parse(episodesAsString[0])
@@ -97,7 +98,7 @@ export default class KickAssAnime {
                 name,
                 createddate,
                 num : +num,
-                url : "https://www2.kickassanime.ro" + slug
+                url : this.hostname + slug
             }))
         }
     

@@ -15199,6 +15199,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"parsers@workspace:packages/parsers":
+  version: 0.0.0-use.local
+  resolution: "parsers@workspace:packages/parsers"
+  dependencies:
+    "@suke/suke-core": "workspace:packages/suke-core"
+  languageName: unknown
+  linkType: soft
+
 "parseurl@npm:~1.3.2, parseurl@npm:~1.3.3":
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"

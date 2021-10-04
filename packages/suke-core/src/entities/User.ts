@@ -4,6 +4,7 @@ import { ValueObject } from '../ValueObject';
 import { lowercaseTransformer } from '../transformers/ValueTransformers';
 import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
 import { isValidEmail } from '@suke/suke-util';
+
 export interface IUser {
     id: number;
     name: string;
