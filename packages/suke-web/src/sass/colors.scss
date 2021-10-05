@@ -1,11 +1,16 @@
+$white: #F6FAFB;
+
 $custom-colors: (
-    "orange": (#D49C6B, #2b6394),
-    "dark": (#252B31, #ffff),
-    "black": (#171A1F, #fff),
-    "coolblack": (#1F2329, #fff),
-    "gray": (#5E6668, #ffff),
-    "lightgray": (#C1C8C7, #0000),
+    "orange": (#D49C6B, $white),
+    "brightorange": (#C86730, $white),
+    "dark": (#252B31, $white),
+    "black": (#171A1F, $white),
+    "coolblack": (#1F2329, $white),
+    "gray": (#5E6668, $white),
+    "lightgray": (#C1C8C7, #000),
     "white": (#F6FAFB, #000),
     "blue": (#408ED6, #1f264e),
-    "coolred": (#C74545, #743535)
+    "coolblue": (#339EA5, $white),
+    "coolred": (#C74545, $white),
+    "red": (#A83737, $white)
 )
