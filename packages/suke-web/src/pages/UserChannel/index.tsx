@@ -25,7 +25,8 @@ export const UserChannelPage = (): JSX.Element => {
             </Columns>
             <Columns>
                 <Columns.Column backgroundColor="coolblack" size={9}>
-                    <UserProfile />
+                    <UserProfile username={username} />
+                    <div className="divider is-marginless "></div>
                 </Columns.Column>
             </Columns>
         </React.Fragment>
