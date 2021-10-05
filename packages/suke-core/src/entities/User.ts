@@ -6,6 +6,7 @@ import { PropertyValidationError, ValidationError } from "../exceptions/Validati
 import { isValidEmail } from '@suke/suke-util';
 import { IUserChannel, UserChannelModel } from "./UserChannel";
 import bcrypt from 'bcrypt';
+import { Name } from "./Name";
 
 export interface IUser {
     id: number;
@@ -21,21 +22,25 @@ export class User extends ValueObject implements IUser {
     public email: string;
     public role: Role;
     public channel: IUserChannel;
+
+    private _name: Name;
  
     constructor(user: IUser) {
         super();
 
         this.id = user.id;
         this.name = user.name;
+        this._name = new Name(this.name);
         this.email = user.email;
         this.role = user.role;
         this.channel = user.channel;
 
-        if (!this.IsValid()) {
-            throw new ValidationError(`User object ${JSON.stringify(user)} is not valid`);
-        }
+        this.IsValid();
     }
-    
+
+    public Name(): Name {
+        return this._name;
+    }
 
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.id;
@@ -61,10 +66,6 @@ export class User extends ValueObject implements IUser {
 
         if (typeof(this.email) !== 'string' || !isValidEmail(this.email)) {
             throw new PropertyValidationError('email');
-        }
-
-        if (typeof(this.name) !== 'string') {
-            throw new PropertyValidationError('name');
         }
 
         if (typeof(this.role) !== 'number') {
