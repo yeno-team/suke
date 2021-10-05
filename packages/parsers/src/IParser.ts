@@ -16,6 +16,16 @@ export class ParserSearchOptions extends ValueObject implements IParserSearchOpt
     pageNumber: number;
     limit: number;
     
+    constructor(options : IParserSearchOptions) {
+        super()
+
+        this.token = options.token
+        this.prevPageToken = options.prevPageToken
+        this.nextPageToken = options.nextPageToken
+        this.pageNumber = options.pageNumber
+        this.limit = options.pageNumber
+    } 
+
     protected GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         throw new Error("Method not implemented.");
     }
