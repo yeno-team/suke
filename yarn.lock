@@ -1675,6 +1675,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@creativebulma/bulma-divider@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@creativebulma/bulma-divider@npm:1.1.0"
+  checksum: d658a2376374b248ec90fdc3a4221ea7823db28d31e3d613828dbb0abca6635a0fea81415f6e4821e0e62d64064779ebad7550aa985cb4ebc4de55559e3a65e5
+  languageName: node
+  linkType: hard
+
 "@csstools/convert-colors@npm:^1.4.0":
   version: 1.4.0
   resolution: "@csstools/convert-colors@npm:1.4.0"
@@ -3419,7 +3426,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@suke/suke-web@workspace:packages/suke-web"
   dependencies:
+    "@creativebulma/bulma-divider": ^1.1.0
     "@iconify/react": ^3.0.1
+    "@suke/suke-core": "workspace:packages/suke-core"
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
     "@testing-library/user-event": ^12.1.10
