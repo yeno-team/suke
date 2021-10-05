@@ -17,3 +17,6 @@ lerna-debug.log
 # TYPESCRIPT
 *.d.ts.map
 *.tsbuildinfo
+
+# JEST
+coverage
