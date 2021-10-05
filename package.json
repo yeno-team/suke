@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "prettier": "yarn workspaces foreach run prettier --config .prettierrc 'src/**/*.ts' --write",
     "clean": "yarn workspaces foreach run clean",
-    "test": "jest",
+    "test": "jest && yarn test:web",
     "test:web": "yarn workspace @suke/suke-web test"
   },
   "installConfig": {
