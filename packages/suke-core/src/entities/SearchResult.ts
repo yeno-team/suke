@@ -7,6 +7,7 @@ export enum Category {
 
 export enum StandaloneType {
     Video,
+    Movie,
     Stream
 }
 
@@ -20,33 +21,36 @@ export enum Quality {
     "6K"
 }
 
-export interface ISearchResult {
-    standalones: IStandaloneData[],
-    multiples: IMultiData[]
+export type SearchResult = Array<ISearchVideoData>
+
+export interface ISearchVideoData {
+    type : StandaloneType,
+    name : string,
+    thumbnail_url : string
 }
 
-export interface IStandaloneData {
-    type: StandaloneType
-    name: string,
-    thumbnail_url: string,
-    sources: IVideoSource[]
-}
+// export interface IStandaloneData {
+//     type: StandaloneType
+//     name: string,
+//     thumbnail_url: string,
+//     sources: IVideoSource[]
+// }
 
-export interface IVideoSource {
-    name: string,
-    url: string,
-    quality: Quality
-}
+// export interface IVideoSource {
+//     name: string,
+//     url: string,
+//     quality: Quality
+// }
 
-export interface IMultiData {
-    name: string,
-    thumbnail_url: string,
-    data: IMultiStandaloneData[]
-}
+// export interface IMultiData {
+//     name: string,
+//     thumbnail_url: string,
+//     data: IMultiStandaloneData[]
+// }
 
-export interface IMultiStandaloneData {
-    type: StandaloneType,
-    name: string,
-    index: number,
-    sources: IVideoSource[]
-}
+// export interface IMultiStandaloneData {
+//     type: StandaloneType,
+//     name: string,
+//     index: number,
+//     sources: IVideoSource[]
+// }

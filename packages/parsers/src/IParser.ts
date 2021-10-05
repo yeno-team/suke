@@ -1,4 +1,4 @@
-import { ISearchResult } from "@suke/suke-core/src/entities/SearchResult";
+import { ISearchVideoData, SearchResult } from "@suke/suke-core/src/entities/SearchResult";
 import { ValueObject } from "packages/suke-core/src/ValueObject";
 
 export interface IParserSearchOptions {
@@ -41,6 +41,7 @@ export interface IParser {
      * Most likely use the domain name of the site, that way we have unique keys for the parsers.
      */
     name: string; 
+    hostname : string;
 
-    search(searchTerm: string, options: ParserSearchOptions): ISearchResult
+    search(searchTerm: string, options: ParserSearchOptions): Promise<SearchResult>
 }
