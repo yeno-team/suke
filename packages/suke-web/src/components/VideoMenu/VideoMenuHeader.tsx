@@ -1,10 +1,9 @@
 import { Button, Columns, Container, Heading, Icon } from "react-bulma-components"
 import { Icon as IconElement } from '@iconify/react'
 
-
 export const VideoMenuHeader = () => {
     return (
-        <Container className="py-small-1 px-mid" backgroundColor="black" marginless breakpoint="fluid">
+        <Container py="small" pt="mid"  px="big" backgroundColor="black" marginless breakpoint="fluid">
             <Columns>
                 <Columns.Column>
                     <Heading size={4} textColor="white" marginless mb="smaller">
@@ -20,8 +19,8 @@ export const VideoMenuHeader = () => {
                     </Heading>
                 </Columns.Column>
                 <Columns.Column narrow>
-                    <Button backgroundColor="blue" color="white" inverted={true} outlined={false}>
-                        <strong>Open Browser</strong>
+                    <Button backgroundColor="blue" color="white" inverted={true} outlined={false} textWeight="semibold">
+                        Open Browser
                     </Button>
                 </Columns.Column>
             </Columns>
