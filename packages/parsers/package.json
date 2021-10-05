@@ -2,6 +2,7 @@
   "name": "parsers",
   "packageManager": "yarn@3.0.2",
   "dependencies": {
-    "@suke/suke-core": "workspace:packages/suke-core"
+    "@suke/suke-core": "workspace:packages/suke-core",
+    "axios": "^0.22.0"
   }
 }
