@@ -3363,6 +3363,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@suke/requests@workspace:packages/requests":
+  version: 0.0.0-use.local
+  resolution: "@suke/requests@workspace:packages/requests"
+  dependencies:
+    axios: ^0.22.0
+    typedi: ^0.10.0
+  languageName: unknown
+  linkType: soft
+
 "@suke/suke-core@workspace:packages/suke-core":
   version: 0.0.0-use.local
   resolution: "@suke/suke-core@workspace:packages/suke-core"
