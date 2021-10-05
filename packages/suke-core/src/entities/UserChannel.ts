@@ -37,16 +37,20 @@ export class UserChannel extends ValueObject implements IUserChannel {
     }
 
     protected IsValid(): boolean {
+        if (this.id < 0 || typeof(this.id) !== 'number') {
+            return false;
+        }
+
         if (this.followers == null) {
             this.followers = 0;
         }
 
-        if (this.desc_title == null) {
-            this.desc_title = "Title";
+        if (this.desc_title == null || this.desc_title === '') {
+            this.desc_title = "About me";
         }
 
-        if (this.desc == null) {
-            this.desc = "Description";
+        if (this.desc == null || this.desc === '') {
+            this.desc = "Welcome to my channel!";
         }
 
         if (typeof(this.followers) !== 'number') {
