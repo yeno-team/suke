@@ -15221,8 +15221,10 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "parsers@workspace:packages/parsers"
   dependencies:
+    "@suke/requests": "workspace:packages/requests"
     "@suke/suke-core": "workspace:packages/suke-core"
-    axios: ^0.22.0
+    "@suke/suke-util": "workspace:packages/suke-util"
+    typedi: ^0.10.0
   languageName: unknown
   linkType: soft
 

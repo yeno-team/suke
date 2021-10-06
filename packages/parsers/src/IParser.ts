@@ -1,7 +1,7 @@
 import { ISearchVideoData, SearchResult } from "@suke/suke-core/src/entities/SearchResult";
-import { ValueObject } from "packages/suke-core/src/ValueObject";
+import { ValueObject } from "@suke/suke-core/src/ValueObject";
 
-export interface IParserSearchOptions {
+export interface ParserSearchOptionsType {
   token?: string,
   nextPageToken?: string,
   prevPageToken?: string,
@@ -9,14 +9,14 @@ export interface IParserSearchOptions {
   limit: number
 }
 
-export class ParserSearchOptions extends ValueObject implements IParserSearchOptions {
+export class ParserSearchOptions extends ValueObject implements ParserSearchOptionsType {
     token?: string | undefined;
     nextPageToken?: string | undefined;
     prevPageToken?: string | undefined;
     pageNumber: number;
     limit: number;
     
-    constructor(options : IParserSearchOptions) {
+    constructor(options : ParserSearchOptionsType) {
         super()
 
         this.token = options.token

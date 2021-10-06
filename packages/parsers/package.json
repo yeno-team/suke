@@ -3,7 +3,9 @@
   "packageManager": "yarn@3.0.2",
   "private": true,
   "dependencies": {
+    "@suke/requests": "workspace:packages/requests",
     "@suke/suke-core": "workspace:packages/suke-core",
-    "axios": "^0.22.0"
+    "@suke/suke-util": "workspace:packages/suke-util",
+    "typedi": "^0.10.0"
   }
 }
