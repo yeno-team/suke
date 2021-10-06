@@ -1,0 +1,23 @@
+{
+  "name": "@suke/suke-socket-server",
+  "packageManager": "yarn@3.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "private": true,
+  "scripts": {
+    "build": "tsc -b",
+    "start": "node dist/index.js",
+    "clean": "rm -rf ./dist && rm tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "express-session": "^1.17.2",
+    "ws": "^8.2.3"
+  },
+  "devDependencies": {
+    "@types/express-session": "^1",
+    "@types/ws": "^8"
+  }
+}
