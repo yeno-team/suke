@@ -1,4 +1,4 @@
-import { AxiosInstanceToken } from "./container"
+import { AxiosInstanceToken } from "../container";
 import { Service , Inject } from "typedi";
 import { IRequest, RequestOptions } from "../IRequest";
 import { AxiosInstance, AxiosProxyConfig, AxiosRequestConfig, Method } from "axios";

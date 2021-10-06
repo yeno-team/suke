@@ -6,7 +6,7 @@ export type RequestOptions = {
     baseURL?: string,
     headers?: Record<string , string>,
     params?: { name: string, value: unknown },
-    body?: { name: string, value: unknown },
+    body?: unknown,
     CORS?: boolean,
     maxRedirects?: number,
     httpAgent?: Agent,
