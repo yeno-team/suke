@@ -1,12 +1,12 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from '../Role';
-import { ValueObject } from '../ValueObject';
-import { lowercaseTransformer } from '../transformers/ValueTransformers';
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
+import { Role } from '../../Role';
+import { ValueObject } from '../../ValueObject';
+import { lowercaseTransformer } from '../../transformers/ValueTransformers';
+import { PropertyValidationError } from "../../exceptions/ValidationError";
 import { isValidEmail } from '@suke/suke-util';
-import { IUserChannel, UserChannelModel } from "./UserChannel";
+import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
 import bcrypt from 'bcrypt';
-import { Name } from "./Name";
+import { Name } from "../Name/Name";
 
 export interface IUser {
     id: number;
@@ -15,7 +15,6 @@ export interface IUser {
     role: Role;
     channel: IUserChannel
 }
-
 export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;

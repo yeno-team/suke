@@ -4,7 +4,7 @@
  * @group unit/classes/userChannel
  */
 
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
+import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
 import { UserChannel } from "./UserChannel";
 
 describe('UserChannel class', () => {
