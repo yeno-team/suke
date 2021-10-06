@@ -4,8 +4,8 @@
  * @group unit/classes/user
  */
 
-import { ValidationError } from "../exceptions/ValidationError"
-import { Role } from "../Role"
+import { ValidationError } from "../../exceptions/ValidationError"
+import { Role } from "../../Role"
 import { User } from "./User"
 
 describe("User Class: Value Object", () => {

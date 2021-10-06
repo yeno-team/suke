@@ -4,7 +4,7 @@
  * @group unit/classes/name
  */
 
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
+import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
 import { Name } from "./Name";
 
 describe("Name class", () => {
