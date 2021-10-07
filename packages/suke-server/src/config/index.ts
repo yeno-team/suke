@@ -13,6 +13,11 @@ const config: IConfiguration = {
     },
     db: {
         connectionUri: getEnvironmentVariable("DB_CONNECTION_URI", true) as string
+    },
+    session: {
+        saveUninitialized: false,
+        secret: getEnvironmentVariable("SESSION_SECRET", false, "GODLYSECRETFORYOU") as string,
+        resave: false
     }
 }
 
