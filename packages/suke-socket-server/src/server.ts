@@ -5,9 +5,8 @@ import { RequestHandler, Request, Response} from 'express';
 import TypedEmitter from "typed-emitter";
 import { ValueObject } from '@suke/suke-core/src/ValueObject';
 import { ValidationError } from '@suke/suke-core/src/exceptions/ValidationError';
-import { IHasUserId } from 'packages/suke-core/src/entities/UserId/UserId';
 import handlers from './handlers';
-import { User } from '@suke/suke-core/src/entities/User';
+import { IHasUser, User } from '@suke/suke-core/src/entities/User';
 import { UserId } from '@suke/suke-core/src/entities/UserId';
 
 
@@ -55,7 +54,7 @@ export type UserDataWithWebSocket = {
  * This type extends the interface IHasUserId to the session property. This allows usage of userId which is eventually passed in from express.
  * It also extends Request from ws and IncomingMessage to allow usage of those.
  */
-type EventRequest = Request & IncomingMessage & {session: IHasUserId};
+type EventRequest = Request & IncomingMessage & {session: IHasUser};
 
 export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketServerEvents>) {
     private server: Server;

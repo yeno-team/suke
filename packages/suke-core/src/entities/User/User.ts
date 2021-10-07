@@ -17,6 +17,10 @@ export interface IUser {
     channel: IUserChannel
 }
 
+export interface IHasUser {
+    user: IUser;
+}
+
 export enum UserIdentifier {
     Id,
     Username
