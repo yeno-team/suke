@@ -1,6 +1,6 @@
 import { createTestHandler } from "./testHandler";
 
 
-export {
+export default [
     createTestHandler
-}
+]

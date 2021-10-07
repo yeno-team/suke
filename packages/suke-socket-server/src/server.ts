@@ -8,7 +8,7 @@ import { ValueObject } from '@suke/suke-core/src/ValueObject';
 import { ValueObjectMap } from '@suke/suke-core/src/ValueObjectMap';
 import { ValidationError } from '@suke/suke-core/src/exceptions/ValidationError';
 import { IHasUserId } from 'packages/suke-core/src/entities/UserId/UserId';
-import { createTestHandler } from './handlers';
+import handlers from './handlers';
 
 
 export interface SocketServerMessage {
@@ -108,7 +108,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
     }
 
     private createHandlers(): void {
-        createTestHandler(this);
+        handlers.map((createHandler) => createHandler(this));
     }
 
     public getUserConnection(id: UserId): void {
