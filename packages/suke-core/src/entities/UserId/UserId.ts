@@ -1,6 +1,10 @@
 import { ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
 
+export interface IHasUserId {
+    userId: UserId;
+}
+
 export class UserId extends ValueObject {
     value: number;
 
