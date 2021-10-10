@@ -1,4 +1,4 @@
-import { ISearchVideoData, SearchResult } from "@suke/suke-core/src/entities/SearchResult";
+import { SearchVideoData } from "@suke/suke-core/src/entities/SearchResult";
 import { ValueObject } from "@suke/suke-core/src/ValueObject";
 
 export interface ParserSearchOptionsType {
@@ -43,5 +43,5 @@ export interface IParser {
     name: string; 
     hostname : string;
 
-    search(searchTerm: string, options: ParserSearchOptions): Promise<SearchResult>
+    search(searchTerm: string, options: ParserSearchOptions): Promise<Array<SearchVideoData>>
 }
