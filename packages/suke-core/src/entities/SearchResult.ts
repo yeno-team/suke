@@ -21,9 +21,7 @@ export enum Quality {
     "6K"
 }
 
-export type SearchResult = Array<ISearchVideoData>
-
-export interface ISearchVideoData {
+export interface SearchVideoData {
     type : StandaloneType,
     name : string,
     thumbnail_url : string
