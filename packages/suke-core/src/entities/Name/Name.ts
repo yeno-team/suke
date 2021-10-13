@@ -1,5 +1,5 @@
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
-import { ValueObject } from "../ValueObject";
+import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
+import { ValueObject } from "../../ValueObject";
 
 export interface IName {
     name: string;
