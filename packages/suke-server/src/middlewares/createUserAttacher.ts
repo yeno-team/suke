@@ -30,8 +30,6 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
         case UserIdentifier.Username: {
                 const username = req.params.name || req.body.name;
 
-                console.log(username);
-
                 const nameObj = new Name(username);
 
                 const user = await userService.findByName(nameObj.name);
