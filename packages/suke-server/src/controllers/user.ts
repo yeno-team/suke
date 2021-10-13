@@ -4,7 +4,7 @@ import { BaseController } from "./BaseController";
 import { Express, Request, Response } from 'express';
 import { User } from "@suke/suke-core/src/entities/User";
 import { createUserAttacher } from "../middlewares/createUserAttacher";
-import { IUser, UserIdentifier, UserModel } from "@suke/suke-core/src/entities/User/User";
+import { IUser, UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 
 @Service()

@@ -1,13 +1,9 @@
 import React from 'react';
-import { Button, Form, Icon, Image, Navbar } from 'react-bulma-components';
+import { Button, Form, Icon, Navbar } from 'react-bulma-components';
 import logo from '../../assets/logo-x2.png';
 import { Icon as IconElement } from '@iconify/react';
 
-type NavBarProps = {
-
-}
-
-export const Navigation = ({}: NavBarProps): JSX.Element => {
+export const Navigation = (): JSX.Element => {
     return (
         <Navbar className="px-big" backgroundColor="dark" fixed="top"> 
             <Navbar.Brand className="mr-mid">
