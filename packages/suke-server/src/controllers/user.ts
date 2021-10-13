@@ -20,7 +20,6 @@ export class UserController extends BaseController {
     public execute(app: Express): void {
         app.route(this.route)
             .get(createUserAttacher(UserIdentifier.Id), catchErrorAsync(this.Get))
-            .get(createUserAttacher(UserIdentifier.Id), catchErrorAsync(this.Get));
     }
 
     public Get = async (req: Request, res: Response): Promise<void> => {
