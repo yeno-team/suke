@@ -1,5 +1,5 @@
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
-import { ValueObject } from "../ValueObject";
+import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
+import { ValueObject } from "../../ValueObject";
 
 export interface IMessage {
     content: string;

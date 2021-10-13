@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
-import { ValueObject } from "../ValueObject";
+import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
+import { ValueObject } from "../../ValueObject";
 
 export interface IUserChannel {
     id: number;

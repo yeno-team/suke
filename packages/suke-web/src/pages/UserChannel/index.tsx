@@ -1,5 +1,5 @@
 import React from "react"
-import { Columns, Heading, Image } from "react-bulma-components";
+import { Columns } from "react-bulma-components";
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
 import { VideoMenu } from "../../components/VideoMenu";

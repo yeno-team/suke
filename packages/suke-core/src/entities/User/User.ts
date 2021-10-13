@@ -1,12 +1,13 @@
-import { BaseEntity, Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from '../Role';
-import { ValueObject } from '../ValueObject';
-import { lowercaseTransformer } from '../transformers/ValueTransformers';
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
+import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from '../../Role';
+import { ValueObject } from '../../ValueObject';
+import { lowercaseTransformer } from '../../transformers/ValueTransformers';
+import { PropertyValidationError } from "../../exceptions/ValidationError";
 import { isValidEmail } from '@suke/suke-util';
-import { IUserChannel, UserChannelModel } from "./UserChannel";
+import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
 import bcrypt from 'bcrypt';
-import { Name } from "./Name";
+import { Name } from "../Name/Name";
+import { UserId } from "../UserId";
 
 export interface IUser {
     id: number;
@@ -14,6 +15,15 @@ export interface IUser {
     email: string;
     role: Role;
     channel: IUserChannel
+}
+
+export interface IHasUser {
+    user: IUser;
+}
+
+export enum UserIdentifier {
+    Id,
+    Username
 }
 
 export class User extends ValueObject implements IUser {
@@ -24,11 +34,13 @@ export class User extends ValueObject implements IUser {
     public channel: IUserChannel;
 
     private _name: Name;
+    private _id: UserId;
  
     constructor(user: IUser) {
         super();
 
         this.id = user.id;
+        this._id = new UserId(this.id);
         this.name = user.name;
         this._name = new Name(this.name);
         this.email = user.email;
@@ -42,6 +54,10 @@ export class User extends ValueObject implements IUser {
         return this._name;
     }
 
+    public Id(): UserId {
+        return this._id;
+    }
+
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.id;
         yield this.name;
@@ -52,10 +68,6 @@ export class User extends ValueObject implements IUser {
     }
 
     protected IsValid(): boolean {
-        if (this.id == null) {
-            this.id = -1;
-        }
-
         if (this.role == null) {
             this.role = Role.User;
         }
@@ -98,8 +110,8 @@ export class UserModel extends BaseEntity implements IUser  {
     public email!: string;
 
     @Column({
-        select: false,
         nullable: false,
+        select: false
     })
     public salt!: string;
 
@@ -110,8 +122,17 @@ export class UserModel extends BaseEntity implements IUser  {
     @JoinColumn()
     public channel!: UserChannelModel;
 
-    public testRawPassword(rawPass: string): Promise<boolean> {
-        return bcrypt.compare(rawPass, this.salt);
+    public async testRawPassword(rawPass: string): Promise<boolean> {
+        const userRepo = await getRepository(UserModel).findOne({
+            select: ['id', 'salt'],
+            where: { id: this.id }
+        });
+
+        if (userRepo == null) {
+            return Promise.reject("User does not exist.");
+        }
+
+        return bcrypt.compare(rawPass, userRepo.salt);
     } 
 }
 

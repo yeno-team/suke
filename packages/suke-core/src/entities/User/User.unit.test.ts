@@ -4,8 +4,8 @@
  * @group unit/classes/user
  */
 
-import { ValidationError } from "../exceptions/ValidationError"
-import { Role } from "../Role"
+import { ValidationError } from "../../exceptions/ValidationError"
+import { Role } from "../../Role"
 import { User } from "./User"
 
 describe("User Class: Value Object", () => {
@@ -91,23 +91,6 @@ describe("User Class: Value Object", () => {
                     desc: ''
                 }
             })}).toThrowError(ValidationError);
-        });
-
-        it('should default to id -1 if passed in null id', () => {
-            const user = new User({
-                id: null as unknown as number,
-                name: 'username',
-                email: 'test@gmail.com',
-                role: Role.User,
-                channel: {
-                    id: 0,
-                    followers: 0,
-                    desc_title: '',
-                    desc: ''
-                }
-            });
-
-            expect(user.id).toStrictEqual(-1);
         });
 
         it('should default to User role if passed in a null role', () => {

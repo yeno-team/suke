@@ -1,8 +1,11 @@
 import { Service } from "typedi";
 import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
-import { Request, Response } from 'express';
+import { Express, Request, Response } from 'express';
 import { User } from "@suke/suke-core/src/entities/User";
+import { createUserAttacher } from "../middlewares/createUserAttacher";
+import { IUser, UserIdentifier } from "@suke/suke-core/src/entities/User/User";
+import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 
 @Service()
 export class UserController extends BaseController {
@@ -14,12 +17,13 @@ export class UserController extends BaseController {
         super();
     }
 
+    public execute(app: Express): void {
+        app.route(this.route)
+            .get(createUserAttacher(UserIdentifier.Id), catchErrorAsync(this.Get))
+    }
+
     public Get = async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id;
-
-        const user = await this.userService.findById(parseInt(id));
-
-        res.send(user);
+        res.send(res.locals.user as IUser);
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
