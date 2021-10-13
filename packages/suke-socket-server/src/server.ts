@@ -3,46 +3,17 @@ import EventEmitter from "events"
 import { Server, IncomingMessage} from 'http'
 import { RequestHandler, Request, Response} from 'express';
 import TypedEmitter from "typed-emitter";
-import { ValueObject } from '@suke/suke-core/src/ValueObject';
-import { ValidationError } from '@suke/suke-core/src/exceptions/ValidationError';
 import handlers from './handlers';
 import { IHasUser, User } from '@suke/suke-core/src/entities/User';
+import { SocketMessage } from '@suke/suke-core/src/entities/SocketMessage';
 import { UserId } from '@suke/suke-core/src/entities/UserId';
+import { isValidJson } from '@suke/suke-util/';
 
-
-export interface SocketServerMessage {
-    type: string;
-    data: unknown;
-}
-
-export class SocketServerMessage extends ValueObject implements SocketServerMessage {
-    public type: string;
-    public data: unknown;
-
-    constructor(msg: SocketServerMessage) {
-        super();
-        this.type = msg.type;
-        this.data = msg.data;
-
-        if (this.IsValid()) {
-            throw new ValidationError(`object ${JSON.stringify(msg)} is not a valid socket server message`);
-        }
-    }
-
-    protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
-        yield this.type;
-        yield this.data;
-        return;
-    }
-
-    protected IsValid(): boolean {
-        return typeof(this.type) == 'string' && this.type != null;
-    }
-}
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
-    message: (json: SocketServerMessage) => void
+    clientError: (error: Error, ws: WebSocket) => void,
+    message: (json: SocketMessage, ws: WebSocket) => void
 }
 
 export type UserDataWithWebSocket = {
@@ -84,6 +55,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         this.wss = wss;
         this.userMap = new Map();
 
+        this.createHandlers();
         this.setupListeners();
     }
 
@@ -95,28 +67,59 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                 this.userMap.set(user.id, {user, ws});
 
                 ws.on('message', (message) => {
+                    const msgStr = message.toString();
+
+                    if (!isValidJson(msgStr))
+                        return this.emit('clientError', new Error("Invalid Message from client."), ws);
+
                     const msgJson = JSON.parse(message.toString());
 
-                    this.emit('message', new SocketServerMessage(msgJson));
+                    this.emit('message', new SocketMessage(msgJson), ws);
                 });
 
                 ws.on('close', () => {
                     this.userMap.delete(user.id);
                 });
-
-                this.createHandlers();
             } catch (e) {
                 this.emit('error', e as Error);
             }
         });
+
+        this.wss.on('error', (err) => {
+            this.emit('error', err);
+        });
     }
 
+    /**
+     * Creates Handlers for the server's events
+     */
     private createHandlers(): void {
-        handlers.map((createHandler) => createHandler(this));
+        for (const createHandler of handlers) {
+            createHandler(this)();
+        }
     }
 
-    public getUserConnection(idObj: UserId): void {
-        this.userMap.get(idObj.value);
+    public getConnection(idObj: UserId): UserDataWithWebSocket | undefined {
+        return this.userMap.get(idObj.value);
+    }
+
+    public getAllConnections(): Map<number, UserDataWithWebSocket> {
+        return this.userMap;
+    }
+
+    /**
+     * Broadcast/send data to all connected users ignoring users in the ignoreList.
+     * 
+     * @param data Data to broadcast
+     * @param ignoreList user ids to ignore
+     */
+    public broadcast(data: unknown, ignoreList: UserId[]): void {
+        this.userMap.forEach((v) => {
+            if (ignoreList.every((ignoredUserId) => !v.user.Id().Equals(ignoredUserId))) 
+                return;
+            
+            v.ws.send(data);
+        });
     }
 
     public start(port: number, cb: () => void): void {
