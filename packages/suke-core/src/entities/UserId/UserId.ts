@@ -23,6 +23,10 @@ export class UserId extends ValueObject {
     }
 
     protected IsValid(): boolean {
+        if (this.value == null) {
+            this.value = -1;
+        }
+
         return typeof(this.value) == 'number' && this.value != null;
     }
 }

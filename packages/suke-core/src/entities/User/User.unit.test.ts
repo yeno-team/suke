@@ -93,23 +93,6 @@ describe("User Class: Value Object", () => {
             })}).toThrowError(ValidationError);
         });
 
-        it('should default to id -1 if passed in null id', () => {
-            const user = new User({
-                id: null as unknown as number,
-                name: 'username',
-                email: 'test@gmail.com',
-                role: Role.User,
-                channel: {
-                    id: 0,
-                    followers: 0,
-                    desc_title: '',
-                    desc: ''
-                }
-            });
-
-            expect(user.id).toStrictEqual(-1);
-        });
-
         it('should default to User role if passed in a null role', () => {
             const user = new User({
                 id: 1,

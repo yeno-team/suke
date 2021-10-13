@@ -68,10 +68,6 @@ export class User extends ValueObject implements IUser {
     }
 
     protected IsValid(): boolean {
-        if (this.id == null) {
-            this.id = -1;
-        }
-
         if (this.role == null) {
             this.role = Role.User;
         }
