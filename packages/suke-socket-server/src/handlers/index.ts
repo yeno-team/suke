@@ -1,6 +1,8 @@
-import { createTestHandler } from "./testHandler";
-
+import { createClientErrorHandler, createErrorHandler } from "./error";
+import { createTestHandler } from "./test";
 
 export default [
-    createTestHandler
+    createTestHandler,
+    createErrorHandler,
+    createClientErrorHandler
 ]
