@@ -7,5 +7,8 @@ export interface IConfiguration {
     db: {
         connectionUri: string
     },
+    redis: {
+        connectionUri: string
+    }
     session: SessionOptions
 }
