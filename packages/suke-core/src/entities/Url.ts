@@ -3,8 +3,11 @@ import { ValidationError } from "../exceptions/ValidationError";
 import { isValidUrl } from "@suke/suke-util/src"
 
 export class Url extends ValueObject {
-    constructor(public url : string) {
+    public address : string;
+
+    constructor(address : string) {
         super();
+        this.address = address;
 
         if(!this.IsValid()) {
             throw new ValidationError("Invalid url")
@@ -12,9 +15,10 @@ export class Url extends ValueObject {
     }
 
     protected *GetEqualityProperties(): Generator<unknown, any, unknown> {
-        yield this.url
+        yield this.address
     }
+
     protected IsValid(): boolean {
-        return !!this.url && typeof(this.url) === "string" && isValidUrl(this.url)
+        return !!this.address && typeof(this.address) === "string" && isValidUrl(this.address)
     }    
 }

@@ -1,5 +1,6 @@
 import { SearchVideoData } from "@suke/suke-core/src/entities/SearchResult";
 import { ValueObject } from "@suke/suke-core/src/ValueObject";
+import { Url } from "packages/suke-core/src/entities/Url";
 
 export interface ParserSearchOptionsType {
   token?: string,
@@ -41,7 +42,7 @@ export interface IParser {
      * Most likely use the domain name of the site, that way we have unique keys for the parsers.
      */
     name: string; 
-    hostname : string;
+    hostname : Url;
 
     search(searchTerm: string, options: ParserSearchOptions): Promise<Array<SearchVideoData>>
 }

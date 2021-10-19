@@ -4,8 +4,10 @@ import hjson from "hjson";
 import { StandaloneType , SearchVideoData } from "@suke/suke-core/src/entities/SearchResult";
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError"
 import { createFormData } from "@suke/suke-util/dist";
-import { IParser, ParserSearchOptions } from "../IParser";
 import { AxiosRequest } from "@suke/requests/src/";
+import { IParser, ParserSearchOptions } from "../IParser";
+import { Url } from "@suke/suke-core/src/entities/Url";
+import { ValidationError } from "@suke/suke-core/src/exceptions/ValidationError"
 
 export type KickAssAnimeVideoServer = "SAPPHIRE-DUCK" | "PINK-BIRD" | "BETASERVER3" | "BETA-SERVER" | "A-KICKASSANIME" | "THETA-ORIGINAL"
 
@@ -26,6 +28,21 @@ export interface VideoServer {
     rawSrc? : string
 }
 
+export class KickAssAnimeEpisodeUrl extends Url {
+    constructor(url : string) {
+        super(url);
+
+        if(!this.isValidEpisodeUrl()) {
+            throw new ValidationError("Invalid KickAssAnime episode URL.")
+        }
+    }
+
+    private isValidEpisodeUrl() : boolean {
+        const episodeUrlRegex = /https:\/\/www2\.kickassanime\.ro\/anime\/[A-Za-z0-9-]+\d{6}\/episode-\d{2}-\d{6}/
+        return !!this.address && typeof(this.address) === "string" && episodeUrlRegex.test(this.address)
+    }
+}
+
 @Service()
 export class KickAssAnimeParser implements IParser {
     private getVideoPlayerUrlRegex = /"link1":"(.+)","link2"/
@@ -39,7 +56,7 @@ export class KickAssAnimeParser implements IParser {
     private excludedServers = ["DAILYMOTION"]
 
     name = "KickAssAnime"
-    hostname = "https://www2.kickassanime.ro"
+    hostname = new Url("www2.kickassanime.ro")
 
     constructor(
         public request : AxiosRequest
@@ -194,7 +211,7 @@ export class KickAssAnimeParser implements IParser {
 
         const formData = createFormData({ keyword : searchTerm })
 
-        const data = await this.request.post<Array<AnimeRawSearchResult>>(`${this.hostname}/api/anime_search` , {
+        const data = await this.request.post<Array<AnimeRawSearchResult>>(`${this.hostname.address}/api/anime_search` , {
             body : formData,
             headers : {
                 "Content-Type" : `multipart/form-data; boundary=${formData.getBoundary()}`
@@ -203,13 +220,13 @@ export class KickAssAnimeParser implements IParser {
 
         return data.map(({ name , image }) => ({
             type : name.toLowerCase().includes("movie") ? StandaloneType.Movie : StandaloneType.Video,
-            thumbnail_url : `${this.hostname}/uploads/${image}`,
+            thumbnail_url : `${this.hostname.address}/uploads/${image}`,
             name
         }))
     }
 
-    public async getVideos(url : string) : Promise<any>{
-        const embedVideoPlayerUrl = await this.getEmbedVideoPlayerUrl(url)
+    public async getVideos(url : Url) : Promise<any>{
+        const embedVideoPlayerUrl = await this.getEmbedVideoPlayerUrl(url.address)
         const videoPlayerHtml = await this.request.get<string>(embedVideoPlayerUrl)
         
         // A conditonial check to see which video player the webpage is currently using.
