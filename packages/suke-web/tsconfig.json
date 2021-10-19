@@ -8,9 +8,11 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+    "declaration": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "composite": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -20,6 +22,14 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "references": [
+    {
+      "path": "../suke-util"
+    },
+    {
+      "path": "../suke-core"
+    },
+  ],
   "include": [
     "src"
   ]
