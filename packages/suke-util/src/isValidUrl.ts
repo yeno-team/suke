@@ -6,6 +6,6 @@
  */
 export default function isValidUrl(str : string) : boolean {
     // eslint-disable-next-line no-useless-escape
-    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+$/
     return urlRegex.test(str)
 }
