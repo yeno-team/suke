@@ -1,9 +1,8 @@
-
-
+import './chat.scss';
 
 export const Chat = () => {
     return (
-        <div>
+        <div className="chatbox">
             
         </div>
     )
