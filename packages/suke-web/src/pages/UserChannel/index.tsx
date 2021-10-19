@@ -2,6 +2,7 @@ import React from "react"
 import { Columns } from "react-bulma-components";
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
+import { Chat } from "../../components/Chat";
 import { VideoMenu } from "../../components/VideoMenu";
 import './userChannel.scss';
 import { UserProfile } from "./UserProfile";
@@ -20,7 +21,8 @@ export const UserChannelPage = (): JSX.Element => {
                 <Columns.Column className="video-menu-column" size={9}>
                     <VideoMenu />
                 </Columns.Column>
-                <Columns.Column className="chat-column" backgroundColor="gray">
+                <Columns.Column className="chat-column">
+                    <Chat />
                 </Columns.Column>
             </Columns>
             <Columns>
