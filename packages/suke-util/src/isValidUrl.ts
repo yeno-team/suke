@@ -1,4 +1,11 @@
+/**
+ * Checks if an URL is valid or not.
+ * @see {@link https://www.regextester.com/94502}
+ * @param str
+ * @returns boolean
+ */
 export default function isValidUrl(str : string) : boolean {
-    const urlRegex = /((http|https):\/\/)(www.)?” + “[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]” + “{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)/
+    // eslint-disable-next-line no-useless-escape
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
     return urlRegex.test(str)
 }
