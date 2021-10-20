@@ -3432,6 +3432,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@suke/logger@workspace:packages/logger":
+  version: 0.0.0-use.local
+  resolution: "@suke/logger@workspace:packages/logger"
+  languageName: unknown
+  linkType: soft
+
 "@suke/suke-core@workspace:packages/suke-core":
   version: 0.0.0-use.local
   resolution: "@suke/suke-core@workspace:packages/suke-core"

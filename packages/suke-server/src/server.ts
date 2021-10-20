@@ -8,7 +8,7 @@ import { SocketServer } from "@suke/suke-socket-server/src/server";
 import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
-
+import { ILogger } from "@suke/logger";
 interface ExpressLocals {
     user?: UserModel;
 }
@@ -31,7 +31,7 @@ export class Server {
     private server: http.Server;
     private sessionParser: RequestHandler;
 
-    constructor(private config: IConfiguration) {
+    constructor(private config: IConfiguration, private logger: ILogger) {
 
         this.app = express();
         this.server = http.createServer(this.app);
@@ -58,6 +58,6 @@ export class Server {
         this.app.use(ErrorHandler);
 
         // Listening from the socket server will listen on the httpServer that is shared from express.
-        this.sockerServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));
+        this.sockerServer.start(this.config.server.port, () => this.logger.log("Suke Server started listening on PORT " + this.config.server.port));
     }
 }

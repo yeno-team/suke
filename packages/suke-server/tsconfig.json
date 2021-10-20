@@ -13,6 +13,9 @@
         {
           "path": "../suke-core"
         },
+        {
+          "path": "../logger"
+        }
     ],
     "include": [
         "src/",

@@ -5,6 +5,7 @@ import { createConnection, useContainer } from 'typeorm';
 import { Server } from './server';
 import { UserModel } from '@suke/suke-core/src/entities/User';
 import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
+import { Logger } from '@suke/logger';
 
 useContainer(Container);
 
@@ -15,7 +16,7 @@ createConnection({
     entities: [UserModel, UserChannelModel],
     synchronize: true,
 }).then(() => {
-    new Server(config)
+    new Server(config, new Logger("suke"))
         .start();
 }).catch(error => {
     console.error(`Couldn't connect to the database!`);
