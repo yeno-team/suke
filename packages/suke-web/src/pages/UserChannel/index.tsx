@@ -3,6 +3,7 @@ import { Columns } from "react-bulma-components";
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
 import { VideoMenu } from "../../components/VideoMenu";
+import { ChatBox } from "./ChatBox";
 import './userChannel.scss';
 import { UserProfile } from "./UserProfile";
 
@@ -12,7 +13,6 @@ type UserChannelPageParams = {
 
 export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
-
     return (
         <React.Fragment>
             <Navigation />
@@ -20,7 +20,8 @@ export const UserChannelPage = (): JSX.Element => {
                 <Columns.Column className="video-menu-column" size={9}>
                     <VideoMenu />
                 </Columns.Column>
-                <Columns.Column className="chat-column" backgroundColor="gray">
+                <Columns.Column className="chat-column" backgroundColor="coolblack">
+                    <ChatBox />
                 </Columns.Column>
             </Columns>
             <Columns>
