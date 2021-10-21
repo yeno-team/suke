@@ -17,6 +17,9 @@ export interface IUser {
     channel: IUserChannel
 }
 
+
+export type Author = Pick<IUser, "id" | "name">
+
 export interface IHasUser {
     user: IUser;
 }

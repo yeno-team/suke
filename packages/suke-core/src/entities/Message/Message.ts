@@ -1,20 +1,21 @@
 import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
+import { Author } from "../User";
 
 export interface IMessage {
     content: string;
-    author_id: number;
+    author: Author;
 }
 
 export class Message extends ValueObject implements IMessage {
     content: string;
-    author_id: number;
+    author: Author;
 
     constructor(msg: IMessage) {
         super();
 
         this.content = msg.content;
-        this.author_id = msg.author_id;
+        this.author = msg.author;
 
         if (!this.IsValid()) {
             throw new ValidationError(`msg obj: ${JSON.stringify(msg)} is not valid.`);
@@ -23,7 +24,7 @@ export class Message extends ValueObject implements IMessage {
 
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.content;
-        yield this.author_id;
+        yield this.author;
 
         return;
     }
@@ -33,7 +34,7 @@ export class Message extends ValueObject implements IMessage {
             throw new PropertyValidationError('content');
         }
 
-        if (typeof(this.author_id) !== 'number') {
+        if (typeof(this.author) !== "object") {
             throw new PropertyValidationError('author_id');
         }
 
