@@ -1,3 +1,5 @@
+import { Url } from "./Url";
+
 export enum Category {
     Anime,
     Movie,
@@ -12,7 +14,7 @@ export enum StandaloneType {
 }
 
 export enum Quality {
-    "Auto",
+    "auto",
     "240p",
     "360p",
     "480p",
@@ -25,24 +27,30 @@ export enum Quality {
 
 export type QualityAsUnion = keyof typeof Quality
 
-export interface SearchVideoData {
+export interface ISearchData {
     type : StandaloneType,
     name : string,
-    thumbnail_url : string
+    thumbnail_url : Url
 }
 
-// export interface IStandaloneData {
-//     type: StandaloneType
-//     name: string,
-//     thumbnail_url: string,
-//     sources: IVideoSource[]
-// }
+export interface IEpisodeData {
+    episode_name : string | null,
+    episode_num : number,
+    thumbnail_url : string | null,
+    url : Url
+}
 
-// export interface IVideoSource {
-//     name: string,
-//     url: string,
-//     quality: Quality
-// }
+export interface IStandaloneData {
+    type: StandaloneType
+    name: string | null,
+    thumbnail_url: string | null,
+    sources: IVideoSource[]
+}
+
+export interface IVideoSource {
+    url: Url
+    quality: Quality
+}
 
 // export interface IMultiData {
 //     name: string,
