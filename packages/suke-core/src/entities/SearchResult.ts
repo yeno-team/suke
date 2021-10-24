@@ -12,6 +12,7 @@ export enum StandaloneType {
 }
 
 export enum Quality {
+    "Auto",
     "240p",
     "360p",
     "480p",
@@ -21,6 +22,8 @@ export enum Quality {
     "4K",
     "6K"
 }
+
+export type QualityAsUnion = keyof typeof Quality
 
 export interface SearchVideoData {
     type : StandaloneType,
