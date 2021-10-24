@@ -12,6 +12,7 @@ export enum StandaloneType {
 }
 
 export enum Quality {
+    "240p",
     "360p",
     "480p",
     "720p",
