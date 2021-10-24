@@ -8,6 +8,7 @@ import { AxiosRequest } from "@suke/requests/src/";
 import { Url } from "@suke/suke-core/src/entities/Url";
 import { ValidationError } from "@suke/suke-core/src/exceptions/ValidationError";
 import { IParser, ParserSearchOptions } from "../IParser";
+import { Quality , QualityAsUnion } from "@suke/suke-core/src/entities/SearchResult";
 
 export type ExternalVideoServer = 
 "SAPPHIRE-DUCK" | "PINK-BIRD" | 
@@ -23,7 +24,7 @@ export interface AnimeRawSearchResult {
 }
 
 export interface OldVideoPlayerSourceFile {
-    quality : string,
+    quality : Quality,
     file : Url
 }
 
@@ -45,8 +46,7 @@ export interface RawNewVideoPlayerSourceFile {
 }
 
 export interface NewVideoPlayerSourceFile {
-    label : string,
-    type : string,
+    quality : Quality,
     file : Url
 }
 
@@ -192,10 +192,12 @@ export class KickAssAnimeParser implements IParser {
         const $ = cheerio.load(html)
 
         return $('.dowload a:not([target])') // yes the class name is actually called .dowload
-        .map((_ , element) => ({
-            quality : $(element).text().split(" (")[1].split(" - ")[0], // troll
-            file : new Url(element.attribs.href)
-        }))
+        .map((_ , element) => {         
+            return {
+                quality : Quality[$(element).text().split(" (")[1].split(" - ")[0] as QualityAsUnion],
+                file : new Url(element.attribs.href)
+            }
+        })
         .toArray()
     }
 
@@ -226,7 +228,7 @@ export class KickAssAnimeParser implements IParser {
      * @param {Array<ExternalVideoServerResponse>} extServers 
      * @returns 
      */
-    private async getNewVideoPlayerSourceFiles(extServers : Array<ExternalVideoServerResponse>) : Promise<any> {
+    private async getNewVideoPlayerSourceFiles(extServers : Array<ExternalVideoServerResponse>) : Promise<Array<NewVideoPlayerSourceFile>> {
         /*
             SAPPHIRE-DUCK and PINK-BIRD are unique from other external servers because it doesn't use MP4 files but an m3u8 file.
             And a different way to grab the source file.
@@ -258,8 +260,7 @@ export class KickAssAnimeParser implements IParser {
                 if(regexResult) {
                     files.push({
                         file : new Url(regexResult[0]),
-                        quality : this.sapphireAndPinkQualitys[i],
-                        type : "video/m3u8"
+                        quality : Quality[this.sapphireAndPinkQualitys[i] as QualityAsUnion]
                     })
                 } else {
                     break
@@ -269,7 +270,8 @@ export class KickAssAnimeParser implements IParser {
             return files
         }   
 
-        const externalServerSourceFiles : Array<Array<RawNewVideoPlayerSourceFile>> = await Promise.all(extServers.map(async ({ src }) => {
+        // An array containing subarrays of the source files for every external server.
+        const rawExternalServerSourceFiles : Array<Array<RawNewVideoPlayerSourceFile>> = await Promise.all(extServers.map(async ({ src }) => {
             try {        
                 let html = await this.request.get<string>(src)
 
@@ -293,19 +295,13 @@ export class KickAssAnimeParser implements IParser {
             }
         }))
 
-        /**
-         * First, we flatten out the array so we can merge all the subarrays together.
-         * Then, we filter out the array because some items can contain file url that are empty.
-         * Finally, , we need sanitize each RawNewVideoPlaySourceFile.
-         */
+        // Flatten out the array so we can merge all the subarrays together.
+        // Filter out the array because some items can contain file url that are empty.
+        const filteredRawExternalSourceFiles = rawExternalServerSourceFiles.flat().filter((rawNewVideoPlayerSourceFile) => rawNewVideoPlayerSourceFile.file.length !== 0)
 
-        return externalServerSourceFiles
-        .flat()
-        .filter((rawNewVideoPlayerSourceFile) => rawNewVideoPlayerSourceFile.file.length !== 0)
-        .map(({ file , label }) => ({
-            file : new Url(file),
-            label : label.trim().toLowerCase(),
-            type : "type/mp4"
+        return filteredRawExternalSourceFiles.map((rawVideoPlayerSourceFile) => ({
+            file : new Url(rawVideoPlayerSourceFile.file),
+            quality : Quality[rawVideoPlayerSourceFile.label.trim().toLowerCase() as QualityAsUnion]
         }))
     }
     
@@ -340,12 +336,33 @@ export class KickAssAnimeParser implements IParser {
     }
 
     public async getVideos(url : Url) : Promise<any> {
+
         const embedVideoPlayerUrl = await this.getEmbedVideoPlayerUrl(url)
         
         // A conditonial check to see which video player the webpage is currently using.
         if(embedVideoPlayerUrl.address.includes("player.php")) {
             const extServers = await this.getExternalServers(embedVideoPlayerUrl)
-            return await this.getNewVideoPlayerSourceFiles(extServers)
+            const sourceFiles = await this.getNewVideoPlayerSourceFiles(extServers)
+
+            const sapphireOrPinkExtServerIndex = extServers.findIndex(({ name }) => name === "PINK-BIRD" || name === "SAPPHIRE-DUCK")
+            // An external servers array with an external server named Sapphire-Duck or Pink-Bird will always return all the avaliable videos with non duplicates. 
+            if(sapphireOrPinkExtServerIndex !== -1) {
+                return sourceFiles
+            }
+
+            // An external servers array without a Sapphire-Duck or Pink-Bird external server will return all of the avaliable videos for each server.
+            // We will have to get rid of the duplicates.   
+            const uniqueQualityStorage : Array<string> = []
+            const uniqueSourceFiles : Array<NewVideoPlayerSourceFile> = []
+
+            sourceFiles.forEach((newVideoPlayerSourceFile) => {
+                if(!uniqueQualityStorage.includes(Quality[newVideoPlayerSourceFile.quality])) {
+                    uniqueQualityStorage.push(Quality[newVideoPlayerSourceFile.quality])
+                    uniqueSourceFiles.push(newVideoPlayerSourceFile)
+                }
+            })
+
+            return uniqueSourceFiles
         } else {
             /**
              * The embed video player url has an id that can lead us to the download page.
