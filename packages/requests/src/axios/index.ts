@@ -2,6 +2,7 @@ import { AxiosInstanceToken } from "../container";
 import { Service , Inject } from "typedi";
 import { IRequest, RequestOptions } from "../IRequest";
 import { AxiosInstance, AxiosProxyConfig, AxiosRequestConfig, Method } from "axios";
+import { Url } from "@suke/suke-core/src/entities/Url";
 
 @Service()
 export class AxiosRequest implements IRequest {
@@ -11,7 +12,7 @@ export class AxiosRequest implements IRequest {
 
     private convertToAxiosOpts(options : RequestOptions) : AxiosRequestConfig {
         const axiosClientOpts: AxiosRequestConfig = {
-            url: options.url,
+            url: options.url?.address,
             headers : options.headers,
             method: options.method as Method,
             baseURL: options.baseURL,
@@ -32,7 +33,7 @@ export class AxiosRequest implements IRequest {
         return req.data
     }
 
-    async get<R>(url: string, options?: RequestOptions): Promise<R> {
+    async get<R>(url: Url, options?: RequestOptions): Promise<R> {        
         return await this.request({
             url,
             method : "GET",
@@ -40,7 +41,7 @@ export class AxiosRequest implements IRequest {
         })
     }
 
-    async post<R>(url: string, options?: RequestOptions): Promise<R> {
+    async post<R>(url: Url, options?: RequestOptions): Promise<R> {
         return await this.request({
             url,
             method : "POST",
