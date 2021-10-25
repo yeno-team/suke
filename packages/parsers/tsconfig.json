@@ -9,6 +9,14 @@
     "include": [
         "src/"
     ],
+    "references": [
+        {
+            "path" : "../suke-core"
+        },
+        {
+            "path": "../suke-util"
+        }
+    ],
     "exclude": [
         "node_modules",
         "dist"
