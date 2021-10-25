@@ -15,6 +15,9 @@
         },
         {
             "path": "../suke-util"
+        },
+        {
+            "path": "../requests"
         }
     ],
     "exclude": [
