@@ -1,6 +1,6 @@
 {
   "name": "suke",
-  "packageManager": "yarn@3.0.0",
+  "packageManager": "yarn@3.0.2",
   "private": true,
   "scripts": {
     "prepack": "yarn workspaces foreach run yarn clean && yarn compile",
