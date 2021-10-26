@@ -1,9 +1,17 @@
-import { ErrorRequestHandler } from "express";
+import { ErrorRequestHandler, Request, Response } from "express";
 
-export const ErrorHandler: ErrorRequestHandler = (err, req, res) => {
-    console.error(err);
+export const ErrorHandler: ErrorRequestHandler = (err, req: Request, res: Response) => {
+    if (res != null) {
+        if (res.send == null) {
+            //console.error(err);
+            return;
+        }
 
-    return res.status(500).send({
-        error: err.detail != null ? err.detail.toString() : err.message.toString()
-    });
+        return res.send({
+            error: (err.detail && err.detail.toString()) || 
+                   (err.message && err.message.toString() ) || 
+                   (err && err.toString()) ||
+                   "Unknown Error Occured"
+        });
+    }
 }

@@ -1,61 +1,82 @@
+<<<<<<< HEAD:packages/suke-core/src/entities/User.ts
 import { BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from '../Role';
 import { ValueObject } from '../ValueObject';
 import { lowercaseTransformer } from '../transformers/ValueTransformers';
 import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
 import { isValidEmail } from '@suke/suke-util';
+=======
+import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from '../../Role';
+import { ValueObject } from '../../ValueObject';
+import { lowercaseTransformer } from '../../transformers/ValueTransformers';
+import { PropertyValidationError } from "../../exceptions/ValidationError";
+import { isValidEmail } from '@suke/suke-util/src';
+import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
+import * as bcrypt from 'bcrypt';
+import { Name } from "../Name/Name";
+import { UserId } from "../UserId";
+>>>>>>> main:packages/suke-core/src/entities/User/User.ts
 
 export interface IUser {
     id: number;
     name: string;
     email: string;
-    password: string;
-    salt: string;
     role: Role;
+    channel: IUserChannel
+}
+
+export interface IHasUser {
+    user: IUser;
+}
+
+export enum UserIdentifier {
+    Id,
+    Username
 }
 
 export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;
     public email: string;
-    public password: string;
-    public salt: string;
     public role: Role;
+    public channel: IUserChannel;
+
+    private _name: Name;
+    private _id: UserId;
  
     constructor(user: IUser) {
         super();
 
         this.id = user.id;
+        this._id = new UserId(this.id);
         this.name = user.name;
+        this._name = new Name(this.name);
         this.email = user.email;
-        this.password = user.password;
-        this.salt = user.salt;
         this.role = user.role;
+        this.channel = user.channel;
 
-        if (!this.IsValid()) {
-            throw new ValidationError(`User object ${JSON.stringify(user)} is not valid`);
-        }
+        this.IsValid();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    protected *GetEqualityProperties(): Generator<any, any, unknown> {
+    public Name(): Name {
+        return this._name;
+    }
+
+    public Id(): UserId {
+        return this._id;
+    }
+
+    protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.id;
         yield this.name;
         yield this.email;
-        yield this.password;
-        yield this.salt;
         yield this.role;
+
+        return;
     }
 
     protected IsValid(): boolean {
-        if (this.id == null) {
-            this.id = -1;
-        }
-
-        if (this.salt == null) {
-            this.salt = "";
-        }
-
         if (this.role == null) {
             this.role = Role.User;
         }
@@ -66,18 +87,6 @@ export class User extends ValueObject implements IUser {
 
         if (typeof(this.email) !== 'string' || !isValidEmail(this.email)) {
             throw new PropertyValidationError('email');
-        }
-
-        if (typeof(this.name) !== 'string') {
-            throw new PropertyValidationError('name');
-        }
-
-        if (typeof(this.password) !== 'string') {
-            throw new PropertyValidationError('password');
-        }
-
-        if (typeof(this.salt) !== 'string') {
-            throw new PropertyValidationError('salt');
         }
 
         if (typeof(this.role) !== 'number') {
@@ -110,19 +119,29 @@ export class UserModel extends BaseEntity implements IUser  {
     public email!: string;
 
     @Column({
-        select: false,
         nullable: false,
-    })
-    public password!: string;
-
-    @Column({
-        select: false,
-        nullable: false,
+        select: false
     })
     public salt!: string;
-    
 
     @Column({ type: 'enum', enum: Role, default: Role.User })
     public role!: Role;
+
+    @OneToOne(() => UserChannelModel)
+    @JoinColumn()
+    public channel!: UserChannelModel;
+
+    public async testRawPassword(rawPass: string): Promise<boolean> {
+        const userRepo = await getRepository(UserModel).findOne({
+            select: ['id', 'salt'],
+            where: { id: this.id }
+        });
+
+        if (userRepo == null) {
+            return Promise.reject("User does not exist.");
+        }
+
+        return bcrypt.compare(rawPass, userRepo.salt);
+    } 
 }
 
