@@ -5,6 +5,7 @@ import { Logo } from '../../components/Logo';
 import './navigation.css';
 import { SearchBar } from '../../components/SearchBar';
 import { MobileMenu } from './MobileMenu';
+import { NotificationIcon } from '../../components/NotificationIcon';
 
 export const Navigation = (): JSX.Element => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
@@ -18,7 +19,8 @@ export const Navigation = (): JSX.Element => {
             'bg-black',
             'pt-3',
             'pb-5',
-            'px-10'
+            'px-6',
+            'lg:px-8'
         )}>
             <div className={classNames(
                 'flex',
@@ -70,7 +72,11 @@ export const Navigation = (): JSX.Element => {
                     </span>
                 </div>
                 
-                <div className={classNames(
+                <NotificationIcon className={classNames(
+                    'mr-5'
+                )} size={6} count={3} handleClick={() => {}} />
+
+                <button className={classNames(
                     'inline-block',
                     'text-md',
                     'px-5',
@@ -82,7 +88,7 @@ export const Navigation = (): JSX.Element => {
                     'text-white'
                 )}>
                     Login
-                </div>
+                </button>
             </div>
         </nav>
     );
