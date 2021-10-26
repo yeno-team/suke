@@ -7,5 +7,7 @@ module.exports = {
     moduleNameMapper: {
         '\\.(css|less)$': '<rootDir>/test/__mocks__/styleMock.js',
     },
-    modulePathIgnorePatterns: ["<rootDir>/packages/suke-web"]
-};
+    modulePathIgnorePatterns: ["<rootDir>/packages/suke-web"],
+    runner: 'groups',
+    watchPlugins: ['jest-watch-yarn-workspaces']
+}

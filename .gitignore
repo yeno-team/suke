@@ -12,11 +12,11 @@
 
 dist
 node_modules
-
+lerna-debug.log
 
 # TYPESCRIPT
 *.d.ts.map
 *.tsbuildinfo
 
-# Jest
+# JEST
 coverage

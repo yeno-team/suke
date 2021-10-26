@@ -11,13 +11,14 @@ export abstract class ValueObject {
 
         const objArr = Array.from(obj.GetEqualityProperties());
         const thisArr = Array.from(this.GetEqualityProperties());
+        let equal = true;
 
         objArr.every((val, i) => {
             if (val !== thisArr[i]) {
-                return false;
+                equal = false;
             }
         });
 
-        return true;
+        return equal;
     }
 }
