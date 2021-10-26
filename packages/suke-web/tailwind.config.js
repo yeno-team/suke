@@ -17,7 +17,8 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Open Sans', 'sans-serif'],
-      custom: ['Signika', 'sans-serif']
+      signika: ['Signika', 'sans-serif'],
+      sitara: ['sitara', 'sans-serif']
     }
   },
   variants: {
