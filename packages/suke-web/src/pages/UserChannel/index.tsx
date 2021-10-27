@@ -1,6 +1,9 @@
 import React from "react"
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
+import { VideoMenu } from "../../components/VideoMenu";
+import { ChatBox } from "./ChatBox";
+import { UserProfile } from "./UserProfile";
 
 
 type UserChannelPageParams = {
@@ -10,8 +13,11 @@ type UserChannelPageParams = {
 export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
     return (
-        <React.Fragment>
+        <div className="h-screen flex flex-col">
             <Navigation />
-        </React.Fragment>
+            <VideoMenu />
+            <ChatBox />
+            <UserProfile username={username} followerCount={3}/>
+        </div>
     )
 }
