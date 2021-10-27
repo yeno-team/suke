@@ -17,9 +17,9 @@ export const Navigation = (): JSX.Element => {
             'md:justify-between',
             'flex-wrap',
             'bg-black',
-            'pt-3',
-            'pb-5',
-            'px-6',
+            'pt-1 md:pt-3',
+            'pb-1',
+            'px-4 md:px-6',
             'lg:px-8'
         )}>
             <div className={classNames(
@@ -43,9 +43,10 @@ export const Navigation = (): JSX.Element => {
                 <Logo />
             </div>
 
-            <SearchBar size='59' className={classNames(
+            <SearchBar size='44' className={classNames(
                 'md:hidden',
-                'ml-5'
+                'ml-3',
+                'py-2'
             )} />
 
             <div className={classNames(
@@ -74,7 +75,7 @@ export const Navigation = (): JSX.Element => {
                 
                 <NotificationIcon className={classNames(
                     'mr-5'
-                )} size={6} count={3} handleClick={() => {}} />
+                )} size={7} count={3} handleClick={() => {}} />
 
                 <button className={classNames(
                     'inline-block',
