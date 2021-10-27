@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .text-indent-1 {
+        text-indent: 0.5em;
+    }
+
+    .text-indent-2 {
+        text-indent: 0.75em;
+    }
+
+    .text-indent-3 {
+        text-indent: 1em;
+    }
+
+    .text-indent-4 {
+        text-indent: 1.25em;
+    }
+}

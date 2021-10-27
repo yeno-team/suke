@@ -7,7 +7,7 @@ import { Routes } from './routes';
 function App() {
   return (
     <ThemeContext.Provider>
-      <BrowserRouter >
+      <BrowserRouter>
         <Routes />
       </BrowserRouter>
     </ThemeContext.Provider>
