@@ -10,11 +10,10 @@ export interface VideoMenuHeaderProps {
 export const VideoMenuHeader = ({viewerCount, handleOpenBrowser}: VideoMenuHeaderProps) => {
     return (
         <header className={classNames(
-            'container',
             'w-full',
             'flex',
             'bg-coolblack',
-            'p-5 pb-3'
+            'px-5 py-3'
         )}>
             <div className="font-signika">
                 <p className="text-lg font-bold text-white mb-0 pb-0 leading-none">The Flash S4 EP2</p>
