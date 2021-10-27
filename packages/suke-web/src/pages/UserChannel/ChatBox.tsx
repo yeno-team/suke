@@ -37,6 +37,6 @@ export const ChatBox = () => {
     }
     
     return (
-        <Chat messages={messages} submitMessage={submitMessage}/>
+        <Chat className="flex-grow" messages={messages} submitMessage={submitMessage}/>
     )
 }
