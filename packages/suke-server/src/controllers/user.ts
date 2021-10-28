@@ -20,6 +20,7 @@ export class UserController extends BaseController {
     public execute(app: Express): void {
         app.route(this.route)
             .get(createUserAttacher(UserIdentifier.Id), catchErrorAsync(this.Get))
+            .post(catchErrorAsync(this.Post))
     }
 
     public Get = async (req: Request, res: Response): Promise<void> => {
@@ -27,13 +28,13 @@ export class UserController extends BaseController {
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
-        const userObj = new User({ ...req.body, password: null });
+        const userObj = new User({ id: 0, ...req.body, password: null });
 
         const createdUser = await this.userService.create(userObj, req.body.password);
         
         // Removes salt from the response.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {salt, ...userRes } = createdUser;
+        const {salt, channel, ...userRes } = createdUser;
 
         res.status(201).send({
             message: 'Created',
