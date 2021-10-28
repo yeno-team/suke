@@ -28,9 +28,15 @@ export class AuthController extends BaseController {
 
         if (check) {
             req.session.user = res.locals.user;
-            res.send("Authenticated!");
+            res.send({
+                error: false,
+                message: "Authenticated."
+            });
         } else {
-            res.send("BAD");
+            res.send({
+                error: true,
+                message: "Incorrect password or username."
+            });
         }
     }
 }
