@@ -1,5 +1,10 @@
 {
     "extends": "../../tsconfig.json",
+    "references": [
+        {
+            "path": "../suke-util"
+        }
+    ],
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": "src",
