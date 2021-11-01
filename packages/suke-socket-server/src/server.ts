@@ -77,6 +77,10 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                     this.emit('message', new SocketMessage(msgJson), ws);
                 });
 
+                ws.on('error', (err) => {
+                    this.emit('error', err);
+                });
+
                 ws.on('close', () => {
                     this.userMap.delete(user.id);
                 });
