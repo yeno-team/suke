@@ -1,4 +1,5 @@
 import WebSocket from 'ws';
+import uuid from 'uuid';
 import EventEmitter from "events"
 import { Server, IncomingMessage} from 'http'
 import { RequestHandler, Request, Response} from 'express';
@@ -8,7 +9,9 @@ import { IHasUser, User } from '@suke/suke-core/src/entities/User';
 import { SocketMessage } from '@suke/suke-core/src/entities/SocketMessage';
 import { UserId } from '@suke/suke-core/src/entities/UserId';
 import { isValidJson } from '@suke/suke-util/';
-
+import { IHasId } from '@suke/suke-core/src/IHasId';
+import { Role } from 'packages/suke-core/src/Role';
+import { UserChannel } from 'packages/suke-core/src/entities/UserChannel/UserChannel';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -18,8 +21,10 @@ export interface SocketServerEvents {
 
 export type UserDataWithWebSocket = {
     user: User,
-    ws: WebSocket
+    ws: WebSocketWithId
 }
+
+export type WebSocketWithId = WebSocket & IHasId<string>;
 
 /**
  * This type extends the interface IHasUserId to the session property. This allows usage of userId which is eventually passed in from express.
@@ -30,6 +35,9 @@ type EventRequest = Request & IncomingMessage & {session: IHasUser};
 export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketServerEvents>) {
     private server: Server;
     private wss: WebSocket.Server;
+
+    // Map uses the websocket id as key
+    private guestMap: Map<string, WebSocketWithId>;
     private userMap: Map<number, UserDataWithWebSocket>;
 
     constructor(httpServer: Server, sessionParser: RequestHandler) {
@@ -39,9 +47,27 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         httpServer.on('upgrade', (req: EventRequest, socket, head) => {
             sessionParser(req, {} as Response, () => {
                 if (!req.session.user) {
+                    /* 
                     socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
                     socket.destroy();
                     return;
+                    */
+
+                    socket.write("GUEST AUTHENTICATED");
+
+                    // ASSUME USER IS A GUEST
+                    req.session.user = new User({
+                        id: 0,
+                        email: 'guest@suke.app',
+                        name: 'Guest',
+                        role: Role.Guest,
+                        channel: new UserChannel({
+                            id: 0,
+                            followers: 0,
+                            desc: "",
+                            desc_title: ""
+                        })
+                    });
                 }
     
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,18 +80,25 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         this.server = httpServer;
         this.wss = wss;
         this.userMap = new Map();
+        this.guestMap = new Map();
 
         this.createHandlers();
         this.setupListeners();
     }
 
     private setupListeners(): void {
-        this.wss.on('connection', (ws, req: EventRequest) => {
+        this.wss.on('connection', (ws: WebSocketWithId, req: EventRequest) => {
             try {
+                ws.id = uuid.v4();
+
                 const user = new User(req.session.user as User);
 
-                this.userMap.set(user.id, {user, ws});
-
+                if (user.id == 0) {
+                    this.guestMap.set(ws.id, ws);
+                } else {
+                    this.userMap.set(user.id, {user, ws});
+                }
+                
                 ws.on('message', (message) => {
                     const msgStr = message.toString();
 
@@ -82,6 +115,11 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                 });
 
                 ws.on('close', () => {
+                    if (user.id == 0) {
+                        this.guestMap.delete(ws.id);
+                        return;
+                    }
+
                     this.userMap.delete(user.id);
                 });
             } catch (e) {
@@ -107,8 +145,16 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         return this.userMap.get(idObj.value);
     }
 
-    public getAllConnections(): Map<number, UserDataWithWebSocket> {
+    public getUserConnections(): Map<number, UserDataWithWebSocket> {
         return this.userMap;
+    }
+
+    public getGuestConnection(id: string): WebSocketWithId | undefined {
+        return this.guestMap.get(id);
+    }
+
+    public getGuestConnections(): Map<string, WebSocketWithId> {
+        return this.guestMap;
     }
 
     /**
