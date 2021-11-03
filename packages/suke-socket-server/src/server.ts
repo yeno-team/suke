@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 import EventEmitter from "events"
 import { Server, IncomingMessage} from 'http'
 import { RequestHandler, Request, Response} from 'express';
@@ -10,8 +10,8 @@ import { SocketMessage } from '@suke/suke-core/src/entities/SocketMessage';
 import { UserId } from '@suke/suke-core/src/entities/UserId';
 import { isValidJson } from '@suke/suke-util/';
 import { IHasId } from '@suke/suke-core/src/IHasId';
-import { Role } from 'packages/suke-core/src/Role';
-import { UserChannel } from 'packages/suke-core/src/entities/UserChannel/UserChannel';
+import { Role } from '@suke/suke-core/src/Role';
+import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -27,7 +27,7 @@ export type UserDataWithWebSocket = {
 export type WebSocketWithId = WebSocket & IHasId<string>;
 
 /**
- * This type extends the interface IHasUserId to the session property. This allows usage of userId which is eventually passed in from express.
+ * This type extends the interface IHasUser to the session property. This allows usage of user object which is eventually passed in from express.
  * It also extends Request from ws and IncomingMessage to allow usage of those.
  */
 type EventRequest = Request & IncomingMessage & {session: IHasUser};
@@ -42,8 +42,9 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
 
     constructor(httpServer: Server, sessionParser: RequestHandler) {
         super();
-        const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
 
+        const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
+        
         httpServer.on('upgrade', (req: EventRequest, socket, head) => {
             sessionParser(req, {} as Response, () => {
                 if (!req.session.user) {
@@ -52,9 +53,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                     socket.destroy();
                     return;
                     */
-
-                    socket.write("GUEST AUTHENTICATED");
-
+                   
                     // ASSUME USER IS A GUEST
                     req.session.user = new User({
                         id: 0,
@@ -89,7 +88,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
     private setupListeners(): void {
         this.wss.on('connection', (ws: WebSocketWithId, req: EventRequest) => {
             try {
-                ws.id = uuid.v4();
+                ws.id = uuid();
 
                 const user = new User(req.session.user as User);
 
