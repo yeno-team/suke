@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { signup } from "../../api/user";
 import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
+import useAuth from "../../hooks/useAuth";
 
 export const RegisterPage = () => {
     const [usernameInput, setUsernameInput] = useState("");
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
+    const { register } = useAuth();
+
     const handleRegister = async () => {
-        await signup({
-            name: usernameInput,
-            email: emailInput
-        }, passwordInput);
+        await register(usernameInput, emailInput, passwordInput);
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
