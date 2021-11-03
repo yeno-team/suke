@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
-import { login } from '../../api/auth';
+import useAuth from "../../hooks/useAuth";
 
 export const LoginPage = () => {
     const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
+
+    const { login } = useAuth();
 
     const handleLogin = async () => {
         await login(usernameInput, passwordInput);
