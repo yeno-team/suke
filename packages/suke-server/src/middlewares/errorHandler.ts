@@ -6,7 +6,8 @@ export const ErrorHandler: ErrorRequestHandler = (err, req: Request, res: Respon
     }
 
     res.status(500).send({
-        error: (err.detail && err.detail.toString()) || 
+        error: true,
+        message: (err.detail && err.detail.toString()) || 
                (err.message && err.message.toString() ) || 
                (err && err.toString()) ||
                "Unknown Error Occured"
