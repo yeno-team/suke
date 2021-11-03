@@ -9,12 +9,9 @@ export const signup = async (user: Pick<IUser, 'name' | 'email'>, password: stri
         password
     };
 
-    postWithJsonData('/api/user', body)
-        .then(parseFetchResponse)
-        .then(data => {
-            console.log(data);
-        })
-        .catch(err => {
-            console.error(err);
-        });
+    return parseFetchResponse(await postWithJsonData('/api/user', body));
+}
+
+export const getAuthenticatedUser = async () => {
+    return parseFetchResponse(await fetch('/api/user'));
 }
