@@ -3468,6 +3468,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@suke/suke-core@workspace:packages/suke-core"
   dependencies:
+    "@suke/suke-util": "workspace:packages/suke-util"
     "@types/bcrypt": ^5
     bcrypt: ^5.0.1
     reflect-metadata: ^0.1.13
