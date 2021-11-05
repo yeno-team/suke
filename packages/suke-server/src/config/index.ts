@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { IConfiguration } from './Configuration';
-import { getEnvironmentVariable } from '@suke/suke-util'
+import { getEnvironmentVariable } from '@suke/suke-util/'
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import redis from 'redis';
