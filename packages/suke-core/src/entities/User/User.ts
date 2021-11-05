@@ -3,9 +3,9 @@ import { Role } from '../../Role';
 import { ValueObject } from '../../ValueObject';
 import { lowercaseTransformer } from '../../transformers/ValueTransformers';
 import { PropertyValidationError } from "../../exceptions/ValidationError";
-import { isValidEmail } from '@suke/suke-util';
+import { isValidEmail } from '@suke/suke-util/src';
 import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Name } from "../Name/Name";
 import { UserId } from "../UserId";
 

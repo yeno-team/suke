@@ -1,6 +1,7 @@
 import React from "react"
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
+import { Chat } from "../../components/Chat";
 import { VideoMenu } from "../../components/VideoMenu";
 import { ChatBox } from "./ChatBox";
 import { UserProfile } from "./UserProfile";
