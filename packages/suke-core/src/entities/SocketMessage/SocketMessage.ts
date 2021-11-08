@@ -1,7 +1,7 @@
 import { ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
 
-export type SocketMessageType = 'TEST_EVENT' | 'SERVER_ERROR' | 'CLIENT_ERROR';
+export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR";
 
 export type SocketMessageInput = {
     type: 'CLIENT_ERROR',
@@ -12,7 +12,7 @@ export type SocketMessageInput = {
 } | {
     type: 'TEST_EVENT',
     data: string
-}
+};
 
 export interface ISocketMessage {
     type: SocketMessageType;
