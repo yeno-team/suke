@@ -1,4 +1,4 @@
-import { ISocketMessage, SocketMessage, SocketMessageInput, SocketMessageType } from "@suke/suke-core/src/entities/SocketMessage";
+import { SocketMessage, SocketMessageInput, SocketMessageType } from "@suke/suke-core/src/entities/SocketMessage";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 
 const ws = new WebSocket("ws://" + process.env.REACT_APP_SERVER_URL as string);
@@ -22,35 +22,24 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
     const [messages, setMessages] = useState<SocketMessage[]>([])
     const [errors, setErrors] = useState<Error[]>([]);
 
-    function heartbeat() {
-        console.log("Successfully connected to Socket Server.");
-
-        pingTimeout = setTimeout(() => {
-            ws.close();
-        }, 30000 + 1000);
-
-        clearTimeout(pingTimeout);
-    }
-
     useEffect(() => {
         ws.onerror = (err) => {
             console.error("WebSocket Error: ", err);
         }
 
         ws.onopen = () => {
-            heartbeat();
+            console.log("Successfully connected to the Socket Server.");
         };
 
         ws.onmessage = (msg) => {
             try {
                 const data = msg.data;
 
-                if (msg.type === 'ping') {
-                    heartbeat();
-                }
-
                 const msgObj = new SocketMessage(JSON.parse(data.toString()));
                 
+                if (msgObj.type === 'CLIENT_ERROR') {
+                    console.error("CLIENT_ERROR", msgObj.data);
+                }
                 setMessages(messages => [
                     ...messages,
                     msgObj
