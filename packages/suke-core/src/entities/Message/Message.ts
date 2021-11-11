@@ -5,17 +5,20 @@ import { Author } from "../User";
 export interface IMessage {
     content: string;
     author: Author;
+    channelId: string;
 }
 
 export class Message extends ValueObject implements IMessage {
     content: string;
     author: Author;
+    channelId: string;
 
     constructor(msg: IMessage) {
         super();
 
         this.content = msg.content;
         this.author = msg.author;
+        this.channelId = msg.channelId;
 
         if (!this.IsValid()) {
             throw new ValidationError(`msg obj: ${JSON.stringify(msg)} is not valid.`);
@@ -35,7 +38,11 @@ export class Message extends ValueObject implements IMessage {
         }
 
         if (typeof(this.author) !== "object") {
-            throw new PropertyValidationError('author_id');
+            throw new PropertyValidationError('author');
+        }
+
+        if (typeof(this.channelId) !== "string") {
+            throw new PropertyValidationError('channelId');
         }
 
         return true;
