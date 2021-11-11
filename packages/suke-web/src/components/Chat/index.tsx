@@ -8,10 +8,11 @@ import useAuth from '../../hooks/useAuth';
 export interface ChatProps {
     className?: string;
     messages: IMessage[];
+    channelId: string;
     submitMessage: (message: IMessage) => void;
 }
 
-export const Chat = ({messages, submitMessage, className}: ChatProps) => {
+export const Chat = ({messages, submitMessage, className, channelId}: ChatProps) => {
     const [messageInput, setMessageInput] = useState("");
     const { user } = useAuth();
 
@@ -21,7 +22,8 @@ export const Chat = ({messages, submitMessage, className}: ChatProps) => {
             author: {
                 id: user!.id,
                 name: user!.name
-            }
+            },
+            channelId: channelId
         }
 
         submitMessage(msg);
