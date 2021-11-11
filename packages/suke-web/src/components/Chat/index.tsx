@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import { Messages } from './Messages';
 import './Chat.css';
+import useAuth from '../../hooks/useAuth';
 
 export interface ChatProps {
     className?: string;
@@ -12,13 +13,14 @@ export interface ChatProps {
 
 export const Chat = ({messages, submitMessage, className}: ChatProps) => {
     const [messageInput, setMessageInput] = useState("");
+    const { user } = useAuth();
 
     const handleSubmit = () => {
         const msg: IMessage = {
             content: messageInput,
             author: {
-                id: 1,
-                name: "test"
+                id: user!.id,
+                name: user!.name
             }
         }
 
