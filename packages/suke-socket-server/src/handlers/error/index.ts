@@ -14,10 +14,7 @@ export const createClientErrorHandler: Handler = (server: SocketServer) => (): v
     server.on('clientError', (err: Error, ws: WebSocket) => {
         const response = new SocketMessage({
             type: 'CLIENT_ERROR',
-            data: {
-                message: err.message,
-                name: 'ClientError'
-            }
+            data: err.message
         });
 
         ws.send(JSON.stringify(response));
