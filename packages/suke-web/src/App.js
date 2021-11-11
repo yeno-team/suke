@@ -7,7 +7,7 @@ import { SocketContextProvider } from './hooks/useSocket';
 
 function App() {
   return (
-    <ThemeContext.Provider>
+    <ThemeContext.Provider value="dark">
       <BrowserRouter>
         <AuthProvider>
           <SocketContextProvider>
