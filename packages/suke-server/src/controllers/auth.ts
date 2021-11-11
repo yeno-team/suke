@@ -25,7 +25,7 @@ export class AuthController extends BaseController {
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
-        if (req.session.user !== null) {
+        if (req.session.user != null) {
             throw new Error("Already Authenticated.");
         }
 
