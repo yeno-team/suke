@@ -12,6 +12,7 @@ import { isValidJson } from '@suke/suke-util/';
 import { IHasId } from '@suke/suke-core/src/IHasId';
 import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
+import { RoomManager } from './extensions/RoomManager';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -39,6 +40,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
     // Map uses the websocket id as key
     private guestMap: Map<string, WebSocketConnection>;
     private userMap: Map<number, UserDataWithWebSocket>;
+    private roomManger: RoomManager;
     
     public connections: WebSocketConnection[] = [];
 
@@ -82,6 +84,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         this.wss = wss;
         this.userMap = new Map();
         this.guestMap = new Map();
+        this.roomManger = new RoomManager(this);
 
         this.createHandlers();
         this.setupListeners();
@@ -141,24 +144,8 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
             this.emit('error', err);
         });
 
-        /**
-         * Checks if clients are alive by seeing if they respond to a ping
-         */
-        const pingTimer = setInterval(() => {
-            if (this.wss.clients == null)
-                return;
-                
-            this.wss.clients.forEach((ws: WebSocketConnection) => {
-                if (ws.isAlive === false) 
-                    return ws.terminate();
-                
-                ws.isAlive = false;
-                ws.ping();
-            })
-        }, 30000);
-
         this.wss.on('close', () => {
-            clearInterval(pingTimer);
+            console.warn("Socket Server exited.");
         });
     }
 
@@ -171,8 +158,20 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         }
     }
 
+    public getConnections(): WebSocketConnection[] {
+        return this.connections;
+    }
 
-    public getConnection(idObj: UserId): UserDataWithWebSocket | undefined {
+    /**
+     * 
+     * @param id socket id
+     * @returns Websocket Connection
+     */
+    public getConnection(id: string): WebSocketConnection | undefined {
+        return this.connections.find(v => v.id === id);
+    }
+
+    public getUserConnection(idObj: UserId): UserDataWithWebSocket | undefined {
         return this.userMap.get(idObj.value);
     }
 
@@ -188,19 +187,8 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         return this.guestMap;
     }
 
-    /**
-     * Broadcast/send data to all connected users ignoring users in the ignoreList.
-     * 
-     * @param data Data to broadcast
-     * @param ignoreList socket ids to ignore
-     */
-    public broadcast(data: SocketMessage, ignoreList: string[]): void {
-        this.connections.forEach((v: WebSocketConnection) => {
-            if (ignoreList.indexOf(v.id) !== -1) 
-                return;
-
-            v.send(JSON.stringify(data));
-        });
+    public getRoomManager(): RoomManager {
+        return this.roomManger;
     }
 
     public start(port: number, cb: () => void): void {
