@@ -2,7 +2,6 @@ import { IMessage, Message } from "@suke/suke-core/src/entities/Message";
 import { SocketMessage } from "@suke/suke-core/src/entities/SocketMessage";
 import { useEffect, useState } from "react";
 import { useChanged } from "./useChanged";
-import { usePrevious } from "./usePrevious";
 import { useSocket } from "./useSocket";
 
 export const useChat = (defaultMessages: IMessage[] = []) => {
@@ -11,8 +10,6 @@ export const useChat = (defaultMessages: IMessage[] = []) => {
     const { send, messages } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessage[]>(messages);
 
-    // TODO: test if the messages from server is correctly grabbed
-    // TODO: a way to convert messatges to chat messages
     useEffect(() => {
         try {
             if (!socketMessagesChanged || prevSocketMessages == null)

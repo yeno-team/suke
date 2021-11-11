@@ -4,7 +4,6 @@ import { useHistory, useLocation } from "react-router";
 import * as userApi from "../api/user";
 import * as authApi from "../api/auth";
 import { Role } from "@suke/suke-core/src/Role";
-import { UserChannel } from "@suke/suke-core/src/entities/UserChannel/UserChannel";
 
 export interface AuthContextInterface {
     errors: Error[];
