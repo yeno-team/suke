@@ -5,6 +5,8 @@ export const ErrorHandler: ErrorRequestHandler = (err, req: Request, res: Respon
         return next(err);
     }
 
+    console.error(err);
+
     res.status(500).send({
         error: true,
         message: (err.detail && err.detail.toString()) || 
