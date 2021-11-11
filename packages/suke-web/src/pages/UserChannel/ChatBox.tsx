@@ -1,9 +1,10 @@
 import { IMessage } from "@suke/suke-core/src/entities/Message"
-import { useState } from "react"
 import { Chat } from "../../components/Chat";
+import { useChat } from "../../hooks/useChat";
 
 
 export const ChatBox = () => {
+
     const defaultMessages: IMessage[] = [
         {
             content: 'hello',
@@ -27,16 +28,11 @@ export const ChatBox = () => {
             }
         }
     ]
-    const [messages, setMessages] = useState(defaultMessages);
 
-    const submitMessage = (message: IMessage) => {
-        setMessages([
-            ...messages,
-            message
-        ]);
-    }
+    const [chatMessages, sendMessage] = useChat(defaultMessages);
+
     
     return (
-        <Chat className="flex-grow" messages={messages} submitMessage={submitMessage}/>
+        <Chat className="flex-grow" messages={chatMessages} submitMessage={sendMessage}/>
     )
 }
