@@ -1,8 +1,10 @@
-import { IUser } from "@suke/suke-core/src/entities/User";
+import { IUser } from "@suke/suke-core/src/entities/User/User";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import * as userApi from "../api/user";
 import * as authApi from "../api/auth";
+import { Role } from "@suke/suke-core/src/Role";
+import { UserChannel } from "@suke/suke-core/src/entities/UserChannel/UserChannel";
 
 export interface AuthContextInterface {
     errors: Error[];
@@ -34,7 +36,22 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
     useEffect(() => {
         userApi.getAuthenticatedUser()
             .then((user) => setUser(user))
-            .catch((e) => {})
+            .catch((e) => {
+                // User is probably not authenticated
+                // Set to GUEST
+                setUser({
+                    id: 0,
+                    email: 'guest@suke.app',
+                    name: 'Guest',
+                    role: Role.Guest,
+                    channel: {
+                        id: 0,
+                        followers: 0,
+                        desc: "",
+                        desc_title: ""
+                    }
+                });
+            })
             .finally(() => setLoadingInit(false))
     }, [])
 
