@@ -21,10 +21,10 @@ export interface SocketServerEvents {
 
 export type UserDataWithWebSocket = {
     user: User,
-    ws: WebSocketWithId
+    ws: WebSocketConnection
 }
 
-export type WebSocketWithId = WebSocket & IHasId<string>;
+export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolean };
 
 /**
  * This type extends the interface IHasUser to the session property. This allows usage of user object which is eventually passed in from express.
@@ -37,8 +37,10 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
     private wss: WebSocket.Server;
 
     // Map uses the websocket id as key
-    private guestMap: Map<string, WebSocketWithId>;
+    private guestMap: Map<string, WebSocketConnection>;
     private userMap: Map<number, UserDataWithWebSocket>;
+    
+    public connections: WebSocketConnection[] = [];
 
     constructor(httpServer: Server, sessionParser: RequestHandler) {
         super();
@@ -86,17 +88,22 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
     }
 
     private setupListeners(): void {
-        this.wss.on('connection', (ws: WebSocketWithId, req: EventRequest) => {
+        this.wss.on('connection', (ws: WebSocketConnection, req: EventRequest) => {
             try {
                 ws.id = uuid();
+                ws.isAlive = true;
 
                 const user = new User(req.session.user as User);
+
+                console.log(user.name + " Connected!");
 
                 if (user.id == 0) {
                     this.guestMap.set(ws.id, ws);
                 } else {
                     this.userMap.set(user.id, {user, ws});
                 }
+
+                this.connections.push(ws);
                 
                 ws.on('message', (message) => {
                     const msgStr = message.toString();
@@ -105,6 +112,8 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                         return this.emit('clientError', new Error("Invalid Message from client."), ws);
 
                     const msgJson = JSON.parse(message.toString());
+
+                    console.log(msgJson);
 
                     this.emit('message', new SocketMessage(msgJson), ws);
                 });
@@ -119,6 +128,8 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                         return;
                     }
 
+                    delete this.connections[this.connections.findIndex(v => v != null && ws != null && v.id === ws.id)];
+                    
                     this.userMap.delete(user.id);
                 });
             } catch (e) {
@@ -128,6 +139,26 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
 
         this.wss.on('error', (err) => {
             this.emit('error', err);
+        });
+
+        /**
+         * Checks if clients are alive by seeing if they respond to a ping
+         */
+        const pingTimer = setInterval(() => {
+            if (this.wss.clients == null)
+                return;
+                
+            this.wss.clients.forEach((ws: WebSocketConnection) => {
+                if (ws.isAlive === false) 
+                    return ws.terminate();
+                
+                ws.isAlive = false;
+                ws.ping();
+            })
+        }, 30000);
+
+        this.wss.on('close', () => {
+            clearInterval(pingTimer);
         });
     }
 
@@ -140,6 +171,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         }
     }
 
+
     public getConnection(idObj: UserId): UserDataWithWebSocket | undefined {
         return this.userMap.get(idObj.value);
     }
@@ -148,11 +180,11 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         return this.userMap;
     }
 
-    public getGuestConnection(id: string): WebSocketWithId | undefined {
+    public getGuestConnection(id: string): WebSocketConnection | undefined {
         return this.guestMap.get(id);
     }
 
-    public getGuestConnections(): Map<string, WebSocketWithId> {
+    public getGuestConnections(): Map<string, WebSocketConnection> {
         return this.guestMap;
     }
 
@@ -160,14 +192,14 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
      * Broadcast/send data to all connected users ignoring users in the ignoreList.
      * 
      * @param data Data to broadcast
-     * @param ignoreList user ids to ignore
+     * @param ignoreList socket ids to ignore
      */
-    public broadcast(data: unknown, ignoreList: UserId[]): void {
-        this.userMap.forEach((v) => {
-            if (ignoreList.every((ignoredUserId) => !v.user.Id().Equals(ignoredUserId))) 
+    public broadcast(data: SocketMessage, ignoreList: string[]): void {
+        this.connections.forEach((v: WebSocketConnection) => {
+            if (ignoreList.indexOf(v.id) !== -1) 
                 return;
-            
-            v.ws.send(data);
+
+            v.send(JSON.stringify(data));
         });
     }
 
