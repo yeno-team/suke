@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@iconify/react';
 import { Logo } from '../../components/Logo';
@@ -7,18 +7,24 @@ import { SearchBar } from '../../components/SearchBar';
 import { MobileMenu } from './MobileMenu';
 import { NotificationIcon } from '../../components/NotificationIcon';
 
-export const Navigation = (): JSX.Element => {
+export interface NavigationProps {
+    position?: 'sticky' | 'fixed' | 'absolute' | 'relative' | 'static'
+}
+
+export const Navigation = ({position}: NavigationProps): JSX.Element => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
 
     return (
         <nav className={classNames(
+            position ? position : 'sticky',
+            'w-screen',
             'flex',
             'items-center',
             'md:justify-between',
             'flex-wrap',
             'bg-black',
             'pt-1 md:pt-3',
-            'pb-1',
+            'pb-2',
             'px-4 md:px-6',
             'lg:px-8'
         )}>
@@ -38,7 +44,7 @@ export const Navigation = (): JSX.Element => {
             <MobileMenu active={mobileMenuActive} />
 
             <div className={classNames(
-                'mr-3'
+                'mr-2'
             )}>
                 <Logo />
             </div>
