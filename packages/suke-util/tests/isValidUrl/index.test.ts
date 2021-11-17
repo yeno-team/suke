@@ -1,9 +1,7 @@
-import { isValidUrl } from "@suke/suke-util/src"
+import { isValidUrl } from "../../src"
 
 describe("testing isValidUrl util function", () => {
     test("should return true for valid url's" , () => {
-        expect(isValidUrl("yeno.dev")).toBeTruthy()
-        expect(isValidUrl("sync.yeno.dev")).toBeTruthy()
         expect(isValidUrl("https://sync.yeno.dev")).toBeTruthy()
         expect(isValidUrl("http://sync.yeno.dev")).toBeTruthy()
     })
