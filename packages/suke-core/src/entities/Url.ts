@@ -14,8 +14,10 @@ export class Url extends ValueObject {
         }
     }
 
-    protected *GetEqualityProperties(): Generator<unknown, any, unknown> {
+    protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.address
+
+        return;
     }
 
     protected IsValid(): boolean {
