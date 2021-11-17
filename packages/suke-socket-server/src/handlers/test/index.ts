@@ -7,7 +7,7 @@ export const createTestHandler: Handler = (server: SocketServer) => (): void => 
     server.on('message', (message: SocketMessage) => {
         if (message.type == 'TEST_EVENT') {
             console.log(message.data);
-            console.log(server.getConnection(new UserId(1)));
+            console.log(server.getUserConnection(new UserId(1)));
         } 
     })
 }
