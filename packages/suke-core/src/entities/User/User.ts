@@ -1,11 +1,3 @@
-<<<<<<< HEAD:packages/suke-core/src/entities/User.ts
-import { BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from '../Role';
-import { ValueObject } from '../ValueObject';
-import { lowercaseTransformer } from '../transformers/ValueTransformers';
-import { PropertyValidationError, ValidationError } from "../exceptions/ValidationError";
-import { isValidEmail } from '@suke/suke-util';
-=======
 import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from '../../Role';
 import { ValueObject } from '../../ValueObject';
@@ -16,7 +8,6 @@ import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
 import * as bcrypt from 'bcrypt';
 import { Name } from "../Name/Name";
 import { UserId } from "../UserId";
->>>>>>> main:packages/suke-core/src/entities/User/User.ts
 
 export interface IUser {
     id: number;
