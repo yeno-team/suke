@@ -1,18 +1,32 @@
 import { ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
+import { IMessage } from "../Message";
 
-export type SocketMessageType = 'TEST_EVENT' | 'SERVER_ERROR' | 'CLIENT_ERROR';
+export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE";
+
+export interface IHasRoomId {
+    roomId: string;
+}
 
 export type SocketMessageInput = {
     type: 'CLIENT_ERROR',
-    data: Error
+    data: string
 } | {
     type: 'SERVER_ERROR',
-    data: Error
+    data: string
 } | {
     type: 'TEST_EVENT',
     data: string
-}
+} | {
+    type: 'CHAT_MESSAGE',
+    data: IMessage
+} | {
+    type: 'ROOM_JOIN',
+    data: IHasRoomId
+} | {
+    type: 'ROOM_LEAVE',
+    data: IHasRoomId
+};
 
 export interface ISocketMessage {
     type: SocketMessageType;

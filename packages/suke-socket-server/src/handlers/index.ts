@@ -1,8 +1,12 @@
+import { createChatMessageHandler } from "./chat";
 import { createClientErrorHandler, createErrorHandler } from "./error";
+import { createRoomJoinHandler } from "./room";
 import { createTestHandler } from "./test";
 
 export default [
     createTestHandler,
     createErrorHandler,
-    createClientErrorHandler
+    createClientErrorHandler,
+    createChatMessageHandler,
+    createRoomJoinHandler
 ]

@@ -1,45 +1,34 @@
 import React from "react"
-import { Button, Columns, Heading, Icon, Image } from "react-bulma-components"
-import { Icon as IconElement } from '@iconify/react'
+import { Icon } from '@iconify/react'
+import { ImageCircle } from "../../components/ImageCircle"
+import { Button } from "../../components/Button"
 
 export type UserProfileParams = {
     username: string;
+    followerCount: number;
 } 
 
-export const UserProfile = ({username}: UserProfileParams) => {
+export const UserProfile = ({username, followerCount}: UserProfileParams) => {
     return (
-        <React.Fragment>
-            <Columns py="smaller2" px="mid" centered vCentered >
-                <Columns.Column mr="0" narrow>
-                    <Image ml="mid" size={64} src="https://i.pravatar.cc/300" rounded/>
-                </Columns.Column>
-                <Columns.Column className="is-flex" flexDirection="column" alignItems="flex-start" justifyContent="center" narrow>
-                    <Heading textSize={5} textColor="white">{username}</Heading>
-                    <Heading textSize={7} textColor="lightgray" subtitle>92 Followers</Heading>
-                </Columns.Column>
-                <Columns.Column mr="big" className="is-flex" flexDirection="row" justifyContent="right">
-                    <Button.Group>
-                        <Button color="brightorange" textWeight="semibold">
-                            <Icon mr="smaller1">
-                                <IconElement fontSize="18px" icon="ci:share" />
-                            </Icon>
-                            Share
-                        </Button>
-                        <Button color="red" textWeight="semibold">
-                            <Icon mr="smaller1">
-                                <IconElement fontSize="18px"icon="jam:triangle-danger-f" color="#f6fafb" />
-                            </Icon>
-                            Report
-                        </Button>
-                        <Button color="coolblue" textWeight="semibold">
-                            <Icon mr="smaller2">
-                                <IconElement fontSize="62px" icon="carbon:add" />
-                            </Icon>
-                            Follow
-                        </Button>
-                    </Button.Group>
-                </Columns.Column>
-            </Columns>
-        </React.Fragment>
+        <div className="flex bg-black font-sans">
+            <div className="flex px-4 py-5 flex-grow">
+                <ImageCircle src="https://picsum.photos/200" alt="user profile pic"></ImageCircle>
+                <div className="flex flex-col justify-center text-left  leading-none items-center">
+                    <span className="block font-bold w-full ml-4 text-white">{username}</span>
+                    <span className="font-normal text-sm w-full ml-4 text-gray">{followerCount} followers</span>
+                </div>
+            </div>
+            <div className="mr-4 my-auto">
+                <Button size={2} square backgroundColor="coolorange" fontWeight="semibold" >
+                    <Icon icon="fa-solid:share-alt" className="text-base text-white" />
+                </Button>
+                <Button size={2} square backgroundColor="red" fontWeight="semibold" >
+                    <Icon icon="ic:sharp-report-problem" className="text-base text-white" />
+                </Button>
+                <Button size={3} backgroundColor="teal" fontWeight="semibold" >
+                    <Icon icon="akar-icons:plus" className="text-base mr-1 text-white" /> FOLLOW
+                </Button>
+            </div>
+        </div>
     )
 }
