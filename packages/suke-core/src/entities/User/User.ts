@@ -112,6 +112,11 @@ export class UserModel extends BaseEntity implements IUser  {
     public email!: string;
 
     @Column({
+        nullable: true
+    })
+    public profile_src: string;
+
+    @Column({
         nullable: false,
         select: false
     })
