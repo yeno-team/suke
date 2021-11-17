@@ -17,6 +17,8 @@ export interface IUser {
     channel: IUserChannel
 }
 
+export type Author = Pick<IUser, "id" | "name">
+
 export interface IHasUser {
     user: IUser;
 }
@@ -123,16 +125,16 @@ export class UserModel extends BaseEntity implements IUser  {
     public channel!: UserChannelModel;
 
     public async testRawPassword(rawPass: string): Promise<boolean> {
-        const userRepo = await getRepository(UserModel).findOne({
+        const userRepo = getRepository(UserModel);
+        const user = await userRepo.findOne({
             select: ['id', 'salt'],
             where: { id: this.id }
         });
 
-        if (userRepo == null) {
+        if (userRepo == null || user == null) {
             return Promise.reject("User does not exist.");
         }
 
-        return bcrypt.compare(rawPass, userRepo.salt);
+        return bcrypt.compare(rawPass, user.salt);
     } 
 }
-

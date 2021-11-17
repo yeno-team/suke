@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 
-export const VideoPlayer = ({...props}) => {
+export interface VideoPlayerProps {
+    url: string;
+}
+
+export const VideoPlayer = ({url}: VideoPlayerProps) => {
     return (
-        <ReactPlayer width="100%" height="100%" url="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" style={{backgroundColor: 'black'}} controls/>
+        <ReactPlayer width="100%" height="100%" url={url} style={{backgroundColor: 'black'}} controls/>
     )
 }

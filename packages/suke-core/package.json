@@ -17,7 +17,7 @@
     "@suke/suke-util": "workspace:packages/suke-util",
     "bcrypt": "^5.0.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.38"
+    "typeorm": "^0.2.39"
   },
   "devDependencies": {
     "@types/bcrypt": "^5"

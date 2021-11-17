@@ -4,11 +4,15 @@ import { VideoPlayer } from '../VideoPlayer';
 import { VideoMenuHeader } from './VideoMenuHeader';
 
 
-export const VideoMenu = (): JSX.Element => {
+export interface VideoMenuProps {
+    url: string;
+}
+
+export const VideoMenu = ({ url }: VideoMenuProps): JSX.Element => {
     return (
         <React.Fragment>
             <VideoMenuHeader />
-            <VideoPlayer />
+            <VideoPlayer url={url} />
         </React.Fragment>
     )
 }
