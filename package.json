@@ -12,9 +12,6 @@
     "test": "jest && yarn test:web",
     "test:web": "yarn workspace @suke/suke-web test"
   },
-  "installConfig": {
-    "pnp": false
-  },
   "workspaces": [
     "packages/*"
   ],

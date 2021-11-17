@@ -19,18 +19,43 @@ export class AuthController extends BaseController {
     public execute(app: Express): void {
         app.route(this.route)
             .post(createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+        
+        app.route(this.route + "/logout")
+            .post(catchErrorAsync(this.Logout))
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
+        if (req.session.user != null) {
+            throw new Error("Already Authenticated.");
+        }
+
         const password = req.body.password;
-        
+
         const check = await res.locals.user?.testRawPassword(password);
 
         if (check) {
             req.session.user = res.locals.user;
-            res.send("Authenticated!");
+            res.send({
+                error: false,
+                message: "Authenticated."
+            });
         } else {
-            res.send("BAD");
+            res.send({
+                error: true,
+                message: "Incorrect password or username."
+            });
         }
+    }
+
+    public Logout = async (req: Request, res: Response): Promise<void> => {
+        req.session.destroy((err) => {
+            if (err) {
+                throw err;
+            }
+
+            res.send({
+                message: "Successfully logged out."
+            });
+        });
     }
 }

@@ -1,11 +1,11 @@
-import React from "react"
-import { Columns } from "react-bulma-components";
+import React, { useEffect } from "react"
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
-import { Chat } from "../../components/Chat";
 import { VideoMenu } from "../../components/VideoMenu";
-import './userChannel.scss';
+import { useRoom } from "../../hooks/useRoom";
+import { ChatBox } from "./ChatBox";
 import { UserProfile } from "./UserProfile";
+
 
 type UserChannelPageParams = {
     username: string
@@ -14,23 +14,19 @@ type UserChannelPageParams = {
 export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
 
+    const { joinRoom } = useRoom();
+
+    useEffect(() => {
+        joinRoom(username);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [username])
+
     return (
-        <React.Fragment>
+        <div className="h-screen flex flex-col">
             <Navigation />
-            <Columns mb="big-4" className="is-gapless">
-                <Columns.Column className="video-menu-column" size={9}>
-                    <VideoMenu />
-                </Columns.Column>
-                <Columns.Column className="chat-column">
-                    <Chat />
-                </Columns.Column>
-            </Columns>
-            <Columns>
-                <Columns.Column backgroundColor="coolblack" size={9}>
-                    <UserProfile username={username} />
-                    <div className="divider is-marginless "></div>
-                </Columns.Column>
-            </Columns>
-        </React.Fragment>
+            <VideoMenu url="https://www.youtube.com/watch?v=NpEaa2P7qZI" />
+            <ChatBox username={username} />
+            <UserProfile username={username} followerCount={3}/>
+        </div>
     )
 }
