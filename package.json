@@ -3,6 +3,7 @@
   "packageManager": "yarn@3.0.0",
   "private": true,
   "scripts": {
+    "preinstall": "node scripts/yarn_remove_hash.js",
     "prepack": "yarn workspaces foreach run yarn clean && yarn compile",
     "build": "yarn workspaces foreach run build",
     "start": "yarn workspaces foreach run start",
