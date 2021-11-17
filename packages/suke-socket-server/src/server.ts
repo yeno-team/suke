@@ -13,6 +13,7 @@ import { IHasId } from '@suke/suke-core/src/IHasId';
 import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
+import redis from 'redis';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -33,6 +34,12 @@ export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolea
  */
 type EventRequest = Request & IncomingMessage & {session: IHasUser};
 
+export interface SocketServerConfig {
+    httpServer: Server,
+    sessionParser: RequestHandler,
+    redisClient: redis.RedisClient
+}
+
 export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketServerEvents>) {
     private server: Server;
     private wss: WebSocket.Server;
@@ -44,7 +51,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
     
     public connections: WebSocketConnection[] = [];
 
-    constructor(httpServer: Server, sessionParser: RequestHandler) {
+    constructor({httpServer, sessionParser }: SocketServerConfig) {
         super();
 
         const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
