@@ -24,7 +24,7 @@ export const UserChannelPage = (): JSX.Element => {
     return (
         <div className="h-screen flex flex-col">
             <Navigation />
-            <VideoMenu />
+            <VideoMenu url="https://www.youtube.com/watch?v=NpEaa2P7qZI" />
             <ChatBox username={username} />
             <UserProfile username={username} followerCount={3}/>
         </div>

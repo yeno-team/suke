@@ -11,6 +11,7 @@ dotenv.config({
 });
 
 const RedisStore = connectRedis(session);
+export const RedisClient = redis.createClient({ url: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string});
 
 const config: IConfiguration = {
     server: {
@@ -23,8 +24,7 @@ const config: IConfiguration = {
         connectionUri: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string
     },
     session: {
-        store: new RedisStore({client: redis.createClient({ url: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string})
-        }),
+        store: new RedisStore({client: RedisClient}),
         saveUninitialized: false,
         secret: getEnvironmentVariable("SESSION_SECRET", false, "GODLYSECRETFORYOU") as string,
         resave: false

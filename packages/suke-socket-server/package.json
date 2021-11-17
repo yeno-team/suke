@@ -14,7 +14,7 @@
   "dependencies": {
     "@suke/suke-core": "workspace:packages/suke-core",
     "express-session": "^1.17.2",
-    "redis": "next",
+    "redis": "^3.1.2",
     "typed-emitter": "^1.3.1",
     "uuid": "^8.3.2",
     "ws": "^8.2.3"
