@@ -1,0 +1,16 @@
+{
+  "name": "parsers",
+  "packageManager": "yarn@3.0.2",
+  "private": true,
+  "dependencies": {
+    "@suke/requests": "workspace:packages/requests",
+    "@suke/suke-core": "workspace:packages/suke-core",
+    "@suke/suke-util": "workspace:packages/suke-util",
+    "cheerio": "^1.0.0-rc.10",
+    "hjson": "^3.2.2",
+    "typedi": "^0.10.0"
+  },
+  "devDependencies": {
+    "@types/hjson": "^2.4.3"
+  }
+}

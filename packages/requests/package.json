@@ -1,0 +1,8 @@
+{
+  "name": "@suke/requests",
+  "packageManager": "yarn@3.0.2",
+  "dependencies": {
+    "axios": "^0.22.0",
+    "typedi": "^0.10.0"
+  }
+}
