@@ -112,11 +112,6 @@ export class UserModel extends BaseEntity implements IUser  {
     public email!: string;
 
     @Column({
-        nullable: true
-    })
-    public profile_src: string;
-
-    @Column({
         nullable: false,
         select: false
     })
@@ -136,7 +131,7 @@ export class UserModel extends BaseEntity implements IUser  {
             where: { id: this.id }
         });
 
-        if (userRepo == null) {
+        if (userRepo == null || user == null) {
             return Promise.reject("User does not exist.");
         }
 
