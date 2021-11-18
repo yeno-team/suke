@@ -1,6 +1,7 @@
-import { IMessage } from '@suke/suke-core/src/entities/Message'
+import { IMessage } from '@suke/suke-core/src/entities/Message';
+import { Icon } from '@iconify/react';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { KeyboardEventHandler, useState } from 'react';
 import { Messages } from './Messages';
 import './Chat.css';
 
@@ -13,16 +14,27 @@ export interface ChatProps {
 export const Chat = ({messages, submitMessage, className}: ChatProps) => {
     const [messageInput, setMessageInput] = useState("");
 
-    const handleSubmit = () => {
-        const msg: IMessage = {
-            content: messageInput,
-            author: {
-                id: 1,
-                name: "test"
+    const serializeInputMessage = () : IMessage => {
+        return {
+            content : messageInput,
+            author : {
+                id : 1,
+                name : "khai93"
             }
         }
+    }
 
-        submitMessage(msg);
+    const handleSubmit = () => {
+        submitMessage(serializeInputMessage())
+        setMessageInput("")
+    }
+
+    const handleSubmitOnKeyPress = (key : string) => {
+        if(key !== "Enter") {
+            return null
+        }
+
+        handleSubmit()
     }
 
     return (
@@ -36,12 +48,14 @@ export const Chat = ({messages, submitMessage, className}: ChatProps) => {
             className
         )}>
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
-                CHAT
+                Chat
             </header>
             <Messages className="text-white p-4 text-sm h-3/4" messages={messages} />
             <div className="flex m-auto w-full items-center justify-center mb-4">
-                <input value={messageInput} onChange={e => setMessageInput(e.target.value)} className="w-3/4 p-3 rounded-tl rounded-bl text-sm" placeholder="Send message..." type="text"></input>
-                <button onClick={handleSubmit} className="bg-teal rounded-tr text-sm  rounded-br px-2 py-3 mt-0 text-white w-14">Send</button>
+                <input value={messageInput} onChange={e => setMessageInput(e.target.value)} onKeyUp={(e) => handleSubmitOnKeyPress(e.key)} className="w-3/4 p-3 rounded-full text-sm" placeholder="Send message..." type="text"></input>
+                <button className="bg-blue p-3 rounded-full" onClick={handleSubmit}>
+                    <Icon icon="fa-solid:paper-plane" height="16" width="16" color="white" inline={true}/>
+                </button>
             </div>
         </div>
     )

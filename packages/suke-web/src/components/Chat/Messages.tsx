@@ -17,9 +17,9 @@ export const Messages = ({messages, className}: MessagesProps) => {
             className
         )}>
             {
-                messages.map(msg => {
+                messages.map((msg , index)=> {
                     return (
-                        <div>
+                        <div key={index}>
                             <StringColor className="mr-1" baseString={msg.author.name} brightness={5} bold>{msg.author.name}: </StringColor> 
                             <div className="pl-1 inline whitespace-normal break-words text-indent-2">{msg.content}</div>
                         </div>

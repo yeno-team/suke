@@ -19,10 +19,10 @@ export const UserProfile = ({username, followerCount}: UserProfileParams) => {
                 </div>
             </div>
             <div className="mr-4 my-auto">
-                <Button size={2} square backgroundColor="coolorange" fontWeight="semibold" >
+                <Button size={2} backgroundColor="coolorange" fontWeight="semibold" >
                     <Icon icon="fa-solid:share-alt" className="text-base text-white" />
                 </Button>
-                <Button size={2} square backgroundColor="red" fontWeight="semibold" >
+                <Button size={2} backgroundColor="red" fontWeight="semibold" >
                     <Icon icon="ic:sharp-report-problem" className="text-base text-white" />
                 </Button>
                 <Button size={3} backgroundColor="teal" fontWeight="semibold" >
