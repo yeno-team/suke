@@ -36,6 +36,7 @@ export const Messages = ({messages, className}: MessagesProps) => {
                 setIsToolTipVisible(true)
             } else if(hasCompletedScroll(element) && isToolTipVisible) {
                 setIsToolTipVisible(false)
+                setIsMessagesContainerFocused(false)
             }
         }
     }
@@ -69,7 +70,6 @@ export const Messages = ({messages, className}: MessagesProps) => {
                     'overflow-auto',
                     'overflow-x-hidden',
                     'whitespace-nowrap',
-                    "relative",
                     className
                 )}
                 
@@ -98,18 +98,15 @@ export const Messages = ({messages, className}: MessagesProps) => {
                 "whitespace-normal",
                 "p-3",
                 "cursor-pointer",
-                "bg-white", 
-                "bg-opacity-5",
+                "bg-black",
+                "bg-opacity-60", 
                 "font-semibold",
                 "text-xs",
                 "m-auto",
                 "text-white",
                 "rounded-xl",
                 "absolute",
-                "bottom-40",
-                "ring-2",
-                "ring-gray",
-                "ring-opacity-30",
+                "bottom-20",
                 "left-1/4",
                 {"hidden" : !isToolTipVisible}
             )} onClick={onClickToolTipHandler}>
