@@ -1,7 +1,7 @@
 import { IMessage } from '@suke/suke-core/src/entities/Message';
 import { Icon } from '@iconify/react';
 import classNames from 'classnames';
-import React, { KeyboardEventHandler, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Messages } from './Messages';
 import './Chat.css';
 
@@ -12,7 +12,7 @@ export interface ChatProps {
 }
 
 export const Chat = ({messages, submitMessage, className}: ChatProps) => {
-    const [messageInput, setMessageInput] = useState("");
+    const [messageInput, setMessageInput] = useState("a");
 
     const serializeInputMessage = () : IMessage => {
         return {
@@ -50,7 +50,7 @@ export const Chat = ({messages, submitMessage, className}: ChatProps) => {
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
                 Chat
             </header>
-            <Messages className="text-white p-4 text-sm h-3/4" messages={messages} />
+            <Messages className="text-white p-4 text-sm h-3/4 relative" messages={messages} />
             <div className="flex m-auto w-full items-center justify-center mb-4">
                 <input value={messageInput} onChange={e => setMessageInput(e.target.value)} onKeyUp={(e) => handleSubmitOnKeyPress(e.key)} className="w-3/4 p-3 rounded-full text-sm" placeholder="Send message..." type="text"></input>
                 <button className="bg-blue p-3 rounded-full" onClick={handleSubmit}>

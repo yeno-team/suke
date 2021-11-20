@@ -2,7 +2,6 @@ import { IMessage } from "@suke/suke-core/src/entities/Message"
 import { useState } from "react"
 import { Chat } from "../../components/Chat";
 
-
 export const ChatBox = () => {
     const defaultMessages: IMessage[] = [
         {
