@@ -15,12 +15,12 @@ export interface MessagesProps {
 export const Messages = ({messages , channelName , className , replyHandler }: MessagesProps) => {
     // We can use the channel name to connect to the channel chat using websockets.
 
-    const messagesContainer = useRef<HTMLDivElement>(null)
+    const messagesContainerRef = useRef<HTMLDivElement>(null)
     const [isToolTipVisible , setIsToolTipVisible] = useState(false)
     const [isMessagesContainerFocused , setIsMessagesContainerFocused] = useState(false)
 
     const scrollMessagesToBottom = () => {
-        const element = messagesContainer.current
+        const element = messagesContainerRef.current
         element!.scrollTop = element!.scrollHeight
     }
     
@@ -35,8 +35,8 @@ export const Messages = ({messages , channelName , className , replyHandler }: M
     }
     
     const onScrollHandler = () => {
-        if(messagesContainer.current) {
-            const element = messagesContainer.current
+        if(messagesContainerRef.current) {
+            const element = messagesContainerRef.current
 
             if(!(hasCompletedScroll(element)) && !(isToolTipVisible)) {
                 setIsToolTipVisible(true)
@@ -54,8 +54,8 @@ export const Messages = ({messages , channelName , className , replyHandler }: M
 
     // Auto scroll when new messages appear. 
     useEffect(() => {
-        if(messagesContainer.current) {
-            const element = messagesContainer.current
+        if(messagesContainerRef.current) {
+            const element = messagesContainerRef.current
 
             // If the user has not scrolled all the way down to the max, is not focused on the message container and the tooltip is not visible.
             if(!(hasCompletedScroll(element)) && !(isMessagesContainerFocused) && !(isToolTipVisible)) {
@@ -82,7 +82,7 @@ export const Messages = ({messages , channelName , className , replyHandler }: M
                 onFocus={() => setIsMessagesContainerFocused(true)}
                 onBlur={() => setIsMessagesContainerFocused(false)}
                 onScroll={onScrollHandler}
-                ref={messagesContainer}
+                ref={messagesContainerRef}
             >
                 <p className="px-1.5 py-0.5">Welcome to {channelName} chat room!</p>
                 {

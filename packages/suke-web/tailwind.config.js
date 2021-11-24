@@ -14,7 +14,8 @@ module.exports = {
       red: "#A83737",
       brightRed: "#CC4F4F",
       blue: "#408ED6",
-      teal: "#339EA5"
+      teal: "#339EA5",
+      transparent : "#ffffff00",
     },
     fontFamily: {
       sans: ['Open Sans', 'sans-serif'],
