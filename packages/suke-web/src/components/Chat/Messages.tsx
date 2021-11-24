@@ -1,14 +1,20 @@
 import React , { useState , useEffect , useRef } from "react";
 import { IMessage } from "@suke/suke-core/src/entities/Message";
+import { Button } from "../Button";
 import classNames from "classnames";
 import { StringColor } from "../StringColor";
+import { InlineIcon } from "@iconify/react";
 
 export interface MessagesProps {
     className?: string;
+    channelName : string;
     messages: IMessage[];
+    replyHandler : (authorName : string) => void;
 }
 
-export const Messages = ({messages, className}: MessagesProps) => {
+export const Messages = ({messages , channelName , className , replyHandler }: MessagesProps) => {
+    // We can use the channel name to connect to the channel chat using websockets.
+
     const messagesContainer = useRef<HTMLDivElement>(null)
     const [isToolTipVisible , setIsToolTipVisible] = useState(false)
     const [isMessagesContainerFocused , setIsMessagesContainerFocused] = useState(false)
@@ -20,7 +26,7 @@ export const Messages = ({messages, className}: MessagesProps) => {
     
     // Checks if the user has completely scrolled all the way down in the element.
     const hasCompletedScroll = (element : HTMLElement) : boolean => {
-        return (element!.scrollTop + element!.clientHeight >= element?.scrollHeight)
+        return (element!.scrollTop + element!.clientHeight >= element!.scrollHeight)
     }
 
     // Checks if an div element has a vertical scrollbar.
@@ -28,7 +34,7 @@ export const Messages = ({messages, className}: MessagesProps) => {
         return element.scrollHeight > element.clientHeight
     }
     
-    const onScrollHandler = (event : React.UIEvent) => {
+    const onScrollHandler = () => {
         if(messagesContainer.current) {
             const element = messagesContainer.current
 
@@ -41,7 +47,7 @@ export const Messages = ({messages, className}: MessagesProps) => {
         }
     }
 
-    const onClickToolTipHandler = (event : React.MouseEvent) => {
+    const onClickToolTipHandler = () => {
         scrollMessagesToBottom()
         setIsToolTipVisible(false)
     }
@@ -62,7 +68,6 @@ export const Messages = ({messages, className}: MessagesProps) => {
         }
     } , [messages])
 
-
     return (
         <React.Fragment>
             <div 
@@ -72,20 +77,21 @@ export const Messages = ({messages, className}: MessagesProps) => {
                     'whitespace-nowrap',
                     className
                 )}
-                
+                style={{ "scrollbarWidth" : "thin" , "scrollbarColor" : "#5E6668 #171A1F"}}
                 tabIndex={0} // Attribute allows the div to be focused.
                 onFocus={() => setIsMessagesContainerFocused(true)}
                 onBlur={() => setIsMessagesContainerFocused(false)}
                 onScroll={onScrollHandler}
                 ref={messagesContainer}
             >
-                <p className="text-base text-center"> Welcome to the Chat Room</p>
+                <p className="px-1.5 py-0.5">Welcome to {channelName} chat room!</p>
                 {
                     messages.map((msg , index)=> {
                         return (
-                            <div key={index}>
-                                <StringColor className="mr-1" baseString={msg.author.name} brightness={5} bold>{msg.author.name}: </StringColor> 
-                                <div className="pl-1 inline whitespace-normal break-words text-indent-2">{msg.content}</div>
+                            <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative">
+                                <StringColor className="mr-1 cursor-pointer" baseString={msg.author.name} brightness={5} bold>{msg.author.name}: </StringColor> 
+                                <span className="pl-1 whitespace-normal break-words text-indent-2">{msg.content}</span>
+                                <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(msg.author.name)}><InlineIcon icon="fa-reply" height={15} width={15}/></Button>
                             </div>
                         )
                     })
@@ -94,17 +100,19 @@ export const Messages = ({messages, className}: MessagesProps) => {
             <div className={classNames(
                 "text-center",
                 "w-2/4",
+                "lg:w-2/5",
+                "xl:w-1/6",
                 "h-auto",
                 "whitespace-normal",
                 "p-3",
                 "cursor-pointer",
-                "bg-black",
-                "bg-opacity-60", 
+                "bg-darkgray",
                 "font-semibold",
                 "text-xs",
                 "m-auto",
                 "text-white",
-                "rounded-xl",
+                "rounded-md",
+                "shadow-2xl",
                 "absolute",
                 "bottom-20",
                 "left-1/4",

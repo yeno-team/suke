@@ -1,5 +1,5 @@
 import React from "react"
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { Navigation } from "../../common/Navigation"
 import { VideoMenu } from "../../components/VideoMenu";
 import { ChatBox } from "./ChatBox";
@@ -11,7 +11,7 @@ type UserChannelPageParams = {
 }
 
 export const UserChannelPage = (): JSX.Element => {
-    const { username } = useParams<UserChannelPageParams>();
+    const { username } = useParams() as UserChannelPageParams;
     return (
         <div className="h-screen flex flex-col">
             <Navigation />

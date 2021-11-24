@@ -5,6 +5,7 @@ module.exports = {
     colors: {
       black: "#252B31",
       coolblack: "#171A1F",
+      coolgray : "#374151",
       darkgray: "#5E6668",
       gray: "#C1C8C7",
       white: "#F6FAFB",
@@ -22,7 +23,9 @@ module.exports = {
     }
   },
   variants: {
-    extend: {}
+    extend: {
+      visibility : ["group-hover"]
+    }
   },
   plugins: [],
 }
