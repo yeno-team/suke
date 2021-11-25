@@ -5,7 +5,6 @@ import { ISearchData , IVideoSource, IEpisodeData , StandaloneType } from "@suke
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError"
 import { createFormData } from "@suke/suke-util/dist";
 import { AxiosRequest } from "@suke/requests/src/";
-import { Url } from "@suke/suke-core/src/entities/Url";
 import { IParser, ParserSearchOptions } from "../IParser";
 import { Quality , QualityAsUnion } from "@suke/suke-core/src/entities/SearchResult";
 import { 
@@ -43,7 +42,7 @@ export default class KickAssAnimeParser implements IParser {
     private sapphireAndPinkQualitys = ["720p","1080p","480p","360p","240p"]
 
     name = "KickAssAnime"
-    hostname = new Url("https://www2.kickassanime.ro")
+    hostname = new URL("https://www2.kickassanime.ro")
 
     constructor(
         public request : AxiosRequest
@@ -71,7 +70,7 @@ export default class KickAssAnimeParser implements IParser {
      * @param {Url} url - KickAssAnime episode url
      * @returns {Url}
      */
-    private async getEmbedVideoPlayerUrl(url : Url) : Promise<Url> {
+    private async getEmbedVideoPlayerUrl(url : URL) : Promise<URL> {
         const html = await this.request.get<string>(url)
         const videoPlayerUrlRegex = this.getVideoPlayerUrlRegex.exec(html)
         
@@ -83,10 +82,10 @@ export default class KickAssAnimeParser implements IParser {
         const videoIdRegex = this.getVideoIdRegex.exec(videoPlayerUrl)
 
         if(!videoIdRegex) {
-            return new Url(videoPlayerUrl)
+            return new URL(videoPlayerUrl)
         }
 
-        return new Url(`https://goload.one/streaming.php?id=${videoIdRegex[1]}`)
+        return new URL(`https://goload.one/streaming.php?id=${videoIdRegex[1]}`)
     }
 
     /**
@@ -95,7 +94,7 @@ export default class KickAssAnimeParser implements IParser {
      * @param {Url} url - KickassAnime episode url
      * @returns {Array<ExternalVideoServerResponse>}
      */
-    private async getExternalServers(url : Url) : Promise<Array<ExternalVideoServerResponse>> { 
+    private async getExternalServers(url : URL) : Promise<Array<ExternalVideoServerResponse>> { 
         const html = await this.request.get<string>(url)
         let servers : Array<ExternalVideoServerResponse> = []
         
@@ -107,12 +106,12 @@ export default class KickAssAnimeParser implements IParser {
             servers = rawExternalVideoServers
             .map(({ name , src }) => ({
                 name,
-                src : new Url(
+                src : new URL(
                     (name === "BETASERVER3" || name === "BETA-SERVER" || name === "PINK-BIRD" || name === "SAPPHIRE-DUCK") ? 
                     src.replace("player","pref") : src
                 ) 
             }))
-        } else if(this.getVideoIdRegex.test(url.address)) {
+        } else if(this.getVideoIdRegex.test(url.host)) {
             const $ = cheerio.load(html)
 
             // Remove the active link server.
@@ -122,7 +121,7 @@ export default class KickAssAnimeParser implements IParser {
             servers = $(".linkserver")
             .map((_ , element) => ({
                 name : $(element).text() as ExternalVideoServer,
-                src : new Url(element.attribs["data-video"])
+                src : new URL(element.attribs["data-video"])
             }))
             .toArray()
 
@@ -139,27 +138,27 @@ export default class KickAssAnimeParser implements IParser {
      * @param {Url} url - KickAssAnime Episode Url
      * @returns {Array<IVideoSource>} An array of video sources.
      */
-    private async getOldVideoPlayerSourceFiles(url : Url) : Promise<IVideoSource[]> {
+    private async getOldVideoPlayerSourceFiles(url : URL) : Promise<IVideoSource[]> {
         /**
          * We don't have to make an unnecessary requests to other external servers because the url
          * with an id will have all the available qualities.
          */
 
-        const id = this.getVideoIdRegex.exec(url.address)
+        const id = this.getVideoIdRegex.exec(url.host)
 
         if(!id) {
             throw new ParserError("Unable to parse video id from html.")
         }
 
 
-        const html = await this.request.get<string>(new Url(`https://streamani.net/download?id=${id[1]}`))
+        const html = await this.request.get<string>(new URL(`https://streamani.net/download?id=${id[1]}`))
         const $ = cheerio.load(html)
 
         return $('.dowload a:not([target])') // yes the class name is actually called .dowload
         .map((_ , element) => {         
             return {
                 quality : Quality[$(element).text().split(" (")[1].split(" - ")[0].toLowerCase() as QualityAsUnion],
-                url : new Url(element.attribs.href)
+                url : new URL(element.attribs.href)
             }
         })
         .toArray()
@@ -213,7 +212,7 @@ export default class KickAssAnimeParser implements IParser {
                 throw new ParserError("Unable to parse m3u8 master file url.")
             }       
 
-            const m3u8MasterFileUrl = new Url(m3u8MasterFileUrlRegex[1])
+            const m3u8MasterFileUrl = new URL(m3u8MasterFileUrlRegex[1])
             const m3u8MasterFileContent = await this.request.get<string>(m3u8MasterFileUrl)
 
             const files = []
@@ -224,7 +223,7 @@ export default class KickAssAnimeParser implements IParser {
 
                 if(regexResult) {
                     files.push({
-                        url : new Url(regexResult[0]),
+                        url : new URL(regexResult[0]),
                         quality : Quality[this.sapphireAndPinkQualitys[i] as QualityAsUnion]
                     })
                 } else {
@@ -265,7 +264,7 @@ export default class KickAssAnimeParser implements IParser {
         const filteredRawExternalSourceFiles = rawExternalServerSourceFiles.flat().filter((rawNewVideoPlayerSourceFile) => rawNewVideoPlayerSourceFile.file.length !== 0)
 
         return filteredRawExternalSourceFiles.map((rawVideoPlayerSourceFile) => ({
-            url : new Url(rawVideoPlayerSourceFile.file),
+            url : new URL(rawVideoPlayerSourceFile.file),
             quality : Quality[rawVideoPlayerSourceFile.label.trim().toLowerCase() as QualityAsUnion]
         }))
     }
@@ -285,7 +284,7 @@ export default class KickAssAnimeParser implements IParser {
         const formData = createFormData({ keyword : searchTerm })
 
         const data = await this.request.post<Array<AnimeRawSearchResult>>(
-            new Url(`${this.hostname.address}/api/anime_search`),    
+            new URL(`${this.hostname.host}/api/anime_search`),    
             {
                 body : formData,
                 headers : {
@@ -296,7 +295,7 @@ export default class KickAssAnimeParser implements IParser {
 
         return data.map(({ name , image }) => ({
             type : name.toLowerCase().includes("movie") ? StandaloneType.Movie : StandaloneType.Video,
-            thumbnail_url : new Url(`${this.hostname.address}/uploads/${image}`),
+            thumbnail_url : new URL(`${this.hostname.host}/uploads/${image}`),
             name
         }))
     }
@@ -309,7 +308,7 @@ export default class KickAssAnimeParser implements IParser {
      * @param {Url} url - A KickAssAnime info url.
      * @returns {Array<IEpisodeData>} - An array of data about each episode.
       */
-    public async getEpisodes(url : Url) : Promise<Array<IEpisodeData>> {
+    public async getEpisodes(url : URL) : Promise<Array<IEpisodeData>> {
         const html = await this.request.get<string>(url)
         const episodesRegex = this.getEpisodesRegex.exec(html)
 
@@ -323,7 +322,7 @@ export default class KickAssAnimeParser implements IParser {
             episode_name : name,
             thumbnail_url : null,
             episode_num : +num,
-            url : new KickAssAnimeEpisodeUrl(this.hostname.address + slug)
+            url : new KickAssAnimeEpisodeUrl(this.hostname.host + slug)
         }))
 
         return episodes
@@ -335,11 +334,11 @@ export default class KickAssAnimeParser implements IParser {
      * @param {Url} url - KickAssAnime episode url.
      * @returns {Array<IVideoSource>} An array of video sources.
      */
-    public async getVideoSources(url : Url) : Promise<Array<IVideoSource>> {
+    public async getVideoSources(url : URL) : Promise<Array<IVideoSource>> {
         const embedVideoPlayerUrl = await this.getEmbedVideoPlayerUrl(url)
         
         // A conditonial check to see which video player the webpage is currently using.
-        if(embedVideoPlayerUrl.address.includes("player.php")) {
+        if(embedVideoPlayerUrl.toString().includes("player.php")) {
             const extServers = await this.getExternalServers(embedVideoPlayerUrl)
             const sourceFiles = await this.getNewVideoPlayerSourceFiles(extServers)
 
