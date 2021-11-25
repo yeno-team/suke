@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useParams } from "react-router";
 import { Chat } from "@suke/suke-web/src/components/Chat";
 import { IMessage } from "@suke/suke-core/src/entities/Message";
@@ -37,12 +37,9 @@ export const ChatEmbed = () : JSX.Element => {
 
     const [messages, setMessages] = useState(defaultMessages);
 
-    const submitMessage = (message: IMessage) => {
-        setMessages([
-            ...messages,
-            message
-        ]);
-    }
+    const submitMessage = useCallback((message : IMessage) => {
+        setMessages((prevMessages) => [...prevMessages , message])
+    } , [ setMessages ])
 
     return (
         <Chat className={classNames(

@@ -6203,6 +6203,7 @@ __metadata:
     react-player: ^2.9.0
     react-router-dom: 6
     react-scripts: 4.0.3
+    react-textarea-autosize: ^8.3.3
     stylelint: ^14.0.0
     tailwindcss: "npm:@tailwindcss/postcss7-compat@2"
     web-vitals: ^1.0.1
@@ -22267,7 +22268,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-textarea-autosize@npm:^8.3.0":
+"react-textarea-autosize@npm:^8.3.0, react-textarea-autosize@npm:^8.3.3":
   version: 8.3.3
   resolution: "react-textarea-autosize@npm:8.3.3"
   dependencies:
