@@ -1,4 +1,3 @@
-import { Url } from "@suke/suke-core/src/entities/Url";
 import { ValidationError } from "@suke/suke-core/src/exceptions/ValidationError";
 
 export type ExternalVideoServer = 
@@ -21,7 +20,7 @@ export interface RawExternalVideoServerResponse {
 
 export interface ExternalVideoServerResponse {
     name : ExternalVideoServer,
-    src : Url
+    src : URL
 }
 
 export interface RawNewVideoPlayerSourceFile {
@@ -39,7 +38,7 @@ export interface RawEpisodeData {
     num : string
 }
 
-export class KickAssAnimeEpisodeUrl extends Url {
+export class KickAssAnimeEpisodeUrl extends URL {
     constructor(url : string) {
         super(url);
 
@@ -50,11 +49,11 @@ export class KickAssAnimeEpisodeUrl extends Url {
 
     private isValidEpisodeUrl() : boolean {
         const episodeUrlRegex = /https:\/\/www2\.kickassanime\.ro\/anime\/[A-Za-z0-9-]+\d{6}\/episode-\d*-\d{6}/
-        return episodeUrlRegex.test(this.address)
+        return episodeUrlRegex.test(this.host)
     }
 }
 
-export class KickAssAnimeInfoUrl extends Url {
+export class KickAssAnimeInfoUrl extends URL {
     constructor(url : string) {
         super(url);
 
@@ -66,6 +65,6 @@ export class KickAssAnimeInfoUrl extends Url {
 
     private isValidInfoUrl() : boolean {
         const infoUrlRegex = /https:\/\/www2.kickassanime\.ro\/anime\/.*-\d*/
-        return infoUrlRegex.test(this.address)
+        return infoUrlRegex.test(this.host)
     }
 }
