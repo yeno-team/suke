@@ -1,8 +1,9 @@
 import { ValidationError } from "../../exceptions/ValidationError";
+import { RealtimeChannelData } from "../../types/UserChannelRealtime";
 import { ValueObject } from "../../ValueObject";
 import { IMessage } from "../Message";
 
-export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE";
+export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE" | "ROOM_UPDATE";
 
 export interface IHasRoomId {
     roomId: string;
@@ -26,6 +27,9 @@ export type SocketMessageInput = {
 } | {
     type: 'ROOM_LEAVE',
     data: IHasRoomId
+} | {
+    type: 'ROOM_UPDATE',
+    data: RealtimeChannelData
 };
 
 export interface ISocketMessage {

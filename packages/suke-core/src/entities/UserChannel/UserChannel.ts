@@ -2,11 +2,22 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
 
+export enum ChannelRole {
+    Moderator,
+    VIP
+}
+
+export type UserWithChannelRole = {
+    userId: number,
+    role: ChannelRole
+}
+
 export interface IUserChannel {
     id: number;
     followers: number;
     desc_title: string;
     desc: string;
+    roledUsers: UserWithChannelRole[]
 }
 
 export class UserChannel extends ValueObject implements IUserChannel {
@@ -14,6 +25,7 @@ export class UserChannel extends ValueObject implements IUserChannel {
     followers: number;
     desc_title: string;
     desc: string;
+    roledUsers: UserWithChannelRole[];
     
     constructor(channel: IUserChannel) {
         super();
@@ -82,4 +94,7 @@ export class UserChannelModel extends BaseEntity implements IUserChannel {
 
     @Column()
     desc!: string;
+
+    @Column('jsonb', {nullable: true})
+    roledUsers!: UserWithChannelRole[];
 }
