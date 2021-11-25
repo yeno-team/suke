@@ -1,11 +1,12 @@
 import { Author } from "../entities/User";
+import { IVideoSource } from "../entities/SearchResult";
 
 export type VideoRequest = {
-    // video data here when merge #17
+    video: IVideoSource
     author: Author;
 }
 
 export interface RealtimeChannelData {
-    videoSrc: string;
+    currentVideo: IVideoSource;
     requests: VideoRequest[];
 }
