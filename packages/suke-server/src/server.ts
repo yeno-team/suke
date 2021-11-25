@@ -9,6 +9,7 @@ import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
 import { RedisClient } from "./config";
+import handlers from "@suke/suke-socket-server/src/handlers";
 
 interface ExpressLocals {
     user?: UserModel;
@@ -60,6 +61,11 @@ export class Server {
         this.setupControllers();
 
         this.app.use(ErrorHandler);
+        
+        // create socket handlers
+        for (const createHandler of handlers) {
+            createHandler(this.sockerServer)();
+        }
 
         // Listening from the socket server will listen on the httpServer that is shared from express.
         this.sockerServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));

@@ -33,6 +33,7 @@ export class UserService {
             followers: 0,
             desc_title: 'About Me',
             desc: "Welcome to my channel!",
+            roledUsers: []
         });
 
         const createdChannel = await this.userChannelService.create(newChannel);
