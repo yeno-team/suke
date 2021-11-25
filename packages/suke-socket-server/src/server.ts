@@ -4,7 +4,6 @@ import EventEmitter from "events"
 import { Server, IncomingMessage} from 'http'
 import { RequestHandler, Request, Response} from 'express';
 import TypedEmitter from "typed-emitter";
-import handlers from './handlers';
 import { IHasUser, User } from '@suke/suke-core/src/entities/User';
 import { SocketMessage } from '@suke/suke-core/src/entities/SocketMessage';
 import { UserId } from '@suke/suke-core/src/entities/UserId';
@@ -18,7 +17,7 @@ import redis from 'redis';
 export interface SocketServerEvents {
     error: (error: Error) => void,
     clientError: (error: Error, ws: WebSocket) => void,
-    message: (json: SocketMessage, ws: WebSocket) => void
+    message: (json: SocketMessage, ws: WebSocket, user?: User) => void
 }
 
 export type UserDataWithWebSocket = {
@@ -40,7 +39,7 @@ export interface SocketServerConfig {
     redisClient: redis.RedisClient
 }
 
-export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketServerEvents>) {
+export class SocketServer extends (EventEmitter as new () => TypedEmitter<SocketServerEvents>) {
     private server: Server;
     private wss: WebSocket.Server;
 
@@ -49,7 +48,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
     private userMap: Map<number, UserDataWithWebSocket>;
     private roomManger: RoomManager;
     
-    public connections: WebSocketConnection[] = [];
+    public connections: Map<string, WebSocketConnection>;
 
     constructor({httpServer, sessionParser }: SocketServerConfig) {
         super();
@@ -75,7 +74,8 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                             id: 0,
                             followers: 0,
                             desc: "",
-                            desc_title: ""
+                            desc_title: "",
+                            roledUsers: []
                         })
                     });
                 }
@@ -91,13 +91,17 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         this.wss = wss;
         this.userMap = new Map();
         this.guestMap = new Map();
+        this.connections = new Map();
         this.roomManger = new RoomManager(this);
 
-        this.createHandlers();
-        this.setupListeners();
+        this.setup();
     }
 
-    private setupListeners(): void {
+    /**
+     * The initial setup function of the socket server.
+     * Listens to every new user connection and maps them either as guest or user.
+     */
+    private setup(): void {
         this.wss.on('connection', (ws: WebSocketConnection, req: EventRequest) => {
             try {
                 ws.id = uuid();
@@ -113,7 +117,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                     this.userMap.set(user.id, {user, ws});
                 }
 
-                this.connections.push(ws);
+                this.connections.set(ws.id, ws);
                 
                 ws.on('message', (message) => {
                     const msgStr = message.toString();
@@ -123,9 +127,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
 
                     const msgJson = JSON.parse(message.toString());
 
-                    console.log(msgJson);
-
-                    this.emit('message', new SocketMessage(msgJson), ws);
+                    this.emit('message', new SocketMessage(msgJson), ws, user);
                 });
 
                 ws.on('error', (err) => {
@@ -138,9 +140,10 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                         return;
                     }
 
-                    delete this.connections[this.connections.findIndex(v => v != null && ws != null && v.id === ws.id)];
-                    
+                    this.connections.delete(ws.id);
                     this.userMap.delete(user.id);
+
+                    console.log(user.name + " Disconnected.");
                 });
             } catch (e) {
                 this.emit('error', e as Error);
@@ -156,16 +159,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
         });
     }
 
-    /**
-     * Creates Handlers for the server's events
-     */
-    private createHandlers(): void {
-        for (const createHandler of handlers) {
-            createHandler(this)();
-        }
-    }
-
-    public getConnections(): WebSocketConnection[] {
+    public getConnections(): Map<string, WebSocketConnection> {
         return this.connections;
     }
 
@@ -175,7 +169,7 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
      * @returns Websocket Connection
      */
     public getConnection(id: string): WebSocketConnection | undefined {
-        return this.connections.find(v => v.id === id);
+        return this.connections.get(id);
     }
 
     public getUserConnection(idObj: UserId): UserDataWithWebSocket | undefined {
