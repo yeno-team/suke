@@ -14,21 +14,24 @@ describe('UserChannel class', () => {
                 id: -1,
                 followers: '' as unknown as number,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             })}).toThrow(ValidationError);
 
             expect(() => {new UserChannel({
                 id: 1,
                 followers: '' as unknown as number,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             })}).toThrow(ValidationError);
 
             expect(() => {new UserChannel({
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: 1 as unknown as string
+                desc: 1 as unknown as string,
+                roledUsers: []
             })}).toThrow(ValidationError);
         });
 
@@ -37,7 +40,8 @@ describe('UserChannel class', () => {
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             })}).not.toThrow(ValidationError);
         });
 
@@ -46,28 +50,32 @@ describe('UserChannel class', () => {
                 id: 1,
                 followers: '' as unknown as number,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             })}).toThrow(PropertyValidationError);
 
             expect(() => {new UserChannel({
                 id: 1,
                 followers: '' as unknown as number,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             })}).toThrow(PropertyValidationError);
 
             expect(() => {new UserChannel({
                 id: 1,
                 followers: 1,
                 desc_title: 1 as unknown as string,
-                desc: ''
+                desc: '',
+                roledUsers: []
             })}).toThrow(PropertyValidationError);
 
             expect(() => {new UserChannel({
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: 1 as unknown as string
+                desc: 1 as unknown as string,
+                roledUsers: []
             })}).toThrow(PropertyValidationError);
         });
 
@@ -76,7 +84,8 @@ describe('UserChannel class', () => {
                 id: 1,
                 followers: null as unknown as number,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             });
 
             expect(channel.followers).toStrictEqual(0);
@@ -87,14 +96,16 @@ describe('UserChannel class', () => {
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             });
 
             const channel2 = new UserChannel({
                 id: 1,
                 followers: 1,
                 desc_title: null as unknown as string,
-                desc: ''
+                desc: '',
+                roledUsers: []
             });
 
             expect(channel1.desc_title).toStrictEqual("About me");
@@ -106,14 +117,16 @@ describe('UserChannel class', () => {
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             });
 
             const channel2 = new UserChannel({
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: null as unknown as string
+                desc: null as unknown as string,
+                roledUsers: []
             });
 
             expect(channel1.desc).toStrictEqual("Welcome to my channel!");
@@ -127,7 +140,8 @@ describe('UserChannel class', () => {
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             });
 
             expect(channel.Equals(channel)).toBeTruthy();
@@ -138,14 +152,16 @@ describe('UserChannel class', () => {
                 id: 1,
                 followers: 1,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             });
 
             const channel2 = new UserChannel({
                 id: 1,
                 followers: 5,
                 desc_title: '',
-                desc: ''
+                desc: '',
+                roledUsers: []
             });
 
 

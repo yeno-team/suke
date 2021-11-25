@@ -20,7 +20,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -33,7 +34,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -46,7 +48,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -60,7 +63,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
         });
@@ -75,7 +79,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -88,7 +93,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
         });
@@ -103,7 +109,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -120,7 +127,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).not.toThrow(ValidationError);
         });
@@ -137,7 +145,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -150,7 +159,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -167,7 +177,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -180,7 +191,8 @@ describe("User Class: Value Object", () => {
                     id: 0,
                     followers: 0,
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
