@@ -101,7 +101,8 @@ export const Messages = ({messages , channelName , className , replyHandler }: M
                 "text-center",
                 "w-2/4",
                 "lg:w-2/5",
-                "xl:w-1/6",
+                "xl:w-2/6",
+                "2xl:w-1/3",
                 "h-auto",
                 "whitespace-normal",
                 "p-3",
@@ -115,7 +116,10 @@ export const Messages = ({messages , channelName , className , replyHandler }: M
                 "shadow-2xl",
                 "absolute",
                 "bottom-20",
-                "left-1/4",
+                "transform",
+                "-translate-x-1/2",
+                "-translate-y-1/2",
+                "left-1/2",
                 {"hidden" : !isToolTipVisible}
             )} onClick={onClickToolTipHandler}>
                 <span> You are viewing older messages. </span>
