@@ -1,6 +1,7 @@
 {
   "name": "@suke/suke-core",
   "packageManager": "yarn@3.0.0",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -13,9 +14,10 @@
     "clean": "rm -rf ./dist && rm tsconfig.tsbuildinfo"
   },
   "dependencies": {
+    "@suke/suke-util": "workspace:packages/suke-util",
     "bcrypt": "^5.0.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.37"
+    "typeorm": "^0.2.39"
   },
   "devDependencies": {
     "@types/bcrypt": "^5"

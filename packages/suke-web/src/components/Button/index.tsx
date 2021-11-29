@@ -20,7 +20,6 @@ export const Button : FunctionComponent<ButtonProps> = ({size, square, backgroun
             'inline-flex',
             'justify-center',
             'items-center',
-            'm-1',
             size ? `px-${size} py-${square ? size : Math.max(1, size-1)}` : 'px-3 py-2',
             color ? 'text-' + color : 'text-white',
             backgroundColor ? 'bg-' + backgroundColor : 'bg-teal',

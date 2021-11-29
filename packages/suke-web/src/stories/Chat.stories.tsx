@@ -29,14 +29,16 @@ ActiveChat.args = {
             author : {
                 name : "Khai93",
                 id : 123
-            }
+            },
+            channelId : "Khai93",
         },
         {
             content : "Khai eats ass.",
             author : {
                 name : "Lunatite",
                 id : 1
-            }
+            },
+            channelId : "lunatite"
         }
     ],
     submitMessage : (msg) => console.log(msg)

@@ -1,12 +1,15 @@
 import 'reflect-metadata';
-import config from './config'
-import { Container } from 'typeorm-typedi-extensions';
+import config,{ RedisClient } from './config';
+import { Container } from 'typedi';
+import { Container as typeORMContainer } from 'typeorm-typedi-extensions';
 import { createConnection, useContainer } from 'typeorm';
 import { Server } from './server';
 import { UserModel } from '@suke/suke-core/src/entities/User';
 import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
+import redis from 'redis';
 
-useContainer(Container);
+useContainer(typeORMContainer);
+
 
 createConnection({
     type: "postgres",
@@ -15,6 +18,8 @@ createConnection({
     entities: [UserModel, UserChannelModel],
     synchronize: true,
 }).then(() => {
+    Container.set<redis.RedisClient>('redis', RedisClient);
+
     new Server(config)
         .start();
 }).catch(error => {
