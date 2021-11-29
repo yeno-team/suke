@@ -5,30 +5,28 @@ import React, {useState } from 'react';
 import TextAreaAutoResize from "react-textarea-autosize";
 import { Messages } from './Messages';
 import './Chat.css';
+import useAuth from '../../hooks/useAuth';
 
 export interface ChatProps {
     className?: string;
-    channelName : string;
     messages: IMessage[];
+    channelId: string;
     submitMessage: (message: IMessage) => void;
 }
 
-export const Chat = ({messages, submitMessage, className , channelName }: ChatProps) => {
+export const Chat = ({messages, submitMessage, className , channelId }: ChatProps) => {
     const [ messageInput, setMessageInput ] = useState("");
-
-    const serializeInputMessage = () : IMessage => {
-        return {
-            content : messageInput,
-            author : {
-                id : 1,
-                name : "khai93"
-            }
-        }
-    }
+    const { user } = useAuth();
 
     const handleSubmit = () => {
-        submitMessage(serializeInputMessage())
-        setMessageInput("")
+        // const msg: IMessage = {
+        //     content: messageInput,
+        //     author: {
+        //         id: user!.id,
+        //         name: user!.name
+        //     },
+        //     channelId: channelId
+        // }
     }
 
     const handleSubmitByEnter = (e : React.KeyboardEvent) => {

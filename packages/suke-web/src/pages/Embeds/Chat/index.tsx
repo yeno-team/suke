@@ -17,21 +17,24 @@ export const ChatEmbed = () : JSX.Element => {
             author: {
                 id: 1,
                 name: 'hello'
-            }
+            },
+            channelId : "hello"
         },
         {
             content: 'hi',
             author: {
                 id: 1,
                 name: 'khai2'
-            }
+            },
+            channelId : "khai12"
         },
         {
             content: 'bye',
             author: {
                 id: 1,
                 name: 'man'
-            }
+            },
+            channelId : "man"
         }
     ]
 
@@ -51,6 +54,6 @@ export const ChatEmbed = () : JSX.Element => {
         )} 
         submitMessage={submitMessage} 
         messages={messages} 
-        channelName={channelName}/>
+        channelId={channelName}/>
     )
 }

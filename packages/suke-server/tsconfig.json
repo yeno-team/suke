@@ -1,18 +1,22 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "../../tsconfig.build.json",
     "compilerOptions": {
-        "outDir": "dist",
         "rootDir": "src",
-        "emitDecoratorMetadata": true,
+        "outDir": "dist",
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
     },
     "references": [
         {
+          "path": "../suke-util"
+        },
+        {
           "path": "../suke-core"
-        }
+        },
     ],
     "include": [
-        "src/"
+        "src/",
+        "src/**/*.ts", 
     ],
     "exclude": [
         "node_modules",

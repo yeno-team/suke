@@ -13,9 +13,9 @@ export const UserProfile = ({username, followerCount}: UserProfileParams) => {
         <div className="flex bg-black font-sans">
             <div className="flex px-4 py-5 flex-grow">
                 <ImageCircle src="https://picsum.photos/200" alt="user profile pic"></ImageCircle>
-                <div className="flex flex-col justify-center leading-none items-center">
-                    <span className="block font-bold ml-1 text-white">{username}</span>
-                    <span className="font-normal text-sm ml-3 text-gray">{followerCount} followers</span>
+                <div className="flex flex-col justify-center text-left  leading-none items-center">
+                    <span className="block font-bold w-full ml-4 text-white">{username}</span>
+                    <span className="font-normal text-sm w-full ml-4 text-gray">{followerCount} followers</span>
                 </div>
             </div>
             <div className="mr-4 my-auto">

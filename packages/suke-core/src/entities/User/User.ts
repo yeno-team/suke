@@ -3,9 +3,9 @@ import { Role } from '../../Role';
 import { ValueObject } from '../../ValueObject';
 import { lowercaseTransformer } from '../../transformers/ValueTransformers';
 import { PropertyValidationError } from "../../exceptions/ValidationError";
-import { isValidEmail } from '@suke/suke-util';
+import { isValidEmail } from '@suke/suke-util/src';
 import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Name } from "../Name/Name";
 import { UserId } from "../UserId";
 
@@ -16,7 +16,6 @@ export interface IUser {
     role: Role;
     channel: IUserChannel
 }
-
 
 export type Author = Pick<IUser, "id" | "name">
 
@@ -126,16 +125,16 @@ export class UserModel extends BaseEntity implements IUser  {
     public channel!: UserChannelModel;
 
     public async testRawPassword(rawPass: string): Promise<boolean> {
-        const userRepo = await getRepository(UserModel).findOne({
+        const userRepo = getRepository(UserModel);
+        const user = await userRepo.findOne({
             select: ['id', 'salt'],
             where: { id: this.id }
         });
 
-        if (userRepo == null) {
+        if (userRepo == null || user == null) {
             return Promise.reject("User does not exist.");
         }
 
-        return bcrypt.compare(rawPass, userRepo.salt);
+        return bcrypt.compare(rawPass, user.salt);
     } 
 }
-
