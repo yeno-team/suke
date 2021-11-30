@@ -1,8 +1,6 @@
 import { Agent } from "http";
-import { Url } from "@suke/suke-core/src/entities/Url";
-
 export type RequestOptions = {
-    url?: Url,
+    url?: URL,
     method?: string,
     baseURL?: string,
     headers?: Record<string , string>,
@@ -17,6 +15,6 @@ export type RequestOptions = {
 
 export interface IRequest {
     request<R>(options: RequestOptions): Promise<R>;
-    get<R>(url: Url ,options?: RequestOptions): Promise<R>;
-    post<R>(url: Url ,options?: RequestOptions): Promise<R>;
+    get<R>(url: URL ,options?: RequestOptions): Promise<R>;
+    post<R>(url: URL ,options?: RequestOptions): Promise<R>;
 }

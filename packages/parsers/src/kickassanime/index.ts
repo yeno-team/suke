@@ -5,7 +5,7 @@ import { ISearchData , IVideoSource, IEpisodeData , StandaloneType } from "@suke
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError"
 import { createFormData } from "@suke/suke-util/dist";
 import { AxiosRequest } from "@suke/requests/src/";
-import { IParser, ParserSearchOptions } from "../IParser";
+
 import { Quality , QualityAsUnion } from "@suke/suke-core/src/entities/SearchResult";
 import { 
     AnimeRawSearchResult,
@@ -16,6 +16,7 @@ import {
     ExternalVideoServer,
     ExternalVideoServerResponse,
 } from "./types"
+import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 
 export * from "./types"
 
@@ -41,12 +42,12 @@ export default class KickAssAnimeParser implements IParser {
     // KickAssAnime Pink-Bird and Sapphire-Duck returned video quality in order.
     private sapphireAndPinkQualitys = ["720p","1080p","480p","360p","240p"]
 
-    name = "KickAssAnime"
-    hostname = new URL("https://www2.kickassanime.ro")
+    public name = "kickassanime"
+    public hostname = new URL("https://www2.kickassanime.ro")
 
     constructor(
         public request : AxiosRequest
-    ) {}
+    ) { }
     
     /**
      * Searches for a Base64 encoded string and returns the decoded content.
@@ -276,7 +277,7 @@ export default class KickAssAnimeParser implements IParser {
      * @param options 
      * @returns {Array<ISearchData>}
      */
-    public async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData[]> {
+    public async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {
         if(options) {
             throw new ParserError("Options is disabled and not being used at the moment.")
         }
@@ -284,7 +285,7 @@ export default class KickAssAnimeParser implements IParser {
         const formData = createFormData({ keyword : searchTerm })
 
         const data = await this.request.post<Array<AnimeRawSearchResult>>(
-            new URL(`${this.hostname.host}/api/anime_search`),    
+            new URL(`${this.hostname.href}/api/anime_search`),    
             {
                 body : formData,
                 headers : {
@@ -293,11 +294,13 @@ export default class KickAssAnimeParser implements IParser {
             }
         )
 
-        return data.map(({ name , image }) => ({
+        // TODO: RETURN NEW VERSION OF ISEARCHDATA 
+        /*return data.map(({ name , image }) => ({
             type : name.toLowerCase().includes("movie") ? StandaloneType.Movie : StandaloneType.Video,
             thumbnail_url : new URL(`${this.hostname.host}/uploads/${image}`),
             name
-        }))
+        }))*/
+        return {} as ISearchData;
     }
 
     /**
@@ -322,7 +325,7 @@ export default class KickAssAnimeParser implements IParser {
             episode_name : name,
             thumbnail_url : null,
             episode_num : +num,
-            url : new KickAssAnimeEpisodeUrl(this.hostname.host + slug)
+            url : new KickAssAnimeEpisodeUrl(this.hostname.href + slug)
         }))
 
         return episodes
