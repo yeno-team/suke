@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { VideoPlayer } from '../VideoPlayer';
 
@@ -6,13 +7,17 @@ import { VideoMenuHeader } from './VideoMenuHeader';
 
 export interface VideoMenuProps {
     url: string;
+    handleOpenBrowser?: () => void;
+    className?: string;
+    playerWidth?: string;
+    playerHeight?: string;
 }
 
-export const VideoMenu = ({ url }: VideoMenuProps): JSX.Element => {
+export const VideoMenu = ({ url, handleOpenBrowser, className, playerHeight, playerWidth }: VideoMenuProps): JSX.Element => {
     return (
-        <React.Fragment>
-            <VideoMenuHeader />
-            <VideoPlayer url={url} />
-        </React.Fragment>
+        <div className={classNames('h-full', className, 'flex flex-col')}>
+            <VideoMenuHeader handleOpenBrowser={handleOpenBrowser} />
+            <VideoPlayer url={url} width={playerWidth} height={playerHeight} />
+        </div>
     )
 }

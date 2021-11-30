@@ -26,9 +26,12 @@ export enum Quality {
 export type QualityAsUnion = keyof typeof Quality
 
 export interface ISearchData {
-    type : StandaloneType,
-    name : string,
-    thumbnail_url : URL
+   results: {
+       standalone: IStandaloneData[],
+       multi: IMultiData[]
+   },
+   nextPageToken?: string,
+   prevPageToken?: string
 }
 
 export interface IEpisodeData {

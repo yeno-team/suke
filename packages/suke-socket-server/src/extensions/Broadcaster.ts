@@ -34,6 +34,4 @@ export class SocketBroadcaster {
             v.send(JSON.stringify(data));
         });
     }
-
-
 }

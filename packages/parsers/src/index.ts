@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { Container } from "typedi";
-import KickAssAnime from "./kickassanime";
+import { Container} from "typedi";
+import KickAssAnimeParser from "./kickassanime";
+import { YoutubeParser } from "./youtube";
 
-const KickAssAnimeParser = Container.get(KickAssAnime)
-
-export default [
-    KickAssAnimeParser
+export const parsers = [
+    Container.get(YoutubeParser),
+    Container.get(KickAssAnimeParser)
 ]

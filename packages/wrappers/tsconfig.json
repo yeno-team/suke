@@ -11,16 +11,7 @@
     ],
     "references": [
         {
-            "path" : "../suke-core"
-        },
-        {
-            "path": "../suke-util"
-        },
-        {
             "path": "../requests"
-        },
-        {
-            "path": "../wrappers"
         }
     ],
     "exclude": [

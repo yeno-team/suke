@@ -1,0 +1,8 @@
+import { ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
+import Container from "typedi";
+import { YoutubeParser } from "./youtube";
+
+const youtubeParser = Container.get<YoutubeParser>(YoutubeParser);
+youtubeParser.search("lofi music live", new ParserSearchOptions({
+    token: "Ep4DEg9sb2ZpIG11c2ljIGxpdmUaigNTQlNDQVFzMWNXRndOV0ZQTkdrNVFZSUJDMFJYWTBwR1RtWmhkemxqZ2dFTExUVkxRVTQ1WDBONlUwR0NBUXRsTjBOWFZFeFRTbkIyTklJQkN6VjVlRFpDVjJ4RlZtTlpnZ0VMZUdkcGNrTk9ZMk5KTmppQ0FRdGFUblZhWDA1RmIwZFhjNElCQzNwV2NVcDJYMlJMVlVWemdnRUxYM1JXTlV4RlFrUnpOM2VDQVF0UVdrTlNiWGREVG1kRlVZSUJDekJ1TUd4bFRHTklTVGRGZ2dFTE1qRnhUbmh1UTFNNFYxV0NBUTFTUkRWeFlYQTFZVTgwYVRsQmdnRUxOMDVQVTBSTFlqQkliRldDQVFzeVMzZDFiblZZYlZKSk5JSUJDM1JEY3pRNFQwWjJOM2hCZ2dFTGR6Tk1WMGhKZWpOaVRXT0NBUXRKYWsxRlUzaEtaRmRyWjRJQkMyeFVVbWwxUmtsWFZqVTBnZ0VMVm1aWE9EWm1ibEZNTlhleUFRWUtCQWdWRUFJJTNEGIHg6BgiC3NlYXJjaC1mZWVk"
+})).then(v => console.log(v, v.results.standalone[0].sources));
