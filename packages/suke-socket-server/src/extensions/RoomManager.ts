@@ -8,14 +8,14 @@ export class RoomManager {
     /**
      * Map where the key is the room id
      */
-    private conections: Map<string, WebSocketConnection[]>;
+    private connections: Map<string, Map<string, WebSocketConnection>>;
 
     constructor(private server: SocketServer) {
-        this.conections = new Map();
+        this.connections = new Map();
     }
 
     public addUser(roomId: string, userSocket: WebSocketConnection): void {
-        this.conections.set(roomId, [...this.conections.get(roomId), userSocket]);
+        this.connections.set(roomId, this.connections.get(roomId).set(userSocket.id, userSocket));
 
         userSocket.on('close', () => {
             this.removeUser(roomId, userSocket);
@@ -23,28 +23,28 @@ export class RoomManager {
     }
 
     public removeUser(roomId: string, userSocket: WebSocketConnection): void {
-        this.conections.set(roomId, [...this.conections.get(roomId).filter(v => v.id !== userSocket.id)]);
+       this.connections.get(roomId).delete(userSocket.id);
     }
 
-    public getRoom(id: string): WebSocketConnection[] {
-        const room = this.conections.get(id);
+    public getRoom(id: string): Map<string, WebSocketConnection> {
+        const room = this.connections.get(id);
 
         if (room == null) {
-            this.conections.set(id, []);
-            return [];
+            this.connections.set(id, new Map());
+            return this.connections.get(id);
         }
         
         return room;
     }
 
     public CheckIfUserInRoom(userSocket: WebSocketConnection, roomId: string): boolean {
-        let room = this.conections.get(roomId);
+        let room = this.connections.get(roomId);
 
         if (room == null) {
-            this.conections.set(roomId, []);
-            room = [];
+            this.connections.set(roomId, new Map());
+            room = this.connections.get(roomId);
         }
 
-        return room.find(v => v.id === userSocket.id) != null;
+        return room.get(userSocket.id) != null;
     }
 }

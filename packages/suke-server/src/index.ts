@@ -10,7 +10,6 @@ import redis from 'redis';
 
 useContainer(typeORMContainer);
 
-
 createConnection({
     type: "postgres",
     url: config.db.connectionUri,

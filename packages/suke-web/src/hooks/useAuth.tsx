@@ -47,12 +47,13 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                         id: 0,
                         followers: 0,
                         desc: "",
-                        desc_title: ""
+                        desc_title: "",
+                        roledUsers: []
                     }
                 });
             })
             .finally(() => setLoadingInit(false))
-    }, [])
+    }, []);
 
 
     const login = (name: string, password: string): void => {
