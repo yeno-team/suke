@@ -13,6 +13,9 @@
         {
           "path": "../suke-core"
         },
+        {
+            "path": "../parsers"
+        },
     ],
     "include": [
         "src/",
