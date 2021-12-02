@@ -282,53 +282,14 @@ export default class KickAssAnimeParser implements IParser {
             throw new ParserError("Options is disabled and not being used at the moment.")
         }
 
-        const formData = createFormData({ keyword : searchTerm })
-
-        const data = await this.request.post<Array<AnimeRawSearchResult>>(
-            new URL(`${this.hostname.href}/api/anime_search`),    
-            {
-                body : formData,
-                headers : {
-                    "Content-Type" : `multipart/form-data; boundary=${formData.getBoundary()}`
-                }
-            }
-        )
-
-        // TODO: RETURN NEW VERSION OF ISEARCHDATA 
+    
+        
         /*return data.map(({ name , image }) => ({
             type : name.toLowerCase().includes("movie") ? StandaloneType.Movie : StandaloneType.Video,
             thumbnail_url : new URL(`${this.hostname.host}/uploads/${image}`),
             name
         }))*/
         return {} as ISearchData;
-    }
-
-    /**
-     * Get the list of episodes for an anime.
-     * @async
-     * @example
-     * getEpisodes(new KickAssAnimeInfoUrl("https://www2.kickassanime.ro/anime/rakudai-kishi-no-cavalry-dub-878414"))
-     * @param {Url} url - A KickAssAnime info url.
-     * @returns {Array<IEpisodeData>} - An array of data about each episode.
-      */
-    public async getEpisodes(url : URL) : Promise<Array<IEpisodeData>> {
-        const html = await this.request.get<string>(url)
-        const episodesRegex = this.getEpisodesRegex.exec(html)
-
-        if(!episodesRegex) {
-            throw new ParserError("Unable to parse episode list.")
-        }
-
-        const rawEpisodes : Array<RawEpisodeData> = hjson.parse(episodesRegex[1])
-
-        const episodes = rawEpisodes.map(({ name , slug , num }) => ({
-            episode_name : name,
-            thumbnail_url : null,
-            episode_num : +num,
-            url : new KickAssAnimeEpisodeUrl(this.hostname.href + slug)
-        }))
-
-        return episodes
     }
 
     /**
