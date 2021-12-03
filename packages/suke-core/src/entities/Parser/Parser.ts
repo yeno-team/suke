@@ -17,7 +17,7 @@ export class ParserSearchOptions extends ValueObject implements IParserSearchOpt
         
         this.token = options.token;
         this.pageNumber = options.pageNumber;
-        this.limit = options.pageNumber;
+        this.limit = options.limit;
     } 
 
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
@@ -38,5 +38,5 @@ export interface IParser {
     name: string; 
     hostname: URL;
 
-    search(searchTerm: string, options: ParserSearchOptions): Promise<ISearchData>;
+    search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData>;
 }
