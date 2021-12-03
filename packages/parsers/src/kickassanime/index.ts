@@ -6,6 +6,13 @@ import { KickAssAnimeApiWrapper } from "@suke/wrappers/src"
 import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { KickAssAnimeApiSearchResponse } from "packages/wrappers/src/kickassanime";
 
+export type KickAssAnimeQueryResult = {
+    nextPageToken? : string;
+    prevPageToken? : string;
+    data : KickAssAnimeApiSearchResponse;
+}
+
+
 /**
  * @class
  * @author TheRealLunatite <bedgowns@gmail.com>
@@ -37,7 +44,7 @@ export default class KickAssAnimeParser implements IParser {
             throw new ParserError('This page number exceeds the results.')
         }
 
-        const queryResults = []
+        const data = []
 
         for(let i = startIndex; i < endIndex; i++) {
             // When we access an index position that doesn't exist on the array it will return undefined.
@@ -45,10 +52,20 @@ export default class KickAssAnimeParser implements IParser {
                 break
             }
 
-            queryResults.push(searchResults[i])
+            data.push(searchResults[i])
         }
 
-        return queryResults
+        const result : KickAssAnimeQueryResult = { data }
+
+        if(startIndex > 0) {
+            result["prevPageToken"] = ((options?.pageNumber ?? 1) - 1).toString()
+        }
+
+        if(endIndex < searchResults.length) {
+            result["nextPageToken"] = ((options?.pageNumber ?? 1) + 1).toString()
+        }
+
+        return result
     }
 
     public async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {
@@ -66,7 +83,6 @@ export default class KickAssAnimeParser implements IParser {
         }
 
         const results = await this.query(searchTerm , options)
-        console.log(results)
 
         return {} as ISearchData
     }
