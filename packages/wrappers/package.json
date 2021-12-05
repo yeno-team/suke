@@ -2,6 +2,7 @@
   "name": "@suke/wrappers",
   "packageManager": "yarn@3.0.0",
   "dependencies": {
+    "@suke/suke-core" : "workspace:packages/suke-core",
     "@suke/requests": "workspace:packages/requests",
     "typedi": "^0.10.0"
   },
