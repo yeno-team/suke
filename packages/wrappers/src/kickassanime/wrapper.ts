@@ -4,6 +4,8 @@ import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import hjson from "hjson";
 import { KickAssAnimeApiSearchResponse, KickAssAnimeInfoResponse, KickAssAnimeServer, KickAssAnimeSourceFile } from "./types";
+import { KickAssAnimeApiRawSearchResponse, KickAssAnimeInfoRawResponse } from ".";
+import { QualityAsUnion } from "packages/suke-core/src/entities/SearchResult";
 
 @Service()
 export class KickAssAnimeApiWrapper {
@@ -42,7 +44,7 @@ export class KickAssAnimeApiWrapper {
         
         return $('.dowload a:not([target])')
         .map((_ , element) => ({
-            quality : $(element).text().replace(/\n| /g,""), // Remove unncessary whitespace and a line break.
+            quality : $(element).text().replace(/\n| /g,"") as QualityAsUnion, // Remove unncessary whitespace and a line break.
             url : new URL(element.attribs.href),
             type : "mp4"
         }))
@@ -76,7 +78,7 @@ export class KickAssAnimeApiWrapper {
 
             for(let i = 2; i <= fileContent.length - 2; i += 2) {
                 sourceFileUrls.push({
-                    quality : this.sapAndPinkQualities[Math.floor(i / 2) - 1],
+                    quality : this.sapAndPinkQualities[Math.floor(i / 2) - 1] as QualityAsUnion,
                     url : new URL(fileContent[i]),
                     type : "m3u8"
                 })
@@ -98,7 +100,7 @@ export class KickAssAnimeApiWrapper {
         .filter(({ file }) => file.length !== 0)
         .map(({ file , type , label }) => ({
             url : new URL(file),
-            quality : label,
+            quality : label as QualityAsUnion,
             type
         }))
     }
@@ -140,14 +142,20 @@ export class KickAssAnimeApiWrapper {
             keyword : query
         })
 
-        const res = await this.request.post<KickAssAnimeApiSearchResponse>(apiUrl , {
+        const res = await this.request.post<KickAssAnimeApiRawSearchResponse>(apiUrl , {
             body : formData,
             headers : {
                 "Content-Type" : `multipart/form-data; boundary=${formData.getBoundary()}`
             }
         })
-
-        return res
+        
+        return res.map(({ image , slug , name }) => (
+            {
+                name , 
+                imageUrl : this.getImageUrl(image),
+                url : this.preappendHostname(slug)
+            }
+        ))
     }
 
     /**
@@ -165,15 +173,22 @@ export class KickAssAnimeApiWrapper {
             throw new Error("Unable to parse information from the URL.")
         }
 
-        return hjson.parse(result[1])
-    }
+        const data : KickAssAnimeInfoRawResponse = hjson.parse(result[1])
+
+        return {
+            ...data,
+            episodes : data.episodes.map(({ num , name , slug , createddate }) => ({ num , name , url : this.preappendHostname(slug) , createddate })),
+            image : this.getImageUrl(data.image),
+            url : this.preappendHostname(data.slug)
+        }
+    }  
 
     /**
      * Get the list of servers that host source files for an anime.
      * @param {url}
      * @returns 
      */    
-    public async getListOfServers(url : URL) : Promise<Array<KickAssAnimeServer>> {
+    public async getExternalServers(url : URL) : Promise<Array<KickAssAnimeServer>> {
         const resp = await this.request.get<string>(url)
         const parseListOfServersRegex = new RegExp(/sources = (.+);/)
         let result
@@ -207,7 +222,7 @@ export class KickAssAnimeApiWrapper {
     }
 
     /**
-     * Get the sources files from a server.
+     * Get the episode video source files.
      * @param url 
      * @returns 
      */
@@ -217,5 +232,13 @@ export class KickAssAnimeApiWrapper {
         }
 
         return this.getNewVideoPlayerSourceFiles(url)
+    }
+
+    public preappendHostname(str : string) : URL {
+        return new URL("https://www2.kickassanime.ro" + str)
+    }
+
+    public getImageUrl(str : string) : URL {
+        return new URL("https://www2.kickassanime.ro/uploads/" + str)
     }
 }

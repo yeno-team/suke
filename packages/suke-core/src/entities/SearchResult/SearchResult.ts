@@ -34,13 +34,6 @@ export interface ISearchData {
    prevPageToken?: string
 }
 
-export interface IEpisodeData {
-    episode_name : string | null,
-    episode_num : number,
-    thumbnail_url : string | null,
-    url : URL
-}
-
 export interface IStandaloneData {
     type: StandaloneType;
     name: string | null;
@@ -61,7 +54,7 @@ export interface IMultiData {
 
 export interface IMultiStandaloneData {
     type: StandaloneType,
-    name: string,
+    name: string | null,
     index: number,
     sources: IVideoSource[]
 }
