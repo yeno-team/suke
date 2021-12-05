@@ -3,4 +3,4 @@ import Container from "typedi";
 import KickAssAnimeParser from ".";
 
 const a = Container.get(KickAssAnimeParser)
-a.search("dragon" , new ParserSearchOptions({ pageNumber : 8 , limit : 10})).then(console.log)
+a.search("Komi Can't Communicate", new ParserSearchOptions({ pageNumber : 1 })).then(console.log).catch(console.error)
