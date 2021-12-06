@@ -85,11 +85,6 @@ export default class KickAssAnimeParser implements IParser {
         const videoPlayerUrl = await this.wrapper.getVideoPlayerUrl(url)
         const externalServers = await this.wrapper.getExternalServers(videoPlayerUrl)
         
-        // The externalServers variable that is a length of 2 always contain SAPPHIRE-DUCK or PINK-BIRD only.
-        if(externalServers.length === 2) {
-            return this.wrapper.getVideoSourcesFiles(externalServers[0].src)
-        }   
-
         for(let i = 0; i < externalServers.length; i++) {
             try {
                 return await this.wrapper.getVideoSourcesFiles(externalServers[i].src)
