@@ -81,6 +81,7 @@ export default class KickAssAnimeParser implements IParser {
     }
 
     private async getVideoSources(url : URL) : Promise<Array<KickAssAnimeSourceFile>>{
+        // Catch error here
         const videoPlayerUrl = await this.wrapper.getVideoPlayerUrl(url)
         const externalServers = await this.wrapper.getExternalServers(videoPlayerUrl)
         
@@ -88,7 +89,7 @@ export default class KickAssAnimeParser implements IParser {
         if(externalServers.length === 2) {
             return this.wrapper.getVideoSourcesFiles(externalServers[0].src)
         }   
-        
+
         for(let i = 0; i < externalServers.length; i++) {
             try {
                 return await this.wrapper.getVideoSourcesFiles(externalServers[i].src)
@@ -96,9 +97,8 @@ export default class KickAssAnimeParser implements IParser {
             } catch (e) {}
         }
 
-        return this.wrapper.getVideoSourcesFiles(externalServers[0].src)
+        return []
     }
-
 
     private query_episodes(data : Array<KickAssAnimeEpisode>, options? : ParserSearchOptions) : KickAssAnimePaginationResponse<KickAssAnimeEpisode> {
         return this.pagination(data , new ParserSearchOptions({ pageNumber : 1 , limit : 10 }))
