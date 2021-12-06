@@ -8,7 +8,7 @@
     },
     "references": [
         {
-          "path": "../suke-util"
+            "path" : "../suke-util"
         },
         {
           "path": "../suke-core"
