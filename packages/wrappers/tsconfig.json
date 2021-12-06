@@ -11,10 +11,10 @@
     ],
     "references": [
         {
-            "path": [
-                "../requests",
-                "../suke-core"
-            ]
+            "path": "../requests"
+        },
+        {
+            "path" : "../suke-core"
         }
     ],
     "exclude": [
