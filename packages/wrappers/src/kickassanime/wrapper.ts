@@ -5,7 +5,7 @@ import * as cheerio from "cheerio";
 import hjson from "hjson";
 import { KickAssAnimeApiSearchResponse, KickAssAnimeInfoResponse, KickAssAnimeServer, KickAssAnimeSourceFile } from "./types";
 import { KickAssAnimeApiRawSearchResponse, KickAssAnimeInfoRawResponse } from ".";
-import { QualityAsUnion } from "packages/suke-core/src/entities/SearchResult";
+import { QualityAsUnion } from "@suke/suke-core/src/entities/SearchResult";
 
 @Service()
 export class KickAssAnimeApiWrapper {

@@ -1,9 +1,9 @@
 {
   "name": "@suke/wrappers",
-  "packageManager": "yarn@3.0.0",
+  "packageManager": "yarn@3.0.2",
   "dependencies": {
-    "@suke/suke-core" : "workspace:packages/suke-core",
     "@suke/requests": "workspace:packages/requests",
+    "@suke/suke-core": "workspace:packages/suke-core",
     "typedi": "^0.10.0"
   },
   "scripts": {
