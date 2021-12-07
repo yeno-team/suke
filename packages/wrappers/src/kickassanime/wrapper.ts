@@ -5,7 +5,7 @@ import * as cheerio from "cheerio";
 import hjson from "hjson";
 import { KickAssAnimeApiSearchResponse, KickAssAnimeInfoResponse, KickAssAnimeServer, KickAssAnimeSourceFile } from "./types";
 import { KickAssAnimeApiRawSearchResponse, KickAssAnimeInfoRawResponse } from ".";
-import { QualityAsUnion } from "packages/suke-core/src/entities/SearchResult";
+import { QualityAsUnion } from "@suke/suke-core/src/entities/SearchResult";
 
 @Service()
 export class KickAssAnimeApiWrapper {
@@ -114,7 +114,8 @@ export class KickAssAnimeApiWrapper {
      */
     public async getVideoPlayerUrl(url : URL) : Promise<URL> {
         const resp = await this.request.get<string>(url)
-        const getVideoPlayerUrlRegex = new RegExp(/"link1":"(.+)","link2"/)
+        const getVideoPlayerUrlRegex = new RegExp(/\"(https:(?:\\\/)*beststremo\.com(?:\\\/)*(?:dust|axplayer).+?)"/)
+        // const getVideoPlayerUrlRegex2 = new RegExp(/"\"ext_servers\":(\[{\"name\":\".*?\",\"link\":\".*?"}\])"/)
 
         let videoPlayerUrl
 
@@ -125,7 +126,14 @@ export class KickAssAnimeApiWrapper {
         videoPlayerUrl = new URL(videoPlayerUrl[1])
 
         if(videoPlayerUrl.searchParams.has("data")) {
-            return new URL(videoPlayerUrl.searchParams.get("data") as string)
+            const newVideoPlayerUrl = videoPlayerUrl.searchParams.get("data") as string
+
+            // Sometimes the data parameter doesn't return a valid url.
+            if(!(newVideoPlayerUrl.startsWith("https://"))) {
+                return new URL("https:" + newVideoPlayerUrl) 
+            }
+
+            return new URL(newVideoPlayerUrl)
         }
 
         return videoPlayerUrl
@@ -174,7 +182,6 @@ export class KickAssAnimeApiWrapper {
         }
 
         const data : KickAssAnimeInfoRawResponse = hjson.parse(result[1])
-
         return {
             ...data,
             episodes : data.episodes.map(({ num , name , slug , createddate }) => ({ num , name , url : this.preappendHostname(slug) , createddate })),

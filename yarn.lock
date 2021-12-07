@@ -4647,6 +4647,7 @@ __metadata:
   resolution: "@suke/wrappers@workspace:packages/wrappers"
   dependencies:
     "@suke/requests": "workspace:packages/requests"
+    "@suke/suke-core": "workspace:packages/suke-core"
     typedi: ^0.10.0
   languageName: unknown
   linkType: soft
