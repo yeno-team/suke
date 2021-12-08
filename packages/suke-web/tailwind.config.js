@@ -24,6 +24,9 @@ module.exports = {
       sans: ['Open Sans', 'sans-serif'],
       signika: ['Signika', 'sans-serif'],
       sitara: ['sitara', 'sans-serif']
+    },
+    backgroundImage : {
+      "blah" : "url('./assets/blah.png')" 
     }
   },
   variants: {

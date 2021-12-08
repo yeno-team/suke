@@ -1,8 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React , { useEffect } from "react";
 import { useParams } from "react-router";
 import { Chat } from "@suke/suke-web/src/components/Chat";
 import { IMessage } from "@suke/suke-core/src/entities/Message";
+import { AuthModal } from "@suke/suke-web/src/components/AuthModal";
 import classNames from "classnames";
+import { useChat } from "@suke/suke-web/src/hooks/useChat";
+import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
+import useAuth from "@suke/suke-web/src/hooks/useAuth";
 
 type ChatEmbedPageParams = {
     channelName : string
@@ -10,50 +14,32 @@ type ChatEmbedPageParams = {
 
 export const ChatEmbed = () : JSX.Element => {
     const { channelName } = useParams() as ChatEmbedPageParams
+    const [ chatMessages , sendMessage ] = useChat([])
+    const { joinRoom , leaveRoom } = useRoom()
+    const { user } = useAuth()
+    
+    useEffect(() => {
+        joinRoom(channelName)
 
-    const defaultMessages: IMessage[] = [
-        {
-            content: 'hello',
-            author: {
-                id: 1,
-                name: 'hello'
-            },
-            channelId : "hello"
-        },
-        {
-            content: 'hi',
-            author: {
-                id: 1,
-                name: 'khai2'
-            },
-            channelId : "khai12"
-        },
-        {
-            content: 'bye',
-            author: {
-                id: 1,
-                name: 'man'
-            },
-            channelId : "man"
+        return () => {
+            leaveRoom(channelName)
         }
-    ]
-
-    const [messages, setMessages] = useState(defaultMessages);
-
-    const submitMessage = useCallback((message : IMessage) => {
-        setMessages((prevMessages) => [...prevMessages , message])
-    } , [ setMessages ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } , [])
 
     return (
-        <Chat className={classNames(
+        <React.Fragment>
+            <Chat className={classNames(
             "bg-coolblack",
             "h-screen",
             "flex",
             "flex-col",
             "font-sans",
         )} 
-        submitMessage={submitMessage} 
-        messages={messages} 
-        channelId={channelName}/>
+            user={user}
+            submitMessage={sendMessage} 
+            messages={chatMessages} 
+            channelName={channelName}/>
+        </React.Fragment>
     )
 }

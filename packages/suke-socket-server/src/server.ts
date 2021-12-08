@@ -125,8 +125,6 @@ export class SocketServer extends(EventEmitter as new () => TypedEmitter<SocketS
                     // If the user inputs {"123"}
                     const msgJson = JSON.parse(message.toString());
 
-                    console.log(msgJson);
-
                     this.emit('message', new SocketMessage(msgJson), ws);
                 });
 

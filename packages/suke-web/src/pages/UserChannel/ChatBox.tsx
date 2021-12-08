@@ -38,6 +38,7 @@ export const ChatBox = ({username}: ChatboxProps) => {
 
     
     return (
-        <Chat className="flex-grow" channelId={username} messages={chatMessages} submitMessage={sendMessage}/>
+        <div/>
+        // <Chat className="flex-grow" channelId={username} messages={chatMessages} submitMessage={sendMessage}/>
     )
 }
