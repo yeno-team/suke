@@ -7,6 +7,7 @@
   "dependencies": {
     "@craco/craco": "^6.4.0",
     "@suke/suke-core": "workspace:packages/suke-core",
+    "@suke/suke-util" : "workspace:packages/suke-util",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

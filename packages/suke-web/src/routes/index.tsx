@@ -10,7 +10,7 @@ export const Routes = () => <ReactRoutes>
         <Route path="/register" element={<RegisterPage/>}/>
         <Route path="/:username" element={<UserChannelPage/>}/>
         <Route path="embed/">
-            <Route path="chat/:username" element={<ChatEmbed/>}/>
+            <Route path="chat/:channelName" element={<ChatEmbed/>}/>
         </Route>
         <Route path="*" element={<h1> Page is missing </h1>}/>
     </Route>
