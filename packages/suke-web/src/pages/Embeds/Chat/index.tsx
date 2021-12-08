@@ -1,4 +1,4 @@
-import React , { useEffect } from "react";
+import React , { useEffect , useState } from "react";
 import { useParams } from "react-router";
 import { Chat } from "@suke/suke-web/src/components/Chat";
 import { IMessage } from "@suke/suke-core/src/entities/Message";
@@ -15,9 +15,9 @@ type ChatEmbedPageParams = {
 export const ChatEmbed = () : JSX.Element => {
     const { channelName } = useParams() as ChatEmbedPageParams
     const [ chatMessages , sendMessage ] = useChat([])
-    const { joinRoom , leaveRoom } = useRoom()
     const { user } = useAuth()
-    
+    const { joinRoom , leaveRoom } = useRoom()
+
     useEffect(() => {
         joinRoom(channelName)
 
@@ -39,7 +39,8 @@ export const ChatEmbed = () : JSX.Element => {
             user={user}
             submitMessage={sendMessage} 
             messages={chatMessages} 
-            channelName={channelName}/>
+            channelName={channelName}
+        />
         </React.Fragment>
     )
 }
