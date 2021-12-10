@@ -7,16 +7,16 @@ export interface SearchBarProps {
     className?: string,
     placeholder?: string,
     value?: string,
+    loading?: boolean,
     setValue?: (val: string) => void,
     onSubmit?: React.FormEventHandler<HTMLFormElement>
 }
 
-export const SearchBar = ({size, className, placeholder, onSubmit, value, setValue}: SearchBarProps) => {
+export const SearchBar = ({size, className, placeholder, onSubmit, value, setValue, loading}: SearchBarProps) => {
     return (
         <form className={classNames(
             'flex',
             'relative',
-            'w-' + size,
             className
         )} onSubmit={onSubmit}>
             <input className={classNames(
@@ -25,12 +25,23 @@ export const SearchBar = ({size, className, placeholder, onSubmit, value, setVal
                 'rounded',
                 'bg-white',
             )} placeholder={placeholder ? placeholder : "Search..."} value={value} onChange={(e) => setValue!(e.target.value)} />
-            <Icon className={classNames(
-                'absolute',
-                'right-0',
-                'mt-3.5',
-                'mr-3'
-            )} icon="bx:bx-search" width="21px"/>
+            {
+                !loading ?
+                <Icon onClick={() => onSubmit!({} as React.FormEvent<HTMLFormElement>)} className={classNames(
+                    'absolute',
+                    'right-0',
+                    'mt-3.5',
+                    'mr-3',
+                    'cursor-pointer'
+                )} icon="bx:bx-search" width="21px"/> :
+                <Icon className={classNames(
+                    'absolute',
+                    'right-0',
+                    'mt-3.5',
+                    'mr-3',
+                    'animate-spin'
+                )} icon="mdi:loading" width="21px"/>
+            }
         </form>
     )
 }

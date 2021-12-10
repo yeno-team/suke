@@ -14,7 +14,6 @@ export const Modal = ({ active, onClose, onOpen, children, className }: ModalPro
     const [activeChanged, prevActiveVal] = useChanged(active);
 
     useEffect(() => {
-        console.log("da")
         if (activeChanged) {
             if (prevActiveVal === false && onOpen)
                 onOpen();
