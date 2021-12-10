@@ -19,7 +19,6 @@ createConnection({
     synchronize: true,
 }).then(() => {
     Container.set<redis.RedisClient>('redis', RedisClient);
-
     new Server(config)
         .start();
 }).catch(error => {
