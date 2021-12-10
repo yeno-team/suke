@@ -114,7 +114,7 @@ export class KickAssAnimeApiWrapper {
      */
     public async getVideoPlayerUrl(url : URL) : Promise<URL> {
         const resp = await this.request.get<string>(url)
-        const getVideoPlayerUrlRegex = new RegExp(/\"(https:(?:\\\/)*beststremo\.com(?:\\\/)*(?:dust|axplayer).+?)"/)
+        const getVideoPlayerUrlRegex = new RegExp(/"(https:(?:\\\/)*beststremo\.com(?:\\\/)*(?:dust|axplayer).+?)"/)
         // const getVideoPlayerUrlRegex2 = new RegExp(/"\"ext_servers\":(\[{\"name\":\".*?\",\"link\":\".*?"}\])"/)
 
         let videoPlayerUrl
@@ -182,6 +182,7 @@ export class KickAssAnimeApiWrapper {
         }
 
         const data : KickAssAnimeInfoRawResponse = hjson.parse(result[1])
+
         return {
             ...data,
             episodes : data.episodes.map(({ num , name , slug , createddate }) => ({ num , name , url : this.preappendHostname(slug) , createddate })),
