@@ -51,7 +51,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 <Logo />
             </div>
 
-            <SearchBar size='44' className={classNames(
+            <SearchBar size='full' className={classNames(
                 'md:hidden',
                 'ml-3',
                 'py-2'
