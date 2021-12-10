@@ -31,39 +31,6 @@ export default class KickAssAnimeParser implements IParser {
         private wrapper : KickAssAnimeApiWrapper
     ){}
 
-    private pagination<T>(data : Array<T> , options? : ParserSearchOptions) : KickAssAnimePaginationResponse<T> {
-        const startIndex = ((options?.pageNumber ?? 1) - 1) * ((options?.limit ?? 5))
-        const endIndex = (options?.pageNumber ?? 1) * ((options?.limit ?? 5))
-
-
-        if(startIndex > data.length)  {
-            throw new ParserError('This page number exceeds the results.')
-        }
-
-        const pagination_data : Array<T> = [] 
-        
-        for(let i = startIndex; i < endIndex; i++) {
-            // When we access an index position that doesn't exist on the array it will return undefined.
-            if(!(data[i])) {
-                break
-            }
-
-            pagination_data.push(data[i])
-        }
-
-        const result : KickAssAnimePaginationResponse<T> = { data : pagination_data }
-
-        if(startIndex > 0) {
-            result["prevPageToken"] = ((options?.pageNumber ?? 1) - 1).toString()
-        }
-
-        if(endIndex < data.length) {
-            result["nextPageToken"] = ((options?.pageNumber ?? 1) + 1).toString()
-        }
-
-        return result
-    }   
-
     /**
      * Query the search data from the KickAssAnime search api.
      * @param searchTerm 
@@ -71,12 +38,11 @@ export default class KickAssAnimeParser implements IParser {
      * @returns 
      */
     private async query_search(searchTerm : string , options? : ParserSearchOptions) : Promise<KickAssAnimeQuerySearchResponse> {
-        const searchResults = await this.wrapper.search(searchTerm)
-        const queryResults = this.pagination<KickAssAnimeApiSearchResult>(searchResults , options)
-        
+        const queryResults = await this.wrapper.search(searchTerm)
+
         return {
             ...queryResults,
-            data : await Promise.all(queryResults.data.map(async ({ url }) => this.wrapper.getAnimeInfo(url)))
+            data : await Promise.all(queryResults.map(async ({ url }) => this.wrapper.getAnimeInfo(url)))
         }
     }
 
@@ -95,22 +61,21 @@ export default class KickAssAnimeParser implements IParser {
         return []
     }
 
-    private query_episodes(data : Array<KickAssAnimeEpisode>, options? : ParserSearchOptions) : KickAssAnimePaginationResponse<KickAssAnimeEpisode> {
-        return this.pagination(data , new ParserSearchOptions({ pageNumber : 1 , limit : 10 }))
-    }
-
     private async extractMultis({ name , image , episodes } : KickAssAnimeInfoResponse) : Promise<IMultiData> {
         return {
+            id: name + Date.now(),
             name,
             thumbnail_url : image.href,
-            data : await Promise.all(episodes.map(async ({ name , num , url }) => ({
+            data : await Promise.all(episodes.map(async ({ num , url }) => ({
                 type : StandaloneType.Video,
-                name,
+                name: 'Episode ' + num,
                 index : parseInt(num),
-                sources : await (await this.getVideoSources(url)).map(({ url , quality }) => ({
-                    url,
-                    quality : Quality[quality]
-                }))
+                sources : [
+                    {
+                        url,
+                        quality: Quality.auto
+                    }
+                ]
             })))
         }
     }
@@ -120,18 +85,8 @@ export default class KickAssAnimeParser implements IParser {
             throw new ParserError("Options token property is not supported on the KickAssAnime parser.")
         }
 
-        // eslint-disable-next-line no-prototype-builtins
-        if(options && options.limit) {
-            throw new ParserError("Options limit property is not supported on the KickAssAnime parser.")
-        }
-
-        // eslint-disable-next-line no-prototype-builtins
-        if(options && options.pageNumber !== undefined && options.pageNumber! <= 0) {
-            throw new ParserError("Options pageNumber property is not an invalid integer.")
-        }
-
         const { data , nextPageToken , prevPageToken } = await this.query_search(searchTerm , options)
-        const animes = data.map((anime) => ({ ...anime , episodes : this.query_episodes(anime.episodes).data }))
+        const animes = data.map((anime) => ({ ...anime , episodes : anime.episodes }))
 
         return {
             results : {
