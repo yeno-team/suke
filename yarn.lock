@@ -4569,7 +4569,7 @@ __metadata:
     "@types/redis": ^2.8.32
     "@types/swagger-jsdoc": ^6
     "@types/swagger-ui-express": ^4
-    connect-redis: ^6.0.0
+    connect-typeorm: ^1.1.4
     cors: ^2.8.5
     dotenv: ^10.0.0
     express: ^4.17.1
@@ -5019,6 +5019,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/debug@npm:0.0.31":
+  version: 0.0.31
+  resolution: "@types/debug@npm:0.0.31"
+  checksum: d3f2cfa083f0f71015874f4a3e338deb3acbd80fc52c2b4c4eb21e2f28a0f5f5184d0861c8ec2b83e7c1e4db01fc2ec96646ae14fa7028f6da5acdf948b72fcb
+  languageName: node
+  linkType: hard
+
 "@types/emscripten@npm:^1.38.0":
   version: 1.39.5
   resolution: "@types/emscripten@npm:1.39.5"
@@ -5061,7 +5068,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-session@npm:*, @types/express-session@npm:^1":
+"@types/express-session@npm:*, @types/express-session@npm:^1, @types/express-session@npm:^1.15.5":
   version: 1.17.4
   resolution: "@types/express-session@npm:1.17.4"
   dependencies:
@@ -8333,10 +8340,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "connect-redis@npm:6.0.0"
-  checksum: 3ee09943274cc877287b253a68e0a4f516ac21f6508e14cadf021d58b5c98feca351eea451a800757b2c8835e12a39166cb36a50eb683bb4604f40f48713f3cc
+"connect-typeorm@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "connect-typeorm@npm:1.1.4"
+  dependencies:
+    "@types/debug": 0.0.31
+    "@types/express-session": ^1.15.5
+    debug: ^4.1.1
+    express-session: ^1.15.6
+  peerDependencies:
+    typeorm: ^0.1.4 || ^0.2.5
+  checksum: 53e8d718f51d58149af562908b11ddbc3a716563a06e13f9c0ffc52d89774c1dd1660ca5e9958ecfe66469ac7d023d68fddf5b10aefb48c061da6c42b766ab28
   languageName: node
   linkType: hard
 
@@ -10573,7 +10587,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-session@npm:^1.17.2":
+"express-session@npm:^1.15.6, express-session@npm:^1.17.2":
   version: 1.17.2
   resolution: "express-session@npm:1.17.2"
   dependencies:
@@ -21732,11 +21746,11 @@ typescript@^4.4.3:
 
 "typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.4.3
-  resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=32657b"
+  resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=d8b4e7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 28ab98313afab46788ff41014fdb5932430ada6e03cf9e92ac47f406526a2cac1ae2894834e7da61e46b7429318e9c47f45ba8de323332f0cb9af99b72ebae74
+  checksum: 215a59742afb7e0c3668e2c50ca19813deb24b3cc0d16ac3591990e033728050aaa99e159a72b54cb43653f16c778a5cf9dfeed1f51c3b105710ae082c064af7
   languageName: node
   linkType: hard
 
