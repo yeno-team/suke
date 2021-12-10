@@ -11,12 +11,13 @@ export interface VideoMenuProps {
     className?: string;
     playerWidth?: string;
     playerHeight?: string;
+    isAuthenticated?: boolean;
 }
 
-export const VideoMenu = ({ url, handleOpenBrowser, className, playerHeight, playerWidth }: VideoMenuProps): JSX.Element => {
+export const VideoMenu = ({ url, handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated }: VideoMenuProps): JSX.Element => {
     return (
         <div className={classNames('h-full', className, 'flex flex-col')}>
-            <VideoMenuHeader handleOpenBrowser={handleOpenBrowser} />
+            <VideoMenuHeader handleOpenBrowser={handleOpenBrowser} isAuthenticated={isAuthenticated} />
             <VideoPlayer url={url} width={playerWidth} height={playerHeight} />
         </div>
     )
