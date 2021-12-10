@@ -3,20 +3,17 @@ import { ValueObject } from "@suke/suke-core/src/ValueObject";
 
 export interface IParserSearchOptions {
   token?: string,
-  pageNumber?: number,
   limit?: number
 }
 
 export class ParserSearchOptions extends ValueObject implements IParserSearchOptions {
     token?: string | undefined;
-    pageNumber?: number;
     limit?: number;
     
     constructor(options : IParserSearchOptions) {
         super();
         
         this.token = options.token;
-        this.pageNumber = options.pageNumber;
         this.limit = options.limit;
     } 
 
