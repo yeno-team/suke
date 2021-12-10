@@ -37,6 +37,7 @@ export interface ISearchData {
 export interface IStandaloneData {
     type: StandaloneType;
     name: string | null;
+    id: string,
     thumbnail_url: string | null;
     sources: IVideoSource[];
 }
@@ -48,6 +49,7 @@ export interface IVideoSource {
 
 export interface IMultiData {
     name: string,
+    id: string,
     thumbnail_url: string,
     data: IMultiStandaloneData[]
 }
@@ -58,3 +60,4 @@ export interface IMultiStandaloneData {
     index: number,
     sources: IVideoSource[]
 }
+
