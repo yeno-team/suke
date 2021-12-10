@@ -11,7 +11,10 @@ dotenv.config({
 });
 
 const RedisStore = connectRedis(session);
-export const RedisClient = redis.createClient({ url: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string});
+export const RedisClient = redis.createClient({
+    url: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string,
+    enable_offline_queue : false
+});
 
 const config: IConfiguration = {
     server: {
