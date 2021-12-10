@@ -1,7 +1,7 @@
 import { RateLimiterRedis , IRateLimiterStoreOptions } from "rate-limiter-flexible";
 import { RedisClient } from "../config/index"
 
-const config : IRateLimiterStoreOptions = {
+const opts : IRateLimiterStoreOptions = {
     storeClient : RedisClient,
     keyPrefix : "login_fail_by_ip_per_day:",
     duration : 60 * 60 * 24,
@@ -9,9 +9,9 @@ const config : IRateLimiterStoreOptions = {
     blockDuration : 60 * 60 * 24
 }
 
-const limiter = new RateLimiterRedis(config)
+const limiter = new RateLimiterRedis(opts)
 
 export default {
     limiter,
-    config
+    opts
 }
