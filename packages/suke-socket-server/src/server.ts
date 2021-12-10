@@ -12,7 +12,7 @@ import { IHasId } from '@suke/suke-core/src/IHasId';
 import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
-import redis from 'redis';
+import redis, { RedisClient } from 'redis';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -49,8 +49,9 @@ export class SocketServer extends (EventEmitter as new () => TypedEmitter<Socket
     private roomManger: RoomManager;
     
     public connections: Map<string, WebSocketConnection>;
+    private _redisClient: RedisClient;
 
-    constructor({httpServer, sessionParser }: SocketServerConfig) {
+    constructor({httpServer, sessionParser, redisClient }: SocketServerConfig) {
         super();
 
         const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
@@ -87,13 +88,13 @@ export class SocketServer extends (EventEmitter as new () => TypedEmitter<Socket
             });
         });
 
+        this._redisClient = redisClient;
         this.server = httpServer;
         this.wss = wss;
         this.userMap = new Map();
         this.guestMap = new Map();
         this.connections = new Map();
         this.roomManger = new RoomManager(this);
-
         this.setup();
     }
 
@@ -142,6 +143,10 @@ export class SocketServer extends (EventEmitter as new () => TypedEmitter<Socket
 
                     this.connections.delete(ws.id);
                     this.userMap.delete(user.id);
+                    this.emit('message', new SocketMessage({
+                        type: 'SOCKET_DISCONNECT',
+                        data: ws.id
+                    }), ws, user);
 
                     console.log(user.name + " Disconnected.");
                 });
@@ -190,6 +195,10 @@ export class SocketServer extends (EventEmitter as new () => TypedEmitter<Socket
 
     public getRoomManager(): RoomManager {
         return this.roomManger;
+    }
+
+    public getRedisClient(): RedisClient {
+        return this._redisClient;
     }
 
     public start(port: number, cb: () => void): void {
