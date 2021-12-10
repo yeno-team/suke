@@ -2,7 +2,7 @@ import { ISearchData, IStandaloneData, StandaloneType, Quality, IMultiData, IMul
 import { Service } from "typedi";
 import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { YoutubeApiWrapper } from "@suke/wrappers/src";
-import { ChannelRenderer, IHasChannelRenderer, IHasItemSectionRenderer, IHasPlaylistRenderer, IHasShelfRenderer, IHasVideoRenderer, ItemSectionRenderer, Thumbnail, YoutubeApiSearchContinuationResponse, YoutubeApiSearchResponse } from "@suke/wrappers/src/youtube";
+import { ChannelRenderer, IHasChannelRenderer, IHasItemSectionRenderer, IHasPlaylistRenderer, IHasShelfRenderer, IHasVideoRenderer, Thumbnail, YoutubeApiSearchContinuationResponse, YoutubeApiSearchResponse } from "@suke/wrappers/src/youtube";
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError";
 
 @Service()
@@ -82,6 +82,7 @@ export class YoutubeParser implements IParser {
             if (shelfRenderer != null) {
                 for (const videoRenderer of shelfRenderer.content.verticalListRenderer.items) {
                     standalones.push({
+                        id: 'youtube-' + videoRenderer.videoRenderer.videoId,
                         type: this.wrapper.isLiveStream(videoRenderer.videoRenderer) ? StandaloneType.Stream : StandaloneType.Video,
                         name: videoRenderer.videoRenderer.title.runs[0]?.text,
                         thumbnail_url: videoRenderer.videoRenderer.thumbnail.thumbnails[0].url,
@@ -97,6 +98,7 @@ export class YoutubeParser implements IParser {
                 const videoRenderer = renderer.videoRenderer;
 
                 standalones.push({
+                    id: 'youtube-' + videoRenderer.videoId,
                     type: this.wrapper.isLiveStream(videoRenderer) ? StandaloneType.Stream : StandaloneType.Video,
                     name: videoRenderer.title.runs[0]?.text,
                     thumbnail_url: videoRenderer.thumbnail.thumbnails[0].url,
@@ -105,7 +107,7 @@ export class YoutubeParser implements IParser {
                             url: new URL(`https://www.youtube.com/watch?v=${videoRenderer.videoId}`),
                             quality: Quality.auto
                         }
-                    ]
+                    ],
                 });
             }
         }
@@ -160,6 +162,7 @@ export class YoutubeParser implements IParser {
                 }
 
                 multis.push({
+                    id: 'youtubeList-' + playlistRenderer.playlistId,
                     name: playlistRenderer.title.simpleText,
                     thumbnail_url: highestQualityThumbnail ? highestQualityThumbnail.url : "",
                     data: playlistStandaloneVideos
