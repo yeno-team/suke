@@ -1,6 +1,10 @@
 import { SocketMessage } from "@suke/suke-core/src/entities/SocketMessage";
 import { SocketServer, WebSocketConnection } from "../server";
 
+export interface BroadcasterOptions {
+    blacklist?: string,
+    whitelist?: string
+}
 
 export class SocketBroadcaster {
     private server: SocketServer;
@@ -13,25 +17,44 @@ export class SocketBroadcaster {
      * Broadcast/send data to all connected users ignoring users in the ignoreList.
      * 
      * @param data Data to broadcast
-     * @param ignoreList socket ids to ignore
+     * @param BroadcasterOptions
      */
-    public broadcast(data: SocketMessage, ignoreList: string[] = []): void {
+    public broadcast(data: SocketMessage, opts?: BroadcasterOptions): void {
         this.server.getConnections().forEach((v: WebSocketConnection) => {
-            if (ignoreList.indexOf(v.id) !== -1) 
-                return;
+            if (opts != null) {
+                if (opts.blacklist?.indexOf(v.id) !== -1) 
+                    return;
+
+                if (opts.whitelist?.indexOf(v.id) === -1) {
+                    return;
+                }
+            }
 
             v.send(JSON.stringify(data));
         });
     }
 
-    public broadcastToRoom(data: SocketMessage, roomId: string, ignoreList: string[] = []): void {
+    public async broadcastToRoom(data: SocketMessage, roomId: string, opts?: BroadcasterOptions): Promise<void> {
         const roomManager = this.server.getRoomManager();
 
-        roomManager.getRoom(roomId).forEach(v => {
-            if (ignoreList.indexOf(v.id) !== -1) 
-                return;
+        const roomConnections = await roomManager.getRoom(roomId);
 
-            v.send(JSON.stringify(data));
+        roomConnections.forEach(async id => {
+            if (opts != null) {
+                if (opts.blacklist?.indexOf(id) !== -1) 
+                    return;
+
+                if (opts.whitelist?.indexOf(id) === -1) {
+                    return;
+                }
+            }
+        
+            const connection = this.server.getConnection(id);
+            if (connection == null) {
+                await roomManager.removeUser(roomId, id);
+            } else {
+                connection.send(JSON.stringify(data));
+            }
         });
     }
 }
