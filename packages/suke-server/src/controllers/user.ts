@@ -48,7 +48,8 @@ export class UserController extends BaseController {
         // Removes salt from the response.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {salt, channel, ...userRes } = createdUser;
-
+        
+        req.session.user = createdUser;
         res.status(201).send({
             message: 'Created',
             user: userRes
