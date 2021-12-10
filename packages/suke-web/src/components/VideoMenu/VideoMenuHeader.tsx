@@ -4,10 +4,11 @@ import React from 'react'
 
 export interface VideoMenuHeaderProps {
     viewerCount?: number,
+    isAuthenticated?: boolean,
     handleOpenBrowser?: () => void
 }
 
-export const VideoMenuHeader = ({viewerCount, handleOpenBrowser}: VideoMenuHeaderProps) => {
+export const VideoMenuHeader = ({viewerCount, handleOpenBrowser, isAuthenticated}: VideoMenuHeaderProps) => {
     return (
         <header className={classNames(
             'w-full',
@@ -28,7 +29,9 @@ export const VideoMenuHeader = ({viewerCount, handleOpenBrowser}: VideoMenuHeade
                     }
                 </span>
             </span>
-            <button onClick={handleOpenBrowser} className="p-2 text-sm font-bold rounded justify-self-end text-white bg-blue">Open Browser</button>
+            {
+               isAuthenticated ? <button onClick={handleOpenBrowser} className="p-2 text-sm font-bold rounded justify-self-end text-white bg-blue">Open Browser</button> : null 
+            }
         </header>          
     )
 }
