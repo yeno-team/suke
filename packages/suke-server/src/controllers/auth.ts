@@ -4,8 +4,9 @@ import { Service } from "typedi";
 import { createUserAttacher } from "../middlewares/createUserAttacher";
 import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
+import { LoginRouteRateLimiter } from "../limiters";
+import { isUserRateLimited } from "../middlewares/isUserRateLimited";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
-
 @Service()
 export class AuthController extends BaseController {
     public route = "/api/auth";
@@ -17,12 +18,12 @@ export class AuthController extends BaseController {
     }
 
     public execute(app: Express): void {
-        app.route(this.route)
-            .post(createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+        app.route(this.route + "/login")
+            .post(isUserRateLimited(LoginRouteRateLimiter , "") , createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
         
         app.route(this.route + "/logout")
             .post(catchErrorAsync(this.Logout))
-    }
+    }   
 
     public Post = async (req: Request, res: Response): Promise<void> => {
         if (req.session.user != null) {

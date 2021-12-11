@@ -17,7 +17,7 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
                     res.status(404).send({
                         message: `UserId '${userId}' does match any users.`
                     });
-
+                    
                     return;
                 }
                 
