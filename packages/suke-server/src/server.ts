@@ -9,8 +9,13 @@ import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
 import { RedisClient } from "./config";
+import { RateLimiterRedis } from "rate-limiter-flexible";
 
 interface ExpressLocals {
+    rateLimiter? : {
+        key : string,
+        limiter : RateLimiterRedis
+    }
     user?: UserModel;
 }
 

@@ -29,7 +29,7 @@ export class AuthController extends BaseController {
         if (req.session.user != null) {
             throw new Error("Already Authenticated.");
         }
-
+        
         const password = req.body.password;
 
         const check = await res.locals.user?.testRawPassword(password);

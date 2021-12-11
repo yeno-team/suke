@@ -3,24 +3,27 @@ import { RateLimiterRedis } from "rate-limiter-flexible";
 import { catchErrorAsync } from "./catchErrorAsync";
 
 export const isUserRateLimited = (limiter : RateLimiterRedis , key : string) : RequestHandler => catchErrorAsync(async (req , res , next) => {
-    const rateLimiterResp = await limiter.get(key + req.ip)
-    
-    res.set("RateLimit-Limit", (limiter.points).toString())
+    const response = await limiter.get(key + req.ip)
 
-    if(rateLimiterResp !== null && (rateLimiterResp.consumedPoints > limiter.points)) {
-        const retrySecs = Math.floor((rateLimiterResp.msBeforeNext / 1000) | 1)
+    res.set("X-RateLimit-Limit", (limiter.points).toString())
 
-        res.set("RateLimit-Remaining" , "0")    
-        res.set("RateLimit-Reset" , retrySecs.toString())
+    if(response !== null && (response.consumedPoints >= limiter.points)) {
+        const retrySecs = Math.floor((response.msBeforeNext / 1000) | 1)
+
+        res.set("X-RateLimit-Remaining" , "0")    
+        res.set("X-RateLimit-Reset" , response.msBeforeNext.toString())
+        res.set("Retry-After" , retrySecs.toString())
 
         return res.status(429).json({
-            success : false,
-            text : "Too Many Requests!"
+            retry_after : retrySecs,
+            message : "You are being rate limited."
         })
     }
 
-    res.locals.rateLimiterResp = rateLimiterResp
-    res.locals.rateLimiter = limiter
+    res.locals.rateLimiter = {
+        key : (key + req.ip),
+        limiter
+    }
 
     next()
 })
