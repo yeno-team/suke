@@ -9,6 +9,10 @@ export interface IConfiguration {
     },
     redis: {
         connectionUri: string
+    },
+    recaptcha : {
+        siteKey : string,
+        secretKey : string,
     }
     session: SessionOptions
 }

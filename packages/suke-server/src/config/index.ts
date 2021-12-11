@@ -31,6 +31,10 @@ const config: IConfiguration = {
         saveUninitialized: false,
         secret: getEnvironmentVariable("SESSION_SECRET", false, "GODLYSECRETFORYOU") as string,
         resave: false
+    },
+    recaptcha : {
+        secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEy" , true) as string,
+        siteKey : getEnvironmentVariable("RECAPTCHA_SITE_KEY" , true) as string
     }
 }
 
