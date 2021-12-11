@@ -11,7 +11,7 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
     const { key , limiter } = res.locals.rateLimiter
     const { remainingPoints }  = await limiter.consume(key , 1)
 
-    res.set("RateLimit-Remaining" , remainingPoints.toString())
+    res.set("X-RateLimit-Remaining" , remainingPoints.toString())
     
     switch(identifier) {
         case UserIdentifier.Id: {
