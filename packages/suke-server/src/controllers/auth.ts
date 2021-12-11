@@ -5,7 +5,7 @@ import { createUserAttacher } from "../middlewares/createUserAttacher";
 import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
 import { LoginRouteRateLimiter } from "../limiters";
-import { isUserRateLimited } from "../middlewares/isUserRateLimited";
+import { createRateLimit } from "../middlewares/createRateLimit";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 @Service()
 export class AuthController extends BaseController {
@@ -19,7 +19,7 @@ export class AuthController extends BaseController {
 
     public execute(app: Express): void {
         app.route(this.route + "/login")
-            .post(isUserRateLimited(LoginRouteRateLimiter , "") , createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+            .post(createRateLimit(LoginRouteRateLimiter , "") , createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
         
         app.route(this.route + "/logout")
             .post(catchErrorAsync(this.Logout))
