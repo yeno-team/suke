@@ -10,7 +10,7 @@ export const isUserRateLimited = (limiter : RateLimiterRedis , key : string) : R
     if(response !== null && (response.consumedPoints >= limiter.points)) {
         const retrySecs = Math.floor((response.msBeforeNext / 1000) | 1)
 
-        res.set("X-RateLimit-Remaining" , "0")    
+        res.set("X-RateLimit-Remaining" , response.remainingPoints.toString())    
         res.set("X-RateLimit-Reset" , response.msBeforeNext.toString())
         res.set("Retry-After" , retrySecs.toString())
 
