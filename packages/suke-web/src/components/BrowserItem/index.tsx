@@ -55,6 +55,14 @@ export function BrowserItem({data, category, roomId, requestedBy }: BrowserItemP
         removeRequest(requestObj)
     }
 
+    const revertOrRequestButton = requestedBy && requestedBy.findIndex(v => v.toLowerCase() === user?.name.toLowerCase()) !== -1 ?
+    <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleUndoRequest} backgroundColor={ "red"}>
+        Revert
+    </Button> :
+    <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleRequest} backgroundColor={ "blue"}>
+        Request  
+    </Button>;
+
     return (
         <div className="font-sans bg-coolblack mb-2 flex m-0">
             <img src={data.thumbnail_url!} className="m-0 max-w-128 w-auto h-auto object-cover" alt={`${data.name} thumbnail`}></img>
@@ -65,13 +73,12 @@ export function BrowserItem({data, category, roomId, requestedBy }: BrowserItemP
                     requestedBy ? <h4 className="text-xs font-signika text-blue font-bold">REQUESTED BY: {requestedBy.join(", ")}</h4> : null
                 }
                 {
-                    requestedBy && requestedBy.findIndex(v => v.toLowerCase() === user?.name.toLowerCase()) !== -1 ?
-                    <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleUndoRequest} backgroundColor={ "red"}>
-                        Revert
-                    </Button> :
-                    <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleRequest} backgroundColor={ "blue"}>
-                        Request  
-                    </Button> 
+                     user && user.name === roomId ?
+                     // TODO: FINISH THIS
+                     <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleRequest} backgroundColor={"orange"}>
+                        Set  
+                     </Button>
+                     : revertOrRequestButton
                 }
                 
             </div>
