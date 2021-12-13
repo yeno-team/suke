@@ -8,11 +8,6 @@ import { catchErrorAsync } from "./catchErrorAsync";
 export const createUserAttacher = (identifier: UserIdentifier): RequestHandler => catchErrorAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const userService = Container.get(UserService);
 
-    const { key , limiter } = res.locals.rateLimiter
-    const { remainingPoints }  = await limiter.consume(key , 1)
-
-    res.set("X-RateLimit-Remaining" , remainingPoints.toString())
-    
     switch(identifier) {
         case UserIdentifier.Id: {
                 const userId = req.params.id || req.body.id;
