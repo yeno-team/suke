@@ -1,1 +1,5 @@
-export { default as LoginRouteRateLimiter } from "./LoginRouteRateLimiter";
+import LoginRouteRateLimiter from "./LoginRouteLimiter";
+
+export {
+    LoginRouteRateLimiter
+}

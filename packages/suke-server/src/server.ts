@@ -9,13 +9,8 @@ import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
 import { RedisClient } from "./config";
-import { RateLimiterRedis } from "rate-limiter-flexible";
 
 interface ExpressLocals {
-    rateLimiter? : {
-        key : string,
-        limiter : RateLimiterRedis
-    }
     user?: UserModel;
 }
 
@@ -61,6 +56,7 @@ export class Server {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({origin: "*"}));
         this.app.use(this.sessionParser);
+        
 
         this.setupControllers();
 
