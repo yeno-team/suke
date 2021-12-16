@@ -7,13 +7,16 @@ import useAuth from "../../hooks/useAuth";
 import { useChannel } from "../../hooks/useChannel";
 import { Button } from "../Button";
 import { Request } from "@suke/suke-core/src/entities/Request";
+import { getUrlSources } from "../../api/source";
 
 export interface BrowserItemProps {
     key: string,
     data: IStandaloneData,
     category: string,
     roomId: string,
-    requestedBy?: string[]
+    activeSource: string,
+    requestedBy?: string[],
+    toggleModal: () => void;
 }
 
 export interface MultiBrowserItemProps {
@@ -21,20 +24,25 @@ export interface MultiBrowserItemProps {
     data: IMultiData,
     category: string,
     roomId: string,
+    activeSource: string,
     requestedStandalones?: IMultiStandaloneData[],
-    requestedBy?: string[]
+    requestedBy?: string[],
+    toggleModal: () => void;
 }
 
 export interface MultiBrowserStandaloneItemProps {
-    key: string,
-    data: IMultiData,
-    roomId: string,
+    key: string;
+    data: IMultiData;
+    roomId: string;
+    category: string;
+    activeSource: string;
     standaloneData: IMultiStandaloneData;
-    requestedBy?: string[]
+    requestedBy?: string[];
+    toggleModal: () => void;
 }
 
-export function BrowserItem({data, category, roomId, requestedBy }: BrowserItemProps) {
-    const { createRequest, removeRequest } = useChannel();
+export function BrowserItem({data, category, roomId, requestedBy, toggleModal, activeSource}: BrowserItemProps) {
+    const { createRequest, removeRequest, updateRealtimeChannelData } = useChannel();
     const { user } = useAuth();
     
     const requestObj: Request = {
@@ -53,6 +61,28 @@ export function BrowserItem({data, category, roomId, requestedBy }: BrowserItemP
 
     const handleUndoRequest = () => {
         removeRequest(requestObj)
+    }
+
+    const handleSet = () => {
+        const sendRequest = async () => {
+            toggleModal();
+            try {
+                const sources = await getUrlSources({engine: activeSource, url: data.sources[0].url})
+                console.log(sources);
+                updateRealtimeChannelData({
+                    currentVideo: {
+                        sources: sources.length > 0 ? sources : data.sources,
+                        name: data.name as string,
+                        category: category
+                    },
+                    channelId: roomId
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        sendRequest();
     }
 
     const revertOrRequestButton = requestedBy && requestedBy.findIndex(v => v.toLowerCase() === user?.name.toLowerCase()) !== -1 ?
@@ -74,8 +104,7 @@ export function BrowserItem({data, category, roomId, requestedBy }: BrowserItemP
                 }
                 {
                      user && user.name === roomId ?
-                     // TODO: FINISH THIS
-                     <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleRequest} backgroundColor={"orange"}>
+                     <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleSet} backgroundColor={"coolorange"}>
                         Set  
                      </Button>
                      : revertOrRequestButton
