@@ -4,7 +4,7 @@ import { IMultiData, ISearchData , StandaloneType , Quality, IVideoSource } from
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError"
 import { KickAssAnimeApiWrapper } from "@suke/wrappers/src"
 import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
-import { KickAssAnimeApiSearchResult, KickAssAnimeEpisode, KickAssAnimeInfoResponse, KickAssAnimeSourceFile } from "@suke/wrappers/src/kickassanime";
+import { KickAssAnimeInfoResponse, KickAssAnimeSourceFile } from "@suke/wrappers/src/kickassanime";
 
 export type KickAssAnimePaginationResponse<T> = {
     nextPageToken? : string;
