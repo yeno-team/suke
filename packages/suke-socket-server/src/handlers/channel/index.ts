@@ -8,7 +8,8 @@ import { getRepository } from "typeorm";
 import { UserChannelModel } from "@suke/suke-core/src/entities/UserChannel/UserChannel";
 import { SocketBroadcaster } from "../../extensions/Broadcaster";
 import { RequestManager } from "../../extensions/RequestManager";
-
+import { Name } from "@suke/suke-core/src/entities/Name/Name";
+import { parsers } from "@suke/parsers/src";
 
 export const createChannelHandler: Handler = (server: SocketServer) => (): void => {
     server.on('message', async (message: SocketMessage, ws: WebSocketConnection, user?: User) => {
@@ -56,24 +57,33 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         type: 'CHANNEL_REQUESTS',
                         data: requests
                     })));
+                    ws.send(JSON.stringify(new SocketMessage({
+                        type: 'CHANNEL_UPDATE',
+                        data: await channelManager.getChannel(msg.data)
+                    })));
                 } catch (e) {
                     server.emit('error', e);
                 }
                 break;
             case 'CHANNEL_UPDATE':
                 try {
+                    if (!user.Name().Equals(new Name(msg.data.channelId.toLowerCase()))) {
+                        return server.emit('clientError', new Error("You do not have permission to edit channel data."), ws);
+                    }
+
                     const updated = await channelManager.editRealtimeChannel(msg.data.channelId, msg.data);
-                
+                    
                     if (updated) {
+                        const updatedData = await channelManager.getChannel(msg.data.channelId);
                         broadcaster.broadcastToRoom(new SocketMessage({
                             type: 'CHANNEL_UPDATE',
-                            data: msg.data
+                            data: updatedData
                         }), msg.data.channelId)
                     } else {
-                        ws.send(new SocketMessage({
+                        ws.send(JSON.stringify(new SocketMessage({
                             type: 'SERVER_ERROR',
                             data: "Could not update channel data."
-                        }));
+                        })));
                     }
                 } catch (e) {
                     server.emit('clientError', e, ws)
