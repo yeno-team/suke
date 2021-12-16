@@ -1,24 +1,22 @@
-import { SocketServer } from "../server";
-import { getRequestedId, isRequestsEqual, Request } from "@suke/suke-core/src/entities/Request";
-import { RedisClient } from "redis";
-import { isValidJson } from "@suke/suke-util";
+import { RedisClientType, SocketServer } from "../server";
+import { isRequestsEqual, Request } from "@suke/suke-core/src/entities/Request";
 
 export class RequestManager {
-    private redisClient: RedisClient;
+    private redisClient: RedisClientType;
 
     constructor(private socketServer: SocketServer) {
         this.redisClient = socketServer.getRedisClient();
     }
 
     public async getRequests(channelId: string): Promise<Request[]> {
-        return new Promise((resolve, reject) => {
-            const key = this.getRedisKey(channelId);
-            this.redisClient.get(key, (err, val) => {
-                if (err) return reject(err);
-                if (val == null) return resolve([]);
-                return resolve(JSON.parse(val));
-            });
-        });
+        const key = this.getRedisKey(channelId);
+        const val = await this.redisClient.get(key);
+        if (val == null) {
+            await this.redisClient.set(key, JSON.stringify([]));
+            return [];
+        }
+
+        return JSON.parse(val);
     }
 
     public async addRequest(channelId: string, request: Request): Promise<void> {
@@ -30,10 +28,7 @@ export class RequestManager {
             }
         }
             
-        this.redisClient.set(this.getRedisKey(channelId), JSON.stringify([...requests, request]), (err) => {
-            if (err != null) throw err;
-            return;
-        });
+        await this.redisClient.set(this.getRedisKey(channelId), JSON.stringify([...requests, request]));
     }
 
     public async removeRequest(channelId: string, request: Request): Promise<void> {
@@ -43,10 +38,7 @@ export class RequestManager {
         if (foundIndex === -1) throw new Error("RequestManager: Can not remove non-existing request.");
         
         delete data[foundIndex];
-        this.redisClient.set(this.getRedisKey(channelId), JSON.stringify(data), (err) => {
-            if (err != null) throw err;
-            return;
-        });
+        await this.redisClient.set(this.getRedisKey(channelId), JSON.stringify(data));
     }
 
     private getRedisKey(channelId: string) {

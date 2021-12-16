@@ -12,7 +12,7 @@ import { IHasId } from '@suke/suke-core/src/IHasId';
 import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
-import redis, { RedisClient } from 'redis';
+import { RedisClient } from "@suke/suke-server/src/config";
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -33,10 +33,12 @@ export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolea
  */
 type EventRequest = Request & IncomingMessage & {session: IHasUser};
 
+export type RedisClientType = typeof RedisClient;
+
 export interface SocketServerConfig {
     httpServer: Server,
     sessionParser: RequestHandler,
-    redisClient: redis.RedisClient
+    redisClient: RedisClientType
 }
 
 export class SocketServer extends (EventEmitter as new () => TypedEmitter<SocketServerEvents>) {
@@ -49,7 +51,7 @@ export class SocketServer extends (EventEmitter as new () => TypedEmitter<Socket
     private roomManger: RoomManager;
     
     public connections: Map<string, WebSocketConnection>;
-    private _redisClient: RedisClient;
+    private _redisClient: RedisClientType;
 
     constructor({httpServer, sessionParser, redisClient }: SocketServerConfig) {
         super();
@@ -197,7 +199,7 @@ export class SocketServer extends (EventEmitter as new () => TypedEmitter<Socket
         return this.roomManger;
     }
 
-    public getRedisClient(): RedisClient {
+    public getRedisClient(): RedisClientType {
         return this._redisClient;
     }
 
