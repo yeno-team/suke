@@ -1,4 +1,4 @@
-import { IMultiData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
+import { IMultiData, IStandaloneData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { BrowserItem, MultiBrowserItem } from "../components/BrowserItem";
 
 /**
@@ -9,7 +9,7 @@ import { BrowserItem, MultiBrowserItem } from "../components/BrowserItem";
  * @param requestedItems 
  * @returns 
  */
-export const getBrowserItems = (standalones: IStandaloneData[], multis: IMultiData[], roomId: string, requestedItems: Map<string, JSX.Element>) => {
+export const getBrowserItems = (standalones: IStandaloneData[], multis: IMultiData[], roomId: string, requestedItems: Map<string, JSX.Element>, toggleModal: () => void, activeSource: string) => {
     let items = [];
     let i = 0;
         
@@ -20,7 +20,7 @@ export const getBrowserItems = (standalones: IStandaloneData[], multis: IMultiDa
 
         if (items.find(v => v && v.key === standalone.id) != null) continue;
 
-        items[i] = (<BrowserItem data={standalone} key={standalone.id} roomId={roomId} category={"Category"}></BrowserItem>)
+        items[i] = (<BrowserItem activeSource={activeSource} toggleModal={toggleModal} data={standalone} key={standalone.id} roomId={roomId} category={"Category"}></BrowserItem>)
         i = i + 2;
     }
 
@@ -34,7 +34,7 @@ export const getBrowserItems = (standalones: IStandaloneData[], multis: IMultiDa
         if (items.find(v => v && v.key === multi.id) != null) continue;
 
         
-        items[i] = (<MultiBrowserItem data={multi} key={multi.id} roomId={roomId} category={"Category"} ></MultiBrowserItem>)
+        items[i] = (<MultiBrowserItem activeSource={activeSource} toggleModal={toggleModal} data={multi} key={multi.id} roomId={roomId} category={"Category"} ></MultiBrowserItem>)
         i = i + 2;
     }
 
