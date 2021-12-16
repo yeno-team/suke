@@ -13,11 +13,12 @@ import { getBrowserItems } from "../../util/getBrowserItems"
 
 export interface BrowserProps {
     setActive: (active: boolean) => void;
+    active: boolean;
     requests: Request[];
     roomId: string;
 }
 
-export const Browser = ({ setActive, roomId, requests }: BrowserProps) => {
+export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
     const {sources, searchSource, continueSearch} = useSource();
     const [activeSource, setActiveSource] = useState("");
@@ -35,8 +36,11 @@ export const Browser = ({ setActive, roomId, requests }: BrowserProps) => {
         }  
     }, [sources, activeSource]);
 
-
     useEffect((): void => {
+        const toggleModal = () => {
+            setActive(!active);
+        }
+
         const requestedItems: Map<string, JSX.Element> = new Map();
         const multiDatas: Map<string, IMultiStandaloneData[]> = new Map();
 
@@ -47,7 +51,7 @@ export const Browser = ({ setActive, roomId, requests }: BrowserProps) => {
                 if (exists) {
                     continue;
                 }
-                requestedItems.set(req.requestedData.id, <BrowserItem key={req.requestedData.id} category="Category" roomId={roomId} data={req.requestedData} requestedBy={req.requestedBy.flatMap(r => r.name)} ></BrowserItem>);
+                requestedItems.set(req.requestedData.id, <BrowserItem activeSource={activeSource} toggleModal={toggleModal} key={req.requestedData.id} category="Category" roomId={roomId} data={req.requestedData} requestedBy={req.requestedBy.flatMap(r => r.name)} ></BrowserItem>);
             }
 
             if (req.requestType === 'multi') {
@@ -57,22 +61,22 @@ export const Browser = ({ setActive, roomId, requests }: BrowserProps) => {
                         ...(multiDatas.get(req.requestedMulti.id) ?? []),
                         req.requestedData
                     ])
-                    requestedItems.set(req.requestedMulti.id, <MultiBrowserItem data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>)
+                    requestedItems.set(req.requestedMulti.id, <MultiBrowserItem activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>)
                     continue;
                 }
 
                 multiDatas.set(req.requestedMulti.id, [req.requestedData]);
-                requestedItems.set(req.requestedMulti.id, <MultiBrowserItem data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>);
+                requestedItems.set(req.requestedMulti.id, <MultiBrowserItem activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>);
             }
         }
 
-        const items = getBrowserItems(standalones, multis, roomId, requestedItems);
+        const items = getBrowserItems(standalones, multis, roomId, requestedItems, toggleModal, activeSource);
 
         setBrowserElements([
             ...Array.from(requestedItems.values()),
             ...items
         ]);
-    }, [multis, requests, roomId, standalones])
+    }, [multis, requests, roomId, standalones, active, setActive, activeSource])
 
     const closeMobileMenu = () => {
         setMobileMenuActive(false);
@@ -95,9 +99,10 @@ export const Browser = ({ setActive, roomId, requests }: BrowserProps) => {
                 setStandalones(resp.results.standalone);
                 setMultis(resp.results.multi);
                 setSearchData(resp);
-                setLoading(false);
             } catch (e) {
                 console.warn(e);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -105,22 +110,26 @@ export const Browser = ({ setActive, roomId, requests }: BrowserProps) => {
     }
 
     const continueSourceSearch = async () => {
-        setLoading(true);
+        try {
+            setLoading(true);
 
-        if (searchData.nextPageToken != null) {
-            const data = await continueSearch(searchData.nextPageToken, activeSource);
-            setSearchData(data);
-            setStandalones(prevStandalones => [
-                ...prevStandalones,
-                ...data.results.standalone
-            ]);
-            setMultis(prevMultis => [
-                ...prevMultis,
-                ...data.results.multi
-            ]);
+            if (searchData.nextPageToken != null) {
+                const data = await continueSearch(searchData.nextPageToken, activeSource);
+                setSearchData(data);
+                setStandalones(prevStandalones => [
+                    ...prevStandalones,
+                    ...data.results.standalone
+                ]);
+                setMultis(prevMultis => [
+                    ...prevMultis,
+                    ...data.results.multi
+                ]);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
         }
-        
-        setLoading(false);
     }
 
     const handleScroll = (e: UIEvent<HTMLDivElement>) => {
