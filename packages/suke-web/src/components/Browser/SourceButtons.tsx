@@ -26,11 +26,9 @@ export interface MobileSourceButtonsProps {
 
 
 export const MobileSourceButtons = ({sources, activeSource, closeMobileMenu, setActiveSource}: MobileSourceButtonsProps) => {
-    
     const setSource = (sourceName: string) => {
         setActiveSource(sourceName); 
         closeMobileMenu!();
-        console.log(sourceName)
     }
 
     const buttons = sources.map(sourceName => <BrowserSourceButton onClick={() => setSource(sourceName)} active={activeSource?.toLowerCase() === sourceName.toLowerCase()}>{sourceName.toUpperCase()}</BrowserSourceButton>);

@@ -1,4 +1,4 @@
-import { IMultiData, IStandaloneData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
+import { IMultiData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
 import { BrowserItem, MultiBrowserItem } from "../components/BrowserItem";
 
 /**
