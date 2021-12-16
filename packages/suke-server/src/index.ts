@@ -18,7 +18,7 @@ createConnection({
     entities: [UserModel, UserChannelModel, SessionModel],
     synchronize: true,
 }).then(() => {
-    Container.set<redis.RedisClient>('redis', RedisClient);
+    Container.set<redis.RedisClientType>('redis', RedisClient);
     console.log("Connected to DB instance.");
 
     new Server(config)
