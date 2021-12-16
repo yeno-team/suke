@@ -1,4 +1,4 @@
-import { ISearchData, IStandaloneData, StandaloneType, Quality, IMultiData, IMultiStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
+import { ISearchData, IStandaloneData, StandaloneType, Quality, IMultiData, IMultiStandaloneData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { Service } from "typedi";
 import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { YoutubeApiWrapper } from "@suke/wrappers/src";
@@ -13,7 +13,11 @@ export class YoutubeParser implements IParser {
     constructor (
         private wrapper: YoutubeApiWrapper
     ) {  }
- 
+        
+    async getSource(): Promise<IVideoSource[]> {
+        return [];
+    }
+
     async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {        
         if (options?.limit != null)
             throw new ParserError("'limit' property is not supported on the Youtube Parser.");
@@ -21,7 +25,6 @@ export class YoutubeParser implements IParser {
         let searchData; 
         if (options?.token != null) {   
             searchData = await this.wrapper.continueSearch(options.token);
-
             return {
                 results: {
                     standalone: this.extractContinuationStandalones(searchData),

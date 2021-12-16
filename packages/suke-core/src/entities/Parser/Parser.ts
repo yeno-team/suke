@@ -1,4 +1,4 @@
-import { ISearchData } from "@suke/suke-core/src/entities/SearchResult";
+import { ISearchData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { ValueObject } from "@suke/suke-core/src/ValueObject";
 
 export interface IParserSearchOptions {
@@ -36,4 +36,7 @@ export interface IParser {
     hostname: URL;
 
     search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData>;
+
+    // get source if required for an engine. This method should return an empty array if grabbing the sources is not required.
+    getSource(url: URL): Promise<IVideoSource[]>;
 }
