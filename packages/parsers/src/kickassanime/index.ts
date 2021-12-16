@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Service } from "typedi";
-import { IMultiData, ISearchData , StandaloneType , Quality } from "@suke/suke-core/src/entities/SearchResult";
+import { IMultiData, ISearchData , StandaloneType , Quality, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError"
 import { KickAssAnimeApiWrapper } from "@suke/wrappers/src"
 import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
@@ -30,6 +30,17 @@ export default class KickAssAnimeParser implements IParser {
     constructor(
         private wrapper : KickAssAnimeApiWrapper
     ){}
+    
+    async getSource(url: URL): Promise<IVideoSource[]> {
+        const sources = await this.getVideoSources(url);
+        
+        const videoSources = sources.map(v => ({
+            url: v.url,
+            quality: v.quality as keyof typeof Quality
+        }));
+
+        return videoSources as unknown as IVideoSource[];
+    }
 
     /**
      * Query the search data from the KickAssAnime search api.
@@ -38,6 +49,8 @@ export default class KickAssAnimeParser implements IParser {
      * @returns 
      */
     private async query_search(searchTerm : string , options? : ParserSearchOptions) : Promise<KickAssAnimeQuerySearchResponse> {
+        if (searchTerm.length <= 3) 
+            throw new Error("Search Term should be greater than 3 characters.")
         const queryResults = await this.wrapper.search(searchTerm)
 
         return {
