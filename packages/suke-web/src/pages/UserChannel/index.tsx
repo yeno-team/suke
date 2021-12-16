@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
 import { VideoMenu } from "../../components/VideoMenu";
 import useAuth from "../../hooks/useAuth";
+import { useChannel } from "../../hooks/useChannel";
 import { useRoom } from "../../hooks/useRoom";
 import { BrowserModal } from "./BrowserModal";
 import { ChatBox } from "./ChatBox";
@@ -19,6 +20,7 @@ export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
     const { joinRoom } = useRoom();
     const { user } = useAuth();
+    const { channelData } = useChannel();
     
     useEffect(() => {
         joinRoom(username);
@@ -35,7 +37,7 @@ export const UserChannelPage = (): JSX.Element => {
         <div className="h-screen flex flex-col">
             <Navigation className={mobileClassListIfBrowserActive} />
             <BrowserModal roomId={username} className="flex-grow" active={browserActive} setActive={setBrowserActive} />
-            <VideoMenu className={mobileClassListIfBrowserActive} url="https://www.youtube.com/watch?v=NpEaa2P7qZI" handleOpenBrowser={toggleBrowserActive} isAuthenticated={user?.id !== 0}/>
+            <VideoMenu className={mobileClassListIfBrowserActive} url={channelData?.currentVideo?.sources[0].url} handleOpenBrowser={toggleBrowserActive} isAuthenticated={user?.id !== 0} title={channelData?.currentVideo?.name} category={channelData?.currentVideo?.category}/>
             <ChatBox className={mobileClassListIfBrowserActive} username={username} />
             <UserProfile className={mobileClassListIfBrowserActive} username={username} followerCount={3} />
         </div>
