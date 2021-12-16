@@ -1,6 +1,4 @@
-import { SocketMessageInput } from "@suke/suke-core/src/entities/SocketMessage";
-import { RedisClient } from "redis";
-import { SocketServer } from "../server";
+import { RedisClientType, SocketServer } from "../server";
 
 /**
  * Manager that handles creating rooms, and manages the connections in those rooms.
@@ -8,7 +6,7 @@ import { SocketServer } from "../server";
  * Rooms are stored in redis as aan array of connection ids.
  */
 export class RoomManager {
-    private redisClient: RedisClient;
+    private redisClient: RedisClientType;
 
     constructor(private server: SocketServer) {
         this.redisClient = server.getRedisClient();
@@ -18,18 +16,12 @@ export class RoomManager {
         const key = this.getRedisKey(roomId);
         const connections = await this.getRoom(roomId);
 
-        this.redisClient.set(key, JSON.stringify([...connections, userSocketId]), (err) => {
-            if (err != null) throw err;
-            return;
-        });
+        await this.redisClient.set(key, JSON.stringify([...connections, userSocketId]));
     }
 
     public async removeUser(roomId: string, userSocketId: string): Promise<void> {
         const connections: string[] = await this.getRoom(roomId);
-        this.redisClient.set(roomId, JSON.stringify(connections.filter(v => v !== userSocketId)), (err) => {
-            if (err != null) throw err;
-            return;
-        });
+        await this.redisClient.set(roomId, JSON.stringify(connections.filter(v => v !== userSocketId)));
     }
 
     /**
@@ -37,20 +29,15 @@ export class RoomManager {
      * @param id 
      * @returns string of connection ids
      */
-    public getRoom(id: string): Promise<string[]> {
-        return new Promise((resolve, reject) => {
-            this.redisClient.get(this.getRedisKey(id), (err, reply) => {
-                if (err != null) return reject(err);
-                if (reply == null) {
-                    this.redisClient.set(this.getRedisKey(id), JSON.stringify([]), (err) => {
-                        if (err != null) return reject(err);
-                        return resolve([]);
-                    });
-                } else {
-                    return resolve(JSON.parse(reply));
-                }
-            })
-        });
+    public async getRoom(id: string): Promise<string[]> {
+        const val = await this.redisClient.get(this.getRedisKey(id));
+        
+        if (val == null) {
+            await this.redisClient.set(this.getRedisKey(id), JSON.stringify([]));
+            return [];
+        }
+
+        return JSON.parse(val);
     }
 
     public async CheckIfUserInRoom(userId: string, roomId: string): Promise<boolean> {

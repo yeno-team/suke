@@ -1,10 +1,8 @@
 import { RoomManager } from "./RoomManager";
 import { RealtimeChannelData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { Quality } from "@suke/suke-core/src/entities/SearchResult";
-import { SocketServer } from "../server";
-import { SocketBroadcaster } from "./Broadcaster";
-import { SocketMessage } from "@suke/suke-core/src/entities/SocketMessage";
-import { RedisClient } from "redis";
+import { RedisClientType, SocketServer } from "../server";
+
 
 /**
  * Manages realtime data inside a user channel (video source, requests)
@@ -14,56 +12,52 @@ export class ChannelManager {
      * Key is the users name which is also the room name
      */
     private roomManager: RoomManager;
-    private redisClient: RedisClient;
+    private redisClient: RedisClientType;
 
     constructor(private socketServer: SocketServer) {
+        this.redisClient = socketServer.getRedisClient();
         this.roomManager = socketServer.getRoomManager();
     }
 
     public async getChannel(channelId: string): Promise<RealtimeChannelData> {
-        return new Promise((resolve, reject) => {
-            const key = this.getRedisKey(channelId);
-            this.redisClient.get(key, (err, val) => {
-                if (err) return reject(err)
-                if (val == null) return reject(`ChannelManager: Key '${key}'' does not exist.`);
-                return resolve(JSON.parse(val));
-            });
-        })
+        const key = this.getRedisKey(channelId);
+        const val = await this.redisClient.get(key);
+        if (val == null) {
+            const defaultValue: RealtimeChannelData = {
+                currentVideo: {
+                    sources: [{
+                        url: new URL("https://www.youtube.com/watch?v=NpEaa2P7qZI"), 
+                        quality: Quality.auto
+                    }], 
+                    name: 'Looking for a Video.',
+                    category: 'Browsing'
+                },
+                progress: {currentTime: 0}, 
+                paused: false
+            };
+            await this.redisClient.set(key, JSON.stringify(defaultValue));
+            return defaultValue;
+        } 
+        return JSON.parse(val);
     }
     
     public async editRealtimeChannel(channelId: string, editedData: Partial<RealtimeChannelData>): Promise<boolean> {
         const key = this.getRedisKey(channelId);
         const channel = await this.getChannel(key);
+        
         const roomConnections = this.roomManager.getRoom(key);
 
         if (channel == null && roomConnections == null) {
             return false;
-        } else if (channel == null) {
-            this.redisClient.set(key, "");
         }
-            
+
         const updatedData: RealtimeChannelData = {
             ...channel,
             ...editedData
         };
 
-        this.redisClient.set(key, JSON.stringify(updatedData), (err) => {
-            if (err != null) return Promise.reject(err);
-        });
-
-        /**
-         * Broadcast to room that the settings updated
-         */
-        const broadcaster = new SocketBroadcaster(this.socketServer);
-        broadcaster.broadcastToRoom(new SocketMessage(
-            {
-                type: "CHANNEL_UPDATE",
-                data: {
-                    ...updatedData,
-                    channelId
-                }
-            }
-        ), key);
+        await this.redisClient.set(key, JSON.stringify(updatedData));
+        return true;
     }
 
     private getRedisKey(key: string) {
