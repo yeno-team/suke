@@ -51,7 +51,8 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                 if (exists) {
                     continue;
                 }
-                requestedItems.set(req.requestedData.id, <BrowserItem activeSource={activeSource} toggleModal={toggleModal} key={req.requestedData.id} category="Category" roomId={roomId} data={req.requestedData} requestedBy={req.requestedBy.flatMap(r => r.name)} ></BrowserItem>);
+
+                requestedItems.set(req.requestedData.id, <BrowserItem requestedObject={req} activeSource={activeSource} toggleModal={toggleModal} key={req.requestedData.id} category="Category" roomId={roomId} data={req.requestedData} requestedBy={req.requestedBy.flatMap(r => r.name)} ></BrowserItem>);
             }
 
             if (req.requestType === 'multi') {
@@ -61,12 +62,12 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                         ...(multiDatas.get(req.requestedMulti.id) ?? []),
                         req.requestedData
                     ])
-                    requestedItems.set(req.requestedMulti.id, <MultiBrowserItem activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>)
+                    requestedItems.set(req.requestedMulti.id, <MultiBrowserItem requestedObject={req} activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>)
                     continue;
                 }
 
                 multiDatas.set(req.requestedMulti.id, [req.requestedData]);
-                requestedItems.set(req.requestedMulti.id, <MultiBrowserItem activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>);
+                requestedItems.set(req.requestedMulti.id, <MultiBrowserItem requestedObject={req} activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>);
             }
         }
 
@@ -90,7 +91,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
         const getSourceData = async () => {
             try {
                 setLoading(true);
-
+                
                 const resp = await searchSource({
                     engine: activeSource,
                     query: searchInput
