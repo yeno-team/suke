@@ -1,8 +1,6 @@
-import { Icon } from "@iconify/react";
 import { IMultiData, IMultiStandaloneData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
 import { UserId } from "@suke/suke-core/src/entities/UserId";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useChannel } from "../../hooks/useChannel";
 import { Button } from "../Button";
@@ -16,6 +14,7 @@ export interface BrowserItemProps {
     roomId: string,
     activeSource: string,
     requestedBy?: string[],
+    requestedObject?: Request;
     toggleModal: () => void;
 }
 
@@ -27,6 +26,7 @@ export interface MultiBrowserItemProps {
     activeSource: string,
     requestedStandalones?: IMultiStandaloneData[],
     requestedBy?: string[],
+    requestedObject?: Request;
     toggleModal: () => void;
 }
 
@@ -36,18 +36,21 @@ export interface MultiBrowserStandaloneItemProps {
     roomId: string;
     category: string;
     activeSource: string;
+    
     standaloneData: IMultiStandaloneData;
     requestedBy?: string[];
+    requestedObject?: Request;
     toggleModal: () => void;
 }
 
-export function BrowserItem({data, category, roomId, requestedBy, toggleModal, activeSource}: BrowserItemProps) {
+export function BrowserItem({data, category, roomId, requestedBy, requestedObject, toggleModal, activeSource}: BrowserItemProps) {
     const { createRequest, removeRequest, updateRealtimeChannelData } = useChannel();
     const { user } = useAuth();
     
     const requestObj: Request = {
         requestType: 'standalone',
         requestedData: data,
+        engine: activeSource,
         requestedBy: [{
             userId: new UserId(user?.id as number),
                 name: user?.name as string,
@@ -67,8 +70,9 @@ export function BrowserItem({data, category, roomId, requestedBy, toggleModal, a
         const sendRequest = async () => {
             toggleModal();
             try {
-                const sources = await getUrlSources({engine: activeSource, url: data.sources[0].url})
-                console.log(sources);
+                const engine = requestedObject?.engine ? requestedObject?.engine : activeSource;
+                const sources = await getUrlSources({engine: engine as string, url: data.sources[0].url})
+                removeRequest(requestedObject!);
                 updateRealtimeChannelData({
                     currentVideo: {
                         sources: sources.length > 0 ? sources : data.sources,
