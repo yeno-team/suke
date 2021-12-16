@@ -40,6 +40,11 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
                 if (msgObj.type === 'CLIENT_ERROR') {
                     console.error("CLIENT_ERROR", msgObj.data);
                 }
+
+                if (msgObj.type === 'SERVER_ERROR') {
+                    console.error("SERVER_ERROR", msgObj.data);
+                }
+
                 setMessages(messages => [
                     ...messages,
                     msgObj
