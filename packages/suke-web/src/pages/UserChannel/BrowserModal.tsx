@@ -21,7 +21,7 @@ export const BrowserModal = ({ active, className, setActive, roomId }: BrowserMo
 
     return (
         <Modal active={active} className={className}>
-            <Browser roomId={roomId} requests={requests} setActive={setActive}></Browser>
+            <Browser active={active} roomId={roomId} requests={requests} setActive={setActive}></Browser>
         </Modal>
     )
 }
