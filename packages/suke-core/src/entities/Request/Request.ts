@@ -1,20 +1,23 @@
-import { IMultiData, IMultiStandaloneData, IStandaloneData, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
+import { IMultiData, IMultiStandaloneData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
 import { IHasUserId } from "../UserId/UserId";
 
 export type Request = {
     requestType: 'multi'
     requestedData: IMultiStandaloneData,
     requestedMulti: IMultiData,
+    engine: string,
     requestedBy: (IHasUserId & {name: string})[],
     roomId: string
 } | {
     requestType: 'standalone',
     requestedData: IStandaloneData,
     requestedBy: (IHasUserId & {name: string})[],
+    engine: string,
     roomId: string
 }
 
 export const getRequestedId = (v: Request): string => (v.requestType === "multi" ? v.requestedMulti.id : v.requestedData.id);
+
 export const isRequestsEqual = (req1: Request, req2: Request): boolean => {
     if (req1 == null || req2 == null) return false;
     
