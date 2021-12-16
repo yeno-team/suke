@@ -10,7 +10,7 @@ export const useChannel = () => {
     const { send } = useSocket();
     const { messages } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessage[]>(messages);
-    
+    const [ channelData, setChannelData ] = useState<RealtimeChannelData>({} as RealtimeChannelData);
     useEffect(() => {
         if (!socketMessagesChanged || prevSocketMessages == null)
             return;
@@ -39,6 +39,9 @@ export const useChannel = () => {
                     for (const req of typedMsg.data) {
                         addNewRequest(req);
                     }
+                    break;
+                case "CHANNEL_UPDATE":
+                    setChannelData(typedMsg.data as RealtimeChannelData);
                     break;
             }
         }
@@ -71,15 +74,17 @@ export const useChannel = () => {
         });
     }
 
-    const updateRealtimeChannelData = (updatedChannelData: RealtimeChannelData & { channelId: string }) => {
+    const updateRealtimeChannelData = (updatedChannelData: Partial<RealtimeChannelData> & { channelId: string }) => {
         send({
             type: 'CHANNEL_UPDATE',
             data: {
                 channelId: updatedChannelData.channelId,
-                currentVideo: updatedChannelData.currentVideo
+                currentVideo: updatedChannelData.currentVideo,
+                paused: updatedChannelData.paused,
+                progress: updatedChannelData.progress
             }
         });
     }
 
-    return { createRequest, removeRequest, updateRealtimeChannelData, requests, getRequests};
+    return { createRequest, removeRequest, updateRealtimeChannelData, requests, getRequests, channelData};
 }
