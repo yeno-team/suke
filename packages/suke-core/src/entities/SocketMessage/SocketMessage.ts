@@ -46,7 +46,7 @@ export type SocketMessageInput = {
 } | {
     type: 'SOCKET_DISCONNECT',
     data: string // webSocket id
-};
+}
 
 export interface ISocketMessage {
     type: SocketMessageType;
