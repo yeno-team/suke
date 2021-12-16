@@ -9,7 +9,7 @@ import { Request } from "@suke/suke-core/src/entities/Request";
 import { UserId } from "@suke/suke-core/src/entities/UserId";
 import { getUrlSources } from "../../api/source";
 
-export function MultiBrowserItem({data, category, roomId, requestedBy, requestedStandalones, toggleModal, activeSource}: MultiBrowserItemProps) {
+export function MultiBrowserItem({data, category, roomId, requestedBy, requestedStandalones, toggleModal, activeSource, requestedObject}: MultiBrowserItemProps) {
     const [toggleEpisodes, setToggleEpisodes] = useState(false);
     const [multiItems, setMultiItems] = useState<(JSX.Element | null)[]>([]);
  
@@ -35,17 +35,17 @@ export function MultiBrowserItem({data, category, roomId, requestedBy, requested
                     }
                 }
             }
-            return <MultiBrowserStandaloneItem activeSource={activeSource} data={data} key={v.index.toString()} standaloneData={v} roomId={roomId} toggleModal={toggleModal} category={category}></MultiBrowserStandaloneItem>
+            return <MultiBrowserStandaloneItem requestedObject={requestedObject} activeSource={activeSource} data={data} key={v.index.toString()} standaloneData={v} roomId={roomId} toggleModal={toggleModal} category={category}></MultiBrowserStandaloneItem>
         });
         
         const requestedItems: JSX.Element[] = [];
-        requests.forEach(v => requestedItems.push(<MultiBrowserStandaloneItem activeSource={activeSource} data={data} key={v.index.toString()} standaloneData={v} roomId={roomId} requestedBy={requestedBy} toggleModal={toggleModal} category={category}></MultiBrowserStandaloneItem>));
+        requests.forEach(v => requestedItems.push(<MultiBrowserStandaloneItem requestedObject={requestedObject} activeSource={activeSource} data={data} key={v.index.toString()} standaloneData={v} roomId={roomId} requestedBy={requestedBy} toggleModal={toggleModal} category={category}></MultiBrowserStandaloneItem>));
         
         setMultiItems([
             ...requestedItems,
             ...normalItems
         ]);
-    }, [data, requestedBy, requestedStandalones, roomId, activeSource, toggleModal, category])
+    }, [data, requestedBy, requestedStandalones, roomId, activeSource, toggleModal, category, requestedObject])
 
     const toggleViewEpisodes = () => {
         setToggleEpisodes(!toggleEpisodes);
@@ -87,7 +87,7 @@ export function MultiBrowserItem({data, category, roomId, requestedBy, requested
     )
 }
 
-export function MultiBrowserStandaloneItem({data, standaloneData, roomId, requestedBy, toggleModal, category, activeSource}: MultiBrowserStandaloneItemProps) {
+export function MultiBrowserStandaloneItem({data, standaloneData, roomId, requestedBy, toggleModal, category, activeSource, requestedObject}: MultiBrowserStandaloneItemProps) {
     const { createRequest, removeRequest, updateRealtimeChannelData } = useChannel();
     const { user } = useAuth();
     
@@ -95,6 +95,7 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
         requestType: 'multi',
         requestedData: standaloneData,
         requestedMulti: data,
+        engine: activeSource,
         requestedBy: [{
             userId: new UserId(user?.id as number),
             name: user?.name as string,
@@ -122,8 +123,9 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
         const sendRequest = async () => {
             toggleModal();
             try {
-                const sources = await getUrlSources({engine: activeSource, url: standaloneData.sources[0].url})
-    
+                const engine = requestedObject?.engine ? requestedObject?.engine : activeSource;
+                const sources = await getUrlSources({engine: engine, url: standaloneData.sources[0].url})
+                removeRequest(requestedObject!);
                 updateRealtimeChannelData({
                     currentVideo: {
                         sources: sources.length > 0 ? sources : standaloneData.sources,
@@ -134,7 +136,7 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
                 });
             } catch (e) {
                 console.error(e);
-            }
+            } 
         }
 
         sendRequest();
