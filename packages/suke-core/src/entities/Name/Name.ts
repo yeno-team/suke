@@ -10,7 +10,7 @@ export class Name extends ValueObject implements IName {
 
     constructor (_name: string) {
         super();
-        this.name = _name;
+        this.name = _name.toLowerCase();
 
         if (!this.IsValid()) {
             throw new ValidationError(`'${_name}' is not a valid Name.`);
