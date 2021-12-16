@@ -1,5 +1,4 @@
 import { Service } from "typedi";
-
 import { Request, Response } from 'express';
 import { BaseController } from "../BaseController";
 import { parsers } from "@suke/parsers/src";
@@ -22,7 +21,7 @@ export class SourceGetController extends BaseController {
     public Post = async (req: Request, res: Response): Promise<void> => {
         const body = req.body as SourceGetBody;
 
-        const parser = parsers.find(v => v.name.toLowerCase() === body.engine.toLowerCase());
+        const parser = parsers.find(v => v.name?.toLowerCase() === body.engine?.toLowerCase());
 
         if (parser == null) {
             res.status(400).send({error: 'true', message: 'Unknown Engine.'});
