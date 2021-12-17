@@ -3,9 +3,10 @@ import { RedisClient } from "../config"
 
 const opts : IRateLimiterStoreOptions = {
     storeClient : RedisClient,
-    points : 20,
-    duration : 60 * 10, // 10 minutes
-    keyPrefix : "login_route_rate_limiter"
+    points : 60,
+    duration : 60,
+    blockDuration : 60 * 5,
+    keyPrefix : "global_rate_limiter"
 }
 
 export default new RateLimiterRedis(opts)

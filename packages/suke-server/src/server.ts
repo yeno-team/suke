@@ -9,7 +9,7 @@ import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
 import { RedisClient } from "./config";
-
+import { setGlobalRateLimiter } from "./middlewares/setGlobalRateLimiter";
 interface ExpressLocals {
     user?: UserModel;
 }
@@ -55,11 +55,10 @@ export class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({origin: "*"}));
-        this.app.use(this.sessionParser);
-        
+        this.app.use(this.sessionParser);        
+        this.app.use(setGlobalRateLimiter());
 
         this.setupControllers();
-
         this.app.use(ErrorHandler);
 
         // Listening from the socket server will listen on the httpServer that is shared from express.
