@@ -1,5 +1,7 @@
-import LoginRouteRateLimiter from "./LoginRouteLimiter";
+import LoginFailRateLimiter from "./LoginFailRateLimiter";
+import GlobalRateLimiter from "./GlobalRouteRateLimiter";
 
 export {
-    LoginRouteRateLimiter
+    LoginFailRateLimiter,
+    GlobalRateLimiter
 }
