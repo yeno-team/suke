@@ -11,7 +11,7 @@ export const createRateLimiter = async (response : Response , opts : RateLimiter
     let isRateLimited = false;
 
     try {
-        resp = await opts.limiter.consume(opts.key , 1)
+        resp = await opts.limiter.consume(opts.key , opts.pointsToConsume ?? 1)
     } catch (e) {
         // If there is not enough points to consume , it will throw the limiter response as an error.
         isRateLimited = true
