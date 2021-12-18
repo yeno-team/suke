@@ -1,16 +1,13 @@
-import {  NextFunction, Request, RequestHandler, Response } from "express";
+import {  NextFunction, Request, RequestHandler, response, Response } from "express";
 import { UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { Container } from "typedi";
 import { UserService } from "../services/user";
 import { Name } from "@suke/suke-core/src/entities/Name/Name";
 import { catchErrorAsync } from "./catchErrorAsync";
-import { setRateLimiter , setRateLimiterOpts } from "./createRateLimiter";
-import { LoginFailRateLimiter } from "../limiters";
-
 
 export const createUserAttacher = (identifier: UserIdentifier): RequestHandler => catchErrorAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const userService = Container.get(UserService);
-
+    
     switch(identifier) {
         case UserIdentifier.Id: {
                 const userId = req.params.id || req.body.id;
@@ -44,15 +41,6 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
 
                     return;
                 }
-
-                console.log("hello")
-
-                await setRateLimiter(res , {
-                    limiter : LoginFailRateLimiter,
-                    key : `${username}-${req.ip}`,
-                    message : "Too many login attempts.",
-                    setHeaders : true
-                })
             
                 res.locals.user = user;
 
