@@ -33,7 +33,7 @@ const config: IConfiguration = {
         resave: false
     },
     recaptcha : {
-        secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEy" , true) as string,
+        secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEY" , true) as string,
         siteKey : getEnvironmentVariable("RECAPTCHA_SITE_KEY" , true) as string
     }
 }
