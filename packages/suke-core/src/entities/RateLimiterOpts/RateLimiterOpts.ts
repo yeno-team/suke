@@ -29,10 +29,7 @@ export class RateLimiterOpts extends ValueObject implements IRateLimterOpts {
         this.isGlobalLimiter = opts.isGlobalLimiter
         this.setHeaders = opts.setHeaders
 
-        if(!(this.IsValid())) {
-            throw new ValidationError(`${JSON.stringify(opts)} is an invalid rate limiter opts.`)
-        }
-
+        this.IsValid()
     }
 
     public* GetEqualityProperties(): Generator<unknown, unknown, unknown> {

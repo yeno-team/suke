@@ -1,15 +1,12 @@
 import { Response } from "express";
-import { RateLimiterAbstract , RateLimiterRes } from "rate-limiter-flexible";
+import { RateLimiterRes } from "rate-limiter-flexible";
+import { RateLimiterOpts } from "@suke/suke-core/src/entities/RateLimiterOpts";
 
-export interface setRateLimiterOpts {
-    key : string;
-    limiter : RateLimiterAbstract;
-    message? : string;
-    global? : boolean;
-    setHeaders? : boolean;
+export interface CreateRateLimiterResponse {
+    isRateLimited : boolean
 }
 
-export const setRateLimiter = async (response : Response , opts : setRateLimiterOpts) : Promise<void> => {
+export const createRateLimiter = async (response : Response , opts : RateLimiterOpts) : Promise<CreateRateLimiterResponse> => {
     let resp : RateLimiterRes;
     let isRateLimited = false;
 
@@ -26,18 +23,26 @@ export const setRateLimiter = async (response : Response , opts : setRateLimiter
         response.set("Retry-After", (resp.msBeforeNext / 1000).toString())
         response.set("X-RateLimit-Remaining" , (resp.remainingPoints).toString())
         response.set("X-RateLimit-Reset" , (new Date(Date.now() + resp.remainingPoints)).toString())
-        
+
         // Only will return this header if it is a global rate limit and not per route.
-        if(opts.global ?? false) {
-            response.set("X-RateLimit-Global" , "")
-        }
+        opts.isGlobalLimiter ? response.set("X-RateLimit-Global" , "") : response.removeHeader("X-RateLimit-Global")
     }
 
     if(isRateLimited) {
         response.status(429).json({
-            message : opts.message || "You are being rate limited.",
+            message : opts.errorMessage || "You are being rate limited.",
             retry_after : (resp.msBeforeNext / 1000).toString(),
-            global : opts.global
+            global : opts.isGlobalLimiter ?? false
         })
+    }   
+
+    if(!(response.locals.limiters)) {
+        response.locals.limiters = []
+    }
+
+    response.locals.limiters.push(opts)
+
+    return {
+        isRateLimited
     }
 }

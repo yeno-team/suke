@@ -10,8 +10,10 @@ import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
 import { RedisClient } from "./config";
 import { setGlobalRateLimiter } from "./middlewares/setGlobalRateLimiter";
+import { RateLimiterOpts } from "@suke/suke-core/src/entities/RateLimiterOpts";
 interface ExpressLocals {
     user?: UserModel;
+    limiters? : Array<RateLimiterOpts>
 }
 
 declare module 'express-session' {
@@ -55,7 +57,7 @@ export class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({origin: "*"}));
-        this.app.use(this.sessionParser);        
+        this.app.use(this.sessionParser);
         this.app.use(setGlobalRateLimiter());
 
         this.setupControllers();
