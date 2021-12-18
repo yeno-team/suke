@@ -1,10 +1,10 @@
-import { RateLimiterAbstract } from "rate-limiter-flexible";
+import { RateLimiterRedis } from "rate-limiter-flexible";
 import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
 
 export interface IRateLimterOpts {
     key : string,
-    limiter : RateLimiterAbstract,
+    limiter : RateLimiterRedis,
     pointsToConsume? : number,
     errorMessage? : string;
     isGlobalLimiter? : boolean,
@@ -13,7 +13,7 @@ export interface IRateLimterOpts {
 
 export class RateLimiterOpts extends ValueObject implements IRateLimterOpts {
     public key: string;
-    public limiter: RateLimiterAbstract;
+    public limiter: RateLimiterRedis;
     public pointsToConsume?: number;
     public errorMessage?: string;
     public isGlobalLimiter?: boolean;
@@ -35,7 +35,7 @@ export class RateLimiterOpts extends ValueObject implements IRateLimterOpts {
 
     }
 
-    protected* GetEqualityProperties(): Generator<unknown, unknown, unknown> {
+    public* GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.key
         yield this.limiter
         yield this.pointsToConsume
@@ -51,8 +51,8 @@ export class RateLimiterOpts extends ValueObject implements IRateLimterOpts {
             throw new PropertyValidationError("key property must be a string.")
         }
 
-        if(!(this.limiter instanceof RateLimiterAbstract)) {
-            throw new PropertyValidationError("limiter property must be an instance of RateLimiterAbstract.")
+        if(!(this.limiter instanceof RateLimiterRedis)) {
+            throw new PropertyValidationError("limiter property must be an instance of RateLimterRedis.")
         }
 
         if(this.pointsToConsume && typeof(this.pointsToConsume) !== "number") {
