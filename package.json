@@ -35,6 +35,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
-    "@types/bcrypt": "^5.0.0"
+    "@types/bcrypt": "^5.0.0",
+    "react-google-recaptcha-v3": "^1.9.7"
   }
 }

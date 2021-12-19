@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 export const LoginPage = () => {
+    const { executeRecaptcha } = useGoogleReCaptcha();
     const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
@@ -34,6 +36,7 @@ export const LoginPage = () => {
                     <label htmlFor="remember" className="text-sm">Remember me</label>
                     <Button className="block w-full rounded-sm py-3 px-0 mt-8" backgroundColor="blue" fontWeight="semibold">LOGIN</Button>
                 </form>
+                
                 <a href="/register" className="block mt-4 text-sm text-gray">Don't have an account?</a>
             </div>
         </div>
