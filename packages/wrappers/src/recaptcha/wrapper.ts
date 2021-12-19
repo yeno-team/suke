@@ -3,7 +3,8 @@ import { AxiosRequest } from "@suke/requests/src"
 export interface VerifyTokenResponse {
     success : boolean;
     challenge_ts : string;
-    hostname : string;
+    hostname? : string;
+    apk_package_name? : string;
     "error-codes" : Array<unknown>
 }
 
@@ -19,15 +20,12 @@ export class RecaptchaApiWrapper {
     constructor(private request : AxiosRequest) {}
 
     public async verifyToken(opts : VerifyTokenOpts) : Promise<VerifyTokenResponse> {
-        const res = await this.request.post<VerifyTokenResponse>(new URL("https://www.google.com/recaptcha/api/siteverify") , {
-            body : {
-                secret : opts.secretKey,
-                response : opts.token,
-                remoteip : opts.ipAddress
+        return await this.request.post<VerifyTokenResponse>(new URL("https://www.google.com/recaptcha/api/siteverify") , {
+            body : `secret=${opts.secretKey}&response=${opts.token}&remoteip=${opts.ipAddress}`,
+            headers : {
+                "Content-Type" : "application/x-www-form-urlencoded"
             }
         })
-
-        return res
     }
 
 }
