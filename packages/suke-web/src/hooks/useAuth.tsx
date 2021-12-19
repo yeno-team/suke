@@ -9,7 +9,7 @@ export interface AuthContextInterface {
     errors: Error[];
     user?: IUser;
     login: (name: string, password: string) => void;
-    register: (name: string, email: string, password: string) => void;
+    register: (name: string, email: string, password: string , reCaptchaToken : string) => void;
     logout: () => void;
     loading: boolean;
 }
@@ -75,10 +75,10 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
             .finally(() => setLoading(false));
     } 
 
-    const register = (name: string, email: string, password: string) => {
+    const register = (name: string, email: string, password: string , reCaptchaToken : string) => {
         setLoading(true);
 
-        userApi.signup({name, email}, password)
+        userApi.signup({name, email}, password , reCaptchaToken)
             .then((data) => {
                 if (data.error === true) {
                     setErrors([...errors, new Error(data.message)]);
