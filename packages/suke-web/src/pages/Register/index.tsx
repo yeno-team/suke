@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
+import { useRecaptcha } from "../../hooks/useRecaptcha";
 
 export const RegisterPage = () => {
+    const [ reCaptchaToken , handleReCaptchaVerify ] = useRecaptcha("login");
     const [usernameInput, setUsernameInput] = useState("");
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
@@ -11,13 +14,16 @@ export const RegisterPage = () => {
     const { register } = useAuth();
 
     const handleRegister = async () => {
-        await register(usernameInput, emailInput, passwordInput);
+        if(!(reCaptchaToken)) {
+            await handleReCaptchaVerify()
+        }
+
+        await register(usernameInput, emailInput, passwordInput , reCaptchaToken);
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        handleRegister();
+        await handleRegister();
     }
 
     return (
@@ -35,7 +41,12 @@ export const RegisterPage = () => {
                     <input value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray" type="password" name="password" placeholder="Password..."></input>
                     <Button className="block w-full rounded-sm py-3 px-0 mt-8" backgroundColor="blue" fontWeight="semibold">SIGN UP</Button>
                 </form>
-                <a href="/tos" className="block mt-4 text-sm text-gray">Terms of Service</a>
+                <span className="mt-4 block text-sm">
+                    The site is protected by reCAPTCHA and the Google 
+                    <a href="https://policies.google.com/privacy" className="text-blue font-semibold"> Privacy Policy</a> and 
+                    <a href="https://policies.google.com/terms" className="text-blue font-semibold"> Terms of Service</a> apply.
+                </span>
+                <Link to="/tos" className="block mt-4 text-sm text-gray">Terms of Service</Link>
             </div>
         </div>
     )
