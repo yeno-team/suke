@@ -9,7 +9,7 @@ import { NotificationProvider } from "./hooks/useNotifications";
 function App() {
   return (
     <GoogleReCaptchaProvider
-      reCaptchaKey="6LfwouIUAAAAALIs_U2Neh7ugSYE65Dh9j5Mkfcr"
+      reCaptchaKey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
     >
       <NotificationProvider>
         <ThemeContext.Provider value="dark">
