@@ -11,7 +11,6 @@ export interface IConfiguration {
         connectionUri: string
     },
     recaptcha : {
-        siteKey : string,
         secretKey : string
     }
     session: SessionOptions
