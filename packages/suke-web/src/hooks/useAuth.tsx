@@ -8,7 +8,7 @@ import { Role } from "@suke/suke-core/src/Role";
 export interface AuthContextInterface {
     errors: Error[];
     user?: IUser;
-    login: (name: string, password: string) => void;
+    login: (name: string, password: string , reCaptchaToken : string) => void;
     register: (name: string, email: string, password: string , reCaptchaToken : string) => void;
     logout: () => void;
     loading: boolean;
@@ -56,10 +56,10 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
     }, []);
 
 
-    const login = (name: string, password: string): void => {
+    const login = (name: string, password: string , reCaptchaToken : string): void => {
         setLoading(true);
 
-        authApi.login({name, password})
+        authApi.login({name, password , reCaptchaToken })
             .then((data) => {
                 if (data.error === true) {
                     setErrors([...errors, new Error(data.message)]);

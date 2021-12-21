@@ -2,10 +2,11 @@ import { Service } from "typedi";
 import { AxiosRequest } from "@suke/requests/src"
 export interface VerifyTokenResponse {
     success : boolean;
-    challenge_ts : string;
+    challenge_ts? : string;
+    score? : number;
     hostname? : string;
     apk_package_name? : string;
-    "error-codes" : Array<unknown>
+    "error-codes"? : Array<unknown>
 }
 
 export interface VerifyTokenOpts {

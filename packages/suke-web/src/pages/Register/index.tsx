@@ -5,7 +5,7 @@ import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
 import { useNotification } from "../../hooks/useNotifications";
-import { useRecaptcha } from "../../hooks/useRecaptcha";
+import useRecaptcha from "../../hooks/useRecaptcha";
 
 const defaultNotificationOpts : ReactNotificationOptions = {
     container : "bottom-right",
@@ -29,9 +29,7 @@ export const RegisterPage = () => {
     const { register , errors } = useAuth();
 
     const handleRegister = async () => {
-        if(!(reCaptchaToken)) {
-            await handleReCaptchaVerify()
-        }   
+        await handleReCaptchaVerify()
 
         if(!(usernameInput)) {
             return notificationStore.addNotification({
@@ -70,10 +68,6 @@ export const RegisterPage = () => {
             message : "You successfully registered an account."
         })
     }
-    
-    useEffect(() => {
-        console.log(errors)
-    } , [errors])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -85,7 +79,7 @@ export const RegisterPage = () => {
             <Navigation position="absolute"/>
             <div className="bg-darkblack font-sans container m-auto text-lightgray text-center p-8 sm:rounded-sm sm:w-4/6 md:w-3/6 lg:w-2/5 xl:w-1/3 2xl:w-1/4">
                 <h2 className="font-bold text-lg">Create a new account</h2>
-                <p className="inline-block mt-2">Already got an account? <a href="/login" className="text-teal underline">Click here.</a></p>
+                <p className="inline-block mt-2">Already got an account? <Link to="/login" className="text-teal underline">Click here.</Link></p>
                 <form className="text-left mt-11 text-gray" onSubmit={handleSubmit}>
                     <label htmlFor="username" className="block text-white">Username</label>
                     <input value={usernameInput} onChange={e => setUsernameInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray mb-4" type="text" name="username" placeholder="Username..."></input>
