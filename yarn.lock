@@ -5345,6 +5345,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-notifications-component@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@types/react-notifications-component@npm:3.1.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: f363fa136d73c7f83eb89067929147b6a0b3444f5d9174151c5d2d12c722c8e9260e400a28272f0cc4600472ab188c7b3975d8e6ffacb868b832450b4264c0cd
+  languageName: node
+  linkType: hard
+
 "@types/react-router-dom@npm:^5":
   version: 5.3.0
   resolution: "@types/react-router-dom@npm:5.3.0"
@@ -6247,6 +6256,13 @@ __metadata:
   version: 1.0.2
   resolution: "alphanum-sort@npm:1.0.2"
   checksum: 5a32d0b3c0944e65d22ff3ae2f88d7a4f8d88a78a703033caeae33f2944915e053d283d02f630dc94823edc7757148ecdcf39fd687a5117bda5c10133a03a7d8
+  languageName: node
+  linkType: hard
+
+"animate.css@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "animate.css@npm:4.1.1"
+  checksum: c7eb91540423532c549725a6dedea993735a05eadaa49ed4d1965ce166a6db36459adcc9667c1dfe13657fab92a2875bbee34ad0d942444a731badab69f762c8
   languageName: node
   linkType: hard
 
@@ -18689,6 +18705,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-notifications-component@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "react-notifications-component@npm:3.1.0"
+  peerDependencies:
+    react: ^17.0.1
+  checksum: f841faccf627ea70d85756a0538e37230eb6f3cadcb75d6c6963c6928d4aa477939db01c44d375391619a2c76b8425fb33720aa3b18f99721c56fa68a7cfd5f8
+  languageName: node
+  linkType: hard
+
 "react-player@npm:^2.9.0":
   version: 2.9.0
   resolution: "react-player@npm:2.9.0"
@@ -20855,9 +20880,11 @@ resolve@^2.0.0-next.3:
     "@types/eslint": ^7
     "@types/jest": ^27.0.2
     "@types/prettier": ^2
+    "@types/react-notifications-component": ^3.1.1
     "@types/react-test-renderer": ^17
     "@types/testing-library__jest-dom": ^5
     "@yarnpkg/pnpify": ^3.0.1-rc.5
+    animate.css: ^4.1.1
     eslint: ^7.32.0
     jest: ^27.2.2
     jest-docblock: ^27.0.6
@@ -20867,6 +20894,7 @@ resolve@^2.0.0-next.3:
     lerna: ^4.0.0
     prettier: ^2.4.1
     react-google-recaptcha-v3: ^1.9.7
+    react-notifications-component: ^3.1.0
     ts-jest: ^27.0.5
     typescript: ^4.4.3
   languageName: unknown
