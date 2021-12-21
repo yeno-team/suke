@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ReactNotificationOptions } from "react-notifications-component";
 import { Link } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
@@ -26,7 +26,7 @@ export const RegisterPage = () => {
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
-    const { register , errors } = useAuth();
+    const { register } = useAuth();
 
     const handleRegister = async () => {
         await handleReCaptchaVerify()
