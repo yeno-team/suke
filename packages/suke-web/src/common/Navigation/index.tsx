@@ -18,7 +18,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
     return (
         <nav className={classNames(
             position ? position : 'sticky',
-            'w-screen',
+            'w-full',
             'flex',
             'items-center',
             'md:justify-between',
