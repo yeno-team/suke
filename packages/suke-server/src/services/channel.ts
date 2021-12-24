@@ -1,4 +1,4 @@
-import { UserChannel, UserChannelModel } from "@suke/suke-core/src/entities/UserChannel";
+import { IUserChannel, UserChannel, UserChannelModel } from "@suke/suke-core/src/entities/UserChannel";
 import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -11,7 +11,7 @@ export class UserChannelService {
     ) {}
 
     public async findById(id: number): Promise<UserChannelModel> {
-        return (await this.userChannelRepository.findByIds([id]))[0];
+        return (await this.userChannelRepository.findByIds([id], {relations: ["followers"]}))[0];
     }
 
     public async create(channel: UserChannel): Promise<UserChannelModel> {
@@ -22,5 +22,23 @@ export class UserChannelService {
         newChannel.followers = channel.followers;
 
         return newChannel.save();
+    }
+
+    public async edit(channelId: number, editedChannelData: Partial<IUserChannel>): Promise<UserChannelModel> {
+        const channel = await this.findById(channelId);
+
+        if (editedChannelData.desc != null) {
+            channel.desc = editedChannelData.desc;
+        }
+
+        if (editedChannelData.desc_title != null) {
+            channel.desc_title = editedChannelData.desc_title;
+        }
+
+        if (editedChannelData.followers != null) {
+            channel.followers = editedChannelData.followers;
+        }
+
+        return channel.save();
     }
 }
