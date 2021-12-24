@@ -41,7 +41,7 @@ export interface SocketServerConfig {
     redisClient: RedisClientType
 }
 
-export class SocketServer extends (EventEmitter as new () => TypedEmitter<SocketServerEvents>) {
+export class SocketServer extends (EventEmitter as unknown as new () => TypedEmitter<SocketServerEvents>) {
     private server: Server;
     private wss: WebSocket.Server;
 
@@ -73,9 +73,10 @@ export class SocketServer extends (EventEmitter as new () => TypedEmitter<Socket
                         email: 'guest@suke.app',
                         name: 'Guest',
                         role: Role.Guest,
+                        following: [],
                         channel: new UserChannel({
                             id: 0,
-                            followers: 0,
+                            followers: [],
                             desc: "",
                             desc_title: "",
                             roledUsers: []
