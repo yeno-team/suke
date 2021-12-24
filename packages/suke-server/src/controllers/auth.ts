@@ -2,7 +2,6 @@ import { Express, Request, Response } from "express";
 import { UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { Service } from "typedi";
 import { createUserAttacher } from "../middlewares/createUserAttacher";
-import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 
@@ -10,9 +9,7 @@ import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 export class AuthController extends BaseController {
     public route = "/api/auth";
 
-    constructor(
-        private userService: UserService
-    ) {
+    constructor() {
         super();
     }
 

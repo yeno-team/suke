@@ -1,11 +1,12 @@
 import { ValidationError } from "../../exceptions/ValidationError";
+import { IComparable } from "../../types/IComparable";
 import { ValueObject } from "../../ValueObject";
 
 export interface IHasUserId {
     userId: UserId;
 }
 
-export class UserId extends ValueObject {
+export class UserId extends ValueObject implements IComparable {
     value: number;
 
     constructor(id: number) {
@@ -28,5 +29,9 @@ export class UserId extends ValueObject {
         }
 
         return typeof(this.value) == 'number' && this.value != null;
+    }
+
+    public CompareTo(object: UserId): boolean {
+        return this.value > object.value;
     }
 }

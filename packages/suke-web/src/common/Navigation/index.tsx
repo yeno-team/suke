@@ -8,10 +8,11 @@ import { MobileMenu } from './MobileMenu';
 import { NotificationIcon } from '../../components/NotificationIcon';
 
 export interface NavigationProps {
-    position?: 'sticky' | 'fixed' | 'absolute' | 'relative' | 'static'
+    position?: 'sticky' | 'fixed' | 'absolute' | 'relative' | 'static',
+    className?: string
 }
 
-export const Navigation = ({position}: NavigationProps): JSX.Element => {
+export const Navigation = ({position, className}: NavigationProps): JSX.Element => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
 
     return (
@@ -26,12 +27,13 @@ export const Navigation = ({position}: NavigationProps): JSX.Element => {
             'pt-1 md:pt-3',
             'pb-2',
             'px-4 md:px-6',
-            'lg:px-8'
+            'lg:px-8',
+            className
         )}>
             <div className={classNames(
                 'flex',
                 'items-center',
-                'mr-5'
+                'mr-3'
             )}>
                 <button onClick={() => setMobileMenuActive(!mobileMenuActive)} className={classNames(
                     'text-xl',
@@ -49,7 +51,7 @@ export const Navigation = ({position}: NavigationProps): JSX.Element => {
                 <Logo />
             </div>
 
-            <SearchBar size='44' className={classNames(
+            <SearchBar size="52" className={classNames(
                 'md:hidden',
                 'ml-3',
                 'py-2'

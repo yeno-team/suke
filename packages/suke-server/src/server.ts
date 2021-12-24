@@ -8,7 +8,11 @@ import { SocketServer } from "@suke/suke-socket-server/src/server";
 import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
-import { RedisClient } from "./config";
+import { RedisClient } from "./config/index";
+import handlers from "@suke/suke-socket-server/src/handlers";
+import { TypeormStore } from 'connect-typeorm';
+import { getRepository } from "typeorm";
+import { SessionModel } from '@suke/suke-core/src/entities/Session';
 
 interface ExpressLocals {
     user?: UserModel;
@@ -36,11 +40,18 @@ export class Server {
 
         this.app = express();
         this.server = http.createServer(this.app);
-        this.sessionParser = session(config.session);
+        this.sessionParser = session({
+            store: new TypeormStore({
+                cleanupLimit: 2,
+                ttl: 86400
+            }).connect(getRepository(SessionModel)),
+            ...config.session
+        });
         this.sockerServer = new SocketServer({
             httpServer: this.server, 
             sessionParser: this.sessionParser, 
-            redisClient: RedisClient});
+            redisClient: RedisClient
+        });
     }
 
     private setupControllers(): void {
@@ -60,6 +71,11 @@ export class Server {
         this.setupControllers();
 
         this.app.use(ErrorHandler);
+        
+        // create socket handlers
+        for (const createHandler of handlers) {
+            createHandler(this.sockerServer)();
+        }
 
         // Listening from the socket server will listen on the httpServer that is shared from express.
         this.sockerServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));
