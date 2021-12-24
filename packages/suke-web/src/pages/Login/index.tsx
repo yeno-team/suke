@@ -1,16 +1,62 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
+import useRecaptcha from "../../hooks/useRecaptcha";
+import { useNotification } from "../../hooks/useNotifications";
+import { ReactNotificationOptions } from "react-notifications-component";
+
+const defaultNotificationOpts : ReactNotificationOptions = {
+    container : "bottom-right",
+    animationIn : ["animate__animated","animate__fadeIn"],
+    animationOut : ["animate__animated","animate__fadeOutDown"],
+    dismiss : {
+        duration : 3000,
+        pauseOnHover : true,
+        onScreen : true,
+        showIcon : true
+    }
+}
 
 export const LoginPage = () => {
     const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
-
+    const [ reCaptchaToken , handleReCaptchaVerify ] = useRecaptcha("login");
+    const notificationStore = useNotification();
     const { login } = useAuth();
 
     const handleLogin = async () => {
-        await login(usernameInput, passwordInput);
+        await handleReCaptchaVerify()
+
+        if(!(usernameInput)) {
+            return notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                type : "danger",
+                title : "Error",
+                message : "Please fill out the username field."
+            })
+        }
+
+        if(!(passwordInput)) {
+            return notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                type : "danger",
+                title : "Error",
+                message : "Please fill out the password field."
+            })
+        }
+
+        
+        await login(usernameInput, passwordInput , reCaptchaToken);
+
+        return notificationStore.addNotification({
+            ...defaultNotificationOpts,
+            type : "success",
+            title : "Success",
+            message : "You've successfully logged in."
+        })
+
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +80,12 @@ export const LoginPage = () => {
                     <label htmlFor="remember" className="text-sm">Remember me</label>
                     <Button className="block w-full rounded-sm py-3 px-0 mt-8" backgroundColor="blue" fontWeight="semibold">LOGIN</Button>
                 </form>
-                <a href="/register" className="block mt-4 text-sm text-gray">Don't have an account?</a>
+                <span className="mt-4 block text-sm">
+                    The site is protected by reCAPTCHA and the Google 
+                    <a href="https://policies.google.com/privacy" className="text-blue font-semibold"> Privacy Policy</a> and 
+                    <a href="https://policies.google.com/terms" className="text-blue font-semibold"> Terms of Service</a> apply.
+                </span>
+                <Link to="/register" className="block mt-4 text-sm text-gray">Don't have an account?</Link>
             </div>
         </div>
     )

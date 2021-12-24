@@ -1,8 +1,10 @@
 import { Service } from "typedi";
 import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
-import { Request, Response } from 'express';
+import { Request, Response , Express } from 'express';
 import { User } from "@suke/suke-core/src/entities/User";
+import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
+import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 @Service()
 export class UserController extends BaseController {
     public route = "/api/user/:id?";
@@ -11,6 +13,10 @@ export class UserController extends BaseController {
         private userService: UserService
     ) {
         super();
+    }
+
+    public execute(app : Express) : void {
+        app.route(this.route).post(verifyRecaptchaToken() , catchErrorAsync(this.Post))
     }
 
     public Get = async (req: Request, res: Response): Promise<void> => {

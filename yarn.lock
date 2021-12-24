@@ -5354,6 +5354,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-notifications-component@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@types/react-notifications-component@npm:3.1.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: f363fa136d73c7f83eb89067929147b6a0b3444f5d9174151c5d2d12c722c8e9260e400a28272f0cc4600472ab188c7b3975d8e6ffacb868b832450b4264c0cd
+  languageName: node
+  linkType: hard
+
 "@types/react-router-dom@npm:^5":
   version: 5.3.0
   resolution: "@types/react-router-dom@npm:5.3.0"
@@ -6256,6 +6265,13 @@ __metadata:
   version: 1.0.2
   resolution: "alphanum-sort@npm:1.0.2"
   checksum: 5a32d0b3c0944e65d22ff3ae2f88d7a4f8d88a78a703033caeae33f2944915e053d283d02f630dc94823edc7757148ecdcf39fd687a5117bda5c10133a03a7d8
+  languageName: node
+  linkType: hard
+
+"animate.css@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "animate.css@npm:4.1.1"
+  checksum: c7eb91540423532c549725a6dedea993735a05eadaa49ed4d1965ce166a6db36459adcc9667c1dfe13657fab92a2875bbee34ad0d942444a731badab69f762c8
   languageName: node
   linkType: hard
 
@@ -11892,7 +11908,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.1.0":
+"hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -18691,6 +18707,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-google-recaptcha-v3@npm:^1.9.7":
+  version: 1.9.7
+  resolution: "react-google-recaptcha-v3@npm:1.9.7"
+  dependencies:
+    hoist-non-react-statics: ^3.3.2
+  peerDependencies:
+    react: ^17.0
+    react-dom: ^17.0
+  checksum: 2bc98d0ddd91f95e0e6d9ac32ba24560690f7288209f216b616bb73ccde9f2e2432310b6b2294183f3ce01e6590c742cfb2c2f29e4112be4705b7eb8be4bab44
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.6.0, react-is@npm:^16.7.0, react-is@npm:^16.8.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -18702,6 +18730,15 @@ fsevents@^1.2.7:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-notifications-component@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "react-notifications-component@npm:3.1.0"
+  peerDependencies:
+    react: ^17.0.1
+  checksum: f841faccf627ea70d85756a0538e37230eb6f3cadcb75d6c6963c6928d4aa477939db01c44d375391619a2c76b8425fb33720aa3b18f99721c56fa68a7cfd5f8
   languageName: node
   linkType: hard
 
@@ -20878,9 +20915,11 @@ resolve@^2.0.0-next.3:
     "@types/eslint": ^7
     "@types/jest": ^27.0.2
     "@types/prettier": ^2
+    "@types/react-notifications-component": ^3.1.1
     "@types/react-test-renderer": ^17
     "@types/testing-library__jest-dom": ^5
     "@yarnpkg/pnpify": ^3.0.1-rc.5
+    animate.css: ^4.1.1
     eslint: ^7.32.0
     jest: ^27.2.2
     jest-docblock: ^27.0.6
@@ -20889,6 +20928,8 @@ resolve@^2.0.0-next.3:
     jest-watch-yarn-workspaces: ^1.1.0
     lerna: ^4.0.0
     prettier: ^2.4.1
+    react-google-recaptcha-v3: ^1.9.7
+    react-notifications-component: ^3.1.0
     ts-jest: ^27.0.5
     typescript: ^4.4.3
   languageName: unknown
@@ -21819,11 +21860,11 @@ typescript@^4.4.3:
 
 "typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.4.3
-  resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=d8b4e7"
+  resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=32657b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 215a59742afb7e0c3668e2c50ca19813deb24b3cc0d16ac3591990e033728050aaa99e159a72b54cb43653f16c778a5cf9dfeed1f51c3b105710ae082c064af7
+  checksum: 28ab98313afab46788ff41014fdb5932430ada6e03cf9e92ac47f406526a2cac1ae2894834e7da61e46b7429318e9c47f45ba8de323332f0cb9af99b72ebae74
   languageName: node
   linkType: hard
 

@@ -4,6 +4,7 @@ import { Service } from "typedi";
 import { createUserAttacher } from "../middlewares/createUserAttacher";
 import { BaseController } from "./BaseController";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
+import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
 
 @Service()
 export class AuthController extends BaseController {
@@ -15,7 +16,7 @@ export class AuthController extends BaseController {
 
     public execute(app: Express): void {
         app.route(this.route)
-            .post(createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+            .post(verifyRecaptchaToken() ,createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
         
         app.route(this.route + "/logout")
             .post(catchErrorAsync(this.Logout))
