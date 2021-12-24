@@ -6,7 +6,6 @@ import useAuth from "../../hooks/useAuth";
 import { useChannel } from "../../hooks/useChannel";
 import { Button } from "../Button";
 import { Request } from "@suke/suke-core/src/entities/Request";
-import { UserId } from "@suke/suke-core/src/entities/UserId";
 import { getUrlSources } from "../../api/source";
 
 export function MultiBrowserItem({data, category, roomId, requestedBy, requestedStandalones, toggleModal, activeSource, requestedObject}: MultiBrowserItemProps) {
