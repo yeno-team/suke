@@ -31,7 +31,7 @@ export const MobileSourceButtons = ({sources, activeSource, closeMobileMenu, set
         closeMobileMenu!();
     }
 
-    const buttons = sources.map(sourceName => <BrowserSourceButton onClick={() => setSource(sourceName)} active={activeSource?.toLowerCase() === sourceName.toLowerCase()}>{sourceName.toUpperCase()}</BrowserSourceButton>);
+    const buttons = sources.map(sourceName => <BrowserSourceButton key={sourceName} onClick={() => setSource(sourceName)} active={activeSource?.toLowerCase() === sourceName.toLowerCase()}>{sourceName.toUpperCase()}</BrowserSourceButton>);
 
     return (
         <div className="absolute flex flex-col bg-coolblack w-full h-full z-10">
