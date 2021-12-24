@@ -3,10 +3,10 @@ import path from 'path';
 import { IConfiguration } from './Configuration';
 import { getEnvironmentVariable } from "@suke/suke-util";
 import { createClient } from 'redis';
+
 dotenv.config({
     path: path.resolve(__dirname, "../../server.conf")
 });
-
 
 export const RedisClient = createClient({ url: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string});
 
@@ -21,8 +21,6 @@ RedisClient.connect().then(() => {
         console.error(err);
     });
 }).catch(err => console.error(err));
-
-
 
 const config: IConfiguration = {
     server: {

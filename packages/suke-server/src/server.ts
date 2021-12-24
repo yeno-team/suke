@@ -8,7 +8,7 @@ import { SocketServer } from "@suke/suke-socket-server/src/server";
 import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
-import { RedisClient } from "./config";
+import { RedisClient } from "./config/index";
 import handlers from "@suke/suke-socket-server/src/handlers";
 import { TypeormStore } from 'connect-typeorm';
 import { getRepository } from "typeorm";

@@ -10,9 +10,7 @@ import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 export class AuthController extends BaseController {
     public route = "/api/auth";
 
-    constructor(
-        private userService: UserService
-    ) {
+    constructor() {
         super();
     }
 
