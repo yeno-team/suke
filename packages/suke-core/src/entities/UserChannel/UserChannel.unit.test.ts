@@ -4,31 +4,23 @@
  * @group unit/classes/userChannel
  */
 
-import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
+import { ValidationError } from "../../exceptions/ValidationError";
 import { UserChannel } from "./UserChannel";
 
 describe('UserChannel class', () => {
     describe('#constructor', () => {
         it('should throw ValidationError if channel object is not valid', () => {
             expect(() => {new UserChannel({
-                id: -1,
-                followers: '' as unknown as number,
-                desc_title: '',
+                id: 1,
+                followers: [],
+                desc_title: 1 as unknown as string,
                 desc: '',
                 roledUsers: []
             })}).toThrow(ValidationError);
 
             expect(() => {new UserChannel({
                 id: 1,
-                followers: '' as unknown as number,
-                desc_title: '',
-                desc: '',
-                roledUsers: []
-            })}).toThrow(ValidationError);
-
-            expect(() => {new UserChannel({
-                id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: 1 as unknown as string,
                 roledUsers: []
@@ -38,7 +30,7 @@ describe('UserChannel class', () => {
         it('should not throw ValidationError if channel object is valid', () => {
             expect(() => {new UserChannel({
                 id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
@@ -47,54 +39,38 @@ describe('UserChannel class', () => {
 
         it('should throw PropertyValidationError if a property is of a wrong type', () => {
             expect(() => {new UserChannel({
-                id: 1,
-                followers: '' as unknown as number,
+                id: '' as unknown as number,
+                followers: [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
-            })}).toThrow(PropertyValidationError);
+            })}).toThrow();
 
             expect(() => {new UserChannel({
                 id: 1,
-                followers: '' as unknown as number,
-                desc_title: '',
-                desc: '',
-                roledUsers: []
-            })}).toThrow(PropertyValidationError);
-
-            expect(() => {new UserChannel({
-                id: 1,
-                followers: 1,
-                desc_title: 1 as unknown as string,
-                desc: '',
-                roledUsers: []
-            })}).toThrow(PropertyValidationError);
-
-            expect(() => {new UserChannel({
-                id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: 1 as unknown as string,
                 roledUsers: []
-            })}).toThrow(PropertyValidationError);
+            })}).toThrow();
         });
 
-        it('should change followers to 0 if passed in null', () => {
+        it('should change followers to default value if passed in null', () => {
             const channel = new UserChannel({
                 id: 1,
-                followers: null as unknown as number,
+                followers: null as unknown as [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
             });
 
-            expect(channel.followers).toStrictEqual(0);
+            expect(channel.followers).toStrictEqual([]);
         });
 
         it('should change desc_title to default if passed in a blank or null title', () => {
             const channel1 = new UserChannel({
                 id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
@@ -102,7 +78,7 @@ describe('UserChannel class', () => {
 
             const channel2 = new UserChannel({
                 id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: null as unknown as string,
                 desc: '',
                 roledUsers: []
@@ -115,7 +91,7 @@ describe('UserChannel class', () => {
         it('should change desc to default if passed in a blank or null description', () => {
             const channel1 = new UserChannel({
                 id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
@@ -123,7 +99,7 @@ describe('UserChannel class', () => {
 
             const channel2 = new UserChannel({
                 id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: null as unknown as string,
                 roledUsers: []
@@ -138,7 +114,7 @@ describe('UserChannel class', () => {
         it('should return true if passed in matching channels', () => {
             const channel = new UserChannel({
                 id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
@@ -150,7 +126,7 @@ describe('UserChannel class', () => {
         it('should return false if passed in non-matching channels', () => {
             const channel = new UserChannel({
                 id: 1,
-                followers: 1,
+                followers: [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
@@ -158,7 +134,7 @@ describe('UserChannel class', () => {
 
             const channel2 = new UserChannel({
                 id: 1,
-                followers: 5,
+                followers: [],
                 desc_title: '',
                 desc: '',
                 roledUsers: []
