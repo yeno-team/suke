@@ -1,19 +1,19 @@
 {
-  "compilerOptions": {
-    "jsx": "react",
-    "baseUrl": ".",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es2015",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "composite": true
-  },
-    "exclude": ["**/dist"]
+	"compilerOptions": {
+		"jsx": "react",
+		"baseUrl": ".",
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"target": "es2015",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"composite": true
+	},
+	"exclude": ["**/dist", "dist"]
 }
