@@ -3,10 +3,13 @@ import ReactPlayer from 'react-player';
 
 export interface VideoPlayerProps {
     url: string;
+    height?: string;
+    width?: string;
+    controls?: boolean;
 }
 
-export const VideoPlayer = ({url}: VideoPlayerProps) => {
+export const VideoPlayer = ({url, width = "100%", height = "100%", controls}: VideoPlayerProps) => {
     return (
-        <ReactPlayer width="100%" height="100%" url={url} style={{backgroundColor: 'black'}} controls/>
+        <ReactPlayer  width={width} height={height} url={url} style={{backgroundColor: 'black'}} controls={controls}/>
     )
 }

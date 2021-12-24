@@ -4,9 +4,10 @@ import { useChat } from "../../hooks/useChat";
 
 export interface ChatboxProps {
     username: string;
+    className?: string;
 }
 
-export const ChatBox = ({username}: ChatboxProps) => {
+export const ChatBox = ({username, className}: ChatboxProps) => {
 
     const defaultMessages: IMessage[] = [
         {
@@ -39,6 +40,6 @@ export const ChatBox = ({username}: ChatboxProps) => {
 
     
     return (
-        <Chat className="flex-grow" channelId={username} messages={chatMessages} submitMessage={sendMessage}/>
+        <Chat className={"flex-grow " + className} channelId={username} messages={chatMessages} submitMessage={sendMessage}/>
     )
 }

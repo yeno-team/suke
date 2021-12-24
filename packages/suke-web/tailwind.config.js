@@ -2,6 +2,21 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
+    maxWidth: {
+      "12": '12px',
+      "14": '14px',
+      "16": '16px',
+      "18": '18px',
+      "20": '20px',
+      "21": '21px',
+      "22": '22px',
+      "24": '24px',
+      "26": '26px',
+      "28": '28px',
+      "50": '50px',
+      "84": '84px',
+      "128": '128px'
+    },
     colors: {
       black: "#252B31",
       coolblack: "#171A1F",

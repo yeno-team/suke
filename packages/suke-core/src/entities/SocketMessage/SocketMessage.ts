@@ -1,8 +1,10 @@
 import { ValidationError } from "../../exceptions/ValidationError";
+import { RealtimeChannelData } from "../../types/UserChannelRealtime";
 import { ValueObject } from "../../ValueObject";
 import { IMessage } from "../Message";
+import { Request } from "../Request";
 
-export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE";
+export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE" | "CHANNEL_UPDATE" | "CHANNEL_REQUEST_ADD" | "CHANNEL_REQUEST_REMOVE" | "CHANNEL_REQUESTS_GET" | "CHANNEL_REQUESTS" | "SOCKET_DISCONNECT";
 
 export interface IHasRoomId {
     roomId: string;
@@ -26,7 +28,25 @@ export type SocketMessageInput = {
 } | {
     type: 'ROOM_LEAVE',
     data: IHasRoomId
-};
+} | {
+    type: 'CHANNEL_UPDATE',
+    data: Partial<RealtimeChannelData & {channelId: string}>
+} | {
+    type: 'CHANNEL_REQUEST_ADD',
+    data: Request
+} | {
+    type: 'CHANNEL_REQUEST_REMOVE',
+    data: Request
+} | {
+    type: 'CHANNEL_REQUESTS_GET',
+    data: string // channel id
+} | {
+    type: 'CHANNEL_REQUESTS',
+    data: Request[]
+} | {
+    type: 'SOCKET_DISCONNECT',
+    data: string // webSocket id
+}
 
 export interface ISocketMessage {
     type: SocketMessageType;
