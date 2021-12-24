@@ -1,5 +1,4 @@
 import { IMultiData, IMultiStandaloneData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
-import { UserId } from "@suke/suke-core/src/entities/UserId";
 import classNames from "classnames";
 import useAuth from "../../hooks/useAuth";
 import { useChannel } from "../../hooks/useChannel";
@@ -35,8 +34,7 @@ export interface MultiBrowserStandaloneItemProps {
     data: IMultiData;
     roomId: string;
     category: string;
-    activeSource: string;
-    
+    activeSource: string; 
     standaloneData: IMultiStandaloneData;
     requestedBy?: string[];
     requestedObject?: Request;
@@ -52,10 +50,10 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
         requestedData: data,
         engine: activeSource,
         requestedBy: [{
-            userId: new UserId(user?.id as number),
-                name: user?.name as string,
-            }],
-            roomId
+            userId: user?.id as number,
+            name: user?.name as string,
+        }],
+        roomId
     };
 
     const handleRequest = () => {
@@ -63,7 +61,7 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
     }
 
     const handleUndoRequest = () => {
-        removeRequest(requestObj)
+        removeRequest(requestObj);
     }
 
     const handleSet = () => {

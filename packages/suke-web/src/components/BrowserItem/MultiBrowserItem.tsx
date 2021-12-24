@@ -97,7 +97,7 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
         requestedMulti: data,
         engine: activeSource,
         requestedBy: [{
-            userId: new UserId(user?.id as number),
+            userId: user?.id as number,
             name: user?.name as string,
         }],
         roomId
