@@ -21,12 +21,15 @@ export interface BetterTTVRawEmote {
     }
 }
 
+export type BetterTTVEmoteApiResponseTwo = Array<{ emote : BetterTTVRawEmote , total : number}>
+export type BetterTTVEmoteApiResponseOne= Array<BetterTTVRawEmote>
+export type BetterTTVEmoteApiResponse = BetterTTVEmoteApiResponseOne | BetterTTVEmoteApiResponseTwo
 export interface BetterTTVEmote {
     url : URL;
-    type : "png" | "gif"
+    type : "png" | "gif";
+    name : string;
 }
 
-export type BetterTTVEmoteApiResponse = Array<BetterTTVRawEmote>
 export type BetterTTVEmoteResponse = Array<BetterTTVEmote>
 
 export class BetterTTVEmoteOpts extends ValueObject implements IBetterTTVEmoteOptions {

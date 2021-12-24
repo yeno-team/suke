@@ -1,6 +1,6 @@
 import { AxiosRequest } from "@suke/requests/src/";
 import { Service } from "typedi";
-import { BetterTTVEmoteOpts , BetterTTVEmoteApiResponse , BetterTTVEmoteResponse } from "./types";
+import { BetterTTVEmoteOpts , BetterTTVEmoteApiResponse , BetterTTVEmoteResponse, BetterTTVEmoteApiResponseOne , BetterTTVEmoteApiResponseTwo } from "./types";
 
 @Service()
 export class BetterTTVApiWrapper {
@@ -35,7 +35,6 @@ export class BetterTTVApiWrapper {
         if(opts.limit) {
             url.searchParams.append("limit" , opts.limit.toString())
         }
-
         return url;
     }
 
@@ -45,10 +44,23 @@ export class BetterTTVApiWrapper {
 
     public async getEmotes(opts : BetterTTVEmoteOpts) : Promise<BetterTTVEmoteResponse> {
         const url = this.getEmotePageUrl(opts)
-        const resp = await this.request.get<BetterTTVEmoteApiResponse>(url)
+        let resp = await this.request.get<BetterTTVEmoteApiResponse>(url)
         
-        return resp.map(({ id, imageType }) => ({
+        if((opts.type === "trending") || (opts.type === "top")) {
+            resp = resp as BetterTTVEmoteApiResponseTwo
+
+            return resp.map(({ emote : { code , imageType , id }}) => ({
+                url : this.getEmoteImageUrl(id , opts.size ?? "3x"),
+                type : imageType,
+                name : code
+            }))
+        }
+
+        resp = resp as BetterTTVEmoteApiResponseOne
+        
+        return resp.map(({ id, imageType , code }) => ({
             url : this.getEmoteImageUrl(id , opts.size ?? "3x"),
+            name : code,
             type : imageType
         }))
     }
