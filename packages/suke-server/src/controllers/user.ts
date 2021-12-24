@@ -17,7 +17,9 @@ export class UserController extends BaseController {
         const id = req.params.id;
 
         if (id == null && req.session.user != null) {
-            res.send(req.session.user);
+            const foundUser = await this.userService.findById(req.session.user.id);
+            req.session.user = foundUser;
+            res.send(foundUser);
             return;
         } 
         
@@ -37,7 +39,10 @@ export class UserController extends BaseController {
             return;
         }
 
-        res.send(foundUser);
+        res.send({
+            ...foundUser,
+            salt: null
+        });
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
