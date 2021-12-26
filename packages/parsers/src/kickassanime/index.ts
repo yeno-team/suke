@@ -48,7 +48,7 @@ export default class KickAssAnimeParser implements IParser {
      * @param options 
      * @returns 
      */
-    private async query_search(searchTerm : string , options? : ParserSearchOptions) : Promise<KickAssAnimeQuerySearchResponse> {
+    private async query_search(searchTerm : string) : Promise<KickAssAnimeQuerySearchResponse> {
         if (searchTerm.length <= 3) 
             throw new Error("Search Term should be greater than 3 characters.")
         const queryResults = await this.wrapper.search(searchTerm)
@@ -98,7 +98,7 @@ export default class KickAssAnimeParser implements IParser {
             throw new ParserError("Options token property is not supported on the KickAssAnime parser.")
         }
 
-        const { data , nextPageToken , prevPageToken } = await this.query_search(searchTerm , options)
+        const { data , nextPageToken , prevPageToken } = await this.query_search(searchTerm)
         const animes = data.map((anime) => ({ ...anime , episodes : anime.episodes }))
 
         return {

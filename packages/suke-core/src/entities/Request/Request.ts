@@ -1,17 +1,16 @@
 import { IMultiData, IMultiStandaloneData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
-import { IHasUserId } from "../UserId/UserId";
 
 export type Request = {
     requestType: 'multi'
     requestedData: IMultiStandaloneData,
     requestedMulti: IMultiData,
     engine: string,
-    requestedBy: (IHasUserId & {name: string})[],
+    requestedBy: {name: string, userId: number}[],
     roomId: string
 } | {
     requestType: 'standalone',
     requestedData: IStandaloneData,
-    requestedBy: (IHasUserId & {name: string})[],
+    requestedBy: {name: string, userId: number}[],
     engine: string,
     roomId: string
 }

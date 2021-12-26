@@ -33,7 +33,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
             <div className={classNames(
                 'flex',
                 'items-center',
-                'mr-5'
+                'mr-3'
             )}>
                 <button onClick={() => setMobileMenuActive(!mobileMenuActive)} className={classNames(
                     'text-xl',
@@ -51,7 +51,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 <Logo />
             </div>
 
-            <SearchBar size='full' className={classNames(
+            <SearchBar size="52" className={classNames(
                 'md:hidden',
                 'ml-3',
                 'py-2'

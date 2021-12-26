@@ -11,6 +11,7 @@ export const useChannel = () => {
     const { messages } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessage[]>(messages);
     const [ channelData, setChannelData ] = useState<RealtimeChannelData>({} as RealtimeChannelData);
+    
     useEffect(() => {
         if (!socketMessagesChanged || prevSocketMessages == null)
             return;

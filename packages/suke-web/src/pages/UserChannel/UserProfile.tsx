@@ -7,9 +7,13 @@ export type UserProfileParams = {
     username: string;
     followerCount: number;
     className: string;
+    followed: boolean;
+    handleFollow: () => void;
+    handleUnfollow: () => void;
 } 
 
-export const UserProfile = ({username, followerCount, className}: UserProfileParams) => {
+export const UserProfile = ({username, followerCount, className, followed, handleFollow, handleUnfollow}: UserProfileParams) => {
+    
     return (
         <div className={"flex bg-black font-sans " + className}>
             <div className="flex px-4 py-5 flex-grow">
@@ -26,9 +30,15 @@ export const UserProfile = ({username, followerCount, className}: UserProfilePar
                 <Button className="mr-1" size={2} square backgroundColor="red" fontWeight="semibold" >
                     <Icon icon="ic:sharp-report-problem" className="text-base text-white" />
                 </Button>
-                <Button size={3} backgroundColor="teal" fontWeight="semibold" >
-                    <Icon icon="akar-icons:plus" className="text-base mr-1 text-white" /> FOLLOW
-                </Button>
+                {
+                    !followed ?
+                    <Button size={3} backgroundColor="teal" fontWeight="semibold" onClick={handleFollow}>
+                        <Icon icon="akar-icons:plus" className="text-base mr-1 text-white" /> FOLLOW
+                    </Button> : 
+                    <Button size={3} backgroundColor="darkgray" fontWeight="semibold" onClick={handleUnfollow}>
+                        <Icon icon="akar-icons:cross" className="text-base mr-1 text-white" /> UNFOLLOW
+                    </Button>
+                }   
             </div>
         </div>
     )
