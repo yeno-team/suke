@@ -1,13 +1,17 @@
-import { Route, Switch } from "react-router";
+import { Route , Routes as ReactRoutes , Outlet } from "react-router";
+import { ChatEmbed } from "../pages/Embeds/Chat";
 import { LoginPage } from "../pages/Login";
 import { RegisterPage } from "../pages/Register";
 import { UserChannelPage } from "../pages/UserChannel";
 
-export const Routes = () => <Switch>
-    <Route exact path="/">
-        <h1>Hi</h1>
+export const Routes = () => <ReactRoutes> 
+    <Route path="/" element={<Outlet/>}>
+        <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/register" element={<RegisterPage/>}/>
+        <Route path="/:username" element={<UserChannelPage/>}/>
+        <Route path="embed/">
+            <Route path="chat/:channelName" element={<ChatEmbed/>}/>
+        </Route>
+        <Route path="*" element={<h1> Page is missing </h1>}/>
     </Route>
-    <Route exact path="/login" component={LoginPage} />
-    <Route exact path="/register" component={RegisterPage} />
-    <Route path="/:username" component={UserChannelPage} />
-</Switch>
+</ReactRoutes>

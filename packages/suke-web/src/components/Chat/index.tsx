@@ -1,51 +1,63 @@
-import { IMessage } from '@suke/suke-core/src/entities/Message'
-import classNames from 'classnames';
-import React, { useState } from 'react';
+import React,  { useState } from 'react';
+import { IMessage } from '@suke/suke-core/src/entities/Message';
+import { Icon } from '@iconify/react';
 import { Messages } from './Messages';
+import { IUser } from '@suke/suke-core/src/entities/User';
+import classNames from 'classnames';
+import TextAreaAutoResize from "react-textarea-autosize";
 import './Chat.css';
-import useAuth from '../../hooks/useAuth';
-
 export interface ChatProps {
     className?: string;
     messages: IMessage[];
     channelId: string;
     submitMessage: (message: IMessage) => void;
+    user : IUser | undefined;
 }
 
-export const Chat = ({messages, submitMessage, className, channelId}: ChatProps) => {
-    const [messageInput, setMessageInput] = useState("");
-    const { user } = useAuth();
+export const Chat = ({messages, submitMessage, className , channelId , user } : ChatProps) => {
+    const [ messageInput, setMessageInput ] = useState("");
 
     const handleSubmit = () => {
-        const msg: IMessage = {
-            content: messageInput,
-            author: {
-                id: user!.id,
-                name: user!.name
-            },
-            channelId: channelId
+        if(user) { 
+            submitMessage({
+                content: messageInput,
+                author: {
+                    id: user.id,
+                    name: user.name
+                },
+                channelId : channelId
+            })
         }
 
-        submitMessage(msg);
+        setMessageInput("")
+    }
+
+    const handleSubmitByEnter = (e : React.KeyboardEvent) => {
+        if(e.key === "Enter" && !(e.shiftKey)) {
+            e.preventDefault()
+            handleSubmit()
+        }
+    }
+
+    // Handles the logic when the client wants to reply to a user in the chat.
+    const replyHandler = (authorName : string) : void => {
+        setMessageInput(`${messageInput} @${authorName} `)
     }
 
     return (
         <div className={classNames(
-            'flex',
-            'bg-coolblack',
-            'flex-col',
-            'font-sans',
-            'h-full',
-            'overflow-auto',
             className
         )}>
-            <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
-                CHAT
+            <header className="text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
+                Chat
             </header>
-            <Messages className="text-white p-4 text-sm h-3/4" messages={messages} />
-            <div className="flex m-auto w-full items-center justify-center mb-4">
-                <input value={messageInput} onChange={e => setMessageInput(e.target.value)} className="w-3/4 p-3 rounded-tl rounded-bl text-sm" placeholder="Send message..." type="text"></input>
-                <button onClick={handleSubmit} className="bg-teal rounded-tr text-sm  rounded-br px-2 py-3 mt-0 text-white w-14">Send</button>
+            <Messages className="text-white p-4 flex-1 text-sm xl:text-base overflow-y-scroll" messages={messages} channelName={channelId} replyHandler={replyHandler}/>
+
+            <div className="p-5">
+                <div className="w-full rounded-md flex items-center bg-coolgray rounded-md pr-5">
+                    <TextAreaAutoResize value={messageInput} maxRows={3} onChange={e => setMessageInput(e.target.value)} className="p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto" maxLength={500} placeholder="Send a message..." onKeyDown={handleSubmitByEnter}/>
+                    <Icon icon="fa-solid:sad-cry" className="text-white cursor-pointer" height={24} width={24} onClick={handleSubmit}/>
+                </div>
             </div>
         </div>
     )

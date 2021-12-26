@@ -7,6 +7,7 @@
   "dependencies": {
     "@craco/craco": "^6.4.0",
     "@suke/suke-core": "workspace:packages/suke-core",
+    "@suke/suke-util": "workspace:packages/suke-util",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -14,14 +15,26 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-player": "^2.9.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "6",
     "react-scripts": "4.0.3",
+    "react-textarea-autosize": "^8.3.3",
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
     "@creativebulma/bulma-divider": "^1.1.0",
     "@iconify/react": "^3.0.1",
+    "@mdx-js/react": "^1.6.22",
+    "@storybook/addon-a11y": "^6.3.12",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-console": "^1.2.3",
+    "@storybook/addon-docs": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/node-logger": "^6.3.12",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.12",
     "@tailwindcss/postcss7-compat": "^2.2.17",
+    "@types/mdx-js__react": "^1",
     "@types/react": "^17",
     "@types/react-dom": "^17",
     "@types/react-router-dom": "^5",
@@ -36,12 +49,24 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "browserslist": {

@@ -129,6 +129,8 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                     if (!isValidJson(msgStr))
                         return this.emit('clientError', new Error("Invalid Message from client."), ws);
 
+                    // SyntaxError: Unexpected token } in JSON at position 6.
+                    // If the user inputs {"123"}
                     const msgJson = JSON.parse(message.toString());
 
                     this.emit('message', new SocketMessage(msgJson), ws, user);

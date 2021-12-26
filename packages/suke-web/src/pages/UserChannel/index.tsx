@@ -1,7 +1,6 @@
-
-import { IUserChannel } from "@suke/suke-core/src/entities/UserChannel/UserChannel";
-import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
+import { IUserChannel } from "@suke/suke-core/src/entities/UserChannel";
+import React, { useEffect , useState } from "react"
+import { useParams } from "react-router";
 import { followChannel, getChannel, unfollowChannel } from "../../api/channel";
 import { Navigation } from "../../common/Navigation"
 import { VideoMenu } from "../../components/VideoMenu";
@@ -30,13 +29,13 @@ export const UserChannelPage = (): JSX.Element => {
         const sendGetChannel = async () => {
             try {
                 setSearching(true);
-                const channelResp = await getChannel(username);
+                const channelResp = await getChannel(username!);
                 setChannel(channelResp);
             } catch (e) {
                 console.warn(e);
             } finally { 
                 setSearching(false);
-                joinRoom(username);
+                joinRoom(username!);
             }
         }
         sendGetChannel();
@@ -49,7 +48,7 @@ export const UserChannelPage = (): JSX.Element => {
 
     const handleFollow = async () => {
         try {
-            await followChannel(username);
+            await followChannel(username!);
             updateUser();
         } catch (e) {
             console.warn(e);
@@ -58,7 +57,7 @@ export const UserChannelPage = (): JSX.Element => {
 
     const handleUnfollow = async () => {
         try {   
-            await unfollowChannel(username);
+            await unfollowChannel(username!);
             updateUser();
         } catch (e) {
             console.warn(e);
@@ -72,10 +71,10 @@ export const UserChannelPage = (): JSX.Element => {
         !searching && channel != null ?
         <div className="h-screen flex flex-col">
             <Navigation className={mobileClassListIfBrowserActive} />
-            <BrowserModal roomId={username} className="flex-grow" active={browserActive} setActive={setBrowserActive} />
+            <BrowserModal roomId={username!} className="flex-grow" active={browserActive} setActive={setBrowserActive} />
             <VideoMenu className={mobileClassListIfBrowserActive} url={channelData?.currentVideo?.sources[0].url} handleOpenBrowser={toggleBrowserActive} isAuthenticated={user?.id !== 0} title={channelData?.currentVideo?.name} category={channelData?.currentVideo?.category}/>
-            <ChatBox className={mobileClassListIfBrowserActive} username={username} />
-            <UserProfile className={mobileClassListIfBrowserActive} username={username} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow}/>
+            <ChatBox className={mobileClassListIfBrowserActive} username={username!} />
+            <UserProfile className={mobileClassListIfBrowserActive} username={username!} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow}/>
         </div> : 
         <div className="h-screen flex flex-col">
             <Navigation className={mobileClassListIfBrowserActive} />

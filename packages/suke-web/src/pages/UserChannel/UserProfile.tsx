@@ -1,5 +1,5 @@
 import React from "react"
-import { Icon } from '@iconify/react'
+import { Icon } from '@iconify/react';
 import { ImageCircle } from "../../components/ImageCircle"
 import { Button } from "../../components/Button"
 
@@ -27,7 +27,11 @@ export const UserProfile = ({username, followerCount, className, followed, handl
                 <Button className="mr-1" size={2} square backgroundColor="coolorange" fontWeight="semibold" >
                     <Icon icon="fa-solid:share-alt" className="text-base text-white" />
                 </Button>
-                <Button className="mr-1" size={2} square backgroundColor="red" fontWeight="semibold" >
+                <Button className="mr-1" size={2} square backgroundColor="red" fontWeight="semibold"/>
+                <Button size={2} backgroundColor="coolorange" fontWeight="semibold" >
+                    <Icon icon="fa-solid:share-alt" className="text-base text-white" />
+                </Button>
+                <Button size={2} backgroundColor="red" fontWeight="semibold" >
                     <Icon icon="ic:sharp-report-problem" className="text-base text-white" />
                 </Button>
                 {
