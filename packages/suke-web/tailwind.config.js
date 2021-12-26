@@ -20,9 +20,9 @@ module.exports = {
     colors: {
       black: "#252B31",
       coolblack: "#171A1F",
+      coolgray : "#374151",
       darkblack: "#16191D",
       spaceblack: "#101216",
-      coolgray: "#21272E",
       darkgray: "#5E6668",
       gray: "#C1C8C7",
       lightgray: "#CED2D6",
@@ -32,16 +32,22 @@ module.exports = {
       red: "#A83737",
       brightRed: "#CC4F4F",
       blue: "#408ED6",
-      teal: "#339EA5"
+      teal: "#339EA5",
+      transparent : "#ffffff00",
     },
     fontFamily: {
       sans: ['Open Sans', 'sans-serif'],
       signika: ['Signika', 'sans-serif'],
       sitara: ['sitara', 'sans-serif']
+    },
+    backgroundImage : {
+      "blah" : "url('./assets/blah.png')" 
     }
   },
   variants: {
-    extend: {},
+    extend: {
+      visibility : ["group-hover"]
+    }
   },
   plugins: [],
 }
