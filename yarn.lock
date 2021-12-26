@@ -5041,12 +5041,7 @@ __metadata:
     pg: ^8.7.1
     rate-limiter-flexible: ^2.3.0
     redis: ^4.0.1
-<<<<<<< HEAD
-    reflect-metadata: ^0.1.13
     steggy-noencrypt: ^2.0.3
-=======
-    reflect-metadata: ^0.1.10
->>>>>>> main
     swagger-jsdoc: ^6.1.0
     swagger-ui-express: ^4.1.6
     typedi: ^0.10.0
