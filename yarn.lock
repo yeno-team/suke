@@ -5040,6 +5040,7 @@ __metadata:
     rate-limiter-flexible: ^2.3.0
     redis: ^4.0.1
     reflect-metadata: ^0.1.13
+    steggy-noencrypt: ^2.0.3
     swagger-jsdoc: ^6.1.0
     swagger-ui-express: ^4.1.6
     typedi: ^0.10.0
@@ -17764,7 +17765,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"pngjs@npm:^3.0.0, pngjs@npm:^3.3.3":
+"pngjs@npm:^3.0.0, pngjs@npm:^3.0.1, pngjs@npm:^3.3.3":
   version: 3.4.0
   resolution: "pngjs@npm:3.4.0"
   checksum: 8bd40bd698abd16b72c97b85cb858c80894fbedc76277ce72a784aa441e14795d45d9856e97333ca469b34b67528860ffc8a7317ca6beea349b645366df00bcd
@@ -21090,6 +21091,15 @@ resolve@^2.0.0-next.3:
   version: 1.5.0
   resolution: "statuses@npm:1.5.0"
   checksum: c469b9519de16a4bb19600205cffb39ee471a5f17b82589757ca7bd40a8d92ebb6ed9f98b5a540c5d302ccbc78f15dc03cc0280dd6e00df1335568a5d5758a5c
+  languageName: node
+  linkType: hard
+
+"steggy-noencrypt@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "steggy-noencrypt@npm:2.0.3"
+  dependencies:
+    pngjs: ^3.0.1
+  checksum: 82adacbfe93a08337ac9df5103996b6f2fda06ebc67fd88052e0123ce7db7ffbc154703f1ba2e36a848fe6c7adbf094988617546dd7d2d833eb471a866e1e6e3
   languageName: node
   linkType: hard
 

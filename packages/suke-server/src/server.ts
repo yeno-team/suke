@@ -13,7 +13,6 @@ import handlers from "@suke/suke-socket-server/src/handlers";
 import { TypeormStore } from 'connect-typeorm';
 import { getRepository } from "typeorm";
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
-
 interface ExpressLocals {
     user?: UserModel;
 }
