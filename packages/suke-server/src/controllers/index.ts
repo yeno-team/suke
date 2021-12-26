@@ -4,7 +4,6 @@ import { SourceListController } from "./source/list";
 import { SourceSearchController } from "./source/search";
 import { UserController } from "./user";
 import { SourceGetController } from "./source/get";
-import { EmojiController } from "./emoji";
 import { GlobalEmoteGetController } from "./globalemote/get";
 
 export default [
@@ -14,5 +13,6 @@ export default [
     SourceSearchController,
     SourceListController,
     SourceGetController,
-    GlobalEmoteGetController
+    GlobalEmoteGetController,
+    SourceGetController
 ]
