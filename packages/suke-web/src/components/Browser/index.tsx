@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react"
 import { IMultiData, IMultiStandaloneData, ISearchData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult"
 import classNames from "classnames"
-import React, { UIEvent, useEffect, useState } from "react"
+import React, { UIEvent, useEffect, useMemo, useState } from "react"
 import { useSource } from "../../hooks/useSource"
 import { BrowserItem, MultiBrowserItem } from "../BrowserItem"
 import { Button } from "../Button"
@@ -27,7 +27,6 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
     const [searchData, setSearchData] = useState<ISearchData>({} as ISearchData);
     const [loading, setLoading] = useState(false);
     const [searchInput, setSearchInput] = useState("");
-    const [ browserElements, setBrowserElements ] = useState<JSX.Element[]>([] as JSX.Element[]);
 
     useEffect(() => {
         // default source
@@ -36,7 +35,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
         }  
     }, [sources, activeSource]);
 
-    useEffect((): void => {
+    const browserElements = useMemo((): JSX.Element[] => {
         const toggleModal = () => {
             setActive(!active);
         }
@@ -73,10 +72,10 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
 
         const items = getBrowserItems(standalones, multis, roomId, requestedItems, toggleModal, activeSource);
 
-        setBrowserElements([
+        return [
             ...Array.from(requestedItems.values()),
             ...items
-        ]);
+        ]
     }, [multis, requests, roomId, standalones, active, setActive, activeSource])
 
     const closeMobileMenu = () => {
