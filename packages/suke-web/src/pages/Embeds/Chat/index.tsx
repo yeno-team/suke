@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { useChat } from "@suke/suke-web/src/hooks/useChat";
 import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
+import { getGlobalEmotes } from "@suke/suke-web/src/api/emotes"
 
 type ChatEmbedPageParams = {
     channelName : string
@@ -25,20 +26,24 @@ export const ChatEmbed = () : JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     } , [])
 
+    useEffect(() => {
+        (async() => {
+            console.log(await getGlobalEmotes())
+        })()
+    } , [])
+
     return (
-        <React.Fragment>
-            <Chat className={classNames(
-            "bg-coolblack",
-            "h-screen",
-            "flex",
-            "flex-col",
-            "font-sans",
+        <Chat className={classNames(
+        "bg-coolblack",
+        "h-screen",
+        "flex",
+        "flex-col",
+        "font-sans",
         )} 
             user={user}
             submitMessage={sendMessage} 
             messages={chatMessages} 
             channelId={channelName}
         />
-        </React.Fragment>
     )
 }
