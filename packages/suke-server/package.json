@@ -17,6 +17,7 @@
       "@suke/suke-core": "workspace:packages/suke-core",
       "@suke/suke-socket-server": "workspace:packages/suke-socket-server",
       "@suke/suke-util": "workspace:packages/suke-util",
+      "bluebird": "^3.7.2",
       "connect-typeorm": "^1.1.4",
       "cors": "^2.8.5",
       "dotenv": "^10.0.0",
@@ -27,7 +28,6 @@
       "rate-limiter-flexible": "^2.3.0",
       "redis": "^4.0.1",
       "reflect-metadata": "^0.1.10",
-      "steggy-noencrypt": "^2.0.3",
       "swagger-jsdoc": "^6.1.0",
       "swagger-ui-express": "^4.1.6",
       "typedi": "^0.10.0",
@@ -36,6 +36,7 @@
       "typescript": "^4.4.3"
    },
    "devDependencies": {
+      "@types/bluebird": "^3.5.36",
       "@types/connect-redis": "^0.0.17",
       "@types/cors": "^2",
       "@types/express": "^4",

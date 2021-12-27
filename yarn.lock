@@ -3841,6 +3841,7 @@ __metadata:
     "@suke/suke-core": "workspace:packages/suke-core"
     "@suke/suke-socket-server": "workspace:packages/suke-socket-server"
     "@suke/suke-util": "workspace:packages/suke-util"
+    "@types/bluebird": ^3.5.36
     "@types/connect-redis": ^0.0.17
     "@types/cors": ^2
     "@types/express": ^4
@@ -3849,6 +3850,7 @@ __metadata:
     "@types/pg": ^8
     "@types/swagger-jsdoc": ^6
     "@types/swagger-ui-express": ^4
+    bluebird: ^3.7.2
     connect-typeorm: ^1.1.4
     cors: ^2.8.5
     dotenv: ^10.0.0
@@ -3859,7 +3861,6 @@ __metadata:
     rate-limiter-flexible: ^2.3.0
     redis: ^4.0.1
     reflect-metadata: ^0.1.10
-    steggy-noencrypt: ^2.0.3
     swagger-jsdoc: ^6.1.0
     swagger-ui-express: ^4.1.6
     typedi: ^0.10.0
@@ -3890,6 +3891,7 @@ __metadata:
   resolution: "@suke/suke-util@workspace:packages/suke-util"
   dependencies:
     form-data: ^4.0.0
+    jimp: ^0.16.1
   languageName: unknown
   linkType: soft
 
@@ -4280,6 +4282,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 063c32c7a519d64768dfc0169a319b8244d6a6cb50a355c93992b3c5fee1dbc236526a1111f0e7bb25abc8b0473e5f40a5edfeb8b33cad2a6ea35aa2d7d7db14
+  languageName: node
+  linkType: hard
+
+"@types/bluebird@npm:^3.5.36":
+  version: 3.5.36
+  resolution: "@types/bluebird@npm:3.5.36"
+  checksum: efe7484e1f6c3443c083f052efb7688b461a9f43899b1891c10b1faf92e4932d686265d10c3e02b8c8fe0c8c371774e6a55ff6eec5e79525390a1ddeee7eb41b
   languageName: node
   linkType: hard
 
@@ -6485,7 +6494,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.5.5":
+"bluebird@npm:^3.5.5, bluebird@npm:^3.7.2":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 869417503c722e7dc54ca46715f70e15f4d9c602a423a02c825570862d12935be59ed9c7ba34a9b31f186c017c23cac6b54e35446f8353059c101da73eac22ef
@@ -16569,7 +16578,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"pngjs@npm:^3.0.0, pngjs@npm:^3.0.1, pngjs@npm:^3.3.3":
+"pngjs@npm:^3.0.0, pngjs@npm:^3.3.3":
   version: 3.4.0
   resolution: "pngjs@npm:3.4.0"
   checksum: 8bd40bd698abd16b72c97b85cb858c80894fbedc76277ce72a784aa441e14795d45d9856e97333ca469b34b67528860ffc8a7317ca6beea349b645366df00bcd
@@ -19898,15 +19907,6 @@ resolve@^2.0.0-next.3:
   version: 1.5.0
   resolution: "statuses@npm:1.5.0"
   checksum: c469b9519de16a4bb19600205cffb39ee471a5f17b82589757ca7bd40a8d92ebb6ed9f98b5a540c5d302ccbc78f15dc03cc0280dd6e00df1335568a5d5758a5c
-  languageName: node
-  linkType: hard
-
-"steggy-noencrypt@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "steggy-noencrypt@npm:2.0.3"
-  dependencies:
-    pngjs: ^3.0.1
-  checksum: 82adacbfe93a08337ac9df5103996b6f2fda06ebc67fd88052e0123ce7db7ffbc154703f1ba2e36a848fe6c7adbf094988617546dd7d2d833eb471a866e1e6e3
   languageName: node
   linkType: hard
 
