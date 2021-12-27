@@ -66,6 +66,7 @@ export const Messages = ({messages , channelName , className , replyHandler }: M
                 setIsToolTipVisible(true)
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     } , [messages])
 
     return (

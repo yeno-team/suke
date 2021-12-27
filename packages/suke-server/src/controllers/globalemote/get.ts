@@ -7,7 +7,6 @@ import path from "path";
 import fs from "fs";
 import steggy from "steggy-noencrypt";
 @Service()
-// hello world
 export class GlobalEmoteGetController extends BaseController {
     private redisClient : redis.RedisClientType = Container.get("redis")
     private emotePackFilePath = path.join(__dirname , "emotepack.png")
@@ -21,17 +20,21 @@ export class GlobalEmoteGetController extends BaseController {
 
     public Get = async (req : Request , res : Response) : Promise<void> => {
         if(await this.redisClient.get("globalEmotesCache")) {
-            return res.sendFile(this.emotePackFilePath)
+            res.sendFile(this.emotePackFilePath)
+            return
         }
 
-        await this.redisClient.setEx("globalEmotesCache" , 60 * 60 , "1")
+        const { image , emotePositions } = await this.GlobalEmoteService.getEmotePack({ pages : 5 })
+        const cacheData = JSON.stringify(emotePositions)
 
-        const { image , positions , emotes } = await this.GlobalEmoteService.getEmotePack({ pages : 5 })
+        await this.redisClient.setEx("globalEmotesCache" , 60 * 60 , cacheData)
         const buffer = await image.getBufferAsync("image/png")
         
         // Conceal the data inside the image.
-        const img = steggy.conceal(buffer , JSON.stringify({ emotes , positions }))
+        const img = steggy.conceal(buffer , cacheData)
         await fs.writeFileSync(this.emotePackFilePath , img)
+
+        console.log(cacheData)
 
         res.sendFile(this.emotePackFilePath)
     }
