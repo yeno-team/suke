@@ -1,8 +1,6 @@
-import React , { useEffect , useState } from "react";
+import React , { useEffect } from "react";
 import { useParams } from "react-router";
 import { Chat } from "@suke/suke-web/src/components/Chat";
-import { IMessage } from "@suke/suke-core/src/entities/Message";
-import { AuthModal } from "@suke/suke-web/src/components/AuthModal";
 import classNames from "classnames";
 import { useChat } from "@suke/suke-web/src/hooks/useChat";
 import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
