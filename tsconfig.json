@@ -13,7 +13,8 @@
 		"target": "es2015",
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"composite": true
+		"composite": true,
+		"noEmit": true
 	},
 	"exclude": ["**/dist", "dist"]
 }

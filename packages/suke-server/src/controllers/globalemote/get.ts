@@ -9,7 +9,7 @@ import fs from "fs";
 @Service()
 export class GlobalEmoteGetController extends BaseController {
     private redisClient : redis.RedisClientType = Container.get("redis")
-    private emotePackFilePath = path.join(__dirname , "emotepack.png")
+    private emotePackFilePath = path.join(__dirname , "global.png")
     public route = "/asset/global.png";
     
     constructor(
@@ -24,7 +24,7 @@ export class GlobalEmoteGetController extends BaseController {
             return
         }
 
-        const { image , emotePositions } = await this.GlobalEmoteService.getEmotePack({ pages : 5 })
+        const { image , emotePositions } = await this.GlobalEmoteService.getEmotePack({ pages : 4 })
         const cacheData = JSON.stringify(emotePositions)
 
         await this.redisClient.setEx("globalEmotesCache" , 60 * 60 , cacheData)
