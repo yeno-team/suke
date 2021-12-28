@@ -34,7 +34,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                 break;
             case 'CHANNEL_REQUEST_REMOVE':
                 try {
-                    if (msg.data.requestedBy.find(v => !(new UserId(v.userId).Equals(user.Id())) && msg.data.roomId.toLowerCase() != user.name.toLowerCase())) {
+                    if (msg.data?.requestedBy.find(v => !(new UserId(v.userId).Equals(user.Id())) && msg.data.roomId.toLowerCase() != user.name.toLowerCase())) {
                         server.emit('clientError', new Error("You do not have permission to remove this request."), ws)
                     }
 
@@ -71,11 +71,10 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
 
                     const updated = await channelManager.editRealtimeChannel(msg.data.channelId, msg.data);
                     
-                    if (updated) {
-                        const updatedData = await channelManager.getChannel(msg.data.channelId);
+                    if (updated != null) {
                         broadcaster.broadcastToRoom(new SocketMessage({
                             type: 'CHANNEL_UPDATE',
-                            data: updatedData
+                            data: updated
                         }), msg.data.channelId)
                     } else {
                         ws.send(JSON.stringify(new SocketMessage({
