@@ -1,7 +1,7 @@
 // https://github.com/perestaj/Easy-Steganography/tree/main/easy-steganography/src
-import Jimp from "jimp/";
+import Jimp from "jimp";
 
-const initMessage = "SukeIsOnTop"
+const initMessage = "zzDannyWazHere"
 
 const readMessageSegment = (image : Buffer , startIndex : number , length : number) : string  => {
     let result = ''
@@ -21,7 +21,20 @@ const readMessageSegment = (image : Buffer , startIndex : number , length : numb
     return result
 }
 
-export const hideMessage = (image : Jimp , message : string) : Jimp => {
+const readMessage = (image : Jimp) : string => {
+    const messageHeader = readMessageSegment(image.bitmap.data , 0 , initMessage.length)
+
+    if(messageHeader !== initMessage) {
+        return ""
+    }
+
+    const length = +readMessageSegment(image.bitmap.data , initMessage.length, 16)
+    const message = readMessageSegment(image.bitmap.data , initMessage.length + 16 , length)
+
+    return message
+}
+
+const hideMessage = (image : Jimp , message : string) : Jimp => {
     let messageLength = message.length.toString()
 
     while (messageLength.length < 16) {
@@ -45,15 +58,7 @@ export const hideMessage = (image : Jimp , message : string) : Jimp => {
     return image 
 }
 
-export const readMessage = (image : Jimp) : string => {
-    const messageHeader = readMessageSegment(image.bitmap.data , 0 , initMessage.length)
-
-    if(messageHeader !== initMessage) {
-        return ""
-    }
-
-    const length = +readMessageSegment(image.bitmap.data , initMessage.length, 16)
-    const message = readMessageSegment(image.bitmap.data , initMessage.length + 16 , length)
-
-    return message
+export default { 
+    hideMessage , 
+    readMessage
 }

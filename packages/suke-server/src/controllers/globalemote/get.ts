@@ -2,11 +2,10 @@ import Container, { Service } from "typedi";
 import { BaseController } from "../BaseController";
 import { Request , Response } from "express";
 import { GlobalEmoteService } from "./globalemote";
-import { hideMessage } from "@suke/suke-util/src/steggy"
+import { steggy } from "@suke/suke-util/src/";
 import redis from "redis";
 import path from "path";
 import fs from "fs";
-import bd from "bluebird";
 @Service()
 export class GlobalEmoteGetController extends BaseController {
     private redisClient : redis.RedisClientType = Container.get("redis")
@@ -31,7 +30,7 @@ export class GlobalEmoteGetController extends BaseController {
         await this.redisClient.setEx("globalEmotesCache" , 60 * 60 , cacheData)
         
         // Conceal the data inside the image.
-        const imgWithData = hideMessage(image , cacheData)
+        const imgWithData = steggy.hideMessage(image , cacheData)
 
         // Write the image to the file path.
         await imgWithData.writeAsync(this.emotePackFilePath)
