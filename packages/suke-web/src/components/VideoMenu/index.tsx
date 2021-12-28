@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useChannel } from '../../hooks/useChannel';
 import { VideoMenuHeader } from './VideoMenuHeader';
@@ -25,7 +25,6 @@ export const VideoMenu = ({ handleOpenBrowser, className, playerHeight, playerWi
     const { channelData, updateRealtimeChannelData } = useChannel();
     const [player, setPlayer] = useState<ReactPlayer | null>(null);
     const [clientPaused, setClientPaused] = useState(true);
-    const [ownerPaused] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState<PlayerProgressState>({} as PlayerProgressState);
     const [seeking, setSeeking] = useState(false);
