@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { useChat } from "@suke/suke-web/src/hooks/useChat";
 import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
-import { getGlobalEmotes } from "@suke/suke-web/src/api/emotes"
+import { getGlobalEmotes } from "@suke/suke-web/src/api/emotes";
 
 type ChatEmbedPageParams = {
     channelName : string

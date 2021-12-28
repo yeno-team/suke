@@ -9,8 +9,7 @@
         "composite": true
     },
     "include": [
-        "src/",
-        "src/steggy/steggy.d.ts"
+        "src/"
     ],
     "exclude": [
         "node_modules",
