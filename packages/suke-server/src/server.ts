@@ -32,7 +32,7 @@ declare module 'express' {
 
 export class Server {
     private app;
-    private sockerServer: SocketServer;
+    private socketServer: SocketServer;
     private server: http.Server;
     private sessionParser: RequestHandler;
 
@@ -47,7 +47,7 @@ export class Server {
             }).connect(getRepository(SessionModel)),
             ...config.session
         });
-        this.sockerServer = new SocketServer({
+        this.socketServer = new SocketServer({
             httpServer: this.server, 
             sessionParser: this.sessionParser, 
             redisClient: RedisClient
@@ -74,10 +74,10 @@ export class Server {
         
         // create socket handlers
         for (const createHandler of handlers) {
-            createHandler(this.sockerServer)();
+            createHandler(this.socketServer)();
         }
 
         // Listening from the socket server will listen on the httpServer that is shared from express.
-        this.sockerServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));
+        this.socketServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));
     }
 }

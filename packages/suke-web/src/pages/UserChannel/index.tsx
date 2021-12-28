@@ -24,7 +24,6 @@ export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
     const { joinRoom } = useRoom();
     const { user, updateUser } = useAuth();
-    const { channelData } = useChannel();
     
     useEffect(() => {
         const sendGetChannel = async () => {
@@ -46,7 +45,7 @@ export const UserChannelPage = (): JSX.Element => {
     const toggleBrowserActive = () => {
         setBrowserActive(!browserActive);
     }
-
+    
     const handleFollow = async () => {
         try {
             await followChannel(username);
@@ -73,7 +72,7 @@ export const UserChannelPage = (): JSX.Element => {
         <div className="h-screen flex flex-col">
             <Navigation className={mobileClassListIfBrowserActive} />
             <BrowserModal roomId={username} className="flex-grow" active={browserActive} setActive={setBrowserActive} />
-            <VideoMenu className={mobileClassListIfBrowserActive} url={channelData?.currentVideo?.sources[0].url} handleOpenBrowser={toggleBrowserActive} isAuthenticated={user?.id !== 0} title={channelData?.currentVideo?.name} category={channelData?.currentVideo?.category}/>
+            <VideoMenu ownerView={user?.name === username} className={mobileClassListIfBrowserActive} handleOpenBrowser={toggleBrowserActive} isAuthenticated={user?.id !== 0} channelId={username} />
             <ChatBox className={mobileClassListIfBrowserActive} username={username} />
             <UserProfile className={mobileClassListIfBrowserActive} username={username} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow}/>
         </div> : 
