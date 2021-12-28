@@ -6,7 +6,6 @@ import { followChannel, getChannel, unfollowChannel } from "../../api/channel";
 import { Navigation } from "../../common/Navigation"
 import { VideoMenu } from "../../components/VideoMenu";
 import useAuth from "../../hooks/useAuth";
-import { useChannel } from "../../hooks/useChannel";
 import { useRoom } from "../../hooks/useRoom";
 import { BrowserModal } from "./BrowserModal";
 import { ChatBox } from "./ChatBox";
