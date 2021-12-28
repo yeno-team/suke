@@ -21,6 +21,7 @@ export class ChannelManager {
 
     public async getChannel(channelId: string): Promise<RealtimeChannelData> {
         const key = this.getRedisKey(channelId);
+
         const val = await this.redisClient.get(key);
         if (val == null) {
             const defaultValue: RealtimeChannelData = {
@@ -41,14 +42,14 @@ export class ChannelManager {
         return JSON.parse(val);
     }
     
-    public async editRealtimeChannel(channelId: string, editedData: Partial<RealtimeChannelData>): Promise<boolean> {
+    public async editRealtimeChannel(channelId: string, editedData: Partial<RealtimeChannelData>): Promise<RealtimeChannelData> {
         const key = this.getRedisKey(channelId);
-        const channel = await this.getChannel(key);
+        const channel = await this.getChannel(channelId);
         
         const roomConnections = this.roomManager.getRoom(key);
 
         if (channel == null && roomConnections == null) {
-            return false;
+            throw new Error("Channel probably doesn't exist.");
         }
 
         const updatedData: RealtimeChannelData = {
@@ -57,7 +58,8 @@ export class ChannelManager {
         };
 
         await this.redisClient.set(key, JSON.stringify(updatedData));
-        return true;
+        
+        return updatedData;
     }
 
     private getRedisKey(key: string) {

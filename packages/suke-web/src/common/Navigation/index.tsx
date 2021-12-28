@@ -18,7 +18,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
     return (
         <nav className={classNames(
             position ? position : 'sticky',
-            'w-screen',
+            'w-full',
             'flex',
             'items-center',
             'md:justify-between',
@@ -46,12 +46,13 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
             <MobileMenu active={mobileMenuActive} />
 
             <div className={classNames(
-                'mr-2'
+                'mr-2',
+                'w-20'
             )}>
                 <Logo />
             </div>
 
-            <SearchBar size="52" className={classNames(
+            <SearchBar size="36" className={classNames(
                 'md:hidden',
                 'ml-3',
                 'py-2'
