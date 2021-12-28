@@ -1,4 +1,5 @@
 module.exports = {
+  mode : "jit",
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
@@ -40,9 +41,7 @@ module.exports = {
       signika: ['Signika', 'sans-serif'],
       sitara: ['sitara', 'sans-serif']
     },
-    backgroundImage : {
-      "blah" : "url('./assets/blah.png')" 
-    }
+    backgroundImage : {}
   },
   variants: {
     extend: {

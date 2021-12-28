@@ -5,6 +5,8 @@ import Jimp from "jimp";
 
 export interface CreateEmotePackOpts {
     emotes : BetterTTVEmote[],
+    columnGap? : number;
+    rowGap? : number;
     emoteHeight? : number;
     emoteWidth? : number;
 }
@@ -15,24 +17,24 @@ export interface GetEmotePackOpts {
     emoteWidth? : number;
 }
 
-export interface Position {
+export interface EmotePosition {
     x : number,
     y : number
 }
 
-export interface EmotePosition {
+export interface GlobalEmoteData {
     emote : BetterTTVEmote,
-    position : Position
+    position : EmotePosition
 }
 
-export interface JimpEmotePosition {
+export interface JimpEmoteData {
     jimpEmote : Jimp,
-    position : Position
+    position : EmotePosition
 }
 
-export interface CreateEmotePackResponse {
+export interface CreateEmotePackData {
     image : Jimp;
-    emotePositions : Array<EmotePosition>
+    emotePositions : Array<GlobalEmoteData>
 }
 @Service()
 export class GlobalEmoteService {
@@ -91,32 +93,36 @@ export class GlobalEmoteService {
         return jimpEmotes.filter((jimpEmote) => jimpEmote)
     }
 
-    private async createEmotePack({ emotes , emoteHeight = 32 , emoteWidth = 32 } : CreateEmotePackOpts) : Promise<CreateEmotePackResponse> {
+    private async createEmotePack({ 
+        emotes, 
+        emoteHeight = 32,
+        emoteWidth = 32,
+        columnGap = 2,
+        rowGap = 2 
+    } : CreateEmotePackOpts) : Promise<CreateEmotePackData> {
         const newEmotes = await this.createEmotesAsJimp(emotes)
-        const emotePositions : Array<EmotePosition> = []
-        const jimpEmotePositions : Array<JimpEmotePosition> = []
+        const emotePositions : Array<GlobalEmoteData> = []
+        const jimpEmotePositions : Array<JimpEmoteData> = []
     
         // Calculate the size of the canvas.
         const columns = 32
         const rows = Math.ceil(newEmotes.length / columns)
-        const width = columns * emoteWidth
-        const height = rows * emoteHeight
+        const width = (columns * emoteWidth) + (columnGap * columns)
+        const height = (rows * emoteHeight) + (rowGap * rows)
 
         const image = await new Jimp(width , height , 0x0)
 
         // Calculate the position of each emote on the canvas.
-        for(let curRow = 0 , index = 0; curRow < rows; curRow++) {            
-            
-            const isLastRow = curRow + 1 === rows
-            
-            const emotesInCurRow = isLastRow ? (newEmotes.length < columns) ? newEmotes.length
-            : newEmotes.length  - (columns * curRow)
+        for(let curRow = 0 , index = 0; curRow < rows; curRow++) {
+            const emotesInCurRow = (rows - 1 === curRow) ?
+            (newEmotes.length < columns) ? 
+            newEmotes.length : newEmotes.length - (columns * curRow)
             : columns
 
             for(let curCol = 0; curCol < emotesInCurRow; curCol++) {
-                const position = { 
-                    x : emoteWidth * curCol,
-                    y : emoteHeight * curRow
+                const position = {
+                    x : (emoteWidth * curCol) + (curCol !== 0 ? curCol * columnGap : 0),
+                    y : (emoteHeight * curRow) + (curRow !== 0 ? curRow * rowGap : 0)
                 }
 
                 jimpEmotePositions.push({
@@ -145,7 +151,7 @@ export class GlobalEmoteService {
         }
     }
 
-    public async getEmotePack(opts : GetEmotePackOpts) : Promise<CreateEmotePackResponse> {
+    public async getEmotePack(opts : GetEmotePackOpts) : Promise<CreateEmotePackData> {
         const emotes = await this.getTrendingEmotes(opts.pages)
         
         const emotePack = await this.createEmotePack({

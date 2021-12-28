@@ -1,10 +1,10 @@
-import React,  { useState } from 'react';
+import React,  { useEffect, useMemo, useState } from 'react';
 import { IMessage } from '@suke/suke-core/src/entities/Message';
-import { Icon } from '@iconify/react';
 import { Messages } from './Messages';
 import { IUser } from '@suke/suke-core/src/entities/User';
 import classNames from 'classnames';
 import TextAreaAutoResize from "react-textarea-autosize";
+import { useEmote } from "@suke/suke-web/src/hooks/useEmote";
 import './Chat.css';
 export interface ChatProps {
     className?: string;
@@ -15,7 +15,33 @@ export interface ChatProps {
 }
 
 export const Chat = ({messages, submitMessage, className , channelId , user } : ChatProps) => {
+    const [ globalEmotes , channelEmotes ] = useEmote(channelId);
     const [ messageInput, setMessageInput ] = useState("");
+
+    const globalEmotesComponents = useMemo(() => {
+        return globalEmotes.map(({ emote , position }) => 
+            <div 
+                key={emote.url}
+                style={{
+                    backgroundImage : `url("/asset/global.png")`,
+                    backgroundPositionY : `${position.y}px`,
+                    backgroundPositionX : `${position.x}px`,
+                }}
+                className={
+                    classNames(
+                        "cursor-pointer",
+                        "h-[32px]",
+                        "w-[32px]",
+                        "filter",
+                        "grayscale",
+                        "transform-gpu",
+                        "hover:scale-125"
+                    )
+                }
+            />
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    } , [globalEmotes])
 
     const handleSubmit = () => {
         if(user) { 
@@ -56,7 +82,7 @@ export const Chat = ({messages, submitMessage, className , channelId , user } : 
             <div className="p-5">
                 <div className="w-full rounded-md flex items-center bg-coolgray rounded-md pr-5">
                     <TextAreaAutoResize value={messageInput} maxRows={3} onChange={e => setMessageInput(e.target.value)} className="p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto" maxLength={500} placeholder="Send a message..." onKeyDown={handleSubmitByEnter}/>
-                    <Icon icon="fa-solid:sad-cry" className="text-white cursor-pointer" height={24} width={24} onClick={handleSubmit}/>
+                    {globalEmotesComponents[0]}
                 </div>
             </div>
         </div>
