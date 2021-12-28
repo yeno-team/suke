@@ -124,7 +124,11 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
             try {
                 const engine = requestedObject?.engine ? requestedObject?.engine : activeSource;
                 const sources = await getUrlSources({engine: engine, url: standaloneData.sources[0].url})
-                removeRequest(requestedObject!);
+                
+                if (requestedObject != null) {
+                    removeRequest(requestedObject);
+                }
+                
                 updateRealtimeChannelData({
                     currentVideo: {
                         sources: sources.length > 0 ? sources : standaloneData.sources,
