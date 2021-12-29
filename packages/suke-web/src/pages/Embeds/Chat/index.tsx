@@ -1,27 +1,43 @@
-import React , { useEffect } from "react";
+import React , { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Chat } from "@suke/suke-web/src/components/Chat";
 import classNames from "classnames";
 import { useChat } from "@suke/suke-web/src/hooks/useChat";
-import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
+import { getChannel } from "@suke/suke-web/src/api/channel";
+import { IUserChannel } from "@suke/suke-core/src/entities/UserChannel";
+import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
 
 type ChatEmbedPageParams = {
-    channelName : string
+    channelId? : string
 }
 
 export const ChatEmbed = () : JSX.Element => {
-    const { channelName } = useParams() as ChatEmbedPageParams
-    const [ chatMessages , sendMessage ] = useChat([])
-    const { user } = useAuth()
-    const { joinRoom , leaveRoom } = useRoom()
+    const { channelId } = useParams() as ChatEmbedPageParams
+    const [ doesChannelExist , setDoesChannelExist ] = useState<boolean>(false);
+    const [ hasUserJoinedRoom , setHasUserJoinedRoom ] = useState(false);
+    const [ chatMessages , sendMessage ] = useChat([]);
+    const { user } = useAuth();
+    const { joinRoom } = useRoom();
 
     useEffect(() => {
-        joinRoom(channelName)
+        const sendGetChannel = async () => {
+            if(!(channelId)) {
+                setDoesChannelExist(false)
+                return
+            }
 
-        return () => {
-            leaveRoom(channelName)
+            try {
+                await getChannel(channelId)
+                joinRoom(channelId)
+                setHasUserJoinedRoom(true)
+                setDoesChannelExist(true)
+            } catch (e) {
+                setDoesChannelExist(false)
+            } 
+
         }
+        sendGetChannel()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     } , [])
 
@@ -36,7 +52,9 @@ export const ChatEmbed = () : JSX.Element => {
             user={user}
             submitMessage={sendMessage} 
             messages={chatMessages} 
-            channelId={channelName}
+            channelId={channelId}
+            hasUserJoinedRoom={hasUserJoinedRoom}
+            doesChannelExist={doesChannelExist}
         />
     )
 }
