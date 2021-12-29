@@ -7,12 +7,13 @@ import { InlineIcon } from "@iconify/react";
 
 export interface MessagesProps {
     className?: string;
-    channelName : string;
+    channelId: string | undefined;
     messages: IMessage[];
     replyHandler : (authorName : string) => void;
+    doesChannelExist : boolean
 }
 
-export const Messages = ({messages , channelName , className , replyHandler }: MessagesProps) => {
+export const Messages = ({messages , channelId , className , replyHandler , doesChannelExist }: MessagesProps) => {
     // We can use the channel name to connect to the channel chat using websockets.
 
     const messagesContainerRef = useRef<HTMLDivElement>(null)
@@ -85,7 +86,13 @@ export const Messages = ({messages , channelName , className , replyHandler }: M
                 onScroll={onScrollHandler}
                 ref={messagesContainerRef}
             >
-                <p className="px-1.5 py-0.5">Welcome to {channelName} chat room!</p>
+                <p className="px-1.5 py-0.5">
+                    {
+                        (channelId && doesChannelExist) ? 
+                        `Welcome to ${channelId} chat room!`:
+                        "This chat room does not exist or has been suspended."
+                    }
+                </p>
                 {
                     messages.map((msg , index)=> {
                         return (
