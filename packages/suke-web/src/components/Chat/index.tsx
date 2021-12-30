@@ -1,4 +1,4 @@
-import React,  { useState , useMemo } from 'react';
+import React,  { useState , useMemo , useEffect } from 'react';
 import { IMessage } from '@suke/suke-core/src/entities/Message';
 import  { Icon } from "@iconify/react";
 import { Messages } from './Messages';
@@ -93,16 +93,14 @@ export const Chat = (
                     <div
                         style={{
                             backgroundImage : `url("/asset/global.png")`,
-                            backgroundPositionY : `0px`,
-                            backgroundPositionX : `0px`,
                             height : "32px",
                             width : "32px"
                         }}
                         className="cursor-pointer"
                         onClick={() => setIsChatPanelActive((prevState) => !prevState)}
                     >      
-                        {isChatPanelActive && <ChatPanel globalEmotes={globalEmotes}/>}
                     </div>
+                    {isChatPanelActive && <ChatPanel globalEmotes={globalEmotes}/>}
                 </div>
             </div>
         </div>
