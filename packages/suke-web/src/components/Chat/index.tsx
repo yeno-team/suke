@@ -106,30 +106,3 @@ export const Chat = (
         </div>
     )
 }
-
-/**
- *     // const globalEmotesComponents = useMemo(() => {
-    //     return globalEmotes.map(({ emote , position }) => 
-    //         <div 
-    //             key={emote.url}
-    //             style={{
-    //                 backgroundImage : `url("/asset/global.png")`,
-    //                 backgroundPositionY : `${position.y}px`,
-    //                 backgroundPositionX : `${position.x}px`,
-    //             }}
-    //             className={
-    //                 classNames(
-    //                     "cursor-pointer",
-    //                     "h-[32px]",
-    //                     "w-[32px]",
-    //                     "filter",
-    //                     "grayscale",
-    //                     "transform-gpu",
-    //                     "hover:scale-[1.15]"
-    //                 )
-    //             }
-    //         />
-    //     )
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // } , [globalEmotes])
- */
