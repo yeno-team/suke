@@ -5,7 +5,6 @@ import classNames from "classnames";
 import { useChat } from "@suke/suke-web/src/hooks/useChat";
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
 import { getChannel } from "@suke/suke-web/src/api/channel";
-import { IUserChannel } from "@suke/suke-core/src/entities/UserChannel";
 import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
 
 type ChatEmbedPageParams = {

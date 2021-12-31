@@ -5,7 +5,7 @@ import { Messages } from './Messages';
 import { IUser } from '@suke/suke-core/src/entities/User';
 import classNames from 'classnames';
 import TextAreaAutoResize from "react-textarea-autosize";
-import { useGlobalEmote } from "@suke/suke-web/src/hooks/useGlobalEmote";
+import { useGlobalEmoji } from "@suke/suke-web/src/hooks/useGlobalEmoji";
 import { ChatPanel } from './ChatPanel';
 import './Chat.css';
 export interface ChatProps {
@@ -29,9 +29,9 @@ export const Chat = (
         doesChannelExist
     } : ChatProps
 ) => {
-    const [ globalEmotes , hasGlobalEmotesBeenFetched ] = useGlobalEmote(); 
+    const [ globalEmotes , hasGlobalEmotesBeenFetched ] = useGlobalEmoji(); 
     const [ messageInput, setMessageInput ] = useState("");
-    const [ isChatPanelActive , setIsChatPanelActive ] = useState(true);
+    const [ isChatPanelActive , setIsChatPanelActive ] = useState(false);
 
     const isUserAbleToChat = useMemo(() => {
         return doesChannelExist && hasGlobalEmotesBeenFetched && hasUserJoinedRoom && channelId
@@ -90,16 +90,17 @@ export const Chat = (
                         onKeyDown={handleSubmitByEnter}
                         disabled={!isUserAbleToChat}
                     />
-                    <div
-                        style={{
-                            backgroundImage : `url("/asset/global.png")`,
-                            height : "32px",
-                            width : "32px"
-                        }}
-                        className="cursor-pointer"
-                        onClick={() => setIsChatPanelActive((prevState) => !prevState)}
-                    >      
-                    </div>
+                    { isUserAbleToChat && 
+                        <div
+                            style={{
+                                backgroundImage : `url("/asset/global.png")`,
+                                height : "32px",
+                                width : "32px"
+                            }}
+                            className="cursor-pointer"
+                            onClick={() => setIsChatPanelActive((prevState) => !prevState)}
+                        />      
+                    }
                     {isChatPanelActive && <ChatPanel globalEmotes={globalEmotes}/>}
                 </div>
             </div>
