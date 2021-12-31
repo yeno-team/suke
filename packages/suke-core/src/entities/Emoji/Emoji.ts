@@ -1,41 +1,35 @@
 import { ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
-interface IBaseEmoji {
+interface IEmoji {
     url : URL;
     id : number;
     name : string;
+    type : "global" | "channel";
 }
-export interface IGlobalEmote extends IBaseEmoji {
-    position : {
-        x : number,
-        y : number
-    }
-}
-
 export abstract class BaseEmoji extends ValueObject {
     abstract toString() : string;
 }
 
-export class GlobalEmoji extends BaseEmoji implements IGlobalEmote {
-    public position: { x: number; y: number; };
+export class Emoji extends BaseEmoji implements IEmoji {
     public url: URL;
     public id: number;
     public name: string;
+    public type : "global" | "channel";
 
     
-    constructor(_IGlobalEmote : IGlobalEmote) {
+    constructor(_IEmoji : IEmoji) {
         super();
-        this.position = _IGlobalEmote.position;
-        this.url = _IGlobalEmote.url;
-        this.id = _IGlobalEmote.id;
-        this.name = `:${_IGlobalEmote.name}:`;
+        this.url = _IEmoji.url;
+        this.id = _IEmoji.id;
+        this.type = _IEmoji.type;
+        this.name = `:${_IEmoji.name}:`;
 
         this.IsValid()
     }
 
     public toString(): string {
         return JSON.stringify({
-            position : this.position,
+            type : this.type,
             url : this.url,
             id : this.id,
             name : this.name
@@ -43,6 +37,14 @@ export class GlobalEmoji extends BaseEmoji implements IGlobalEmote {
     }
 
     public IsValid() : boolean {
+        if(!(this.type)) {
+            throw new ValidationError("Type property must be required.")
+        }
+        
+        if(this.type !== "global" && this.type !== "channel") {
+            throw new ValidationError("Type property must be set as global or channel.")
+        }
+
         if(!(this.url)) {
             throw new ValidationError("Url property must be required.")
         }
@@ -51,20 +53,12 @@ export class GlobalEmoji extends BaseEmoji implements IGlobalEmote {
             throw new ValidationError("Url property must be an instance of the URL class.")
         }
 
-        if(!(this.id)) {
+        if(typeof (this.id) === "undefined") {
             throw new ValidationError("Id property must be required.")
         }
 
         if(!(this.name)) {
             throw new ValidationError("Name property must be required.")
-        }
-
-        if(!(this.position)) {
-            throw new ValidationError("Position property must be required.")
-        }
-
-        if(this.position && (typeof this.position.x !== "number" || typeof this.position.y !== "number")) {
-            throw new ValidationError("Position property must contain valid x and y coordinates.")
         }
 
         return true

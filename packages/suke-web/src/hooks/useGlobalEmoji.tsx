@@ -1,15 +1,15 @@
 import { useEffect , useState } from "react";
-import { getGlobalEmotes } from "@suke/suke-web/src/api/emotes";
-import { GlobalEmote } from "@suke/suke-core/src/types/GlobalEmote";
+import { getGlobalEmojis } from "@suke/suke-web/src/api/emoji";
+import { GlobalEmoji } from "@suke/suke-core/src/types/GlobalEmoji";
 
-export const useGlobalEmote = () => {
-    const [ globalEmotes , setGlobalEmotes ] = useState<Array<GlobalEmote>>([]);
+export const useGlobalEmoji = () => {
+    const [ globalEmotes , setGlobalEmotes ] = useState<Array<GlobalEmoji>>([]);
     const [ hasGlobalEmotesFetched , setHasGlobalEmotesFetched ] = useState(false);
 
     useEffect(() => {
         (async() => {
             try {
-                setGlobalEmotes(await getGlobalEmotes())
+                setGlobalEmotes(await getGlobalEmojis())
             } catch {
                 setGlobalEmotes([])
             }

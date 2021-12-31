@@ -1,8 +1,8 @@
 import Jimp from "jimp";
 import { steggy } from "@suke/suke-util/src";
-import { GlobalEmote } from "@suke/suke-core/src/types/GlobalEmote";
+import { GlobalEmoji } from "@suke/suke-core/src/types/GlobalEmoji";
  
-export const getGlobalEmotes = async () : Promise<Array<GlobalEmote>> => {
+export const getGlobalEmojis = async () : Promise<Array<GlobalEmoji>> => {
     const image = await Jimp.read("/asset/global.png")
     return JSON.parse(steggy.readMessage(image))
 }
