@@ -1,6 +1,7 @@
 import { Service } from "typedi";
 import { BetterTTVApiWrapper } from "@suke/wrappers/src/betterttv";
 import { BetterTTVEmote, BetterTTVEmoteOpts, BetterTTVEmoteResponse } from "@suke/wrappers/src/betterttv/types";
+import { GlobalEmote } from "@suke/suke-core/src/entities/Emote";
 import Jimp from "jimp";
 
 export interface CreateEmotePackOpts {
@@ -17,24 +18,14 @@ export interface GetEmotePackOpts {
     emoteWidth? : number;
 }
 
-export interface EmotePosition {
-    x : number,
-    y : number
-}
-
-export interface GlobalEmoteData {
-    emote : BetterTTVEmote,
-    position : EmotePosition
-}
-
 export interface JimpEmoteData {
     jimpEmote : Jimp,
-    position : EmotePosition
+    position : { x : number , y : number }
 }
 
 export interface CreateEmotePackData {
     image : Jimp;
-    emotePositions : Array<GlobalEmoteData>
+    data : Array<GlobalEmote>
 }
 @Service()
 export class GlobalEmoteService {
@@ -43,9 +34,7 @@ export class GlobalEmoteService {
     ) {}
 
     private async getTrendingEmotes(pages = 2) : Promise<Array<BetterTTVEmote>> {
-        // const gifEmotes : Array<BetterTTVEmote> = []
         const pngEmotes : Array<BetterTTVEmote> = []
-
         const promises : Array<Promise<BetterTTVEmoteResponse>> = []
 
         for(let i = 0; i < pages; i++) {
@@ -66,10 +55,6 @@ export class GlobalEmoteService {
         }
 
         return pngEmotes
-        // return {
-        //     gifEmotes,
-        //     pngEmotes
-        // }
     }
 
     private async createEmoteAsJimp(emote : BetterTTVEmote) {
@@ -100,13 +85,14 @@ export class GlobalEmoteService {
         columnGap = 2,
         rowGap = 2 
     } : CreateEmotePackOpts) : Promise<CreateEmotePackData> {
-        const newEmotes = await this.createEmotesAsJimp(emotes)
-        const emotePositions : Array<GlobalEmoteData> = []
+        const jimpEmotes = await this.createEmotesAsJimp(emotes)
         const jimpEmotePositions : Array<JimpEmoteData> = []
+
+        const data : Array<GlobalEmote> = []
     
         // Calculate the size of the canvas.
         const columns = 32
-        const rows = Math.ceil(newEmotes.length / columns)
+        const rows = Math.ceil(jimpEmotes.length / columns)
         const width = (columns * emoteWidth) + (columnGap * columns)
         const height = (rows * emoteHeight) + (rowGap * rows)
 
@@ -115,25 +101,30 @@ export class GlobalEmoteService {
         // Calculate the position of each emote on the canvas.
         for(let curRow = 0 , index = 0; curRow < rows; curRow++) {
             const emotesInCurRow = (rows - 1 === curRow) ?
-            (newEmotes.length < columns) ? 
-            newEmotes.length : newEmotes.length - (columns * curRow)
+            (jimpEmotes.length < columns) ? 
+            jimpEmotes.length : jimpEmotes.length - (columns * curRow)
             : columns
 
             for(let curCol = 0; curCol < emotesInCurRow; curCol++) {
+                const originalEmote = jimpEmotes[index].originalEmote
+                const jimpEmote = jimpEmotes[index].jimpEmote
+                
                 const position = {
                     x : (emoteWidth * curCol) + (curCol !== 0 ? curCol * columnGap : 0),
                     y : (emoteHeight * curRow) + (curRow !== 0 ? curRow * rowGap : 0)
                 }
 
                 jimpEmotePositions.push({
-                    jimpEmote : newEmotes[index].jimpEmote,
+                    jimpEmote,
                     position
                 })
 
-                emotePositions.push({
-                    emote : newEmotes[index].originalEmote,
-                    position
-                })
+                data.push(new GlobalEmote({
+                    name : originalEmote.name,
+                    id : 1,
+                    url : originalEmote.url,
+                    position,
+                }))
 
                 index++
             }
@@ -147,7 +138,7 @@ export class GlobalEmoteService {
         
         return {
             image,
-            emotePositions
+            data
         }
     }
 
@@ -159,6 +150,7 @@ export class GlobalEmoteService {
             emoteHeight : opts.emoteHeight,
             emoteWidth : opts.emoteWidth
         })
+
 
         return emotePack
     }
