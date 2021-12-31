@@ -24,11 +24,11 @@ export class GlobalEmoteGetController extends BaseController {
             return
         }
 
-        const { image , emotePositions } = await this.GlobalEmoteService.getEmotePack({ pages : 4 })
-        const cacheData = JSON.stringify(emotePositions)
+        const { image , data } = await this.GlobalEmoteService.getEmotePack({ pages : 4 })
+        const cacheData = JSON.stringify(data)
 
         await this.redisClient.setEx("globalEmotesCache" , 60 * 60 , cacheData)
-        
+
         // Conceal the data inside the image.
         const imgWithData = steggy.hideMessage(image , cacheData)
 
