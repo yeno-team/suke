@@ -21,7 +21,7 @@ export class GlobalEmojiGetController extends BaseController {
         const globalEmojisCache = await this.redis.get("GlobalEmojiCache")
 
         if(!(globalEmojisCache)) {
-            const getGlobalEmojis = await this.GlobalEmojiService.getGlobalEmojis(4)
+            const getGlobalEmojis = await this.GlobalEmojiService.getGlobalEmojis(2)
             await this.redis.setEx("GlobalEmojiCache" , 60 * 60 , JSON.stringify(getGlobalEmojis))
             
             res.status(200).json(getGlobalEmojis)

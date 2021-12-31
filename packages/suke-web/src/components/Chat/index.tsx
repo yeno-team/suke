@@ -6,7 +6,7 @@ import { IUser } from '@suke/suke-core/src/entities/User';
 import classNames from 'classnames';
 import TextAreaAutoResize from "react-textarea-autosize";
 import { useGlobalEmoji } from "@suke/suke-web/src/hooks/useGlobalEmoji";
-import { ChatPanel } from './ChatPanel';
+import { EmotePanel } from './ChatPanel';
 import './Chat.css';
 export interface ChatProps {
     className?: string;
@@ -31,7 +31,7 @@ export const Chat = (
 ) => {
     const [ globalEmotes , hasGlobalEmotesBeenFetched ] = useGlobalEmoji(); 
     const [ messageInput, setMessageInput ] = useState("");
-    const [ isChatPanelActive , setIsChatPanelActive ] = useState(true);
+    const [ isChatPanelActive , setIsChatPanelActive ] = useState(false);
 
     const isUserAbleToChat = useMemo(() => {
         return doesChannelExist && hasGlobalEmotesBeenFetched && hasUserJoinedRoom && channelId
@@ -65,6 +65,14 @@ export const Chat = (
         setMessageInput(`${messageInput} @${authorName} `)
     }
 
+    const toggleChatPanel = () => {
+        if(!(isUserAbleToChat)) {
+            return
+        }
+
+        setIsChatPanelActive((prevState) => !(prevState))
+    }
+
     return (
         <div className={classNames(
             className
@@ -85,14 +93,21 @@ export const Chat = (
                     <TextAreaAutoResize 
                         value={messageInput} maxRows={3} 
                         onChange={e => setMessageInput(e.target.value)} 
-                        className="relative p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto " 
+                        className="relative p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto" 
                         maxLength={500} placeholder="Send a message..." 
                         onKeyDown={handleSubmitByEnter}
                         disabled={!isUserAbleToChat}
                     />
-                    {isChatPanelActive && <ChatPanel globalEmotes={globalEmotes}/>}
+                    { 
+                        globalEmotes.length <= 0 ? 
+                        <Icon icon="mdi:emoticon" className="h-32 w-32 cursor-pointer text-white transform-gpu transition-transform hover:scale-125" onClick={toggleChatPanel}/> : 
+                        <img src={globalEmotes[0].url} alt="hi" height={32} width={32} className="cursor-pointer transform-gpu hover:scale-125" onClick={toggleChatPanel}/>
+                    }
+                    {isChatPanelActive && <EmotePanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmotes} setMessageInput={setMessageInput}/>}
                 </div>
             </div>
         </div>
     )
 }
+
+// onClick={() => setIsChatPanelActive((prevState) => !(prevState))}
