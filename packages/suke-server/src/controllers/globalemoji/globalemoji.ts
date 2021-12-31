@@ -1,10 +1,10 @@
 import { Service } from "typedi";
 import { BetterTTVApiWrapper } from "@suke/wrappers/src/betterttv";
 import { BetterTTVEmote, BetterTTVEmoteOpts, BetterTTVEmoteResponse } from "@suke/wrappers/src/betterttv/types";
-import { GlobalEmote } from "@suke/suke-core/src/entities/Emote";
+import { GlobalEmoji } from "@suke/suke-core/src/entities/Emoji";
 import Jimp from "jimp";
 
-export interface CreateEmotePackOpts {
+export interface CreateEmojiPackOpts {
     emotes : BetterTTVEmote[],
     columnGap? : number;
     rowGap? : number;
@@ -12,23 +12,23 @@ export interface CreateEmotePackOpts {
     emoteWidth? : number;
 }
 
-export interface GetEmotePackOpts {
+export interface GetEmojiPackOpts {
     pages? : number,
     emoteHeight? : number;
     emoteWidth? : number;
 }
 
-export interface JimpEmoteData {
+export interface JimpEmojiData {
     jimpEmote : Jimp,
     position : { x : number , y : number }
 }
 
-export interface CreateEmotePackData {
+export interface CreateEmojiPackData {
     image : Jimp;
-    data : Array<GlobalEmote>
+    data : Array<GlobalEmoji>
 }
 @Service()
-export class GlobalEmoteService {
+export class GlobalEmojiService {
     constructor(
         private betterTTVApiWrapper : BetterTTVApiWrapper
     ) {}
@@ -84,11 +84,11 @@ export class GlobalEmoteService {
         emoteWidth = 32,
         columnGap = 2,
         rowGap = 2 
-    } : CreateEmotePackOpts) : Promise<CreateEmotePackData> {
+    } : CreateEmojiPackOpts) : Promise<CreateEmojiPackData> {
         const jimpEmotes = await this.createEmotesAsJimp(emotes)
-        const jimpEmotePositions : Array<JimpEmoteData> = []
+        const jimpEmotePositions : Array<JimpEmojiData> = []
 
-        const data : Array<GlobalEmote> = []
+        const data : Array<GlobalEmoji> = []
     
         // Calculate the size of the canvas.
         const columns = 32
@@ -119,7 +119,7 @@ export class GlobalEmoteService {
                     position
                 })
 
-                data.push(new GlobalEmote({
+                data.push(new GlobalEmoji({
                     name : originalEmote.name,
                     id : 1,
                     url : originalEmote.url,
@@ -142,7 +142,7 @@ export class GlobalEmoteService {
         }
     }
 
-    public async getEmotePack(opts : GetEmotePackOpts) : Promise<CreateEmotePackData> {
+    public async getEmotePack(opts : GetEmojiPackOpts) : Promise<CreateEmojiPackData> {
         const emotes = await this.getTrendingEmotes(opts.pages)
         
         const emotePack = await this.createEmotePack({

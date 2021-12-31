@@ -1,7 +1,10 @@
 import { ValidationError } from "../../exceptions/ValidationError";
-import { IBaseEmoji } from "../../types/BaseEmoji";
 import { ValueObject } from "../../ValueObject";
-
+interface IBaseEmoji {
+    url : URL;
+    id : number;
+    name : string;
+}
 export interface IGlobalEmote extends IBaseEmoji {
     position : {
         x : number,
@@ -13,9 +16,8 @@ export abstract class BaseEmoji extends ValueObject {
     abstract toString() : string;
 }
 
-export class GlobalEmote extends BaseEmoji implements IGlobalEmote {
+export class GlobalEmoji extends BaseEmoji implements IGlobalEmote {
     public position: { x: number; y: number; };
-    public type: "global";
     public url: URL;
     public id: number;
     public name: string;
@@ -24,7 +26,6 @@ export class GlobalEmote extends BaseEmoji implements IGlobalEmote {
     constructor(_IGlobalEmote : IGlobalEmote) {
         super();
         this.position = _IGlobalEmote.position;
-        this.type = "global";
         this.url = _IGlobalEmote.url;
         this.id = _IGlobalEmote.id;
         this.name = `:${_IGlobalEmote.name}:`;
@@ -35,7 +36,6 @@ export class GlobalEmote extends BaseEmoji implements IGlobalEmote {
     public toString(): string {
         return JSON.stringify({
             position : this.position,
-            type : this.type,
             url : this.url,
             id : this.id,
             name : this.name
