@@ -1,4 +1,4 @@
-import Container, { Inject, Service } from "typedi";
+import { Inject, Service } from "typedi";
 import { BaseController } from "../BaseController";
 import { Request , Response } from "express";
 import { GlobalEmojiService } from "./service";

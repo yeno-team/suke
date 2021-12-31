@@ -31,7 +31,7 @@ export const Chat = (
 ) => {
     const [ globalEmotes , hasGlobalEmotesBeenFetched ] = useGlobalEmoji(); 
     const [ messageInput, setMessageInput ] = useState("");
-    const [ isChatPanelActive , setIsChatPanelActive ] = useState(false);
+    const [ isChatPanelActive , setIsChatPanelActive ] = useState(true);
 
     const isUserAbleToChat = useMemo(() => {
         return doesChannelExist && hasGlobalEmotesBeenFetched && hasUserJoinedRoom && channelId
@@ -90,17 +90,6 @@ export const Chat = (
                         onKeyDown={handleSubmitByEnter}
                         disabled={!isUserAbleToChat}
                     />
-                    { isUserAbleToChat && 
-                        <div
-                            style={{
-                                backgroundImage : `url("/asset/global.png")`,
-                                height : "32px",
-                                width : "32px"
-                            }}
-                            className="cursor-pointer"
-                            onClick={() => setIsChatPanelActive((prevState) => !prevState)}
-                        />      
-                    }
                     {isChatPanelActive && <ChatPanel globalEmotes={globalEmotes}/>}
                 </div>
             </div>
