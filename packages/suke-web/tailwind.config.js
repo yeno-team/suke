@@ -2,6 +2,14 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
+    extend : {
+      height : {
+        "32" : "32px"
+      },
+      width : {
+        "32" : "32px"
+      }
+    },
     maxWidth: {
       "12": '12px',
       "14": '14px',

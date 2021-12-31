@@ -1,50 +1,65 @@
-import React , { useState , useMemo } from "react";
+import React , { useState , useMemo, useCallback } from "react";
 import { Emoji } from "@suke/suke-core/src/types/Emoji";
 import Input from "@suke/suke-web/src/components/Input";
+import { Emoji as EmojiComponent } from "@suke/suke-web/src/components/Emoji";
 import classNames from "classnames";
 import { Icon } from "@iconify/react";
 
 export interface ChatPanelProps {
-    globalEmotes : Emoji[]
+    globalEmotes : Emoji[];
+    setChatPanelVisiblity :  React.Dispatch<React.SetStateAction<boolean>>;
+    setMessageInput : React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const ChatPanel = ({ globalEmotes } : ChatPanelProps ) : JSX.Element => {
+export const EmotePanel = ({ globalEmotes , setChatPanelVisiblity , setMessageInput } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
     const [ searchInput , setSearchInput ] = useState("")    
     const [ placeholder , setPlaceHolder ] = useState("")
     const [ emotePreview , setEmotePreview ] = useState<Emoji>()
+    
+    const emoteOnClickHandler = useCallback((emoteId : number) => {
+        return () => {  
+            setMessageInput((prevState) => prevState + ` <@${emoteId}/> `)
+            setChatPanelVisiblity(false)
+        }
+    } , [setChatPanelVisiblity , setMessageInput])
 
     const globalEmoteComponents = useMemo(() => {
         return globalEmotes.map((emote) => 
         <div 
             key={emote.id}
             className="p-0.5 hover:bg-coolblack rounded cursor-pointer"
-            style={{ height : "32px" , width : "32px" }}
             onMouseOver={() => {
                 setPlaceHolder(emote.name)
                 setEmotePreview(emote)
             }}
+            onClick={emoteOnClickHandler(emote.id)}
         >
-            <img src={emote.url} alt={emote.name}/>
+            <EmojiComponent url={emote.url} name={emote.name}/>
         </div>
     )
-    } , [globalEmotes])
+    } , [globalEmotes , setChatPanelVisiblity])
 
     return (
-        <div className={classNames(
-            "bg-coolgray",
-            "absolute",
-            "-top-80",
-            'right-0',
-            "h-72",
-            "w-full",
-            "md:w-1/2",
-            "lg:w-1/3",
-            "xl:w-1/4",
-            "flex",
-            "flex-col",
-            "rounded",
-            "divide-y"
-        )}>
+        <div 
+            className={classNames(
+                "bg-coolgray",
+                "absolute",
+                "-top-80",
+                'right-0',
+                "h-72",
+                "w-full",
+                "md:w-1/2",
+                "lg:w-1/3",
+                "xl:w-1/4",
+                "flex",
+                "flex-col",
+                "rounded",
+                "divide-y"
+                )
+            }
+            tabIndex={1}
+            onBlur={() => setChatPanelVisiblity(false)}
+        >
             <nav className="p-1">
                 <Input 
                     containerClassName="h-8 rounded-md"
@@ -65,8 +80,8 @@ export const ChatPanel = ({ globalEmotes } : ChatPanelProps ) : JSX.Element => {
                     <div className="bg-black rounded-b-md p-2 flex items-center"> 
                         <img src={emotePreview.url} alt={emotePreview.name} width={32} height={32}/>
                         <div className="text-sm text-white ml-2">
-                            <p> {emotePreview.name} </p>
-                            <p> This is a global emote </p>
+                            <p className="font-semibold"> {emotePreview.name} </p>
+                            <p> { emotePreview.type === "global" ? "Global Emoji" : "Channel Emoji"} </p>
                         </div>
                     </div>
                 }
