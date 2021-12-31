@@ -1,37 +1,30 @@
 import React , { useState , useMemo } from "react";
-import { GlobalEmoji } from "@suke/suke-core/src/types/GlobalEmoji";
+import { Emoji } from "@suke/suke-core/src/types/Emoji";
 import Input from "@suke/suke-web/src/components/Input";
 import classNames from "classnames";
 import { Icon } from "@iconify/react";
 
 export interface ChatPanelProps {
-    globalEmotes : GlobalEmoji[]
+    globalEmotes : Emoji[]
 }
 
 export const ChatPanel = ({ globalEmotes } : ChatPanelProps ) : JSX.Element => {
     const [ searchInput , setSearchInput ] = useState("")    
     const [ placeholder , setPlaceHolder ] = useState("")
-    const [ emotePreview , setEmotePreview ] = useState<GlobalEmoji>()
+    const [ emotePreview , setEmotePreview ] = useState<Emoji>()
 
     const globalEmoteComponents = useMemo(() => {
         return globalEmotes.map((emote) => 
         <div 
             key={emote.id}
             className="p-0.5 hover:bg-coolblack rounded cursor-pointer"
+            style={{ height : "32px" , width : "32px" }}
             onMouseOver={() => {
                 setPlaceHolder(emote.name)
                 setEmotePreview(emote)
             }}
         >
-            <div 
-                style={{
-                    height : "32px", 
-                    width : "32px",
-                    backgroundPositionX : emote.position.x,
-                    backgroundPositionY : emote.position.y,
-                    backgroundImage : `url('/asset/global.png')`
-                }}
-            />
+            <img src={emote.url} alt={emote.name}/>
         </div>
     )
     } , [globalEmotes])
@@ -70,15 +63,7 @@ export const ChatPanel = ({ globalEmotes } : ChatPanelProps ) : JSX.Element => {
             </div>
                 { emotePreview && 
                     <div className="bg-black rounded-b-md p-2 flex items-center"> 
-                        <div 
-                            style={{
-                                height : "32px", 
-                                width : "32px",
-                                // backgroundPositionX : emotePreview.position.x,
-                                // backgroundPositionY : emotePreview.position.y,
-                                backgroundImage : `url('/asset/global.png')`
-                            }}
-                        />
+                        <img src={emotePreview.url} alt={emotePreview.name} width={32} height={32}/>
                         <div className="text-sm text-white ml-2">
                             <p> {emotePreview.name} </p>
                             <p> This is a global emote </p>
