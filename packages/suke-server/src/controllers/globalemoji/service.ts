@@ -33,7 +33,7 @@ export class GlobalEmojiService {
 
             globalEmojis.push(new Emoji({
                 type : "global",
-                id : i,
+                id : i.toString(),
                 url,
                 name
             }))
