@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { v4 as uuid } from 'uuid';
+import { parse, v4 as uuid } from 'uuid';
 import EventEmitter from "events"
 import { Server, IncomingMessage} from 'http'
 import { RequestHandler, Request, Response} from 'express';
@@ -13,7 +13,10 @@ import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
-
+import { GlobalEmojiService } from "@suke/suke-server/src/services/globalemoji";
+import { parseEmojiFromMessage } from '@suke/suke-util/src/parseEmojiFromMessage';
+import { Container } from "typedi";
+import { MessageEmoji } from '@suke/suke-core/src/types/Emoji';
 export interface SocketServerEvents {
     error: (error: Error) => void,
     clientError: (error: Error, ws: WebSocket) => void,
@@ -123,7 +126,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
 
                 this.connections.set(ws.id, ws);
                 
-                ws.on('message', (message) => {
+                ws.on('message', async (message) => {
                     const msgStr = message.toString();
                     if (!isValidJson(msgStr))
                         return this.emit('clientError', new Error("Invalid Message from client."), ws);
@@ -131,13 +134,26 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                     // SyntaxError: Unexpected token } in JSON at position 6.
                     // If the user inputs {"123"}
                     const msgJson = JSON.parse(message.toString());
-                    
-                    let data;
 
-                    // slice and dice 
+                    if(msgJson.type === "CHAT_MESSAGE") {
+                        const service = Container.get(GlobalEmojiService)
+                        const parseMessageEmojis = parseEmojiFromMessage(msgJson.data.content)
+                        const emojis : Array<MessageEmoji> = []
 
-                    // eslint-disable-next-line no-cond-assign
-                    
+                        for(let i = 0; i < parseMessageEmojis.length ; i++) {
+                            const emoji = await service.findById(parseMessageEmojis[i].id)
+                                
+                            if(emoji) { 
+                                emojis.push({ 
+                                    ...emoji,
+                                    startIndex : parseMessageEmojis[i].startIndex,
+                                    endIndex : parseMessageEmojis[i].endIndex
+                                })
+                            }
+                        }
+
+                        msgJson["data"]["emojis"] = emojis
+                    }
 
                     this.emit('message', new SocketMessage(msgJson), ws, user);
                 });

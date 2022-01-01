@@ -2,7 +2,7 @@ import { ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
 interface IEmoji {
     url : URL;
-    id : number;
+    id : string;
     name : string;
     type : "global" | "channel";
 }
@@ -12,7 +12,7 @@ export abstract class BaseEmoji extends ValueObject {
 
 export class Emoji extends BaseEmoji implements IEmoji {
     public url: URL;
-    public id: number;
+    public id: string;
     public name: string;
     public type : "global" | "channel";
 
@@ -40,7 +40,11 @@ export class Emoji extends BaseEmoji implements IEmoji {
         if(!(this.type)) {
             throw new ValidationError("Type property must be required.")
         }
-        
+
+        if(typeof this.type !== "string") {
+            throw new ValidationError("Type property must contain a string value.")
+        }
+
         if(this.type !== "global" && this.type !== "channel") {
             throw new ValidationError("Type property must be set as global or channel.")
         }
@@ -57,8 +61,16 @@ export class Emoji extends BaseEmoji implements IEmoji {
             throw new ValidationError("Id property must be required.")
         }
 
+        if(typeof this.id !== "string") {
+            throw new ValidationError("Id property must be a string value.")
+        }
+
         if(!(this.name)) {
             throw new ValidationError("Name property must be required.")
+        }
+
+        if(typeof this.name !== "string") {
+            throw new ValidationError("Name property must contain a string value.")
         }
 
         return true
