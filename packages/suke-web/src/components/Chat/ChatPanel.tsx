@@ -16,9 +16,9 @@ export const EmotePanel = ({ globalEmotes , setChatPanelVisiblity , setMessageIn
     const [ placeholder , setPlaceHolder ] = useState("")
     const [ emotePreview , setEmotePreview ] = useState<Emoji>()
     
-    const emoteOnClickHandler = useCallback((emoteId : number) => {
+    const emoteOnClickHandler = useCallback((emoteId : number , emoteType : string) => {
         return () => {  
-            setMessageInput((prevState) => prevState + ` <@${emoteId}/> `)
+            setMessageInput((prevState) => prevState + ` <@${emoteId}:${emoteType}/> `)
             setChatPanelVisiblity(false)
         }
     } , [setChatPanelVisiblity , setMessageInput])
@@ -32,12 +32,12 @@ export const EmotePanel = ({ globalEmotes , setChatPanelVisiblity , setMessageIn
                 setPlaceHolder(emote.name)
                 setEmotePreview(emote)
             }}
-            onClick={emoteOnClickHandler(emote.id)}
+            onClick={emoteOnClickHandler(emote.id , emote.type)}
         >
             <EmojiComponent url={emote.url} name={emote.name}/>
         </div>
     )
-    } , [globalEmotes , setChatPanelVisiblity])
+    } , [emoteOnClickHandler, globalEmotes])
 
     return (
         <div 
