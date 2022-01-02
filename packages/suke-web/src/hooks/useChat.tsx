@@ -1,11 +1,12 @@
-import { IMessage, Message } from "@suke/suke-core/src/entities/Message";
+import { IReceivedMessage , ReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
+import { ISentMessage } from "@suke/suke-core/src/entities/SentMessage";
 import { SocketMessage } from "@suke/suke-core/src/entities/SocketMessage";
 import { useEffect, useState } from "react";
 import { useChanged } from "./useChanged";
 import { useSocket } from "./useSocket";
 
-export const useChat = (defaultMessages: IMessage[] = []) => {
-    const [chatMessages, setChatMessages] = useState<IMessage[]>(defaultMessages);
+export const useChat = (defaultMessages: IReceivedMessage[] = []) => {
+    const [chatMessages, setChatMessages] = useState<IReceivedMessage[]>(defaultMessages);
 
     const { send, messages } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessage[]>(messages);
@@ -16,7 +17,7 @@ export const useChat = (defaultMessages: IMessage[] = []) => {
                 return;
 
             const newMessages = messages.slice(prevSocketMessages.length);
-            const newChatMessages = newMessages.flatMap((v => v.type === 'CHAT_MESSAGE' ? new Message(v.data as IMessage) : []))
+            const newChatMessages = newMessages.flatMap((v => v.type === "RECEIVED_CHAT_MESSAGE" ? new ReceivedMessage(v.data as ReceivedMessage) : []))
 
             setChatMessages(chatMessages => [
                 ...chatMessages,
@@ -32,9 +33,9 @@ export const useChat = (defaultMessages: IMessage[] = []) => {
     }, [messages, chatMessages, socketMessagesChanged])
 
 
-    function sendMessage(msg: IMessage) {
+    function sendMessage(msg: ISentMessage) {
         send({
-            type: "CHAT_MESSAGE",
+            type: "SENT_CHAT_MESSAGE",
             data: msg
         });
     }

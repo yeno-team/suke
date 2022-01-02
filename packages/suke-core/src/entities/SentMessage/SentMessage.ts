@@ -1,28 +1,23 @@
 import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
 import { Author } from "../User";
-import { MessageEmoji } from "@suke/suke-core/src/types/Emoji";
 
-export interface IMessage {
+export interface ISentMessage {
     content: string;
     author: Author;
     channelId: string;
-    emojis : Array<MessageEmoji>;
 }
-
-export class Message extends ValueObject implements IMessage {
+export class SentMessage extends ValueObject implements ISentMessage {    
     content: string;
     author: Author;
     channelId: string;
-    emojis : Array<MessageEmoji>;
 
-    constructor(msg: IMessage) {
+    constructor(msg: ISentMessage) {
         super();
 
         this.content = msg.content;
         this.author = msg.author;
         this.channelId = msg.channelId;
-        this.emojis = msg.emojis;
 
         if (!this.IsValid()) {
             throw new ValidationError(`msg obj: ${JSON.stringify(msg)} is not valid.`);

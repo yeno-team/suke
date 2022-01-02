@@ -16,7 +16,7 @@ export const EmotePanel = ({ globalEmotes , setChatPanelVisiblity , setMessageIn
     const [ placeholder , setPlaceHolder ] = useState("")
     const [ emotePreview , setEmotePreview ] = useState<Emoji>()
     
-    const emoteOnClickHandler = useCallback((emoteId : number , emoteType : string) => {
+    const emoteOnClickHandler = useCallback((emoteId : string , emoteType : string) => {
         return () => {  
             setMessageInput((prevState) => prevState + ` <@${emoteId}:${emoteType}/> `)
             setChatPanelVisiblity(false)

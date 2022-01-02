@@ -1,5 +1,4 @@
-import React,  { useState , useMemo , useEffect } from 'react';
-import { IMessage } from '@suke/suke-core/src/entities/Message';
+import React,  { useState , useMemo } from 'react';
 import  { Icon } from "@iconify/react";
 import { Messages } from './Messages';
 import { IUser } from '@suke/suke-core/src/entities/User';
@@ -8,13 +7,15 @@ import TextAreaAutoResize from "react-textarea-autosize";
 import { useGlobalEmoji } from "@suke/suke-web/src/hooks/useGlobalEmoji";
 import { EmotePanel } from './ChatPanel';
 import './Chat.css';
+import { IReceivedMessage } from '@suke/suke-core/src/entities/ReceivedMessage';
+import { ISentMessage } from '@suke/suke-core/src/entities/SentMessage';
 export interface ChatProps {
     className?: string;
-    messages: IMessage[];
+    messages: IReceivedMessage[];
     channelId: string | undefined;
     hasUserJoinedRoom : boolean;
     doesChannelExist : boolean;
-    submitMessage: (message: IMessage) => void;
+    submitMessage: (message: ISentMessage) => void;
     user : IUser | undefined;
 }
 
@@ -109,5 +110,3 @@ export const Chat = (
         </div>
     )
 }
-
-// onClick={() => setIsChatPanelActive((prevState) => !(prevState))}

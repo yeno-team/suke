@@ -1,10 +1,9 @@
-import { ParseEmoji } from "@suke/suke-util/src/parseEmojiFromMessage"
-
+import { ParsedEmoji } from "@suke/suke-util/src/parseEmojis";
 export interface Emoji {
-    url : string,
-    id : string,
-    name : string,
-    type : "global" | "channel"
+    url : string;
+    id : string;
+    name : string;
+    type : "global" | "channel";
 }
 
-export type MessageEmoji = ParseEmoji & Emoji
+export type MessageEmoji = ParsedEmoji & Emoji
