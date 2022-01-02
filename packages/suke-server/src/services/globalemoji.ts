@@ -1,6 +1,7 @@
 import { Inject, Service } from "typedi";
 import { Emoji } from "@suke/suke-core/src/types/Emoji";
 import redis from "redis";
+import e from "express";
 
 export interface FindGlobalEmojiOpts {
     name? : string;
@@ -22,41 +23,28 @@ export class GlobalEmojiService {
         return JSON.parse(globalEmotesCache)
     }
 
-    private async find(opts : FindGlobalEmojiOpts) : Promise<Emoji | null> {
-        if(!(opts.id) && !(opts.name)) {
-            throw new Error("GlobalEmojiService : Must provide property id or name property.")
-        }
-
+    private async binary_search(id : string) : Promise<Emoji | null> {
         const globalEmotesCache = await this.getGlobalEmotesCache()
 
-        if(globalEmotesCache.length <= 0) {
-            return null
-        }
-        
-        let result : Emoji | null = null
+        let startIndex = 0
+        let stopIndex = globalEmotesCache.length
+        let middle = Math.floor((stopIndex + startIndex) / 2)
 
-        for(let i = 0; i < globalEmotesCache.length; i++) {
-            const globalEmote = globalEmotesCache[i]
-            
-            const id = opts.id ?? globalEmote.id
-            const name = opts.name ?? globalEmote.name
-            
-            if(globalEmote.id === id && globalEmote.name === name) {
-                result = globalEmote
-                break
+
+        while(+globalEmotesCache[middle].id !== +id && startIndex < stopIndex) {
+            if(+id < +globalEmotesCache[middle].id) {
+                stopIndex = middle - 1
+            } else if(+id > +globalEmotesCache[middle].id) {
+                startIndex = middle + 1
             }
+
+            middle = Math.floor((stopIndex + startIndex) / 2)
         }
 
-        return result
-
+        return +globalEmotesCache[middle].id !== +id ? null : globalEmotesCache[middle]
     }
 
     public async findById(id : string) : Promise<Emoji | null> {
-        return this.find({ id })
+        return this.binary_search(id)
     }
-    
-    public async findByName(name : string) : Promise<Emoji | null> {
-        return this.find({ name })
-    }
-
 }
