@@ -5,7 +5,6 @@ import { GlobalEmojiService as _GlobalEmojiService } from "@suke/suke-server/src
 import { parseEmojis } from "@suke/suke-util/src/parseEmojis";
 import { Handler } from "../Handler";
 import { Container } from "typedi";
-import { MessageEmoji } from "@suke/suke-core/src/types/Emoji";
 
 export const createChatMessageHandler: Handler = (server: SocketServer) => (): void => {
     const GlobalEmojiService = Container.get(_GlobalEmojiService)
@@ -19,21 +18,13 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
         if (message.type === "SENT_CHAT_MESSAGE") {
             if (!(await roomManager.CheckIfUserInRoom(ws.id, message.data.channelId))) return server.emit('clientError', new Error("Cannot send message."), ws);
 
-            const emojis : Array<MessageEmoji> = []
+
             const parsedEmojis = parseEmojis(message.data.content)
 
-            // Validate each emoji in the message.
-            for(let i = 0; i < parsedEmojis.length; i++) {
-                const emoji = await GlobalEmojiService.findById(parsedEmojis[i].id)
+            // Fetch details of the emojis in the message.
+            // Filter out the results by getting rid of the emojis that couldn't be found.
+            const emojis = (await Promise.all(parsedEmojis.map(async({ id }) => await GlobalEmojiService.findById(id)))).filter((emoji) => emoji)
 
-                if(emoji)  {
-                    emojis.push({
-                        ...parsedEmojis[i],
-                        ...emoji
-                    })
-                }
-            }
-            
             msg = new SocketMessage({
                 type : "RECEIVED_CHAT_MESSAGE",
                 data : {
