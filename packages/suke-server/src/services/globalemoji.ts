@@ -1,7 +1,6 @@
 import { Inject, Service } from "typedi";
 import { Emoji } from "@suke/suke-core/src/types/Emoji";
 import redis from "redis";
-import e from "express";
 
 export interface FindGlobalEmojiOpts {
     name? : string;
@@ -12,15 +11,15 @@ export interface FindGlobalEmojiOpts {
 export class GlobalEmojiService {
     @Inject("redis")
     private redisClient : redis.RedisClientType;
+    private globalEmoteCache : Array<Emoji | null>;
 
     private async getGlobalEmotesCache() : Promise<Array<Emoji>> {
-        const globalEmotesCache = await this.redisClient.get("GlobalEmojiCache")
-
-        if(!(globalEmotesCache)) {
-            return []
+        if(!(this.globalEmoteCache)) {
+            this.globalEmoteCache = JSON.parse(await this.redisClient.get("GlobalEmojiCache"))
+            return this.globalEmoteCache
         }
 
-        return JSON.parse(globalEmotesCache)
+        return this.globalEmoteCache
     }
 
     private async binary_search(id : string) : Promise<Emoji | null> {
