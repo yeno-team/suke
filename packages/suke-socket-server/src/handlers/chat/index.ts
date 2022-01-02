@@ -23,6 +23,7 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
 
             // Fetch details of the emojis in the message.
             // Filter out the results by getting rid of the emojis that couldn't be found.
+            console.time("weqe")
             const emojis = (await Promise.all(parsedEmojis.map(async({ id }) => await GlobalEmojiService.findById(id)))).filter((emoji) => emoji)
 
             msg = new SocketMessage({
@@ -33,7 +34,10 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
                 }
             })
 
+
             await broadcaster.broadcastToRoom(msg, message.data.channelId);
+
+            console.timeEnd("weqe")
         }
     });
 }
