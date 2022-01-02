@@ -1,14 +1,14 @@
 import React , { useState , useEffect , useRef } from "react";
-import { IMessage } from "@suke/suke-core/src/entities/Message";
 import { Button } from "../Button";
 import classNames from "classnames";
 import { StringColor } from "../StringColor";
 import { InlineIcon } from "@iconify/react";
+import { IReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
 
 export interface MessagesProps {
     className?: string;
     channelId: string | undefined;
-    messages: IMessage[];
+    messages: IReceivedMessage[];
     replyHandler : (authorName : string) => void;
     doesChannelExist : boolean
 }
@@ -96,9 +96,9 @@ export const Messages = ({messages , channelId , className , replyHandler , does
                 {
                     messages.map((msg , index)=> {
                         return (
-                            <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative">
+                            <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex">
                                 <StringColor className="mr-1 cursor-pointer" baseString={msg.author.name} brightness={5} bold>{msg.author.name}: </StringColor> 
-                                <span className="pl-1 whitespace-normal break-words text-indent-2">{msg.content}</span>
+                                <span className="pl-1 whitespace-normal break-words text-indent-2 flex">{msg.content}</span>
                                 <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(msg.author.name)}><InlineIcon icon="fa-reply" height={15} width={15}/></Button>
                             </div>
                         )
