@@ -3,15 +3,14 @@ import { Author } from "../User";
 import { ValidationError , PropertyValidationError } from "../../exceptions/ValidationError";
 import { ISentMessage } from "../SentMessage";
 import { Emoji } from "../../types/Emoji";
-import { ParsedEmoji } from "@suke/suke-util/src/parseEmojis";
 
-export type IReceivedMessage = ISentMessage & { emojis : Array<(Emoji & ParsedEmoji)>}
+export type IReceivedMessage = ISentMessage & { emojis : Array<Emoji>}
 
 export class ReceivedMessage extends ValueObject implements IReceivedMessage {    
     content: string;
     author: Author;
     channelId: string;
-    emojis : Array<Emoji & ParsedEmoji>;
+    emojis : Array<Emoji>;
 
     constructor(msg: IReceivedMessage) {
         super();

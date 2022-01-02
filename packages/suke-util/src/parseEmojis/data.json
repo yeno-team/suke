@@ -3,8 +3,6 @@
         "message" : "<@123:global/>",
         "results" : [
             {
-                "startIndex" : 0,
-                "endIndex" : 14,
                 "type" : "global",
                 "id" : "123"
             }
@@ -14,8 +12,6 @@
         "message" : "<@3:channel/> <@among us:dasd/> <@3131233123:global/>",
         "results" : [
             {
-                "startIndex" : 0,
-                "endIndex" : 13,
                 "type" : "channel",
                 "id" : "3"
             },
@@ -31,14 +27,10 @@
         "message" : "<123123123123:channel/> <@123123123123:global/> <@3123123:channel/>",
         "results" : [
             {
-                "startIndex" : 24,
-                "endIndex" : 47,
                 "type" : "global",
                 "id" : "123123123123"
             },
             {
-                "startIndex" : 48,
-                "endIndex" : 67,
                 "type" : "channel",
                 "id" : "3123123"
             }

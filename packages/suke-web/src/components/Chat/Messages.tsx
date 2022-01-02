@@ -94,12 +94,32 @@ export const Messages = ({messages , channelId , className , replyHandler , does
                     }
                 </p>
                 {
-                    messages.map((msg , index)=> {
+                    messages.map(({ content , emojis , author } , index)=> {
+                        const processedContent : Array<JSX.Element> = [];
+
+                        // Convert the emoji text to the picture of the emoji in the message.
+                        if(emojis.length > 0) {
+                            let remainingContent = content;
+                            for(let i = 0; i < emojis.length; i++) {
+                                const emoji = emojis[i]
+                                const matchStr = `<@${emoji.id}:${emoji.type}/>`
+                                const matchStrIndex = remainingContent.indexOf(matchStr)
+
+                                processedContent.push(<span key={matchStr}>{remainingContent.slice(0, matchStrIndex)}</span>)
+                                remainingContent = remainingContent.slice(matchStrIndex + matchStr.length , remainingContent.length)
+                                processedContent.push(<img key={emoji.id} src={emoji.url} alt={`<@${emoji.id}/>`} height={32} width={32}/>)
+
+                                if((i + 1) === emojis.length) {
+                                    processedContent.push(<span key={emoji.type}>{remainingContent}</span>)
+                                }
+                            }
+                        }
+                        
                         return (
                             <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex">
-                                <StringColor className="mr-1 cursor-pointer" baseString={msg.author.name} brightness={5} bold>{msg.author.name}: </StringColor> 
-                                <span className="pl-1 whitespace-normal break-words text-indent-2 flex">{msg.content}</span>
-                                <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(msg.author.name)}><InlineIcon icon="fa-reply" height={15} width={15}/></Button>
+                                <StringColor className="mr-1 cursor-pointer" baseString={author.name} brightness={5} bold>{author.name}: </StringColor> 
+                                <span className="pl-1 whitespace-normal break-words text-indent-2 flex">{(processedContent.length > 0 && emojis.length > 0) ? processedContent : content}</span>
+                                <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(author.name)}><InlineIcon icon="fa-reply" height={15} width={15}/></Button>
                             </div>
                         )
                     })

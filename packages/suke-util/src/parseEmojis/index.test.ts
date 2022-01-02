@@ -17,8 +17,6 @@ describe("#parseEmojiFromMessage" , () => {
             expect(emojis.length).toStrictEqual(data.results.length)
 
             for(let z = 0; z < data.results.length; z++) {
-                expect(data.results[z].endIndex).toStrictEqual(emojis[z].endIndex)
-                expect(data.results[z].startIndex).toStrictEqual(emojis[z].startIndex)
                 expect(data.results[z].type).toStrictEqual(emojis[z].type)
                 expect(data.results[z].id).toStrictEqual(emojis[z].id)
             }
