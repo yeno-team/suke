@@ -1,24 +1,28 @@
 import { Emoji as IEmoji } from "@suke/suke-core/src/types/Emoji";
 import classNames from "classnames";
 
-export interface EmojiProps {
+export interface EmojiProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
     emoji : IEmoji,
-    height : number,
-    width : number
-    className? : string
+    height? : number,
+    isSelectable? : boolean;
+    width? : number
+    className? : string,
 }
 
-export const Emoji = ({ emoji , height , width , className } : EmojiProps) : JSX.Element => {
+export const Emoji = ({ emoji , height , width , className , isSelectable } : EmojiProps) : JSX.Element => {
     return (
         <img 
             src={emoji.url} 
-            alt={""}
+            alt={isSelectable ? emoji.parseableStr : ""}
             height={height} 
             width={width}
             className={
                 classNames(
                     className,
-                    "cursor-pointer"
+                    "cursor-pointer",
+                    {
+                        "select-none" : !(isSelectable)
+                    }
                 )
             }
         />

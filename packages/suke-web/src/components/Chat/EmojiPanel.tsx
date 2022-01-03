@@ -36,7 +36,7 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
                     }}
                     onClick={emojiOnClickHandler(emoji.parseableStr)}
                 >
-                    <Emoji emoji={emoji} height={32} width={32} className="select-none"/>
+                    <Emoji emoji={emoji} height={32} width={32} isSelectable={false}/>
                 </div>
             </LazyLoad>
         )

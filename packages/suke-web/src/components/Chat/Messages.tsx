@@ -4,7 +4,6 @@ import classNames from "classnames";
 import { StringColor } from "../StringColor";
 import { InlineIcon } from "@iconify/react";
 import { IReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
-import { Emoji } from "@suke/suke-web/src/components/Emoji";
 import { parseMessage } from "@suke/suke-web/src/util/parseMessage";
 
 export interface MessagesProps {

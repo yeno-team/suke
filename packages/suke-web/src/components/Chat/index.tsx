@@ -9,6 +9,7 @@ import { EmojiPanel } from './EmojiPanel';
 import './Chat.css';
 import { IReceivedMessage } from '@suke/suke-core/src/entities/ReceivedMessage';
 import { ISentMessage } from '@suke/suke-core/src/entities/SentMessage';
+import { Emoji } from '@suke/suke-web/src/components/Emoji';
 export interface ChatProps {
     className?: string;
     messages: IReceivedMessage[];
@@ -39,6 +40,34 @@ export const Chat = (
     } , [ doesChannelExist , hasGlobalEmotesBeenFetched , hasUserJoinedRoom , channelId ])
     
 
+    const toggleChatPanel = () => {
+        if(!(isUserAbleToChat)) {
+            return
+        }
+
+        setIsChatPanelActive((prevState) => !(prevState))
+    }
+
+    const chatEmojiIcon = useMemo(() => {
+        if(!(isUserAbleToChat)) {
+            return null
+        }
+
+        if(globalEmotes.length <= 0) {
+            return (
+                <Icon icon="mdi:emoticon" className="h-32 w-32 cursor-pointer text-white transform-gpu transition-transform hover:scale-125" onClick={toggleChatPanel}/> 
+            )
+        }
+
+        return (
+            <div onClick={toggleChatPanel} className="cursor-pointer transform-gpu hover:scale-125 h-32 w-32">
+                <Emoji emoji={globalEmotes[0]} isSelectable={true} className="h-full w-full"/>
+            </div>
+        )
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } , [ isUserAbleToChat ])
+
     const handleSubmit = () => {
         if(user && channelId) { 
             submitMessage({
@@ -66,14 +95,6 @@ export const Chat = (
         setMessageInput(`${messageInput} @${authorName} `)
     }
 
-    const toggleChatPanel = () => {
-        if(!(isUserAbleToChat)) {
-            return
-        }
-
-        setIsChatPanelActive((prevState) => !(prevState))
-    }
-
     return (
         <div className={classNames(
             className
@@ -99,12 +120,8 @@ export const Chat = (
                         onKeyDown={handleSubmitByEnter}
                         disabled={!isUserAbleToChat}
                     />
-                    { 
-                        globalEmotes.length <= 0 ? 
-                        <Icon icon="mdi:emoticon" className="h-32 w-32 cursor-pointer text-white transform-gpu transition-transform hover:scale-125" onClick={toggleChatPanel}/> : 
-                        <img src={globalEmotes[0].url} alt="hi" height={32} width={32} className="cursor-pointer transform-gpu hover:scale-125" onClick={toggleChatPanel}/>
-                    }
-                    {isChatPanelActive && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmotes} setMessageInput={setMessageInput}/>}
+                    {chatEmojiIcon}
+                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmotes} setMessageInput={setMessageInput}/>}
                 </div>
             </div>
         </div>
