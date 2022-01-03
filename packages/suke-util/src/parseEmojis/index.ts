@@ -1,7 +1,7 @@
 const regex = /<@(\d+):(global|channel)\/>/gm;
 
 export interface ParsedEmoji {
-    str : string,
+    parsedStr : string,
     id : string,
     type : "channel" | "global",
 }
@@ -12,7 +12,7 @@ export function parseEmojis(str : string) : Array<ParsedEmoji> {
 
     while((parseEmoji = regex.exec(str)) !== null) {
         parseEmojis.push({
-            str : parseEmoji[0],
+            parsedStr : parseEmoji[0],
             id : parseEmoji[1],
             type : parseEmoji[2] as "channel" | "global",
         })
