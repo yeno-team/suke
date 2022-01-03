@@ -1,23 +1,19 @@
 import { ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
-interface IBaseEmoji {
+export interface IBaseEmoji {
     id : string;
     name : string;
     type : "global" | "channel";
 }
-
 export interface _IEmoji extends IBaseEmoji {
-    url : URL
+    url : URL;
 }
 
 export interface IEmoji extends IBaseEmoji {
+    url : URL
     parseableStr : string;
 }
 
-export interface EmojiType extends IEmoji {
-    url : string
-    parseableStr : string;
-}
 export class Emoji extends ValueObject implements IEmoji {
     public url: URL;
     public id: string;
