@@ -1,5 +1,5 @@
 import React , { useState , useMemo, useCallback } from "react";
-import { Emoji } from "@suke/suke-core/src/types/Emoji";
+import { EmojiType as Emoji } from "@suke/suke-core/src/entities/Emoji";
 import Input from "@suke/suke-web/src/components/Input";
 import { Emoji as EmojiComponent } from "@suke/suke-web/src/components/Emoji";
 import classNames from "classnames";

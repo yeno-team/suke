@@ -1,39 +1,39 @@
 import { ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
-interface IEmoji {
-    url : URL;
+interface IBaseEmoji {
     id : string;
     name : string;
     type : "global" | "channel";
 }
-export abstract class BaseEmoji extends ValueObject {
-    abstract toString() : string;
+
+export interface _IEmoji extends IBaseEmoji {
+    url : URL
 }
 
-export class Emoji extends BaseEmoji implements IEmoji {
+export interface IEmoji extends IBaseEmoji {
+    parseableStr : string;
+}
+
+export interface EmojiType extends IEmoji {
+    url : string
+    parseableStr : string;
+}
+export class Emoji extends ValueObject implements IEmoji {
     public url: URL;
     public id: string;
     public name: string;
     public type : "global" | "channel";
+    public parseableStr : string;
 
-    
-    constructor(_IEmoji : IEmoji) {
+    constructor(_IEmoji : _IEmoji) {
         super();
         this.url = _IEmoji.url;
         this.id = _IEmoji.id;
         this.type = _IEmoji.type;
         this.name = `:${_IEmoji.name}:`;
+        this.parseableStr = `<@${this.id}:${this.type}/>`;
 
         this.IsValid()
-    }
-
-    public toString(): string {
-        return JSON.stringify({
-            type : this.type,
-            url : this.url,
-            id : this.id,
-            name : this.name
-        })
     }
 
     public IsValid() : boolean {
