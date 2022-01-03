@@ -1,19 +1,18 @@
-import React from "react";
+import { Emoji as IEmoji } from "@suke/suke-core/src/types/Emoji";
 import classNames from "classnames";
 
 export interface EmojiProps {
-    url : string,
-    name : string,
-    height? : number,
-    width? : number
+    emoji : IEmoji,
+    height : number,
+    width : number
     className? : string
 }
 
-export const Emoji = ({ url , name , height = 32 , width = 32 , className } : EmojiProps) : JSX.Element => {
+export const Emoji = ({ emoji , height , width , className } : EmojiProps) : JSX.Element => {
     return (
         <img 
-            src={url} 
-            alt={name} 
+            src={emoji.url} 
+            alt={""}
             height={height} 
             width={width}
             className={
@@ -25,3 +24,9 @@ export const Emoji = ({ url , name , height = 32 , width = 32 , className } : Em
         />
     )
 }
+
+export const EmojiPlaceholder = () : JSX.Element => {
+    return (
+        <div className="w-32 h-32 rounded-md animate-pulse bg-black"/>
+    )
+} 

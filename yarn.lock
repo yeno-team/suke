@@ -3912,6 +3912,7 @@ __metadata:
     "@types/mdx-js__react": ^1
     "@types/react": ^17
     "@types/react-dom": ^17
+    "@types/react-lazyload": ^3.1.1
     "@types/react-router-dom": ^5
     "@types/testing-library__jest-dom": ^5
     autoprefixer: 9
@@ -3922,6 +3923,7 @@ __metadata:
     postcss: 7
     react: ^17.0.2
     react-dom: ^17.0.2
+    react-lazyload: ^3.2.0
     react-player: ^2.9.0
     react-router-dom: 6
     react-scripts: 4.0.3
@@ -4645,6 +4647,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 4d5730dffbef86c887cecad7e3cecda424ce6a64d0b5441c63b5b015d48219868660a2bb1aa15e897e565ad8867fa6b885d4358b04e1c4e589ba4c07c3fda55c
+  languageName: node
+  linkType: hard
+
+"@types/react-lazyload@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@types/react-lazyload@npm:3.1.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: 83fcdb58c9e6ba9d67060ba30ebb5f7ba90f5c1b248cd8f818f74fcebf600d3440ddb4c229d295d093ff8c35870b6f74b6171e094c3ca9759a3d77a243e40700
   languageName: node
   linkType: hard
 
@@ -18232,6 +18243,16 @@ fsevents@^1.2.7:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-lazyload@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "react-lazyload@npm:3.2.0"
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+    react-dom: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 871a88c698a80c53ead85c293b493ac67c94e5980590094128c371e3f1e3d5bc17841ead1e7830771c87ece7fe677a6c9c323f3e6ce392a5f6f0328a36c38fe7
   languageName: node
   linkType: hard
 

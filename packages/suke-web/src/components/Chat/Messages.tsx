@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { StringColor } from "../StringColor";
 import { InlineIcon } from "@iconify/react";
 import { IReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
+import { Emoji } from "@suke/suke-web/src/components/Emoji";
 
 export interface MessagesProps {
     className?: string;
@@ -102,12 +103,11 @@ export const Messages = ({messages , channelId , className , replyHandler , does
                             let remainingContent = content;
                             for(let i = 0; i < emojis.length; i++) {
                                 const emoji = emojis[i]
-
                                 const matchStrIndex = remainingContent.indexOf(emoji.parseableStr)
 
                                 processedContent.push(<span key={emoji.parseableStr}>{remainingContent.slice(0, matchStrIndex)}</span>)
                                 remainingContent = remainingContent.slice(matchStrIndex + emoji.parseableStr.length , remainingContent.length)
-                                processedContent.push(<img key={emoji.id} src={emoji.url} alt={`<@${emoji.id}/>`} height={32} width={32}/>)
+                                processedContent.push(<Emoji emoji={emoji} height={32} width={32}/>)
 
                                 if((i + 1) === emojis.length) {
                                     processedContent.push(<span key={emoji.type}>{remainingContent}</span>)

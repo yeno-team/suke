@@ -5,7 +5,7 @@ import { IUser } from '@suke/suke-core/src/entities/User';
 import classNames from 'classnames';
 import TextAreaAutoResize from "react-textarea-autosize";
 import { useGlobalEmoji } from "@suke/suke-web/src/hooks/useGlobalEmoji";
-import { EmotePanel } from './ChatPanel';
+import { EmojiPanel } from './EmojiPanel';
 import './Chat.css';
 import { IReceivedMessage } from '@suke/suke-core/src/entities/ReceivedMessage';
 import { ISentMessage } from '@suke/suke-core/src/entities/SentMessage';
@@ -104,7 +104,7 @@ export const Chat = (
                         <Icon icon="mdi:emoticon" className="h-32 w-32 cursor-pointer text-white transform-gpu transition-transform hover:scale-125" onClick={toggleChatPanel}/> : 
                         <img src={globalEmotes[0].url} alt="hi" height={32} width={32} className="cursor-pointer transform-gpu hover:scale-125" onClick={toggleChatPanel}/>
                     }
-                    {isChatPanelActive && <EmotePanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmotes} setMessageInput={setMessageInput}/>}
+                    {isChatPanelActive && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmotes} setMessageInput={setMessageInput}/>}
                 </div>
             </div>
         </div>
