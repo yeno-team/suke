@@ -2,7 +2,7 @@ import { ValueObject } from "../../ValueObject";
 import { Author } from "../User";
 import { ValidationError , PropertyValidationError } from "../../exceptions/ValidationError";
 import { ISentMessage } from "../SentMessage";
-import { EmojiWithURLAsString as Emoji } from "../Emoji";
+import { IEmoji as Emoji } from "../Emoji";
 
 export type IReceivedMessage = ISentMessage & { emojis : Array<Emoji>}
 
