@@ -1,5 +1,5 @@
 import { Inject, Service } from "typedi";
-import { EmojiType as Emoji } from "@suke/suke-core/src/entities/Emoji";
+import { Emoji } from "@suke/suke-core/src/types/Emoji";
 import redis from "redis";
 
 export interface FindGlobalEmojiOpts {
