@@ -1,10 +1,11 @@
-import React , { useState , useEffect , useRef } from "react";
+import React , { useState , useEffect , useRef , useMemo } from "react";
 import { Button } from "../Button";
 import classNames from "classnames";
 import { StringColor } from "../StringColor";
 import { InlineIcon } from "@iconify/react";
 import { IReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
 import { Emoji } from "@suke/suke-web/src/components/Emoji";
+import { parseMessage } from "@suke/suke-web/src/util/parseMessage";
 
 export interface MessagesProps {
     className?: string;
@@ -15,8 +16,6 @@ export interface MessagesProps {
 }
 
 export const Messages = ({messages , channelId , className , replyHandler , doesChannelExist }: MessagesProps) => {
-    // We can use the channel name to connect to the channel chat using websockets.
-
     const messagesContainerRef = useRef<HTMLDivElement>(null)
     const [isToolTipVisible , setIsToolTipVisible] = useState(false)
     const [isMessagesContainerFocused , setIsMessagesContainerFocused] = useState(false)
@@ -71,6 +70,23 @@ export const Messages = ({messages , channelId , className , replyHandler , does
     // eslint-disable-next-line react-hooks/exhaustive-deps
     } , [messages])
 
+    const parsedMessages = useMemo(() => {
+        return messages.map((message , index) => {
+            const parsedMessage = parseMessage(message)
+
+            return (
+                <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex flex-row items-center flex-wrap">
+                    <StringColor className="mr-1 cursor-pointer" baseString={message.author.name} brightness={5} bold>{message.author.name}: </StringColor> 
+                    <div className="whitespace-normal break-words ml-2 flex flex-row flex-wrap items-center">{parsedMessage}</div>
+                    <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(message.author.name)}>
+                        <InlineIcon icon="fa-reply" height={15} width={15}/>
+                    </Button>
+                </div>
+            )
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } , [ messages ])
+
     return (
         <React.Fragment>
             <div 
@@ -94,36 +110,7 @@ export const Messages = ({messages , channelId , className , replyHandler , does
                         "This chat room does not exist or has been suspended."
                     }
                 </p>
-                {
-                    messages.map(({ content , emojis , author } , index)=> {
-                        const processedContent : Array<JSX.Element> = [];
-
-                        // Convert the emoji text to the picture of the emoji in the message.
-                        if(emojis.length > 0) {
-                            let remainingContent = content;
-                            for(let i = 0; i < emojis.length; i++) {
-                                const emoji = emojis[i]
-                                const matchStrIndex = remainingContent.indexOf(emoji.parseableStr)
-
-                                processedContent.push(<span key={emoji.parseableStr}>{remainingContent.slice(0, matchStrIndex)}</span>)
-                                remainingContent = remainingContent.slice(matchStrIndex + emoji.parseableStr.length , remainingContent.length)
-                                processedContent.push(<Emoji emoji={emoji} height={32} width={32}/>)
-
-                                if((i + 1) === emojis.length) {
-                                    processedContent.push(<span key={emoji.type}>{remainingContent}</span>)
-                                }
-                            }
-                        }
-                        
-                        return (
-                            <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex">
-                                <StringColor className="mr-1 cursor-pointer" baseString={author.name} brightness={5} bold>{author.name}: </StringColor> 
-                                <span className="pl-1 whitespace-normal break-words text-indent-2 flex">{(processedContent.length > 0 && emojis.length > 0) ? processedContent : content}</span>
-                                <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(author.name)}><InlineIcon icon="fa-reply" height={15} width={15}/></Button>
-                            </div>
-                        )
-                    })
-                }
+                {parsedMessages}
             </div>
             <div className={classNames(
                 "text-center",
