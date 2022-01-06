@@ -20,7 +20,6 @@ export const parseMessage = (emojis : Array<Emoji> , content : string) : JSX.Ele
         console.log(filteredParsedEmojis)
     }
 
-
     let remainingContent = content;
 
     if(filteredParsedEmojis.length > 0) {

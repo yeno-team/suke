@@ -13,10 +13,11 @@ export interface ChatPanelProps {
 }
 
 export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity , setMessageInput } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
-    const [ searchInput , setSearchInput ] = useState("")    
-    const [ placeholder , setPlaceHolder ] = useState("")
-    const [ emotePreview , setEmotePreview ] = useState<Emoji>()
-    
+    const [ searchInput , setSearchInput ] = useState("") ;   
+    const [ placeholder , setPlaceHolder ] = useState("");
+    const [ emotePreview , setEmotePreview ] = useState<Emoji>();
+
+
     const emojiOnClickHandler = useCallback((emojiType : string , emojiId : string) => {
         return () => {  
             setMessageInput((prevState) => prevState + `<@${emojiId}:${emojiType}/>`)
@@ -46,7 +47,6 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
     } , [ emojiOnClickHandler, globalEmojis ])
 
     // const filteredGlobalEmojiComponents = useMemo(() => {
-    //     console.time("a")
     //     const filteredEmojis : Array<JSX.Element> = []
         
     //     if(searchInput) {
@@ -56,8 +56,6 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
     //             }
     //         }
     //     }
-
-    //     console.timeEnd("a")
 
     //     return filteredEmojis
     // } , [globalEmojiComponents , searchInput])
@@ -81,7 +79,7 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
                 )
             }
             tabIndex={1}
-            onBlur={() => setChatPanelVisiblity(false)}
+            // onBlur={() => setChatPanelVisiblity(false)}
         >
             <nav className="p-1">
                 <Input 
@@ -94,7 +92,7 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
                 />
             </nav>
             <div
-                className="flex-1 overflow-y-scroll flex flex-wrap p-1 items-center justify-center gap-2" 
+                className="flex-1 overflow-y-scroll flex flex-wrap p-1 items-center gap-2" 
                 style={{ "scrollbarWidth" : "thin" , "scrollbarColor" : "#252B3A #0000"}}
             >
                 {globalEmojiComponents}
