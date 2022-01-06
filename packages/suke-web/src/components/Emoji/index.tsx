@@ -1,8 +1,8 @@
-import { Emoji as IEmoji } from "@suke/suke-core/src/types/Emoji";
+import { EmojiAsStr } from "@suke/suke-core/src/types/Emoji";
 import classNames from "classnames";
 
 export interface EmojiProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
-    emoji : IEmoji,
+    emoji : EmojiAsStr,
     height? : number,
     isSelectable? : boolean;
     width? : number
@@ -13,9 +13,10 @@ export const Emoji = ({ emoji , height , width , className , isSelectable } : Em
     return (
         <img 
             src={emoji.url} 
-            alt={isSelectable ? emoji.parseableStr : ""}
+            alt={isSelectable ? "" : ""}
             height={height} 
             width={width}
+            onDragStart={(e) => e.preventDefault()}
             className={
                 classNames(
                     className,

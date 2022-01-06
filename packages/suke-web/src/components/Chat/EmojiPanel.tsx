@@ -1,5 +1,5 @@
 import React , { useState , useMemo, useCallback } from "react";
-import { Emoji as IEmoji } from "@suke/suke-core/src/types/Emoji";
+import { EmojiAsStr } from "@suke/suke-core/src/types/Emoji";
 import Input from "@suke/suke-web/src/components/Input";
 import { Emoji , EmojiPlaceholder } from "@suke/suke-web/src/components/Emoji";
 import LazyLoad from "react-lazyload";
@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { Icon } from "@iconify/react";
 
 export interface ChatPanelProps {
-    globalEmotes : IEmoji[];
+    globalEmotes : EmojiAsStr[];
     setChatPanelVisiblity :  React.Dispatch<React.SetStateAction<boolean>>;
     setMessageInput : React.Dispatch<React.SetStateAction<string>>;
 }
@@ -15,7 +15,7 @@ export interface ChatPanelProps {
 export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity , setMessageInput } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
     const [ searchInput , setSearchInput ] = useState("")    
     const [ placeholder , setPlaceHolder ] = useState("")
-    const [ emotePreview , setEmotePreview ] = useState<IEmoji>()
+    const [ emotePreview , setEmotePreview ] = useState<EmojiAsStr>()
     
     const emojiOnClickHandler = useCallback((emoteParsableStr : string) => {
         return () => {  
@@ -24,23 +24,43 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
         }
     } , [setChatPanelVisiblity , setMessageInput])
 
+    // Optimize the search feature.
     const globalEmojiComponents = useMemo(() => {
-        return globalEmojis.map((emoji) => 
-            <LazyLoad overflow once placeholder={<EmojiPlaceholder/>}>
+        // don't create the map again just store this shit somewhere XD.
+        return (
+            globalEmojis
+            .map((emoji , index) => 
+            <LazyLoad overflow once placeholder={<EmojiPlaceholder/>} key={emoji.url}>
                 <div 
-                    key={emoji.id}
                     className="p-0.5 hover:bg-coolblack rounded cursor-pointer"
                     onMouseOver={() => {
                         setPlaceHolder(emoji.name)
                         setEmotePreview(emoji)
                     }}
-                    onClick={emojiOnClickHandler(emoji.parseableStr)}
+                    onClick={emojiOnClickHandler("")}
                 >
                     <Emoji emoji={emoji} height={32} width={32} isSelectable={false}/>
                 </div>
             </LazyLoad>
-        )
-    } , [emojiOnClickHandler, globalEmojis])
+        ))
+    } , [ emojiOnClickHandler, globalEmojis ])
+
+    // const filteredGlobalEmojiComponents = useMemo(() => {
+    //     console.time("a")
+    //     const filteredEmojis : Array<JSX.Element> = []
+        
+    //     if(searchInput) {
+    //         for(let i = 0; i < globalEmojiComponents.length; i++) {
+    //             if(globalEmojiComponents[i].key!.toString().indexOf(searchInput) !== -1) {
+    //                 filteredEmojis.push(globalEmojiComponents[i])
+    //             }
+    //         }
+    //     }
+
+    //     console.timeEnd("a")
+
+    //     return filteredEmojis
+    // } , [globalEmojiComponents , searchInput])
 
     return (
         <div 
@@ -81,7 +101,7 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
             </div>
                 { emotePreview && 
                     <div className="bg-black rounded-b-md p-2 flex items-center"> 
-                        <img src={emotePreview.url} alt={emotePreview.name} width={32} height={32}/>
+                        <Emoji emoji={emotePreview} height={32} width={32} isSelectable={false}/>
                         <div className="text-sm text-white ml-2">
                             <p className="font-semibold"> {emotePreview.name} </p>
                             <p> { emotePreview.type === "global" ? "Global Emoji" : "Channel Emoji"} </p>

@@ -13,7 +13,7 @@ export const parseMessage = (message : IReceivedMessage) : JSX.Element => {
     
             processedContent.push(<span className="mr-0.5" key={emoji.parseableStr}>{remainingContent.slice(0, matchStrIndex)}</span>)
             remainingContent = remainingContent.slice(matchStrIndex + emoji.parseableStr.length , remainingContent.length)
-            processedContent.push(<Emoji className="mr-0.5" emoji={emoji} height={32} width={32} isSelectable={true}/>)
+            processedContent.push(<Emoji className="mr-0.5" emoji={emoji} height={32} width={32} isSelectable={true} isDraggable={false}/>)
     
             if((i + 1) === message.emojis.length) {
                 processedContent.push(<span key={emoji.type}>{remainingContent}</span>)
