@@ -8,7 +8,7 @@ export const MobileMenu = ({active}: MobileMenuProps) => {
     return (
         <div className={classNames(
             active ? '' : 'hidden',
-            'md:hidden',
+            'lg:hidden',
             'absolute',
             'w-full',
             'left-0',
