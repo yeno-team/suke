@@ -15,7 +15,6 @@ export class UserChannelFollowController extends BaseController {
         super();
     }
 
-    // TODO: https://github.com/typeorm/typeorm/issues/4428
     public Post = async (req: Request, res: Response): Promise<void> => {
         const username = req.params.username;
         const user = await this.userService.findByName(username);
