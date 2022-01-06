@@ -1,5 +1,5 @@
 import { IBaseEmoji } from "../entities/Emoji";
 
-export interface EmojiAsStr extends IBaseEmoji {
+export interface Emoji extends IBaseEmoji {
     url : string;
 }

@@ -18,7 +18,6 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
                 type : "RECEIVED_CHAT_MESSAGE",
                 data : {
                     ...message.data,
-                    emojis : []
                 }
             })
 

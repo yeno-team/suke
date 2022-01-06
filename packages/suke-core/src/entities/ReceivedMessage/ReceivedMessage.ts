@@ -2,15 +2,14 @@ import { ValueObject } from "../../ValueObject";
 import { Author } from "../User";
 import { ValidationError , PropertyValidationError } from "../../exceptions/ValidationError";
 import { ISentMessage } from "../SentMessage";
-import { Emoji } from "../../types/Emoji";
 
-export type IReceivedMessage = ISentMessage & { emojis : Array<Emoji>}
+export type IReceivedMessage = ISentMessage;
 
+// We can possibly use this class to add additional data we want to send back to clients in the room.
 export class ReceivedMessage extends ValueObject implements IReceivedMessage {    
     content: string;
     author: Author;
     channelId: string;
-    emojis : Array<Emoji>;
 
     constructor(msg: IReceivedMessage) {
         super();
@@ -18,7 +17,6 @@ export class ReceivedMessage extends ValueObject implements IReceivedMessage {
         this.content = msg.content;
         this.author = msg.author;
         this.channelId = msg.channelId;
-        this.emojis = msg.emojis;
 
         if (!this.IsValid()) {
             throw new ValidationError(`msg obj: ${JSON.stringify(msg)} is not valid.`);
@@ -43,10 +41,6 @@ export class ReceivedMessage extends ValueObject implements IReceivedMessage {
 
         if (typeof(this.channelId) !== "string") {
             throw new PropertyValidationError('channelId');
-        }
-
-        if(!(Array.isArray(this.emojis))) {
-            throw new PropertyValidationError("emojis")
         }
 
         return true;
