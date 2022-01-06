@@ -49,8 +49,10 @@ export const Chat = (
     }
 
     const chatEmojiIcon = useMemo(() => {
+        console.log(globalEmotes)
+
         if(!(isUserAbleToChat)) {
-            return null
+            return
         }
 
         if(globalEmotes.length <= 0) {

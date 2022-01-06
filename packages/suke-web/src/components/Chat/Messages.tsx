@@ -71,12 +71,12 @@ export const Messages = ({messages , channelId , className , replyHandler , does
 
     const parsedMessages = useMemo(() => {
         return messages.map((message , index) => {
-            const parsedMessage = parseMessage(message)
+            // const parsedMessage = parseMessage(message)
 
             return (
                 <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex flex-row items-center flex-wrap">
                     <StringColor className="mr-1 cursor-pointer" baseString={message.author.name} brightness={5} bold>{message.author.name}: </StringColor> 
-                    <div className="whitespace-normal break-words ml-2 flex flex-row flex-wrap items-center">{parsedMessage}</div>
+                    <div className="whitespace-normal break-words ml-2 flex flex-row flex-wrap items-center">{message}</div>
                     <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(message.author.name)}>
                         <InlineIcon icon="fa-reply" height={15} width={15}/>
                     </Button>

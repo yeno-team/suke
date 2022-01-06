@@ -4,7 +4,7 @@ import { BetterTTVEmote, BetterTTVEmoteOpts, BetterTTVEmoteResponse } from "@suk
 import { Emoji } from "@suke/suke-core/src/entities/Emoji";
 
 @Service()
-export class GlobalEmojiService {
+export class GlobalEmojiGetService {
     constructor(
         private betterTTVApiWrapper : BetterTTVApiWrapper
     ) {}
