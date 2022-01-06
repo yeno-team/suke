@@ -23,7 +23,7 @@ export const NotificationIcon = ({ count, handleClick, color, size, className }:
             <Circle size={size ? CircleSize : 5} fontWeight="semibold" textSize="xs" backgroundColor="brightRed" className={classNames(
                 'absolute',
                 'top-0',
-                'ml-3'
+                'ml-4',
             )}>
                 {count}
             </Circle>
