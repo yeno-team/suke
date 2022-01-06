@@ -2,6 +2,11 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
+    extend: {
+      fontSize: {
+        big: '1.35em'
+      },
+    },
     maxWidth: {
       "12": '12px',
       "14": '14px',
@@ -15,18 +20,21 @@ module.exports = {
       "28": '28px',
       "50": '50px',
       "84": '84px',
-      "128": '128px'
+      "128": '128px',
+      "300": '300px'
     },
     colors: {
       black: "#252B31",
       coolblack: "#171A1F",
       darkblack: "#16191D",
+      newblack: "#1F2329",
       spaceblack: "#101216",
       coolgray: "#21272E",
       darkgray: "#5E6668",
       gray: "#C1C8C7",
       lightgray: "#CED2D6",
       white: "#F6FAFB",
+      reallywhite: "#FFFFFF",
       orange: "#D49C6B",
       coolorange: "#C86730",
       red: "#A83737",
@@ -38,10 +46,7 @@ module.exports = {
       sans: ['Open Sans', 'sans-serif'],
       signika: ['Signika', 'sans-serif'],
       sitara: ['sitara', 'sans-serif']
-    }
-  },
-  variants: {
-    extend: {},
+    },
   },
   plugins: [],
 }

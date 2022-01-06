@@ -6,13 +6,16 @@ export interface SearchBarProps {
     size: string | number,
     className?: string,
     placeholder?: string,
+    py?: string,
+    px?: string,
     value?: string,
     loading?: boolean,
+    rounded?: boolean,
     setValue?: (val: string) => void,
     onSubmit?: React.FormEventHandler<HTMLFormElement>
 }
 
-export const SearchBar = ({size, className, placeholder, onSubmit, value, setValue, loading}: SearchBarProps) => {
+export const SearchBar = ({size, className, placeholder, onSubmit, value, setValue, rounded, loading, py, px}: SearchBarProps) => {
     return (
         <form className={classNames(
             'flex',
@@ -21,8 +24,9 @@ export const SearchBar = ({size, className, placeholder, onSubmit, value, setVal
         )} onSubmit={onSubmit}>
             <input className={classNames(
                 'w-' + size,
-                'p-3',
-                'rounded',
+                px ? 'px-' + px : 'px-3',
+                py ? 'py-' + py : 'py-3',
+                rounded ? 'rounded' : '',
                 'bg-white',
             )} placeholder={placeholder ? placeholder : "Search..."} value={value} onChange={(e) => setValue!(e.target.value)} />
             {
