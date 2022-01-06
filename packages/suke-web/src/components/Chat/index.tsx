@@ -31,13 +31,13 @@ export const Chat = (
         doesChannelExist
     } : ChatProps
 ) => {
-    const [ globalEmotes , hasGlobalEmotesBeenFetched ] = useGlobalEmoji(); 
+    const [ globalEmoji , hasGlobalEmojiBeenFetched ] = useGlobalEmoji(); 
     const [ messageInput, setMessageInput ] = useState("");
     const [ isChatPanelActive , setIsChatPanelActive ] = useState(false);
 
     const isUserAbleToChat = useMemo(() => {
-        return doesChannelExist && hasGlobalEmotesBeenFetched && hasUserJoinedRoom && channelId
-    } , [ doesChannelExist , hasGlobalEmotesBeenFetched , hasUserJoinedRoom , channelId ])
+        return doesChannelExist && hasGlobalEmojiBeenFetched && hasUserJoinedRoom && channelId
+    } , [ doesChannelExist , hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
     
 
     const toggleChatPanel = () => {
@@ -49,13 +49,11 @@ export const Chat = (
     }
 
     const chatEmojiIcon = useMemo(() => {
-        console.log(globalEmotes)
-
         if(!(isUserAbleToChat)) {
             return
         }
 
-        if(globalEmotes.length <= 0) {
+        if(globalEmoji.length <= 0) {
             return (
                 <Icon icon="mdi:emoticon" className="h-32 w-32 cursor-pointer text-white transform-gpu transition-transform hover:scale-125" onClick={toggleChatPanel}/> 
             )
@@ -63,7 +61,7 @@ export const Chat = (
 
         return (
             <div onClick={toggleChatPanel} className="cursor-pointer transform-gpu hover:scale-125 h-32 w-32">
-                <Emoji emoji={globalEmotes[0]} isSelectable={true} className="h-full w-full"/>
+                <Emoji emoji={globalEmoji[0]} className="h-full w-full"/>
             </div>
         )
 
@@ -104,7 +102,7 @@ export const Chat = (
             <header className="text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
                 Chat
             </header>
-            <Messages className="text-white p-4 flex-1 text-sm xl:text-base overflow-y-scroll" messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist}/>
+            <Messages className="text-white p-4 flex-1 text-sm xl:text-base overflow-y-scroll" messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji}/>
            <div className="p-5">
                 <div className="w-full rounded-md flex items-center bg-coolgray rounded-md pr-5 relative">
                     {
@@ -123,7 +121,7 @@ export const Chat = (
                         disabled={!isUserAbleToChat}
                     />
                     {chatEmojiIcon}
-                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmotes} setMessageInput={setMessageInput}/>}
+                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} setMessageInput={setMessageInput}/>}
                 </div>
             </div>
         </div>

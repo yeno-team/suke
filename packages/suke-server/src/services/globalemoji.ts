@@ -23,7 +23,7 @@ export class GlobalEmojiCacheService {
     }
 
     public async setGlobalEmojiCache(emojis : Array<Emoji>) : Promise<void> {
-        await this.redisClient.setEx("GlobalEmojiCache" , 3600 , JSON.stringify(emojis))
+        await this.redisClient.set("GlobalEmojiCache", JSON.stringify(emojis))
     }
 
     private async binary_search(id : string) : Promise<Emoji | null> {
