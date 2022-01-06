@@ -64,7 +64,7 @@ export const UserChannelPage = (): JSX.Element => {
     }
 
     const mobileClassListIfBrowserActive = browserActive ? "hidden lg:block" : "block";
-    const alreadyFollowed = user?.following.find(v => v.followedTo?.id === channel?.id) != null;
+    const alreadyFollowed = user?.following?.find(v => v.followedTo?.id === channel?.id) != null;
     
     return (
         !searching && channel != null ?
