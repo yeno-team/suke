@@ -39,7 +39,7 @@ export const Chat = ({messages, submitMessage, className, channelId}: ChatProps)
             'overflow-auto',
             className
         )}>
-            <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
+            <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-newblack font-semibold">
                 CHAT
             </header>
             <Messages className="text-white p-4 text-sm h-3/4" messages={messages} />

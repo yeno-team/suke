@@ -1,4 +1,5 @@
 import { IMessage } from "@suke/suke-core/src/entities/Message"
+import classNames from "classnames";
 import { Chat } from "../../components/Chat";
 import { useChat } from "../../hooks/useChat";
 
@@ -38,8 +39,7 @@ export const ChatBox = ({username, className}: ChatboxProps) => {
 
     const [chatMessages, sendMessage] = useChat(defaultMessages);
 
-    
     return (
-        <Chat className={"flex-grow " + className} channelId={username} messages={chatMessages} submitMessage={sendMessage}/>
+        <Chat className={classNames("flex-grow", className)} channelId={username} messages={chatMessages} submitMessage={sendMessage}/>
     )
 }
