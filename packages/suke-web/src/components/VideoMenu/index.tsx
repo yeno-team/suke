@@ -44,7 +44,8 @@ export const VideoMenu = ({ handleOpenBrowser, className, playerHeight, playerWi
         setProgress(state);
 
         if (!isOwner) {
-            setPlaying(!channelData.paused);
+            // disabled syncing the pause state TODO: fix syncing unpause after pause
+            // setPlaying(!channelData.paused);
         }
 
         if (clientPaused)
