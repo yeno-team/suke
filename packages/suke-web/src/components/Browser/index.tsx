@@ -8,7 +8,7 @@ import { Button } from "../Button"
 import { Request } from "@suke/suke-core/src/entities/Request"
 import { Modal } from "../Modal"
 import { SearchBar } from "../SearchBar"
-import { MobileSourceButtons } from "./SourceButtons"
+import { DesktopSourceButtons, MobileSourceButtons } from "./SourceButtons"
 import { getBrowserItems } from "../../util/getBrowserItems"
 
 export interface BrowserProps {
@@ -148,25 +148,31 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
     }
 
     return (
-        <div className="w-screen h-screen bg-darkblack top-28 my-0 mx-auto flex flex-col">
+        <div className="w-screen h-screen bg-darkblack z-30 top-28 my-0 mx-auto flex flex-col lg:fixed lg:h-big lg:mt-4 lg:w-reallybig lg:left-1/2 lg:top-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">
             <Modal active={mobileMenuActive}>
                 <MobileSourceButtons closeMobileMenu={closeMobileMenu} sources={sources} activeSource={activeSource} setActiveSource={handleChangeSource}/>
             </Modal>
             
-            <Button fontWeight="semibold" backgroundColor="red" onClick={() => setActive(false)} className="w-full py-4">
+            <Button fontWeight="semibold" backgroundColor="red" onClick={() => setActive(false)} className="w-full py-4 lg:hidden">
                 Close Browser
             </Button>
 
+            <DesktopSourceButtons className="hidden lg:flex" sources={sources} activeSource={activeSource} setActiveSource={handleChangeSource}></DesktopSourceButtons>
+
             <nav className="bg-coolgray flex">
                 <button>
-                    <Icon icon="ant-design:menu-outlined" onClick={() => setMobileMenuActive(true)} className={classNames('text-white m-4 text-lg')} />
+                    <Icon icon="ant-design:menu-outlined" onClick={() => setMobileMenuActive(true)} className={classNames('text-white m-4 text-lg lg:hidden')} />
                 </button>
                 <SearchBar loading={loading} value={searchInput} setValue={setSearchInput} onSubmit={onSearchSubmit} size='full' placeholder={"Search " + (activeSource ? activeSource.charAt(0).toUpperCase() + activeSource.slice(1) : "Videos") + "..."} className={classNames(
                     'py-2',
-                    'mx-auto ml-3 w-9/12 md:mx-auto'
-                )} />
+                    'mx-auto ml-3 w-9/12 md:mx-auto lg:w-7/12',
+                    'lg:ml-72'
+                )} rounded/>
+                <button>
+                    <Icon icon="bi:x" onClick={() => setActive(false)} className={classNames('text-white m-4 text-3xl hidden lg:block')} />
+                </button>
             </nav>
-            <div className="flex-grow bg-coolgray overflow-y-auto" onScroll={handleScroll}>
+            <div className="lg:pl-56 flex-grow bg-coolgray overflow-y-auto" onScroll={handleScroll}>
                 {
                     browserElements
                 }

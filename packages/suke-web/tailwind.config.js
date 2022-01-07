@@ -6,6 +6,21 @@ module.exports = {
       fontSize: {
         big: '1.35em'
       },
+      margin: {
+        '17': '4.15em',
+        '18': '4.6em',
+        '15.8rem': '15.8rem'
+      },
+      spacing: {
+        '93p': '93%',
+        '17': '4.15rem'
+      },
+      width: {
+        'reallybig': '60rem'
+      },
+      height: {
+        'big': '50rem'
+      }
     },
     maxWidth: {
       "12": '12px',
@@ -36,7 +51,7 @@ module.exports = {
       white: "#F6FAFB",
       reallywhite: "#FFFFFF",
       orange: "#D49C6B",
-      coolorange: "#C86730",
+      coolorange: "#e08938",
       red: "#A83737",
       brightRed: "#CC4F4F",
       blue: "#408ED6",

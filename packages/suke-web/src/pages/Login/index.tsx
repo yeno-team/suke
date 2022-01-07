@@ -4,20 +4,8 @@ import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
 import useRecaptcha from "../../hooks/useRecaptcha";
-import { useNotification } from "../../hooks/useNotifications";
+import { defaultNotificationOpts, useNotification } from "../../hooks/useNotifications";
 import { ReactNotificationOptions } from "react-notifications-component";
-
-const defaultNotificationOpts : ReactNotificationOptions = {
-    container : "bottom-right",
-    animationIn : ["animate__animated","animate__fadeIn"],
-    animationOut : ["animate__animated","animate__fadeOutDown"],
-    dismiss : {
-        duration : 3000,
-        pauseOnHover : true,
-        onScreen : true,
-        showIcon : true
-    }
-}
 
 export const LoginPage = () => {
     const [usernameInput, setUsernameInput] = useState("");

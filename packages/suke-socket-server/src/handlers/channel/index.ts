@@ -7,6 +7,7 @@ import { Handler } from "../Handler";
 import { SocketBroadcaster } from "../../extensions/Broadcaster";
 import { RequestManager } from "../../extensions/RequestManager";
 import { Name } from "@suke/suke-core/src/entities/Name/Name";
+
 export const createChannelHandler: Handler = (server: SocketServer) => (): void => {
     server.on('message', async (message: SocketMessage, ws: WebSocketConnection, user?: User) => {
         const msg = message as SocketMessageInput; // For type-safe data type

@@ -1,0 +1,7 @@
+.channel_elements {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.channel_elements::-webkit-scrollbar {
+    display: none;
+}
