@@ -25,7 +25,7 @@ export type UserDataWithWebSocket = {
     ws: WebSocketConnection
 }
 
-export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolean };
+export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolean, remoteAddress: string };
 
 /**
  * This type extends the interface IHasUser to the session property. This allows usage of user object which is eventually passed in from express.
@@ -110,14 +110,20 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
             try {
                 ws.id = uuid();
                 ws.isAlive = true;
+                ws.remoteAddress = req.socket.remoteAddress;
 
                 const user = new User(req.session.user as User);
 
                 console.log(user.name + " Connected!");
-
+                
                 if (user.id == 0) {
                     this.guestMap.set(ws.id, ws);
                 } else {
+                    if (this.userMap.get(user.id) != null) {
+                        // user already connected, duplicate.
+                        return;
+                    }
+
                     this.userMap.set(user.id, {user, ws});
                 }
 
