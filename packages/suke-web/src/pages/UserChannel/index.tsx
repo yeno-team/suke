@@ -13,6 +13,8 @@ import { ChatBox } from "./ChatBox";
 import { UserProfile } from "./UserProfile";
 import "./UserChannel.css";
 import { defaultNotificationOpts, useNotification } from "../../hooks/useNotifications";
+import { useChannel } from "../../hooks/useChannel";
+import { ChannelSettingsBrowserModal } from "./ChannelSettingsModal";
 
 type UserChannelPageParams = {
     username: string
@@ -20,6 +22,7 @@ type UserChannelPageParams = {
 
 export const UserChannelPage = (): JSX.Element => {
     const [browserActive, setBrowserActive] = useState(false);
+    const [settingsActive, setSettingsActive] = useState(false);
     const [channel, setChannel] = useState<(Omit<IUserChannel, 'followers'> & {followers: number}) | null>();
     const [searching, setSearching] = useState(true);
     const [clientFollowed, setClientFollowed] = useState(false);
@@ -27,7 +30,8 @@ export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
     const { joinRoom } = useRoom();
     const { user, updateUser } = useAuth();
-
+    const { channelData } = useChannel();
+    
     useEffect(() => {
         const sendGetChannel = async () => {
             try {
@@ -47,6 +51,10 @@ export const UserChannelPage = (): JSX.Element => {
 
     const toggleBrowserActive = () => {
         setBrowserActive(!browserActive);
+    }
+
+    const toggleSettingsActive = () => {
+        setSettingsActive(!settingsActive);
     }
     
     const handleFollow = async () => {
@@ -96,7 +104,8 @@ export const UserChannelPage = (): JSX.Element => {
                  !searching && channel != null ?
                  <div className="h-screen flex flex-col lg:block channel_elements lg:overflow-y-scroll lg:relative lg:mt-17 lg:mr-96">
                      <BrowserModal roomId={username} className="z-20 lg:w-20" active={browserActive} setActive={setBrowserActive} />
-                     <VideoMenu ownerView={user?.name === username} className={classNames(mobileClassListIfBrowserActive, 'md:h-5/6')} handleOpenBrowser={toggleBrowserActive} isAuthenticated={user?.id !== 0} channelId={username} playerHeight="91%"/>
+                     <ChannelSettingsBrowserModal roomId={username} className="z-20" active={settingsActive} setActive={setSettingsActive} />
+                     <VideoMenu ownerView={user?.name === username} className={classNames(mobileClassListIfBrowserActive, 'md:h-5/6')} handleOpenBrowser={toggleBrowserActive} handleOpenSettings={toggleSettingsActive} isAuthenticated={user?.id !== 0} channelId={username} playerHeight="91.2%" viewerCount={channelData.viewerCount} />
                      <ChatBox className={classNames(mobileClassListIfBrowserActive, "md:min-h-96 lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-93p lg:w-96")}  username={username} />
                      <UserProfile className={classNames(mobileClassListIfBrowserActive, "z-10")} username={username} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={{title: channel.desc_title, content: channel.desc}}/>
                  </div> : 

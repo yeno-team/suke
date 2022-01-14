@@ -9,8 +9,7 @@ export class UserChannelFollowController extends BaseController {
     public route = "/api/channels/:username/follow";
 
     constructor(
-        private userService: UserService,
-        private channelService: UserChannelService,
+        private userService: UserService
     ) {
         super();
     }

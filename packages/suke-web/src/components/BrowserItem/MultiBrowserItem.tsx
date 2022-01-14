@@ -132,8 +132,7 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
                 updateRealtimeChannelData({
                     currentVideo: {
                         sources: sources.length > 0 ? sources : standaloneData.sources,
-                        name: data.name as string,
-                        category: category
+                        name: data.name as string
                     },
                     channelId: roomId
                 });
