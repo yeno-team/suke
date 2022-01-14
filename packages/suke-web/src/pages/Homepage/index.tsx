@@ -5,8 +5,12 @@ import { Button } from "../../components/Button";
 import { ChannelCard } from "../../components/ChannelCard";
 import { TheaterCard } from "../../components/TheaterCard";
 import { CategoryCard } from "../../components/CategoryCard";
+import { useCategory } from "../../hooks/useCategory";
+import { abbreviateNumber } from "@suke/suke-util";
 
 export const HomePage = () => {
+    const { categories } = useCategory();
+
     return (
         <div>
             <Navigation></Navigation>
@@ -43,8 +47,10 @@ export const HomePage = () => {
             <div className="bg-black h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Categories you might enjoy</h3>
                 <div>
-                    <CategoryCard name="123Movie" viewerCount="2.3K" imageUrl="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-movies-1614634680.jpg"></CategoryCard>
-                    <CategoryCard name="Soap2Day" viewerCount="8K" imageUrl="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fall-movies-index-1628968089.jpg"></CategoryCard>
+                    {
+                        categories.map(v => <CategoryCard key={v.id} name={v.label} viewerCount={abbreviateNumber(v.viewerCount)} imageUrl={v.thumbnail_url}></CategoryCard>)
+                    }
+                    
                 </div>
             </div>
 

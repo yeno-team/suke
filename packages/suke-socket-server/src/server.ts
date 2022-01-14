@@ -13,6 +13,8 @@ import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
+import { ChannelManager } from './extensions/ChannelManager';
+import { CategoryManager } from './extensions/CategoryManager';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -25,7 +27,7 @@ export type UserDataWithWebSocket = {
     ws: WebSocketConnection
 }
 
-export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolean };
+export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolean, remoteAddress: string };
 
 /**
  * This type extends the interface IHasUser to the session property. This allows usage of user object which is eventually passed in from express.
@@ -48,7 +50,8 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
     // Map uses the websocket id as key
     private guestMap: Map<string, WebSocketConnection>;
     private userMap: Map<number, UserDataWithWebSocket>;
-    private roomManger: RoomManager;
+    private roomManager: RoomManager;
+    private categoryManager: CategoryManager;
     
     public connections: Map<string, WebSocketConnection>;
     private _redisClient: RedisClientType;
@@ -97,7 +100,8 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         this.userMap = new Map();
         this.guestMap = new Map();
         this.connections = new Map();
-        this.roomManger = new RoomManager(this);
+        this.roomManager = new RoomManager(this);
+        this.categoryManager = new CategoryManager(this);
         this.setup();
     }
 
@@ -110,14 +114,20 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
             try {
                 ws.id = uuid();
                 ws.isAlive = true;
+                ws.remoteAddress = req.socket.remoteAddress;
 
                 const user = new User(req.session.user as User);
 
                 console.log(user.name + " Connected!");
-
+                
                 if (user.id == 0) {
                     this.guestMap.set(ws.id, ws);
                 } else {
+                    if (this.userMap.get(user.id) != null) {
+                        // user already connected, duplicate.
+                        return;
+                    }
+
                     this.userMap.set(user.id, {user, ws});
                 }
 
@@ -197,7 +207,11 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
     }
 
     public getRoomManager(): RoomManager {
-        return this.roomManger;
+        return this.roomManager;
+    }
+
+    public getCategoryManager(): CategoryManager {
+        return this.categoryManager;
     }
 
     public getRedisClient(): RedisClientType {

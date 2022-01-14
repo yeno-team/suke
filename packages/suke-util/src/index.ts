@@ -5,3 +5,4 @@ export {default as isValidUrl} from "./isValidUrl";
 export {default as isValidJson} from './isValidJson';
 export * from './stringToColor';
 export * from './colorShade';
+export * from './abbreviateNumber';

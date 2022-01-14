@@ -18,7 +18,6 @@ export const createClientErrorHandler: Handler = (server: SocketServer) => (): v
         });
 
         ws.send(JSON.stringify(response));
-
         console.error(err);
     });
 }

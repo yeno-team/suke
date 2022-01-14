@@ -1,10 +1,3 @@
-export enum Category {
-    Anime,
-    Movie,
-    TvShow,
-    Youtube,
-}
-
 export enum StandaloneType {
     Video,
     Movie,

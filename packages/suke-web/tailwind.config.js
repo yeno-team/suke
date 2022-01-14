@@ -13,6 +13,7 @@ module.exports = {
       },
       spacing: {
         '93p': '93%',
+        '95p': '95%',
         '17': '4.15rem'
       },
       width: {
@@ -55,7 +56,8 @@ module.exports = {
       red: "#A83737",
       brightRed: "#CC4F4F",
       blue: "#408ED6",
-      teal: "#339EA5"
+      teal: "#339EA5",
+      green: "#1DBC60"
     },
     fontFamily: {
       sans: ['Open Sans', 'sans-serif'],
