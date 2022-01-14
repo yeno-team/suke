@@ -16,6 +16,7 @@ export class UserController extends BaseController {
     }
 
     public execute(app : Express) : void {
+        app.route(this.route).post(verifyRecaptchaToken() , catchErrorAsync(this.Post))
         app.route(this.route)
             .post(verifyRecaptchaToken() , catchErrorAsync(this.Post))
             .get(catchErrorAsync(this.Get));

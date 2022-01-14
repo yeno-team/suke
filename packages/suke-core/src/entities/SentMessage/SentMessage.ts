@@ -2,18 +2,17 @@ import { PropertyValidationError, ValidationError } from "../../exceptions/Valid
 import { ValueObject } from "../../ValueObject";
 import { Author } from "../User";
 
-export interface IMessage {
+export interface ISentMessage {
     content: string;
     author: Author;
     channelId: string;
 }
-
-export class Message extends ValueObject implements IMessage {
+export class SentMessage extends ValueObject implements ISentMessage {    
     content: string;
     author: Author;
     channelId: string;
 
-    constructor(msg: IMessage) {
+    constructor(msg: ISentMessage) {
         super();
 
         this.content = msg.content;

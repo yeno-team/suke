@@ -17,10 +17,12 @@ module.exports = {
         '17': '4.15rem'
       },
       width: {
-        'reallybig': '60rem'
+        'reallybig': '60rem',
+        '32' : '32px'
       },
       height: {
-        'big': '50rem'
+        'big': '50rem',
+        '32' : '32px'
       }
     },
     maxWidth: {
@@ -42,10 +44,10 @@ module.exports = {
     colors: {
       black: "#252B31",
       coolblack: "#171A1F",
+      coolgray : "#374151",
       darkblack: "#16191D",
       newblack: "#1F2329",
       spaceblack: "#101216",
-      coolgray: "#21272E",
       darkgray: "#5E6668",
       gray: "#C1C8C7",
       lightgray: "#CED2D6",
@@ -57,6 +59,8 @@ module.exports = {
       brightRed: "#CC4F4F",
       blue: "#408ED6",
       teal: "#339EA5",
+      darkblue : "#003366",
+      transparent : "#ffffff00",
       green: "#1DBC60"
     },
     fontFamily: {
@@ -64,6 +68,12 @@ module.exports = {
       signika: ['Signika', 'sans-serif'],
       sitara: ['sitara', 'sans-serif']
     },
+    backgroundImage : {}
+  },
+  variants: {
+    extend: {
+      visibility : ["group-hover"]
+    }
   },
   plugins: [],
 }

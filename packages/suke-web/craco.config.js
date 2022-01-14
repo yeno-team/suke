@@ -1,3 +1,4 @@
+const CracoLessPlugin = require("craco-less")
 const path = require('path');
 
 module.exports = {
@@ -16,6 +17,7 @@ module.exports = {
               const newIncludePaths = [
                 // relative path to my yarn workspace library  
                 path.resolve(__dirname, '../suke-core'),
+                path.resolve(__dirname , "../suke-util")
               ];
               
               if (tsxRule) {
