@@ -7,11 +7,13 @@ import { VideoMenuHeader } from './VideoMenuHeader';
 export interface VideoMenuProps {
     channelId: string,
     handleOpenBrowser?: () => void;
+    handleOpenSettings?: () => void;
     className?: string;
     playerWidth?: string;
     playerHeight?: string;
     isAuthenticated: boolean;
     ownerView: boolean;
+    viewerCount?: number;
 }
 
 export interface PlayerProgressState {
@@ -21,7 +23,7 @@ export interface PlayerProgressState {
     loadedSeconds: number
 }
 
-export const VideoMenu = ({ handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated, ownerView, channelId }: VideoMenuProps): JSX.Element => {
+export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated, ownerView, channelId, handleOpenSettings}: VideoMenuProps): JSX.Element => {
     const { channelData, updateRealtimeChannelData } = useChannel();
     const [player, setPlayer] = useState<ReactPlayer | null>(null);
     const [clientPaused, setClientPaused] = useState(true);
@@ -102,7 +104,7 @@ export const VideoMenu = ({ handleOpenBrowser, className, playerHeight, playerWi
 
     return (
         <div className={classNames('h-full', className, 'flex flex-col')}>
-            <VideoMenuHeader handleOpenBrowser={handleOpenBrowser} isAuthenticated={isAuthenticated} category={channelData.currentVideo?.category} title={channelData.currentVideo?.name}/>
+            <VideoMenuHeader viewerCount={viewerCount ?? 0} handleOpenSettings={handleOpenSettings} handleOpenBrowser={handleOpenBrowser} isAuthenticated={isAuthenticated} category={channelData.category} title={channelData.title} isOwner={ownerView}/>
             <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true}/>
         </div>
     )
