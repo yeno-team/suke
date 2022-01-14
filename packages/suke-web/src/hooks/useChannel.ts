@@ -82,7 +82,12 @@ export const useChannel = () => {
                 channelId: updatedChannelData.channelId,
                 currentVideo: updatedChannelData.currentVideo,
                 paused: updatedChannelData.paused,
-                progress: updatedChannelData.progress
+                progress: updatedChannelData.progress,
+                title: updatedChannelData.title,
+                category: updatedChannelData.category,
+                private: updatedChannelData.private,
+                password: updatedChannelData.password,
+                followerOnlyChat: updatedChannelData.followerOnlyChat   
             }
         });
     }

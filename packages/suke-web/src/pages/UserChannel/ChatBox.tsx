@@ -1,7 +1,11 @@
+
 import { IReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
+import { IMessage } from "@suke/suke-core/src/entities/Message"
+import classNames from "classnames";
 import { Chat } from "../../components/Chat";
 import { useChat } from "../../hooks/useChat";
+
 export interface ChatboxProps {
     username: string;
     className?: string;

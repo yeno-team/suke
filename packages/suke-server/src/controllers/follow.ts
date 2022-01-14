@@ -2,20 +2,17 @@ import { Service } from "typedi";
 import { BaseController } from "./BaseController";
 import { Request, Response } from 'express';
 import { UserService } from "./../services/user";
-import { UserChannelService } from "../services/channel";
 
 @Service()
 export class UserChannelFollowController extends BaseController {
     public route = "/api/channels/:username/follow";
 
     constructor(
-        private userService: UserService,
-        private channelService: UserChannelService,
+        private userService: UserService
     ) {
         super();
     }
 
-    // TODO: https://github.com/typeorm/typeorm/issues/4428
     public Post = async (req: Request, res: Response): Promise<void> => {
         const username = req.params.username;
         const user = await this.userService.findByName(username);

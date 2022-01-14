@@ -99,8 +99,8 @@ export const Chat = (
         <div className={classNames(
             className
         )}>
-            <header className="text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
-                Chat
+            <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-newblack font-semibold">
+                CHAT
             </header>
             <Messages className="text-white p-4 flex-1 text-sm xl:text-base overflow-y-scroll" messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji}/>
            <div className="p-5">
