@@ -13,7 +13,6 @@ import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
-import { ChannelManager } from './extensions/ChannelManager';
 import { CategoryManager } from './extensions/CategoryManager';
 
 export interface SocketServerEvents {
@@ -123,11 +122,6 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                 if (user.id == 0) {
                     this.guestMap.set(ws.id, ws);
                 } else {
-                    if (this.userMap.get(user.id) != null) {
-                        // user already connected, duplicate.
-                        return;
-                    }
-
                     this.userMap.set(user.id, {user, ws});
                 }
 
