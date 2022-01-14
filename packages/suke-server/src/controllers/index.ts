@@ -6,6 +6,7 @@ import { UserController } from "./user";
 import { SourceGetController } from "./source/get";
 import { UserChannelFollowController } from "./follow";
 import { UserChannelUnfollowController } from "./unfollow";
+import { CategoryController } from "./category";
 
 export default [
     AuthController,
@@ -15,5 +16,6 @@ export default [
     UserController,
     SourceSearchController,
     SourceListController,
-    SourceGetController
+    SourceGetController,
+    CategoryController
 ]
