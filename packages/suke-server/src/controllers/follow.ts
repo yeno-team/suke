@@ -2,7 +2,6 @@ import { Service } from "typedi";
 import { BaseController } from "./BaseController";
 import { Request, Response } from 'express';
 import { UserService } from "./../services/user";
-import { UserChannelService } from "../services/channel";
 
 @Service()
 export class UserChannelFollowController extends BaseController {

@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react";
-import { RealtimeChannelData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import Select from "react-select";

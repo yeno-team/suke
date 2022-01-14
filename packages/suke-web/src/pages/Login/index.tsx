@@ -5,7 +5,6 @@ import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
 import useRecaptcha from "../../hooks/useRecaptcha";
 import { defaultNotificationOpts, useNotification } from "../../hooks/useNotifications";
-import { ReactNotificationOptions } from "react-notifications-component";
 
 export const LoginPage = () => {
     const [usernameInput, setUsernameInput] = useState("");
@@ -15,7 +14,7 @@ export const LoginPage = () => {
     const { login } = useAuth();
 
     const handleLogin = async () => {
-        await handleReCaptchaVerify()
+        await handleReCaptchaVerify();
 
         if(!(usernameInput)) {
             return notificationStore.addNotification({
@@ -23,7 +22,7 @@ export const LoginPage = () => {
                 type : "danger",
                 title : "Error",
                 message : "Please fill out the username field."
-            })
+            });
         }
 
         if(!(passwordInput)) {
@@ -32,7 +31,7 @@ export const LoginPage = () => {
                 type : "danger",
                 title : "Error",
                 message : "Please fill out the password field."
-            })
+            });
         }
 
         
@@ -43,8 +42,7 @@ export const LoginPage = () => {
             type : "success",
             title : "Success",
             message : "You've successfully logged in."
-        })
-
+        });
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
