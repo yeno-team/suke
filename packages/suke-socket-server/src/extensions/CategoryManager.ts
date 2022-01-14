@@ -36,8 +36,6 @@ export class CategoryManager {
                     category.save();
                 }
             });
-            console.log(this.categoryCache)
-            console.log("UPDATED CATEGORIES VIEWER COUNTS");
             this.categoryCache = new Map();
         }, 10000);
     }
