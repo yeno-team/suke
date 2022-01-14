@@ -6,3 +6,4 @@ export {default as isValidJson} from './isValidJson';
 export {default as steggy} from "./steggy";
 export * from './stringToColor';
 export * from './colorShade';
+export * from './abbreviateNumber';

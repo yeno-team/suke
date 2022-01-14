@@ -7,6 +7,7 @@ import { SourceGetController } from "./source/get";
 import { GlobalEmojiGetController } from "./globalemoji/get";
 import { UserChannelFollowController } from "./follow";
 import { UserChannelUnfollowController } from "./unfollow";
+import { CategoryController } from "./category";
 
 export default [
     AuthController,
@@ -19,4 +20,5 @@ export default [
     SourceGetController,
     GlobalEmojiGetController,
     SourceGetController
+    CategoryController
 ]
