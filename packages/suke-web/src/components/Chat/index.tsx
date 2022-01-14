@@ -1,51 +1,128 @@
-import { IMessage } from '@suke/suke-core/src/entities/Message'
-import classNames from 'classnames';
-import React, { useState } from 'react';
+import React,  { useState , useMemo } from 'react';
+import  { Icon } from "@iconify/react";
 import { Messages } from './Messages';
+import { IUser } from '@suke/suke-core/src/entities/User';
+import classNames from 'classnames';
+import TextAreaAutoResize from "react-textarea-autosize";
+import { useGlobalEmoji } from "@suke/suke-web/src/hooks/useGlobalEmoji";
+import { EmojiPanel } from './EmojiPanel';
 import './Chat.css';
-import useAuth from '../../hooks/useAuth';
-
+import { IReceivedMessage } from '@suke/suke-core/src/entities/ReceivedMessage';
+import { ISentMessage } from '@suke/suke-core/src/entities/SentMessage';
+import { Emoji } from '@suke/suke-web/src/components/Emoji';
 export interface ChatProps {
     className?: string;
-    messages: IMessage[];
-    channelId: string;
-    submitMessage: (message: IMessage) => void;
+    messages: IReceivedMessage[];
+    channelId: string | undefined;
+    hasUserJoinedRoom : boolean;
+    doesChannelExist : boolean;
+    submitMessage: (message: ISentMessage) => void;
+    user : IUser | undefined;
 }
 
-export const Chat = ({messages, submitMessage, className, channelId}: ChatProps) => {
-    const [messageInput, setMessageInput] = useState("");
-    const { user } = useAuth();
+export const Chat = (
+    {
+        messages, 
+        submitMessage, 
+        className, 
+        channelId , 
+        user,
+        hasUserJoinedRoom,
+        doesChannelExist
+    } : ChatProps
+) => {
+    const [ globalEmoji , hasGlobalEmojiBeenFetched ] = useGlobalEmoji(); 
+    const [ messageInput, setMessageInput ] = useState("");
+    const [ isChatPanelActive , setIsChatPanelActive ] = useState(false);
 
-    const handleSubmit = () => {
-        const msg: IMessage = {
-            content: messageInput,
-            author: {
-                id: user!.id,
-                name: user!.name
-            },
-            channelId: channelId
+    const isUserAbleToChat = useMemo(() => {
+        return doesChannelExist && hasGlobalEmojiBeenFetched && hasUserJoinedRoom && channelId
+    } , [ doesChannelExist , hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
+    
+
+    const toggleChatPanel = () => {
+        if(!(isUserAbleToChat)) {
+            return
         }
 
-        submitMessage(msg);
+        setIsChatPanelActive((prevState) => !(prevState))
+    }
+
+    const chatEmojiIcon = useMemo(() => {
+        if(!(isUserAbleToChat)) {
+            return
+        }
+
+        if(globalEmoji.length <= 0) {
+            return (
+                <Icon icon="mdi:emoticon" className="h-32 w-32 cursor-pointer text-white transform-gpu transition-transform hover:scale-125" onClick={toggleChatPanel}/> 
+            )
+        }
+
+        return (
+            <div onClick={toggleChatPanel} className="cursor-pointer transform-gpu hover:scale-125 h-32 w-32">
+                <Emoji emoji={globalEmoji[0]} className="h-full w-full"/>
+            </div>
+        )
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } , [ isUserAbleToChat ])
+
+    const handleSubmit = () => {
+        if(user && channelId) { 
+            submitMessage({
+                content: messageInput,
+                author: {
+                    id: user.id,
+                    name: user.name
+                },
+                channelId : channelId
+            })
+        }
+
+        setMessageInput("")
+    }
+
+    const handleSubmitByEnter = (e : React.KeyboardEvent) => {
+        if(e.key === "Enter" && !(e.shiftKey)) {
+            e.preventDefault()
+            handleSubmit()
+        }
+    }
+
+    // Handles the logic when the client wants to reply to a user in the chat.
+    const replyHandler = (authorName : string) : void => {
+        setMessageInput(`${messageInput} @${authorName} `)
     }
 
     return (
         <div className={classNames(
-            'flex',
-            'bg-coolblack',
-            'flex-col',
-            'font-sans',
-            'h-full',
-            'overflow-auto',
             className
         )}>
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-newblack font-semibold">
                 CHAT
             </header>
-            <Messages className="text-white p-4 text-sm h-3/4" messages={messages} />
-            <div className="flex m-auto w-full items-center justify-center mb-4">
-                <input value={messageInput} onChange={e => setMessageInput(e.target.value)} className="w-3/4 p-3 rounded-tl rounded-bl text-sm" placeholder="Send message..." type="text"></input>
-                <button onClick={handleSubmit} className="bg-teal rounded-tr text-sm  rounded-br px-2 py-3 mt-0 text-white w-14">Send</button>
+            <Messages className="text-white p-4 flex-1 text-sm xl:text-base overflow-y-scroll" messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji}/>
+           <div className="p-5">
+                <div className="w-full rounded-md flex items-center bg-coolgray rounded-md pr-5 relative">
+                    {
+                        (!isUserAbleToChat) &&
+                            <div className="absolute text-white -top-8 w-full px-4 py-2 text-sm bg-black flex items-center rounded"> 
+                            <Icon icon="eos-icons:loading" className="h-5 w-5 inline"/>
+                            <span className="ml-2"> Connecting to Chat... </span> 
+                        </div>
+                    }
+                    <TextAreaAutoResize 
+                        value={messageInput} maxRows={3} 
+                        onChange={e => setMessageInput(e.target.value)} 
+                        className="relative p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto" 
+                        maxLength={500} placeholder="Send a message..." 
+                        onKeyDown={handleSubmitByEnter}
+                        disabled={!isUserAbleToChat}
+                    />
+                    {chatEmojiIcon}
+                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} setMessageInput={setMessageInput}/>}
+                </div>
             </div>
         </div>
     )

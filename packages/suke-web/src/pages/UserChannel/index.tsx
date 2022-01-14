@@ -36,13 +36,13 @@ export const UserChannelPage = (): JSX.Element => {
         const sendGetChannel = async () => {
             try {
                 setSearching(true);
-                const channelResp = await getChannel(username);
+                const channelResp = await getChannel(username!);
                 setChannel(channelResp);
             } catch (e) {
                 console.warn(e);
             } finally { 
                 setSearching(false);
-                joinRoom(username);
+                joinRoom(username!);
             }
         }
         sendGetChannel();
@@ -59,7 +59,7 @@ export const UserChannelPage = (): JSX.Element => {
     
     const handleFollow = async () => {
         try {
-            await followChannel(username);
+            await followChannel(username!);
             updateUser();
             setClientFollowed(true);
         } catch (e) {
