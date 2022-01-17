@@ -51,7 +51,7 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
         switch (msg.type) {
             case 'ROOM_JOIN':
                 if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
-                    return server.emit('clientError', new Error("Already joined room"), ws);
+                    return;
                 }
                 
                 await roomManager.addUser(msg.data.roomId, ws.id);

@@ -16,13 +16,13 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
         const broadcaster = new SocketBroadcaster(server);
         const requestManager = new RequestManager(server);
 
-        if (user == null || user.Id().Equals(new UserId(0))) {
-            return server.emit('clientError', new Error("You do not have permission to use this event."), ws)
-        }
 
         switch(msg.type) {
             case 'CHANNEL_REQUEST_ADD':
                 try {
+                    if (user == null || user.Id().Equals(new UserId(0))) {
+                        return server.emit('clientError', new Error("You need an account to access requests feature."), ws)
+                    }
                     await requestManager.addRequest(msg.data.roomId, msg.data);
 
                     broadcaster.broadcastToRoom(new SocketMessage({
@@ -35,6 +35,10 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                 break;
             case 'CHANNEL_REQUEST_REMOVE':
                 try {
+                    if (user == null || user.Id().Equals(new UserId(0))) {
+                        return server.emit('clientError', new Error("You need an account to access requests feature."), ws)
+                    }
+
                     if (msg.data?.requestedBy.find(v => !(new UserId(v.userId).Equals(user.Id())) && msg.data.roomId.toLowerCase() != user.name.toLowerCase())) {
                         server.emit('clientError', new Error("You do not have permission to remove this request."), ws)
                     }

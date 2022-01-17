@@ -1,5 +1,6 @@
 import { SocketMessage, SocketMessageInput, SocketMessageType } from "@suke/suke-core/src/entities/SocketMessage";
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import { defaultNotificationOpts, useNotification } from "./useNotifications";
 
 const ws = new WebSocket("ws://" + process.env.REACT_APP_SERVER_URL as string);
 
@@ -21,7 +22,8 @@ let pingTimeout: NodeJS.Timer;
 export const SocketContextProvider = ({children}: {children: React.ReactNode}): JSX.Element => {
     const [messages, setMessages] = useState<SocketMessage[]>([])
     const [errors, setErrors] = useState<Error[]>([]);
-
+    const notificationStore = useNotification();
+    
     useEffect(() => {
         ws.onerror = (err) => {
             console.error("WebSocket Error: ", err);
@@ -39,10 +41,26 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
                 
                 if (msgObj.type === 'CLIENT_ERROR') {
                     console.error("CLIENT_ERROR", msgObj.data);
+                    if (msgObj.data) {
+                        notificationStore.addNotification({
+                            ...defaultNotificationOpts,
+                            type : "danger",
+                            title : "Error",
+                            message : msgObj.data as string
+                        });
+                    }
                 }
 
                 if (msgObj.type === 'SERVER_ERROR') {
                     console.error("SERVER_ERROR", msgObj.data);
+                    if (msgObj.data) {
+                        notificationStore.addNotification({
+                            ...defaultNotificationOpts,
+                            type : "danger",
+                            title : "Server Error",
+                            message : msgObj.data as string
+                        });
+                    }
                 }
 
                 setMessages(messages => [
@@ -58,7 +76,7 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
         ws.onclose = () =>{
             clearTimeout(pingTimeout);
         };
-    }, []);
+    }, [notificationStore]);
 
     const memoedValue = useMemo(() => {
         const send = (message: SocketMessageInput) => {
