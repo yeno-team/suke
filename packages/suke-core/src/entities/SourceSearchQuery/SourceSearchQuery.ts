@@ -9,6 +9,12 @@ export class SourceSearchQuery extends ValueObject implements ISourceSearchQuery
     query: string;
     source: string;
 
+    constructor(query: ISourceSearchQuery) {
+        super();
+        this.query = query.query;
+        this.source = query.source;
+    }
+
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.query;
         yield this.source;

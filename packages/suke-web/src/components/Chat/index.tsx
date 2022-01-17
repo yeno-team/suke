@@ -39,6 +39,7 @@ export const Chat = (
         return doesChannelExist && hasGlobalEmojiBeenFetched && hasUserJoinedRoom && channelId
     } , [ doesChannelExist , hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
     
+    const isUserGuest = user!.id === 0;
 
     const toggleChatPanel = () => {
         if(!(isUserAbleToChat)) {
@@ -77,7 +78,7 @@ export const Chat = (
                     name: user.name
                 },
                 channelId : channelId
-            })
+            });
         }
 
         setMessageInput("")
@@ -97,14 +98,16 @@ export const Chat = (
 
     return (
         <div className={classNames(
-            className
+            className,
+            "lg:flex",
+            "lg:flex-col",
         )}>
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-newblack font-semibold">
                 CHAT
             </header>
-            <Messages className="text-white p-4 flex-1 text-sm xl:text-base overflow-y-scroll" messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji}/>
-           <div className="p-5">
-                <div className="w-full rounded-md flex items-center bg-coolgray rounded-md pr-5 relative">
+            <Messages className="text-white p-4 flex-1 text-sm xl:text-base lg:flex-grow overflow-y-scroll bg-spaceblack" messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji}/>
+            <div className="p-5 bg-spaceblack">
+                <div className="w-full flex items-center bg-newblack rounded-md pr-5 relative">
                     {
                         (!isUserAbleToChat) &&
                             <div className="absolute text-white -top-8 w-full px-4 py-2 text-sm bg-black flex items-center rounded"> 
@@ -116,12 +119,12 @@ export const Chat = (
                         value={messageInput} maxRows={3} 
                         onChange={e => setMessageInput(e.target.value)} 
                         className="relative p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto" 
-                        maxLength={500} placeholder="Send a message..." 
+                        maxLength={500} placeholder={isUserGuest ? "Register for an account to chat!" : "Send a message..."}
                         onKeyDown={handleSubmitByEnter}
-                        disabled={!isUserAbleToChat}
+                        disabled={!isUserAbleToChat || isUserGuest}
                     />
                     {chatEmojiIcon}
-                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} setMessageInput={setMessageInput}/>}
+                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} setMessageInput={setMessageInput} isUserGuest={isUserGuest}/>}
                 </div>
             </div>
         </div>

@@ -19,6 +19,6 @@ export default [
     SourceListController,
     SourceGetController,
     GlobalEmojiGetController,
-    SourceGetController
+    SourceGetController,
     CategoryController
 ]

@@ -1,7 +1,4 @@
 import React , { useContext } from "react";
-import ReactNotification , { store } from "react-notifications-component";
-import 'react-notifications-component/dist/theme.css';
-
 import ReactNotification , { ReactNotificationOptions, store } from "react-notifications-component";
 import 'react-notifications-component/dist/theme.css';
 

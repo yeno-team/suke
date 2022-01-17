@@ -1,6 +1,7 @@
 import { Inject, Service } from "typedi";
 import { Emoji } from "@suke/suke-core/src/entities/Emoji";
 import redis from "redis";
+import { RedisClientType } from "@suke/suke-server/src/config";
 
 export interface FindGlobalEmojiOpts {
     name? : string;
@@ -10,7 +11,7 @@ export interface FindGlobalEmojiOpts {
 @Service()
 export class GlobalEmojiCacheService {
     @Inject("redis")
-    private redisClient : redis.RedisClientType;
+    private redisClient : RedisClientType;
 
     public async getGlobalEmojiCache() : Promise<Array<Emoji> | null> {
         const globalEmojisCache = await this.redisClient.get('GlobalEmojiCache')

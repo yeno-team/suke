@@ -16,12 +16,12 @@ export interface ChannelSettingsProps {
 
 export const ChannelSettings = ({setActive, active, roomId}: ChannelSettingsProps) => {
     const { channelData, updateRealtimeChannelData } = useChannel();
-    const [title, setTitle] = useState(channelData.title);
-    const [category, setCategory] = useState(channelData.category);
-    const [privateRoom, setPrivateRoom] = useState(channelData.private);
-    const [privatePassword, setPrivatePassword] = useState(channelData.password);
-    const [followerOnlyChat, setFollowerOnlyChat] = useState(channelData.followerOnlyChat);
-    const { categories, fetchCategories } = useCategory();
+    const [title, setTitle] = useState(channelData.title || "");
+    const [category, setCategory] = useState(channelData.category || "");
+    const [privateRoom, setPrivateRoom] = useState(channelData.private || false);
+    const [privatePassword, setPrivatePassword] = useState(channelData.password || "");
+    const [followerOnlyChat, setFollowerOnlyChat] = useState(channelData.followerOnlyChat || false);
+    const { categories } = useCategory();
 
     useEffect(() => {
         setTitle(channelData.title);

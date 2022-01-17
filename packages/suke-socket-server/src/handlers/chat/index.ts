@@ -13,7 +13,7 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
 
         if (message.type === "SENT_CHAT_MESSAGE") {
             if (!(await roomManager.CheckIfUserInRoom(ws.id, message.data.channelId))) return server.emit('clientError', new Error("Cannot send message."), ws);
-
+            if (server.getGuestConnection(ws.id) != null) return server.emit('clientError', new Error("Sign up to chat!"), ws);
             msg = new SocketMessage({
                 type : "RECEIVED_CHAT_MESSAGE",
                 data : {

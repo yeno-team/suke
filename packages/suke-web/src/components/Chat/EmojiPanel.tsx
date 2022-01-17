@@ -10,27 +10,29 @@ export interface ChatPanelProps {
     globalEmotes : Emoji[];
     setChatPanelVisiblity :  React.Dispatch<React.SetStateAction<boolean>>;
     setMessageInput : React.Dispatch<React.SetStateAction<string>>;
+    isUserGuest: boolean;
 }
 
-export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity , setMessageInput } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
+export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity , setMessageInput, isUserGuest } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
     const [ searchInput , setSearchInput ] = useState("") ;   
     const [ placeholder , setPlaceHolder ] = useState("");
     const [ emotePreview , setEmotePreview ] = useState<Emoji>();
 
-
     const emojiOnClickHandler = useCallback((emojiType : string , emojiId : string) => {
         return () => {  
-            setMessageInput((prevState) => prevState + `<@${emojiId}:${emojiType}/>`)
+            if (!isUserGuest) {
+                setMessageInput((prevState) => prevState + `<@${emojiId}:${emojiType}/>`)
+            }
+            
             setChatPanelVisiblity(false)
         }
-    } , [setChatPanelVisiblity , setMessageInput])
+    } , [isUserGuest, setChatPanelVisiblity, setMessageInput])
 
     // Optimize the search feature.
     const globalEmojiComponents = useMemo(() => {
         // don't create the map again just store this shit somewhere XD.
         return (
-            globalEmojis
-            .map((emoji , index) => 
+            globalEmojis?.map((emoji, index) => 
             <LazyLoad overflow once placeholder={<EmojiPlaceholder/>} key={emoji.url}>
                 <div 
                     className="p-0.5 hover:bg-coolblack rounded cursor-pointer"
@@ -69,9 +71,6 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
                 'right-0',
                 "h-72",
                 "w-full",
-                "md:w-1/2",
-                "lg:w-1/3",
-                "xl:w-1/4",
                 "flex",
                 "flex-col",
                 "rounded",

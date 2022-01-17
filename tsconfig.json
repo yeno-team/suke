@@ -14,8 +14,7 @@
 		"emitDecoratorMetadata": true,
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
-		"composite": true,
-		"noEmit": true
+		"composite": true
 	},
 	"exclude": ["**/dist", "dist"]
 }
