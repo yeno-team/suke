@@ -1,6 +1,6 @@
 {
    "name": "@suke/suke-server",
-   "packageManager": "yarn@3.0.0",
+   "packageManager": "yarn@3.0.2",
    "main": "dist/index.js",
    "types": "dist/index.d.ts",
    "files": [
@@ -19,6 +19,7 @@
       "@suke/suke-core": "workspace:packages/suke-core",
       "@suke/suke-socket-server": "workspace:packages/suke-socket-server",
       "@suke/suke-util": "workspace:packages/suke-util",
+      "bluebird": "^3.7.2",
       "connect-typeorm": "^1.1.4",
       "cors": "^2.8.5",
       "dotenv": "^10.0.0",
@@ -34,9 +35,10 @@
       "typedi": "^0.10.0",
       "typeorm": "^0.2.41",
       "typeorm-typedi-extensions": "^0.4.1",
-      "typescript": "^4.4.3"
+      "typescript": "4.4.4"
    },
    "devDependencies": {
+      "@types/bluebird": "^3.5.36",
       "@types/connect-redis": "^0.0.17",
       "@types/cors": "^2",
       "@types/express": "^4",

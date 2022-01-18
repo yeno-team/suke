@@ -15,7 +15,8 @@ export const useScreenSize = () => {
     }, []);
 
     const isMobile = width <= 768;
+    const isTablet = !isMobile && width <= 1024;
 
-    return { width, isMobile }
+    return { width, isMobile, isTablet }
 
 }

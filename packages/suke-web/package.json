@@ -2,34 +2,50 @@
   "name": "@suke/suke-web",
   "version": "0.1.0",
   "private": true,
-  "module": "",
   "proxy": "http://localhost:4000",
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
   "dependencies": {
     "@craco/craco": "^6.4.0",
     "@suke/suke-core": "workspace:packages/suke-core",
+    "@suke/suke-util": "workspace:packages/suke-util",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
+    "craco-less": "^2.0.0",
+    "http-proxy-middleware": "^2.0.1",
+    "jimp": "^0.16.1",
+    "process": "^0.11.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-google-recaptcha-v3": "^1.9.7",
+    "react-lazyload": "^3.2.0",
+    "react-notifications-component": "^3.1.0",
     "react-player": "^2.9.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "6",
     "react-scripts": "4.0.3",
     "react-select": "^5.2.1",
+    "react-textarea-autosize": "^8.3.3",
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
     "@creativebulma/bulma-divider": "^1.1.0",
     "@iconify/react": "^3.0.1",
+    "@mdx-js/react": "^1.6.22",
     "@tailwindcss/postcss7-compat": "^2.2.17",
+    "@types/mdx-js__react": "^1",
     "@types/react": "^17",
     "@types/react-dom": "^17",
+    "@types/react-lazyload": "^3.1.1",
     "@types/react-router-dom": "^5",
     "@types/testing-library__jest-dom": "^5",
     "autoprefixer": "9",
     "jest-watch-typeahead": "^0.6.4",
     "postcss": "7",
+    "react-error-overlay": "6.0.9",
     "stylelint": "^14.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@2"
   },
@@ -43,6 +59,16 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "browserslist": {
