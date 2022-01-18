@@ -22,7 +22,8 @@ module.exports = {
       },
       height: {
         'big': '50rem',
-        '32' : '32px'
+        '32' : '32px',
+        '30p': '30%'
       }
     },
     maxWidth: {
