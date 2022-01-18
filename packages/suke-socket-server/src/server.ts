@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { v4 as uuid } from 'uuid';
+import { parse, v4 as uuid } from 'uuid';
 import EventEmitter from "events"
 import { Server, IncomingMessage} from 'http'
 import { RequestHandler, Request, Response} from 'express';
@@ -13,7 +13,6 @@ import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
-import { ChannelManager } from './extensions/ChannelManager';
 import { CategoryManager } from './extensions/CategoryManager';
 
 export interface SocketServerEvents {
@@ -123,24 +122,19 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                 if (user.id == 0) {
                     this.guestMap.set(ws.id, ws);
                 } else {
-                    if (this.userMap.get(user.id) != null) {
-                        // user already connected, duplicate.
-                        return;
-                    }
-
                     this.userMap.set(user.id, {user, ws});
                 }
 
                 this.connections.set(ws.id, ws);
                 
-                ws.on('message', (message) => {
+                ws.on('message' , (message) => {
                     const msgStr = message.toString();
-
                     if (!isValidJson(msgStr))
                         return this.emit('clientError', new Error("Invalid Message from client."), ws);
 
+                    // SyntaxError: Unexpected token } in JSON at position 6.
+                    // If the user inputs {"123"}
                     const msgJson = JSON.parse(message.toString());
-
                     this.emit('message', new SocketMessage(msgJson), ws, user);
                 });
 

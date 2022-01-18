@@ -15,6 +15,7 @@ import "./UserChannel.css";
 import { defaultNotificationOpts, useNotification } from "../../hooks/useNotifications";
 import { useChannel } from "../../hooks/useChannel";
 import { ChannelSettingsBrowserModal } from "./ChannelSettingsModal";
+import { useScreenSize } from "@suke/suke-web/src/hooks/useScreenSize";
 
 type UserChannelPageParams = {
     username: string
@@ -31,18 +32,19 @@ export const UserChannelPage = (): JSX.Element => {
     const { joinRoom } = useRoom();
     const { user, updateUser } = useAuth();
     const { channelData } = useChannel();
-    
+    const screen = useScreenSize();
+
     useEffect(() => {
         const sendGetChannel = async () => {
             try {
                 setSearching(true);
-                const channelResp = await getChannel(username);
+                const channelResp = await getChannel(username!);
                 setChannel(channelResp);
             } catch (e) {
                 console.warn(e);
             } finally { 
                 setSearching(false);
-                joinRoom(username);
+                joinRoom(username!);
             }
         }
         sendGetChannel();
@@ -56,34 +58,43 @@ export const UserChannelPage = (): JSX.Element => {
     const toggleSettingsActive = () => {
         setSettingsActive(!settingsActive);
     }
-    
-    const handleFollow = async () => {
-        try {
-            await followChannel(username);
-            updateUser();
-            setClientFollowed(true);
-        } catch (e) {
+
+    const notifyError = (e: unknown) => {
+        let message;
+            
+        if (typeof e === 'string') {
+            message = e;
+        } else {
+            message = (e as Error)?.message;
+        }
+
+        if (message != null) {
             notifications.addNotification({
                 ...defaultNotificationOpts,
                 type : "danger",
                 title : "Error",
-                message : (e as Error)?.message
+                message
             });
+        }
+    }
+    
+    const handleFollow = async () => {
+        try {
+            await followChannel(username!);
+            updateUser();
+            setClientFollowed(true);
+        } catch (e) {
+            notifyError(e);
         }
     }
 
     const handleUnfollow = async () => {
         try {   
-            await unfollowChannel(username);
+            await unfollowChannel(username!);
             setClientFollowed(false);
             updateUser();
         } catch (e) {
-            notifications.addNotification({
-                ...defaultNotificationOpts,
-                type : "danger",
-                title : "Error",
-                message : (e as Error)?.message
-            });
+            notifyError(e);
         }
     }
 
@@ -103,11 +114,11 @@ export const UserChannelPage = (): JSX.Element => {
             {
                  !searching && channel != null ?
                  <div className="h-screen flex flex-col lg:block channel_elements lg:overflow-y-scroll lg:relative lg:mt-17 lg:mr-96">
-                     <BrowserModal roomId={username} className="z-20 lg:w-20" active={browserActive} setActive={setBrowserActive} />
-                     <ChannelSettingsBrowserModal roomId={username} className="z-20" active={settingsActive} setActive={setSettingsActive} />
-                     <VideoMenu ownerView={user?.name === username} className={classNames(mobileClassListIfBrowserActive, 'md:h-5/6')} handleOpenBrowser={toggleBrowserActive} handleOpenSettings={toggleSettingsActive} isAuthenticated={user?.id !== 0} channelId={username} playerHeight="91.2%" viewerCount={channelData.viewerCount} />
-                     <ChatBox className={classNames(mobileClassListIfBrowserActive, "md:min-h-96 lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-93p lg:w-96")}  username={username} />
-                     <UserProfile className={classNames(mobileClassListIfBrowserActive, "z-10")} username={username} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={{title: channel.desc_title, content: channel.desc}}/>
+                     <BrowserModal roomId={username as string} className="z-20 lg:w-20" active={browserActive} setActive={setBrowserActive} />
+                     <ChannelSettingsBrowserModal roomId={username as string} className="z-20" active={settingsActive} setActive={setSettingsActive} />
+                     <VideoMenu ownerView={user?.name === username} className={classNames(mobileClassListIfBrowserActive, 'h-4/6 md:h-5/6', 'bg-darkblack')} handleOpenBrowser={toggleBrowserActive} handleOpenSettings={toggleSettingsActive} isAuthenticated={user?.id !== 0} channelId={username!} playerHeight={screen.isTablet || screen.isMobile ? "100%" : "91.2%"} viewerCount={channelData.viewerCount} />
+                     <ChatBox className={classNames(mobileClassListIfBrowserActive, "md:min-h-96 lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-93p lg:w-96")}  username={username as string} />
+                     <UserProfile className={classNames(mobileClassListIfBrowserActive, "z-10")} username={username as string} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={{title: channel.desc_title, content: channel.desc}}/>
                  </div> : 
                  <div className="h-screen flex flex-col lg:mt-17">
                      <div>Channel doesn't exist :(</div>

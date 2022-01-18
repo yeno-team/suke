@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import config, { RedisClient } from './config';
+import config, { RedisClient, RedisClientType } from './config';
 import { Container } from 'typedi';
 import { Container as typeORMContainer } from 'typeorm-typedi-extensions';
 import { createConnection, getRepository, Not, useContainer } from 'typeorm';
@@ -20,7 +20,7 @@ createConnection({
     entities: [UserModel, UserChannelModel, SessionModel, Follower, CategoryModel],
     synchronize: true,
 }).then(async () => {
-    Container.set<redis.RedisClientType>('redis', RedisClient);
+    Container.set<RedisClientType>('redis', RedisClient);
     console.log("Connected to DB instance.");
 
     const categoryRepository = getRepository(CategoryModel);

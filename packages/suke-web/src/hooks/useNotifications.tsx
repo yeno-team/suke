@@ -13,6 +13,7 @@ export const defaultNotificationOpts : ReactNotificationOptions = {
         showIcon : true
     }
 }
+
 export const NotificationContext = React.createContext({} as unknown as typeof store);
 
 export const NotificationProvider = ({ children } : { children : React.ReactNode }) : JSX.Element => {  

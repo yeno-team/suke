@@ -1,4 +1,6 @@
-import { IMessage } from "@suke/suke-core/src/entities/Message"
+
+import { IReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
+import useAuth from "@suke/suke-web/src/hooks/useAuth";
 import classNames from "classnames";
 import { Chat } from "../../components/Chat";
 import { useChat } from "../../hooks/useChat";
@@ -9,8 +11,9 @@ export interface ChatboxProps {
 }
 
 export const ChatBox = ({username, className}: ChatboxProps) => {
+    const { user } = useAuth();
 
-    const defaultMessages: IMessage[] = [
+    const defaultMessages: IReceivedMessage[] = [
         {
             content: 'hello',
             author: {
@@ -40,6 +43,6 @@ export const ChatBox = ({username, className}: ChatboxProps) => {
     const [chatMessages, sendMessage] = useChat(defaultMessages);
 
     return (
-        <Chat className={classNames("flex-grow", className)} channelId={username} messages={chatMessages} submitMessage={sendMessage}/>
+        <Chat className={classNames("flex-grow bg-coolblack",className)} height="80" channelId={username} user={user} messages={chatMessages} submitMessage={sendMessage} hasUserJoinedRoom={true} doesChannelExist={true}/>
     )
 }

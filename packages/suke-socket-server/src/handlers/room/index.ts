@@ -3,8 +3,6 @@ import { SocketBroadcaster } from "../../extensions/Broadcaster";
 import { ChannelManager } from "../../extensions/ChannelManager";
 import { SocketServer, WebSocketConnection } from "../../server";
 import { Handler } from "../Handler";
-import { getRepository } from "typeorm";
-import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 
 export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void => {
 
@@ -22,10 +20,10 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
             const roomConnectionsNoDuplicates = {};
 
             for (const id of updatedRoom) {
-                roomConnectionsNoDuplicates[server.getConnection(id).remoteAddress] = id;
+                roomConnectionsNoDuplicates[server.getConnection(id)?.remoteAddress] = id;
             }
             
-            const updated = await channelManager.editRealtimeChannel(roomId, {viewerCount: Math.max(Object.keys(updatedRoom).length - 1, 0)});
+            const updated = await channelManager.editRealtimeChannel(roomId, {viewerCount: Math.max(Object.keys(roomConnectionsNoDuplicates).length - 1, 0)});
             
             if (updated != null) {
                 categoryManager.updateRoomViewerCount(roomId, updated.category, updated.viewerCount);
@@ -53,7 +51,7 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
         switch (msg.type) {
             case 'ROOM_JOIN':
                 if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
-                    return server.emit('clientError', new Error("Already joined room"), ws);
+                    return;
                 }
                 
                 await roomManager.addUser(msg.data.roomId, ws.id);

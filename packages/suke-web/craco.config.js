@@ -1,6 +1,17 @@
+const CracoLessPlugin = require("craco-less")
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
+    webpack: {
+      plugins: {
+        add: [
+          new webpack.ProvidePlugin({
+            process: 'process/browser',
+          })
+        ]
+      }
+    },
     plugins: [
       {
         plugin: {
@@ -16,6 +27,7 @@ module.exports = {
               const newIncludePaths = [
                 // relative path to my yarn workspace library  
                 path.resolve(__dirname, '../suke-core'),
+                path.resolve(__dirname , "../suke-util")
               ];
               
               if (tsxRule) {

@@ -1,5 +1,5 @@
 import React from "react"
-import { Icon } from '@iconify/react'
+import { Icon } from '@iconify/react';
 import { ImageCircle } from "../../components/ImageCircle"
 import { Button } from "../../components/Button"
 import classNames from "classnames"
