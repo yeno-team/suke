@@ -3,11 +3,12 @@ import { useSocket } from "./useSocket";
 export const useRoom = () => {
     const { send } = useSocket();
     
-    const joinRoom = (roomId: string) => {
+    const joinRoom = (roomId: string, password?: string) => {
         send({
             type: 'ROOM_JOIN',
             data: {
-                roomId
+                roomId,
+                password: password || ""
             }
         });
     }

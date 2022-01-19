@@ -145,6 +145,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
         setStandalones([]);
         setSearchData({} as ISearchData);
         setActiveSource(changeToSource);
+        setSearchInput("");
     }
 
     return (
@@ -159,7 +160,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
 
             <DesktopSourceButtons className="hidden lg:flex" sources={sources} activeSource={activeSource} setActiveSource={handleChangeSource}></DesktopSourceButtons>
 
-            <nav className="bg-coolgray flex">
+            <nav className="bg-black flex">
                 <button>
                     <Icon icon="ant-design:menu-outlined" onClick={() => setMobileMenuActive(true)} className={classNames('text-white m-4 text-lg lg:hidden')} />
                 </button>
@@ -172,7 +173,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                     <Icon icon="bi:x" onClick={() => setActive(false)} className={classNames('text-white m-4 text-3xl hidden lg:block')} />
                 </button>
             </nav>
-            <div className="lg:pl-56 flex-grow bg-coolgray overflow-y-auto" onScroll={handleScroll}>
+            <div className="lg:pl-56 flex-grow bg-black overflow-y-auto" onScroll={handleScroll}>
                 {
                     browserElements
                 }

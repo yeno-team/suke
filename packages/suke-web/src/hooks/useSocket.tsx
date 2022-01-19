@@ -76,6 +76,10 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
         ws.onclose = () =>{
             clearTimeout(pingTimeout);
         };
+
+        return function cleanup() {
+            ws.close();
+        }
     }, [notificationStore]);
 
     const memoedValue = useMemo(() => {
