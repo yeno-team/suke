@@ -75,6 +75,13 @@ export const useChannel = () => {
         });
     }
 
+    const requestChannelData = (roomId: string) => {
+        send({
+            type: 'CHANNEL_GET',
+            data: roomId
+        });
+    }
+
     const updateRealtimeChannelData = (updatedChannelData: Partial<RealtimeChannelData> & { channelId: string }) => {
         send({
             type: 'CHANNEL_UPDATE',
@@ -92,5 +99,5 @@ export const useChannel = () => {
         });
     }
 
-    return { createRequest, removeRequest, updateRealtimeChannelData, requests, getRequests, channelData};
+    return { createRequest, removeRequest, updateRealtimeChannelData, requests, getRequests, channelData, requestChannelData};
 }
