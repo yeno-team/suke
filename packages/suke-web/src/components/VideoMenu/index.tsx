@@ -1,3 +1,4 @@
+import { RealtimeChannelData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import classNames from 'classnames';
 import React, { useCallback, useMemo, useState } from 'react';
 import ReactPlayer from 'react-player';
@@ -14,6 +15,7 @@ export interface VideoMenuProps {
     isAuthenticated: boolean;
     ownerView: boolean;
     viewerCount?: number;
+    channelData: RealtimeChannelData
 }
 
 export interface PlayerProgressState {
@@ -23,8 +25,8 @@ export interface PlayerProgressState {
     loadedSeconds: number
 }
 
-export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated, ownerView, channelId, handleOpenSettings}: VideoMenuProps): JSX.Element => {
-    const { channelData, updateRealtimeChannelData } = useChannel();
+export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated, ownerView, channelId, handleOpenSettings, channelData}: VideoMenuProps): JSX.Element => {
+    const { updateRealtimeChannelData } = useChannel();
     const [player, setPlayer] = useState<ReactPlayer | null>(null);
     const [clientPaused, setClientPaused] = useState(true);
     const [playing, setPlaying] = useState(false);

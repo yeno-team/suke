@@ -82,11 +82,11 @@ export const RegisterPage = () => {
                 <p className="inline-block mt-2">Already got an account? <Link to="/login" className="text-teal underline">Click here.</Link></p>
                 <form className="text-left mt-11 text-gray" onSubmit={handleSubmit}>
                     <label htmlFor="username" className="block text-white">Username</label>
-                    <input value={usernameInput} onChange={e => setUsernameInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray mb-4" type="text" name="username" placeholder="Username..."></input>
+                    <input value={usernameInput} onChange={e => setUsernameInput(e.target.value)} className="p-3 w-full rounded-md bg-black mb-4" type="text" name="username" placeholder="Username..."></input>
                     <label htmlFor="email" className="block text-white">Enter your Email</label>
-                    <input value={emailInput} onChange={e => setEmailInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray mb-4" type="email" name="email" placeholder="Email..." />
+                    <input value={emailInput} onChange={e => setEmailInput(e.target.value)} className="p-3 w-full rounded-md bg-black mb-4" type="email" name="email" placeholder="Email..." />
                     <label htmlFor="password" className="block text-white">Password</label>
-                    <input value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray" type="password" name="password" placeholder="Password..."></input>
+                    <input value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="p-3 w-full rounded-md bg-black" type="password" name="password" placeholder="Password..."></input>
                     <Button className="block w-full rounded-sm py-3 px-0 mt-8" backgroundColor="blue" fontWeight="semibold">SIGN UP</Button>
                 </form>
                 <span className="mt-4 block text-sm">
