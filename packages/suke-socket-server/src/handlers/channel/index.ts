@@ -15,7 +15,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
 
         const broadcaster = new SocketBroadcaster(server);
         const requestManager = new RequestManager(server);
-
+        const roomManager = server.getRoomManager();
 
         switch(msg.type) {
             case 'CHANNEL_REQUEST_ADD':
@@ -23,6 +23,11 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     if (user == null || user.Id().Equals(new UserId(0))) {
                         return server.emit('clientError', new Error("You need an account to access requests feature."), ws)
                     }
+
+                    if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
+                        return server.emit('clientError', new Error("You have not joined the channel's room."), ws);
+                    }
+
                     await requestManager.addRequest(msg.data.roomId, msg.data);
 
                     broadcaster.broadcastToRoom(new SocketMessage({
@@ -37,6 +42,10 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                 try {
                     if (user == null || user.Id().Equals(new UserId(0))) {
                         return server.emit('clientError', new Error("You need an account to access requests feature."), ws)
+                    }
+
+                    if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
+                        return server.emit('clientError', new Error("You have not joined the channel's room."), ws);
                     }
 
                     if (msg.data?.requestedBy.find(v => !(new UserId(v.userId).Equals(user.Id())) && msg.data.roomId.toLowerCase() != user.name.toLowerCase())) {
@@ -55,6 +64,10 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                 break;
             case 'CHANNEL_REQUESTS_GET':
                 try {
+                    if (await roomManager.CheckIfUserInRoom(ws.id, msg.data)) {
+                        return;
+                    }
+                    const channel = await channelManager.getChannel(msg.data)
                     const requests = await requestManager.getRequests(msg.data)
                     ws.send(JSON.stringify(new SocketMessage({
                         type: 'CHANNEL_REQUESTS',
@@ -62,7 +75,10 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     })));
                     ws.send(JSON.stringify(new SocketMessage({
                         type: 'CHANNEL_UPDATE',
-                        data: await channelManager.getChannel(msg.data)
+                        data: {
+                            ...channel,
+                            password: "*".repeat(channel.password.length)
+                        }
                     })));
                 } catch (e) {
                     server.emit('error', e);
@@ -79,7 +95,10 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     if (updated != null) {
                         broadcaster.broadcastToRoom(new SocketMessage({
                             type: 'CHANNEL_UPDATE',
-                            data: updated
+                            data: {
+                                ...updated,
+                                password: "*".repeat(updated.password.length)
+                            }
                         }), msg.data.channelId)
                     } else {
                         ws.send(JSON.stringify(new SocketMessage({
@@ -91,6 +110,21 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     server.emit('clientError', e, ws)
                 }
                 break;
+            case 'CHANNEL_GET':
+                try {
+                    const channel = await channelManager.getChannel(msg.data);
+                    if (channel != null) {
+                        ws.send(JSON.stringify(new SocketMessage({
+                            type: 'CHANNEL_UPDATE',
+                            data: {
+                                ...channel,
+                                password: "*".repeat(channel.password.length)
+                            }
+                        })));
+                    }
+                } catch (e) {
+                    server.emit('clientError', e, ws)
+                }
         }
     }) 
 }
