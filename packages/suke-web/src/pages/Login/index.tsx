@@ -59,9 +59,9 @@ export const LoginPage = () => {
                 <p className="inline-block mt-2">Forgot your password? <a href="/forgot-password" className="text-teal underline">Click here.</a></p>
                 <form className="text-left mt-11 text-gray" onSubmit={handleSubmit}>
                     <label htmlFor="username" className="block text-white">Username</label>
-                    <input value={usernameInput} onChange={e => setUsernameInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray mb-4" type="text" name="username" placeholder="Username..."></input>
+                    <input value={usernameInput} onChange={e => setUsernameInput(e.target.value)} className="p-3 w-full rounded-md bg-black mb-4" type="text" name="username" placeholder="Username..."></input>
                     <label htmlFor="password" className="block text-white">Password</label>
-                    <input value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray" type="password" name="password" placeholder="Password..."></input>
+                    <input value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="p-3 w-full rounded-md bg-black" type="password" name="password" placeholder="Password..."></input>
                     <input type="checkbox" name="remember" value="remember" className="mt-3 mr-2"></input>
                     <label htmlFor="remember" className="text-sm">Remember me</label>
                     <Button className="block w-full rounded-sm py-3 px-0 mt-8" backgroundColor="blue" fontWeight="semibold">LOGIN</Button>

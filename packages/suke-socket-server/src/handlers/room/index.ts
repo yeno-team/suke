@@ -1,3 +1,4 @@
+import { Name } from "@suke/suke-core/src/entities/Name/Name";
 import { SocketMessage, SocketMessageInput } from "@suke/suke-core/src/entities/SocketMessage";
 import { SocketBroadcaster } from "../../extensions/Broadcaster";
 import { ChannelManager } from "../../extensions/ChannelManager";
@@ -6,7 +7,7 @@ import { Handler } from "../Handler";
 
 export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void => {
 
-    server.on('message', async (message: SocketMessage, ws: WebSocketConnection) => {
+    server.on('message', async (message: SocketMessage, ws: WebSocketConnection, user) => {
         const msg = message as SocketMessageInput; // For type-safe data type
         const roomManager = server.getRoomManager();
         const channelManager = new ChannelManager(server);
@@ -49,14 +50,26 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
         }
 
         switch (msg.type) {
-            case 'ROOM_JOIN':
+            case 'ROOM_JOIN': {
                 if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                     return;
+                }
+
+                const channel = await channelManager.getChannel(msg.data.roomId);
+                if (!user.Name().Equals(new Name(msg.data.roomId.toLowerCase())) && channel != null && channel.private) {
+                    if (channel.password !== (msg.data.password || "")) {
+                        return server.emit('clientError', new Error("Incorrect Password."), ws);
+                    }
                 }
                 
                 await roomManager.addUser(msg.data.roomId, ws.id);
                 await sendUpdateMessage(msg.data.roomId);
+                ws.send(JSON.stringify(new SocketMessage({
+                    type: 'ROOM_JOIN',
+                    data: msg.data
+                })));
                 break;
+            }
             case 'ROOM_LEAVE':
                 if (!await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                     return server.emit('clientError', new Error("Cannot leave room that you have not joined."), ws);
