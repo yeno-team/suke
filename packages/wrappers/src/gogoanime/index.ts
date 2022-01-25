@@ -39,6 +39,43 @@ export class GogoAnimeApiWrapper {
 
         return data
     }
+
+    public async getEpisodesList(url : URL) : Promise<any> {
+        const params = new URLSearchParams({
+            "ep_start" : '0',
+            "ep_end" : '',
+            id : '0',
+            "default_ep" : "",
+            alias : url.pathname
+        })
+
+        const resp = await this.request.get<string>(new URL("https://ww2.gogoanimes.org/ajaxajax/load-list-episode") , { params })
+        const $ = cheerio.load(resp)
+
+        const data = []
+        const episodes = $("li").toArray()
+
+        for(let i = 0; i < episodes.length; i++) {
+            const episode = $(episodes[i])
+            const aTag = episode.find("a")
+            const epNum = aTag.find('div[class="name"]').text().trim().split(" ")[1]
+            const type = aTag.find('div[class="cate"]').text().trim()
+            const href = aTag.attr("href")?.trim()
+
+            data.push({
+                url : href ? new URL(`https://ww2.gogoanimes.org${href}`) : null,
+                epNum,
+                type,
+            })
+        }
+
+        return data
+    }
+
+    // public async getAnimeInfo(url : URL) {
+        
+    // }
+
 }
 
-Container.get(GogoAnimeApiWrapper).search("naruto")
+Container.get(GogoAnimeApiWrapper).getEpisodesList(new URL("https://ww2.gogoanimes.org/category/kinnikuman-kinnikusei-oui-soudatsu-hen"))
