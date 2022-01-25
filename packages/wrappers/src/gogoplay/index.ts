@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import Container, { Service } from "typedi";
+import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { getRandomInt } from "@suke/suke-util/src/getRandomInt";
 import { AxiosRequest } from "@suke/requests/src";
@@ -25,7 +25,7 @@ export interface GogoPlayerVideoPlayerSourcesResponse {
 }
 
 @Service()
-export class GogoPlayParser {       
+export class GogoPlayApiWrapper {       
     private parseIFrameSrcRegex = /<iframe src="(.*?)"/m;
 
     constructor(private request : AxiosRequest) {}
