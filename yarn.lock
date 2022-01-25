@@ -3950,7 +3950,9 @@ __metadata:
   dependencies:
     "@suke/suke-util": "workspace:packages/suke-util"
     "@types/bcrypt": ^5
+    "@types/lodash": ^4.14.178
     bcrypt: ^5.0.1
+    lodash: ^4.17.21
     reflect-metadata: ^0.1.13
     typeorm: ^0.2.41
   languageName: unknown
@@ -4032,6 +4034,7 @@ __metadata:
     "@testing-library/react": ^11.1.0
     "@testing-library/user-event": ^12.1.10
     "@types/mdx-js__react": ^1
+    "@types/numeral": ^2.0.2
     "@types/react": ^17
     "@types/react-dom": ^17
     "@types/react-lazyload": ^3.1.1
@@ -4044,6 +4047,7 @@ __metadata:
     http-proxy-middleware: ^2.0.1
     jest-watch-typeahead: ^0.6.4
     jimp: ^0.16.1
+    numeral: ^2.0.6
     postcss: 7
     process: ^0.11.10
     react: ^17.0.2
@@ -4057,6 +4061,7 @@ __metadata:
     react-scripts: 4.0.3
     react-select: ^5.2.1
     react-textarea-autosize: ^8.3.3
+    react-use-websocket: ^2.9.1
     stylelint: ^14.0.0
     tailwindcss: "npm:@tailwindcss/postcss7-compat@2"
     web-vitals: ^1.0.1
@@ -4668,6 +4673,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.178":
+  version: 4.14.178
+  resolution: "@types/lodash@npm:4.14.178"
+  checksum: a69a04a60bfc5257c3130a554b4efa0c383f0141b7b3db8ab7cf07ad2a46ea085fce66d0242da41da7e5647b133d5dfb2c15add9cbed8d7fef955e4a1e5b3128
+  languageName: node
+  linkType: hard
+
 "@types/mdx-js__react@npm:^1":
   version: 1.5.5
   resolution: "@types/mdx-js__react@npm:1.5.5"
@@ -4723,6 +4735,13 @@ __metadata:
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
   checksum: e87bccbf11f95035c89a132b52b79ce69a1e3652fe55962363063c9c0dae0fe2477ebc585e03a9652adc6f381d24ba5589cc5e51849df4ced3d3e004a7d40ed5
+  languageName: node
+  linkType: hard
+
+"@types/numeral@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@types/numeral@npm:2.0.2"
+  checksum: d8b778ef5d1b20cb5919fb2cf41108b324ccfaeccb0238caaf54bd9d4bffbbd57d7b860844f05831fb356a5dc0115b477891531325180a670076036ee1b4a8ca
   languageName: node
   linkType: hard
 
@@ -16096,6 +16115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"numeral@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "numeral@npm:2.0.6"
+  checksum: 89f011116539692bf53fde380adeb0579623d00f782703c71c0062d4a8686770c404a041ff4eef454de53925a9f75bba1fa52726057b13d40473f707730b07c2
+  languageName: node
+  linkType: hard
+
 "nwsapi@npm:^2.2.0":
   version: 2.2.0
   resolution: "nwsapi@npm:2.2.0"
@@ -18818,6 +18844,16 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: b67bf5b3e86dbab72d658b9a52a3589e5960583ab28c7c66272427d8fe30d4c7de422d5046ae96bd2683cdf80cc3264b2516f5ce80cae1dbe6cf3ca6dda392c5
+  languageName: node
+  linkType: hard
+
+"react-use-websocket@npm:^2.9.1":
+  version: 2.9.1
+  resolution: "react-use-websocket@npm:2.9.1"
+  peerDependencies:
+    react: ">= 16.8.0"
+    react-dom: ">= 16.8.0"
+  checksum: 2de16d81f8d278aeaf3900688c85aeaa7c5ec483424de66021082b884fa952f43dfec31ed72a6285e469f74f6085893e18ab0428aa6c4f409e4644011b755a64
   languageName: node
   linkType: hard
 
