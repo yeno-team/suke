@@ -1,15 +1,17 @@
 import { IVideoSource } from "../entities/SearchResult";
 
 export interface RealtimeChannelData {
+    id: string,
     title: string,
     category: string,
     viewerCount: number,
     thumbnail: {
-        url: URL
+        url: string
     },
     currentVideo: {
         sources: IVideoSource[],
-        name: string
+        name: string,
+        thumbnail_url: string
     },
     paused: boolean,
     progress: {
@@ -17,5 +19,6 @@ export interface RealtimeChannelData {
     },
     password: string,
     private: boolean,
-    followerOnlyChat: boolean
+    followerOnlyChat: boolean,
+    live: boolean
 }
