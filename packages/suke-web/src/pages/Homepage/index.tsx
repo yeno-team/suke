@@ -6,11 +6,29 @@ import { ChannelCard } from "../../components/ChannelCard";
 import { TheaterCard } from "../../components/TheaterCard";
 import { CategoryCard } from "../../components/CategoryCard";
 import { useCategory } from "../../hooks/useCategory";
-import { abbreviateNumber } from "@suke/suke-util";
+import React, { useEffect, useState } from "react";
+import { RealtimeChannelData } from "@suke/suke-core/src/types/UserChannelRealtime";
+import { getRealtimeChannels } from "@suke/suke-web/src/api/realtime";
+import numeral from "numeral";
 
 export const HomePage = () => {
+    const [realtimeChannels, setRealtimeChannels] = useState<RealtimeChannelData[]>();
     const { categories } = useCategory();
 
+    useEffect(() => {
+        async function sendRequest() {
+            try {
+                const data = await getRealtimeChannels();
+                console.log(data);
+                setRealtimeChannels(data);
+            } catch (e) {
+                console.error(e);
+            }
+            
+        }
+        sendRequest();
+    }, []);
+    
     return (
         <div>
             <Navigation></Navigation>
@@ -23,16 +41,13 @@ export const HomePage = () => {
             <div className="bg-black h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Popular channels right now</h3>
                 <div>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
+                    {
+                        realtimeChannels != null && realtimeChannels.length > 0 ?
+                        realtimeChannels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id, pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
+                        (
+                            <h1 className="text-brightRed font-semibold">There are currently no public channels live.</h1>
+                        )
+                    }
                 </div>
             </div>
 
@@ -48,7 +63,7 @@ export const HomePage = () => {
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Categories you might enjoy</h3>
                 <div>
                     {
-                        categories.map(v => <CategoryCard key={v.id} name={v.label} viewerCount={abbreviateNumber(v.viewerCount)} imageUrl={v.thumbnail_url}></CategoryCard>)
+                        categories.map(v => <CategoryCard key={v.id} name={v.label} viewerCount={numeral(v.viewerCount).format("0.[0]a")} imageUrl={v.thumbnail_url}></CategoryCard>)
                     }
                     
                 </div>
@@ -57,11 +72,11 @@ export const HomePage = () => {
             <div className="bg-black h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Channels You Follow</h3>
                 <div>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
-                    <ChannelCard viewerCount={324} title="The Flash S4 EP3" author={{name: "Lunatite", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl="https://picsum.photos/325/200"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
                 </div>
             </div>
         </div>

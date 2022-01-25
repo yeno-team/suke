@@ -32,7 +32,6 @@ export const getBrowserItems = (standalones: IStandaloneData[], multis: IMultiDa
         }
 
         if (items.find(v => v && v.key === multi.id) != null) continue;
-
         
         items[i] = (<MultiBrowserItem activeSource={activeSource} toggleModal={toggleModal} data={multi} key={multi.id} roomId={roomId} category={"Category"} ></MultiBrowserItem>)
         i = i + 2;

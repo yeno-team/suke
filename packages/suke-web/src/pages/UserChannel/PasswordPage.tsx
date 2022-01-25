@@ -1,8 +1,9 @@
-import { SocketMessage, SocketMessageInput } from "@suke/suke-core/src/entities/SocketMessage";
+import { SocketMessageInput } from "@suke/suke-core/src/entities/SocketMessage";
 import { TextInput } from "@suke/suke-web/src/components/TextInput"
 import { useChanged } from "@suke/suke-web/src/hooks/useChanged";
 import { useRoom } from "@suke/suke-web/src/hooks/useRoom";
 import { useSocket } from "@suke/suke-web/src/hooks/useSocket";
+import React from "react";
 import { useEffect, useState } from "react";
 
 
@@ -15,11 +16,10 @@ export interface PasswordPageProps {
 export const PasswordPage = ({active, channelId, setJoinedRoom}: PasswordPageProps) => {
     const [joining, setJoining] = useState(false);
     const { joinRoom } = useRoom();
-    const { messages } = useSocket();
-    const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessage[]>(messages);
+    const { messageHistory } = useSocket();
+    const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
     
     const joinPrivateRoom = (passwordInput: string) => {
-        console.log(passwordInput)
         joinRoom(channelId, passwordInput);
         setJoining(true);
     }
@@ -28,11 +28,10 @@ export const PasswordPage = ({active, channelId, setJoinedRoom}: PasswordPagePro
         if (!socketMessagesChanged || prevSocketMessages == null)
             return;
 
-        const newMessages = messages.slice(prevSocketMessages!.length);
+        const newMessages = messageHistory.slice(prevSocketMessages!.length);
 
         for (const msg of newMessages) {
-            const typedMsg = msg as SocketMessageInput;
-            switch (typedMsg.type) {
+            switch (msg.type) {
                 case "ROOM_JOIN":
                     if (joining) {
                         setJoining(false);
@@ -41,14 +40,14 @@ export const PasswordPage = ({active, channelId, setJoinedRoom}: PasswordPagePro
                     break;
             }
         }
-    }, [joining, messages, prevSocketMessages, setJoinedRoom, socketMessagesChanged])
+    }, [joining, messageHistory, prevSocketMessages, setJoinedRoom, socketMessagesChanged])
 
     return (
         active ?
         <div className="bg-spaceblack text-center absolute top-0 left-0 h-full w-screen flex justify-center items-center">
             <div>
                 <h1 className="text-white font-bold text-lg mb-2">Please enter the channel's password.</h1>
-                <TextInput autoComplete="new-password" type="password" placeholder="Password..." className="p-2 px-3 rounded-sm w-full border-0" onInputEnd={joinPrivateRoom}></TextInput>
+                <TextInput autoComplete="new-password" type="password" placeholder="Password..." className="p-2 px-3 rounded-sm w-full border-0" onInputEnd={joinPrivateRoom} autoSubmit={true}></TextInput>
             </div>
         </div> : null
     )
