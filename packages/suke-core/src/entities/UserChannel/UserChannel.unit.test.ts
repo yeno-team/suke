@@ -133,7 +133,7 @@ describe('UserChannel class', () => {
             });
 
             const channel2 = new UserChannel({
-                id: 1,
+                id: 2,
                 followers: [],
                 desc_title: '',
                 desc: '',

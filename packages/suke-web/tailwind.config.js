@@ -12,6 +12,10 @@ module.exports = {
         '15.8rem': '15.8rem'
       },
       spacing: {
+        '1.5px': '1.5px',
+        '0.5': '0.2rem',
+        '1.2': '0.33rem',
+        '1.5': '0.430rem',
         '93p': '93%',
         '95p': '95%',
         '17': '4.15rem'
@@ -51,7 +55,7 @@ module.exports = {
       spaceblack: "#101216",
       darkgray: "#5E6668",
       gray: "#C1C8C7",
-      lightgray: "#CED2D6",
+      lightgray: "#d9dbde",
       white: "#F6FAFB",
       reallywhite: "#FFFFFF",
       orange: "#D49C6B",

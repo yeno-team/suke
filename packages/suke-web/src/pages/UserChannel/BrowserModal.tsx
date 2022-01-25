@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect } from "react";
 import { Browser } from "../../components/Browser"
 import { Modal } from "../../components/Modal"
@@ -11,7 +12,7 @@ export interface BrowserModalProps {
     roomId: string;
 }
 
-export const BrowserModal = ({ active, className, setActive, roomId }: BrowserModalProps) => {
+const BrowserModalElement = ({ active, className, setActive, roomId }: BrowserModalProps) => {
     const { requests, getRequests } = useChannel();
 
     useEffect(() => {
@@ -25,3 +26,5 @@ export const BrowserModal = ({ active, className, setActive, roomId }: BrowserMo
         </Modal>
     )
 }
+
+export const BrowserModal = React.memo(BrowserModalElement);
