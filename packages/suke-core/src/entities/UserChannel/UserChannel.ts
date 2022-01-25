@@ -43,6 +43,7 @@ export class UserChannel extends ValueObject implements IUserChannel {
     }
 
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
+        yield this.id;
         yield this.followers;
         yield this.desc_title;
         yield this.desc;
