@@ -44,6 +44,6 @@ export const ChatBox = ({username, className}: ChatboxProps) => {
     const [chatMessages, sendMessage] = useChat(defaultMessages);
 
     return (
-        <Chat className={classNames("flex-grow bg-coolblack",className)} height={screen.width <= 300 ? "48" : "72"} channelId={username} user={user} messages={chatMessages} submitMessage={sendMessage} hasUserJoinedRoom={true} doesChannelExist={true}/>
+        <Chat className={classNames("bg-coolblack",className)} height={screen.width <= 300 ? "48" : "72"} channelId={username} user={user} messages={chatMessages} submitMessage={sendMessage} hasUserJoinedRoom={true} doesChannelExist={true}/>
     )
 }

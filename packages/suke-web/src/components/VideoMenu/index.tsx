@@ -1,6 +1,7 @@
 import { RealtimeChannelData } from '@suke/suke-core/src/types/UserChannelRealtime';
+import { captureFrame } from '@suke/suke-util';
 import classNames from 'classnames';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useChannel } from '../../hooks/useChannel';
 import { VideoMenuHeader } from './VideoMenuHeader';
@@ -15,6 +16,7 @@ export interface VideoMenuProps {
     isAuthenticated: boolean;
     ownerView: boolean;
     viewerCount?: number;
+    setThumbnail?: (v: string) => void;
     channelData: RealtimeChannelData
 }
 
@@ -25,14 +27,52 @@ export interface PlayerProgressState {
     loadedSeconds: number
 }
 
-export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated, ownerView, channelId, handleOpenSettings, channelData}: VideoMenuProps): JSX.Element => {
+const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated, ownerView, channelId, handleOpenSettings, channelData}: VideoMenuProps): JSX.Element => {
     const { updateRealtimeChannelData } = useChannel();
     const [player, setPlayer] = useState<ReactPlayer | null>(null);
     const [clientPaused, setClientPaused] = useState(true);
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState<PlayerProgressState>({} as PlayerProgressState);
     const [seeking, setSeeking] = useState(false);
+    const [thumbnailTimer, setThumbnailTimer] = useState<NodeJS.Timer>();
     const isOwner = (isAuthenticated && ownerView ? true : false);
+
+    const channelDataRef = useRef<RealtimeChannelData>();
+    channelDataRef.current = channelData;
+    const playerRef = useRef<ReactPlayer | null>();
+    playerRef.current = player;
+
+    useEffect(() => {
+        if (!isOwner) return;
+        
+
+        if (thumbnailTimer != null) {
+            clearTimeout(thumbnailTimer);
+        }
+
+        if (setThumbnail) {
+            getThumbnail();
+            setThumbnailTimer(setInterval(getThumbnail, 5000));
+        }
+
+        return () => clearTimeout(thumbnailTimer!);
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const getThumbnail = () => {
+        const internalPlayer = playerRef.current?.getInternalPlayer();
+
+        if (internalPlayer != null && internalPlayer instanceof HTMLVideoElement) {
+            const image = captureFrame(internalPlayer, "jpeg");
+            setThumbnail!("data:image/jpeg;base64," + image.image.toString('base64'))
+        } else {
+            if (channelDataRef.current?.currentVideo == null) return;
+            if (channelDataRef.current.currentVideo.thumbnail_url !== "") {
+                setThumbnail!(channelDataRef.current!.currentVideo.thumbnail_url);
+            }
+        }
+    }
 
     const updateCurrentRealtimeTime = useCallback((currentTime) => {
         updateRealtimeChannelData({
@@ -46,7 +86,7 @@ export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHei
 
     const handleProgress = (state: PlayerProgressState) => {
         setProgress(state);
-
+        
         if (!isOwner) {
             // disabled syncing the pause state TODO: fix syncing unpause after pause
             // setPlaying(!channelData.paused);
@@ -55,7 +95,7 @@ export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHei
         if (clientPaused)
             return;
 
-        if (Math.abs(progress.playedSeconds - channelData.progress?.currentTime) > 1.5 && isOwner) {
+        if (Math.abs(progress.playedSeconds - channelData.progress?.currentTime) > 2.5 && isOwner) {
             updateCurrentRealtimeTime(progress.playedSeconds);
         }
  
@@ -89,7 +129,6 @@ export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHei
         }
         setClientPaused(false);
     }
-
     
     const handleStart = () => {
         setClientPaused(false);
@@ -104,10 +143,13 @@ export const VideoMenu = ({ viewerCount, handleOpenBrowser, className, playerHei
         }
     }, [channelData.currentVideo?.sources]);
 
+    
     return (
         <div className={classNames('h-full', className, 'flex flex-col')}>
             <VideoMenuHeader viewerCount={viewerCount ?? 0} handleOpenSettings={handleOpenSettings} handleOpenBrowser={handleOpenBrowser} isAuthenticated={isAuthenticated} category={channelData.category} title={channelData.title} isOwner={ownerView}/>
-            <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true}/>
+            <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true} config={{ file: { attributes: {crossOrigin: 'anonymous'}}}}/>
         </div>
     )
 }
+
+export const VideoMenu = React.memo(VideoMenuComponent);

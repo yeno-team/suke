@@ -60,7 +60,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                     multiDatas.set(req.requestedMulti.id, [
                         ...(multiDatas.get(req.requestedMulti.id) ?? []),
                         req.requestedData
-                    ])
+                    ]);
                     requestedItems.set(req.requestedMulti.id, <MultiBrowserItem requestedObject={req} activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>)
                     continue;
                 }
@@ -69,14 +69,15 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                 requestedItems.set(req.requestedMulti.id, <MultiBrowserItem requestedObject={req} activeSource={activeSource} toggleModal={toggleModal} data={req.requestedMulti} key={req.requestedMulti.id} roomId={roomId} category={"Category"} requestedBy={req.requestedBy.flatMap(r => r.name)} requestedStandalones={multiDatas.get(req.requestedMulti.id)}></MultiBrowserItem>);
             }
         }
-
+        
         const items = getBrowserItems(standalones, multis, roomId, requestedItems, toggleModal, activeSource);
 
         return [
             ...Array.from(requestedItems.values()),
             ...items
         ]
-    }, [multis, requests, roomId, standalones, active, setActive, activeSource])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [multis, standalones])
 
     const closeMobileMenu = () => {
         setMobileMenuActive(false);
