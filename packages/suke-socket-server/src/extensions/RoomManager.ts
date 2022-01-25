@@ -47,7 +47,7 @@ export class RoomManager {
     }
 
     private getRedisKey(roomId: string) {
-        return `room:${roomId}`;
+        return `room:${roomId.toLowerCase()}`;
     }
 
 }

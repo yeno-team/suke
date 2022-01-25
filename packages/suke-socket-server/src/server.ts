@@ -14,6 +14,7 @@ import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChanne
 import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
 import { CategoryManager } from './extensions/CategoryManager';
+import { Name } from '@suke/suke-core/src/entities/Name/Name';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -48,7 +49,9 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
 
     // Map uses the websocket id as key
     private guestMap: Map<string, WebSocketConnection>;
-    private userMap: Map<number, UserDataWithWebSocket>;
+
+    // Map uses the user's name
+    private userMap: Map<string, UserDataWithWebSocket>;
     private roomManager: RoomManager;
     private categoryManager: CategoryManager;
     
@@ -122,7 +125,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                 if (user.id == 0) {
                     this.guestMap.set(ws.id, ws);
                 } else {
-                    this.userMap.set(user.id, {user, ws});
+                    this.userMap.set(user.name, {user, ws});
                 }
 
                 this.connections.set(ws.id, ws);
@@ -149,7 +152,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                     }
 
                     this.connections.delete(ws.id);
-                    this.userMap.delete(user.id);
+                    this.userMap.delete(user.name);
                     this.emit('message', new SocketMessage({
                         type: 'SOCKET_DISCONNECT',
                         data: ws.id
@@ -184,11 +187,11 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         return this.connections.get(id);
     }
 
-    public getUserConnection(idObj: UserId): UserDataWithWebSocket | undefined {
-        return this.userMap.get(idObj.value);
+    public getUserConnection(nameObj: Name): UserDataWithWebSocket | undefined {
+        return this.userMap.get(nameObj.name);
     }
 
-    public getUserConnections(): Map<number, UserDataWithWebSocket> {
+    public getUserConnections(): Map<string, UserDataWithWebSocket> {
         return this.userMap;
     }
 

@@ -102,8 +102,7 @@ export const Chat = (
         <div className={classNames(
             className,
             "lg:flex",
-            "lg:flex-col",
-            "h-95p"
+            "lg:flex-col"
         )}>
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-newblack font-semibold">
                 CHAT

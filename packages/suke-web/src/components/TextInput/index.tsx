@@ -12,9 +12,11 @@ export interface TextInputProps {
     onInputStart?: () => void;
     className?: string;
     children?: React.ReactNode;
+    autoSubmit?: boolean;
+    autoSubmitDelay?: number; 
 }
 
-export const TextInput = ({type, onChange, onInputEnd, onInputStart, className, children, autoComplete, placeholder}: TextInputProps) => {
+export const TextInput = ({type, onChange, onInputEnd, onInputStart, className, children, autoComplete, placeholder, autoSubmit, autoSubmitDelay = 500}: TextInputProps) => {
     const [value, setValue] = useState("");
     const [inputTimer, setInputTimer] = useState<NodeJS.Timer>();
     const valueRef = useRef(value);
@@ -25,7 +27,7 @@ export const TextInput = ({type, onChange, onInputEnd, onInputStart, className, 
         setValue(val);
         if (onChange) onChange(value);
         if (onInputStart) onInputStart();
-        setInputTimer(setTimeout(triggerInputEnd, 250))
+        if (autoSubmit) setInputTimer(setTimeout(triggerInputEnd, autoSubmitDelay));
     }
 
     const triggerInputEnd = () => {

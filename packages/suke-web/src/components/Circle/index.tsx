@@ -6,7 +6,7 @@ export interface CircleProps {
     size?: number, 
     textSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl',
     fontWeight?: 'bold' | 'semibold' | 'normal' | 'light' | 'extrabold' | 'black',
-    children: React.ReactNode
+    children?: React.ReactNode
 }
 
 export const Circle = ({children, className, backgroundColor, fontWeight, size, textSize}: CircleProps) => {
