@@ -1,33 +1,8 @@
-import Container, { Service } from "typedi";
+import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { AxiosRequest } from "@suke/requests/src";
-import { GogoPlayApiWrapper } from "@suke/wrappers/src/gogoplay";
-
-export interface GogoAnimeSearchResponse {
-    content : string;
-}
-
-export interface GogoAnimeEpisode {
-    url : URL | null;
-    epNum : string;
-    type : string;
-}
-export interface GogoAnimeInfoResponse {
-    title : string;
-    type : string;
-    imageUrl : null | URL;
-    genres : Array<string>;
-    summary : string;
-    released : string;
-    status : string;
-    alias : Array<string>;
-    episodes : Array<GogoAnimeEpisode>;
-}
-
-export interface GogoAnimeSearchResult {
-    name : string;
-    imageUrl : URL | null;
-}
+import { GogoPlayApiWrapper , GogoPlayerVideoPlayerSourcesResponse } from "@suke/wrappers/src/gogoplay";
+import { GogoAnimeEpisode, GogoAnimeInfoResponse, GogoAnimeSearchResponse, GogoAnimeSearchResult } from "./types";
 
 @Service()
 export class GogoAnimeApiWrapper {
@@ -123,6 +98,8 @@ export class GogoAnimeApiWrapper {
         }
     }   
 
+    public async getVideoSourceFiles(url : URL) : Promise<GogoPlayerVideoPlayerSourcesResponse> {
+        const videoPlayerUrl = await this.gogoPlayApiWrapper.getVideoPlayerURL(url)
+        return this.gogoPlayApiWrapper.getVideoPlayerSources(videoPlayerUrl)
+    }
 }
-
-Container.get(GogoAnimeApiWrapper).getAnimeInfo(new URL("https://ww2.gogoanimes.org/category/tensai-ouji-no-akaji-kokka-saisei-jutsu")).then(console.log)
