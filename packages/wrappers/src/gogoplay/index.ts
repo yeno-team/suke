@@ -3,13 +3,6 @@ import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { getRandomInt } from "@suke/suke-util/src/getRandomInt";
 import { AxiosRequest } from "@suke/requests/src";
-
-// Translated from https://gogoplay.io/js/player2021.min.js?v=9.2
-
-// Parse the content from the meta tag that is naemd crypto
-// CryptoJS.AES.decrypt(str , CryptoJS.enc.Utf8.parse)
-// CryptoJS.enc.Utf8.stringify(words or soime shit)
-
 export interface GogoPlayerVideoSource {
     file : string;
     label : string;
@@ -52,6 +45,11 @@ export class GogoPlayApiWrapper {
         return new URL(videoPlayerUrl[1])
     }
 
+    /**
+     * Translated from https://gogoplay.io/js/player2021.min.js?v=9.2
+     * @param url - video player url
+     * @returns {Promise} GogoPlayerVideoPlayerSourcesResponse
+     */
     public async getVideoPlayerSources(url : URL) : Promise<GogoPlayerVideoPlayerSourcesResponse> {
         const resp = await this.request.get<string>(url)
         const $ = cheerio.load(resp)
