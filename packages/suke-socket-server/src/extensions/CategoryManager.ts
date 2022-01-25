@@ -2,6 +2,7 @@ import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 import { SocketServer } from "../server";
 import { getRepository, Repository } from "typeorm";
 
+
 /**
  * Handles caching category data such as viewer counts
  */

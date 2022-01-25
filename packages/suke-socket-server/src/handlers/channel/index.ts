@@ -88,6 +88,10 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                 try {
                     if (!user.Name().Equals(new Name(msg.data.channelId.toLowerCase()))) {
                         return server.emit('clientError', new Error("You do not have permission to edit channel data."), ws);
+                    }   
+
+                    if (msg.data.title != null && msg.data.title.length > 35) {
+                        return server.emit('clientError', new Error("Title should be smaller than 35 characters."), ws); 
                     }
 
                     const updated = await channelManager.editRealtimeChannel(msg.data.channelId, msg.data);

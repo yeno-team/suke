@@ -78,7 +78,8 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
                 updateRealtimeChannelData({
                     currentVideo: {
                         sources: sources.length > 0 ? sources : data.sources,
-                        name: data.name as string
+                        name: data.name as string,
+                        thumbnail_url: data.thumbnail_url ?? ""
                     },
                     channelId: roomId
                 });
