@@ -6,7 +6,6 @@ import { SocketServer, WebSocketConnection } from "../../server";
 import { Handler } from "../Handler";
 
 export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void => {
-
     server.on('message', async (message: SocketMessage, ws: WebSocketConnection, user) => {
         const msg = message as SocketMessageInput; // For type-safe data type
         const roomManager = server.getRoomManager();
@@ -54,15 +53,21 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
                 if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                     return;
                 }
-
+                const ownerName = new Name(msg.data.roomId.toLowerCase());
                 const channel = await channelManager.getChannel(msg.data.roomId);
-                if (!user.Name().Equals(new Name(msg.data.roomId.toLowerCase())) && channel != null && channel.private) {
+                if (!user.Name().Equals(ownerName) && channel != null && channel.private) {
                     if (channel.password !== (msg.data.password || "")) {
                         return server.emit('clientError', new Error("Incorrect Password."), ws);
                     }
                 }
-                
+
                 await roomManager.addUser(msg.data.roomId, ws.id);
+
+                // if user is owner set channel to live
+                if(user.Name().Equals(ownerName)) {
+                    await channelManager.editRealtimeChannel(msg.data.roomId, {live: true});
+                }
+
                 await sendUpdateMessage(msg.data.roomId);
                 ws.send(JSON.stringify(new SocketMessage({
                     type: 'ROOM_JOIN',
@@ -70,14 +75,22 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
                 })));
                 break;
             }
-            case 'ROOM_LEAVE':
+            case 'ROOM_LEAVE': {
                 if (!await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                     return server.emit('clientError', new Error("Cannot leave room that you have not joined."), ws);
                 }
 
+                const ownerName = new Name(msg.data.roomId.toLowerCase());
                 await roomManager.removeUser(msg.data.roomId, ws.id);
+
+                 // set channel to not be live if owner leaves the room.
+                 if (server.getUserConnection(ownerName) == null) {
+                    await channelManager.editRealtimeChannel(msg.data.roomId, {live:false});
+                }
+
                 await sendUpdateMessage(msg.data.roomId);
                 break;
+            }
         }
     })
 }
