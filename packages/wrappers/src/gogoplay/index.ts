@@ -6,7 +6,7 @@ import { AxiosRequest } from "@suke/requests/src";
 export interface GogoPlayerVideoSource {
     file : string;
     label : string;
-    type : "mp4";
+    type : "mp4" | "hls";
 }
 
 export interface GogoPlayerVideoPlayerSourcesResponse {
@@ -50,7 +50,7 @@ export class GogoPlayApiWrapper {
      * @param url - video player url
      * @returns {Promise} GogoPlayerVideoPlayerSourcesResponse
      */
-    public async getVideoPlayerSources(url : URL) : Promise<GogoPlayerVideoPlayerSourcesResponse> {
+    public async getSources(url : URL) : Promise<GogoPlayerVideoPlayerSourcesResponse> {
         const resp = await this.request.get<string>(url)
         const $ = cheerio.load(resp)
 
@@ -79,6 +79,5 @@ export class GogoPlayApiWrapper {
         })
 
         return await this.request.get<GogoPlayerVideoPlayerSourcesResponse>(new URL("https://gogoplay.io/encrypt-ajax.php?") , { headers : { "X-Requested-With" : "XMLHttpRequest"} , params })
-        
     }
 }

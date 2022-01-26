@@ -1,9 +1,13 @@
 import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { AxiosRequest } from "@suke/requests/src";
-import { GogoPlayApiWrapper , GogoPlayerVideoPlayerSourcesResponse } from "@suke/wrappers/src/gogoplay";
+import { GogoPlayApiWrapper } from "@suke/wrappers/src/gogoplay";
 import { GogoAnimeEpisode, GogoAnimeInfoResponse, GogoAnimeSearchResponse, GogoAnimeSearchResult } from "./types";
+import { IVideoSource , Quality , QualityAsUnion } from "@suke/suke-core/src/entities/SearchResult";
 
+export interface GogoAnimeSource extends IVideoSource {
+    type : "mp4"
+}
 @Service()
 export class GogoAnimeApiWrapper {
     constructor(
@@ -98,8 +102,25 @@ export class GogoAnimeApiWrapper {
         }
     }   
 
-    public async getVideoSourceFiles(url : URL) : Promise<GogoPlayerVideoPlayerSourcesResponse> {
+    public async getSources(url : URL) : Promise<Array<GogoAnimeSource>> {
         const videoPlayerUrl = await this.gogoPlayApiWrapper.getVideoPlayerURL(url)
-        return this.gogoPlayApiWrapper.getVideoPlayerSources(videoPlayerUrl)
+        const { source : sources } = await this.gogoPlayApiWrapper.getSources(videoPlayerUrl)
+        const data : Array<GogoAnimeSource> = []
+
+        for(let i = 0; i < sources.length; i++) {
+            const { file , label , type } = sources[i]
+
+            if(type === "hls") {
+                continue
+            }
+
+            data.push({
+                url : new URL(file),
+                quality : Quality[label.toLowerCase().split(" ").join("") as QualityAsUnion],
+                type
+            })
+        }
+
+        return data
     }
 }
