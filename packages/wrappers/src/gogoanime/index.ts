@@ -1,4 +1,4 @@
-import { Service } from "typedi";
+import Container, { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { AxiosRequest } from "@suke/requests/src";
 import { GogoPlayApiWrapper } from "@suke/wrappers/src/gogoplay";
@@ -20,20 +20,22 @@ export class GogoAnimeApiWrapper {
         const $ = cheerio.load(resp.content)
         
         const results = $('a[class="ss-title"]').toArray()
-        const data = []
+        const data : Array<GogoAnimeSearchResult>= []
 
         for(let i = 0; i < results.length ; i++) {
             const result = $(results[i])
-            
+        
             // Image url is stored in inline css backgroundUrl property.
-            const divStyleAttr = result.children().first().attr("style")
-
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const divStyleAttr = result.children().first().attr("style")!
+            
             const name = result.text().trim()
+            
             const imageUrl = divStyleAttr?.substring(divStyleAttr.indexOf('https'), divStyleAttr.indexOf('")'))
-
             data.push({
                 name,
-                imageUrl : imageUrl ? new URL(imageUrl) : null
+                url : new URL(`https://ww2.gogoanimes.org${result.attr("href")}`),
+                imageUrl : new URL(imageUrl)
             })
         }
 
@@ -64,7 +66,7 @@ export class GogoAnimeApiWrapper {
             const href = aTag.attr("href")?.trim()
 
             data.push({
-                url : href ? new URL(`https://ww2.gogoanimes.org${href}`) : null,
+                url : new URL(`https://ww2.gogoanimes.org${href}`),
                 epNum,
                 type,
             })
@@ -79,7 +81,8 @@ export class GogoAnimeApiWrapper {
         const data : Record<string , string> = {}
 
         const body = $('div[class="anime_info_body_bg"]')
-        const imageUrl = body.find("img").attr("src")
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const imageUrl = body.find("img").attr("src")!
         const title = body.find("h1").text()
 
         body.find('p[class="type"]').each((index , element) => {
@@ -91,7 +94,7 @@ export class GogoAnimeApiWrapper {
 
         return {
             title,
-            imageUrl : imageUrl ? new URL(imageUrl) : null,
+            imageUrl : new URL(imageUrl),
             type : data["type"],
             genres : body.find("a[title]").toArray().map((element) => $(element).text()),
             summary : data["plot summary"],
