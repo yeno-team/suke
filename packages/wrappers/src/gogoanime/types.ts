@@ -3,14 +3,14 @@ export interface GogoAnimeSearchResponse {
 }
 
 export interface GogoAnimeEpisode {
-    url : URL | null;
+    url : URL;
     epNum : string;
     type : string;
 }
 export interface GogoAnimeInfoResponse {
     title : string;
     type : string;
-    imageUrl : null | URL;
+    imageUrl : URL;
     genres : Array<string>;
     summary : string;
     released : string;
@@ -21,5 +21,6 @@ export interface GogoAnimeInfoResponse {
 
 export interface GogoAnimeSearchResult {
     name : string;
+    url : URL;
     imageUrl : URL | null;
 }
