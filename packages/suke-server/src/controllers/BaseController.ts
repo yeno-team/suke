@@ -10,7 +10,7 @@ export abstract class BaseController {
             .post(catchErrorAsync(this.Post))
             .put(catchErrorAsync(this.Put))
             .patch(catchErrorAsync(this.Patch))
-            .delete(catchErrorAsync(this.Delete))
+            .delete(catchErrorAsync(this.Delete));
     }
 
     protected async Get(req: Request, res: Response): Promise<void> {

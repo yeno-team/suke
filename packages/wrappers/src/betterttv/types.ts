@@ -48,7 +48,7 @@ export class BetterTTVEmoteOpts extends ValueObject implements IBetterTTVEmoteOp
         this.size  = opts.size;
 
         if(!(this.IsValid)) {
-            throw new ValidationError(`Incorrect BetterTTVEmote options : ${JSON.stringify(opts)}.`)
+            throw new ValidationError(`Incorrect BetterTTVEmote options : ${JSON.stringify(opts)}.`);
         }
 
     }
@@ -63,7 +63,7 @@ export class BetterTTVEmoteOpts extends ValueObject implements IBetterTTVEmoteOp
     }
     protected IsValid(): boolean {
         if(!(this.type)) {
-            throw new PropertyValidationError("type property is missing.")
+            throw new PropertyValidationError("type property is missing.");
         }
 
         // if(!(this.type !== "trending") || !(this.type !== "global") || !(this.type !== "top") || !(this.type !== "shared")) {
@@ -71,23 +71,23 @@ export class BetterTTVEmoteOpts extends ValueObject implements IBetterTTVEmoteOp
         // }
 
         if(this.limit && typeof this.limit !== "number") {
-            throw new PropertyValidationError("limit property is not a number.")
+            throw new PropertyValidationError("limit property is not a number.");
         }   
 
         if((this.limit) && (this.limit <= 0 || this.limit > 100)) {
-            throw new PropertyValidationError("limit property must contain a value between 1 and 100.")
+            throw new PropertyValidationError("limit property must contain a value between 1 and 100.");
         }
 
         if(this.before && typeof this.before !== "string") {
-            throw new PropertyValidationError("before property is not a string.")
+            throw new PropertyValidationError("before property is not a string.");
         }
 
         if(this.offset && typeof this.offset !== "number") {
-            throw new PropertyValidationError("offset property is not a number.")
+            throw new PropertyValidationError("offset property is not a number.");
         }
 
         if(this.size && typeof this.size !== "string") {
-            throw new PropertyValidationError("size property is not a string.")
+            throw new PropertyValidationError("size property is not a string.");
         }
 
         // if(!(this.size !== "1x") || !(this.size !== "2x") || !(this.size !== "3x")) {
@@ -95,15 +95,15 @@ export class BetterTTVEmoteOpts extends ValueObject implements IBetterTTVEmoteOp
         // }
 
         if((this.type === "shared") && (this.offset)) {
-            throw new PropertyValidationError("type 'shared' does not require the offset property.")
+            throw new PropertyValidationError("type 'shared' does not require the offset property.");
         }
 
         if((this.type === "top" || this.type === "trending") && (this.before)) {
-            throw new PropertyValidationError("type 'top' or 'trending' does not require the before property.")
+            throw new PropertyValidationError("type 'top' or 'trending' does not require the before property.");
         }
 
         if((this.type === "global") && (this.offset || this.before)) {
-            throw new PropertyValidationError("type 'global' does not require the offset or before property.")
+            throw new PropertyValidationError("type 'global' does not require the offset or before property.");
         }
 
         return true;

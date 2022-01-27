@@ -16,10 +16,10 @@ export class AuthController extends BaseController {
 
     public execute(app: Express): void {
         app.route(this.route)
-            .post(verifyRecaptchaToken() ,createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+            .post(verifyRecaptchaToken() ,createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post));
         
         app.route(this.route + "/logout")
-            .post(catchErrorAsync(this.Logout))
+            .post(catchErrorAsync(this.Logout));
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {

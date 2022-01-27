@@ -16,7 +16,7 @@ export class UserController extends BaseController {
     }
 
     public execute(app : Express) : void {
-        app.route(this.route).post(verifyRecaptchaToken() , catchErrorAsync(this.Post))
+        app.route(this.route).post(verifyRecaptchaToken() , catchErrorAsync(this.Post));
         app.route(this.route)
             .post(verifyRecaptchaToken() , catchErrorAsync(this.Post))
             .get(catchErrorAsync(this.Get));
@@ -36,7 +36,7 @@ export class UserController extends BaseController {
             res.status(401).send({
                 'message': `You are not logged in.`
             });
-            return
+            return;
         }
 
         const foundUser = await this.userService.findById(parseInt(id));

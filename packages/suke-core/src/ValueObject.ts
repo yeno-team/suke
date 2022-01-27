@@ -14,6 +14,6 @@ export abstract class ValueObject {
         const objArr = Array.from(obj.GetEqualityProperties());
         const thisArr = Array.from(this.GetEqualityProperties());
 
-        return objArr.every((val, i) => _.isEqual(val, thisArr[i]))
+        return objArr.every((val, i) => _.isEqual(val, thisArr[i]));
     }
 }

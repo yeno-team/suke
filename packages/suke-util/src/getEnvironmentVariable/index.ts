@@ -8,6 +8,6 @@ export default function getEnvironmentVariable(varName: string, required?: boole
             return defaultValue;
         }
 
-        throw new Error(`${varName} is a optional env variable and a default value for it was not found!`)
+        throw new Error(`${varName} is a optional env variable and a default value for it was not found!`);
     }
 }

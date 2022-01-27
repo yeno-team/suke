@@ -22,14 +22,14 @@ export class AxiosRequest implements IRequest {
             httpAgent: options.httpAgent,
             httpsAgent: options.httpsAgent,
             proxy: options.proxy as unknown as AxiosProxyConfig
-        }
+        };
 
         return axiosClientOpts;
     }
 
     async request<R>(options: RequestOptions):  Promise<R> {
-        const req = await this.axiosInstance.request(this.convertToAxiosOpts(options))
-        return req.data
+        const req = await this.axiosInstance.request(this.convertToAxiosOpts(options));
+        return req.data;
     }
 
     async get<R>(url: URL, options?: RequestOptions): Promise<R> {        
@@ -37,7 +37,7 @@ export class AxiosRequest implements IRequest {
             url,
             method : "GET",
             ...options
-        })
+        });
     }
 
     async post<R>(url: URL, options?: RequestOptions): Promise<R> {
@@ -45,6 +45,6 @@ export class AxiosRequest implements IRequest {
             url,
             method : "POST",
             ...options
-        })
+        });
     }
 }

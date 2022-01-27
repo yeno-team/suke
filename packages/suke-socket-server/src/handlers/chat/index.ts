@@ -34,9 +34,9 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
                 data : {
                     ...message.data,
                 }
-            })
+            });
 
             await broadcaster.broadcastToRoom(msg, message.data.channelId);
         }
     });
-}
+};

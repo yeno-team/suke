@@ -1,10 +1,10 @@
 // https://github.com/perestaj/Easy-Steganography/tree/main/easy-steganography/src
 import Jimp from "jimp";
 
-const initMessage = "zzDannyWazHere"
+const initMessage = "zzDannyWazHere";
 
 const readMessageSegment = (image : Buffer , startIndex : number , length : number) : string  => {
-    let result = ''
+    let result = '';
 
     for (let i = 0; i < length; i++) {
         let currentByte = 0;
@@ -18,30 +18,30 @@ const readMessageSegment = (image : Buffer , startIndex : number , length : numb
         result += String.fromCharCode(currentByte);
     }
 
-    return result
-}
+    return result;
+};
 
 const readMessage = (image : Jimp) : string => {
-    const messageHeader = readMessageSegment(image.bitmap.data , 0 , initMessage.length)
+    const messageHeader = readMessageSegment(image.bitmap.data , 0 , initMessage.length);
 
     if(messageHeader !== initMessage) {
-        return ""
+        return "";
     }
 
-    const length = +readMessageSegment(image.bitmap.data , initMessage.length, 16)
-    const message = readMessageSegment(image.bitmap.data , initMessage.length + 16 , length)
+    const length = +readMessageSegment(image.bitmap.data , initMessage.length, 16);
+    const message = readMessageSegment(image.bitmap.data , initMessage.length + 16 , length);
 
-    return message
-}
+    return message;
+};
 
 const hideMessage = (image : Jimp , message : string) : Jimp => {
-    let messageLength = message.length.toString()
+    let messageLength = message.length.toString();
 
     while (messageLength.length < 16) {
-        messageLength = "0" + messageLength
+        messageLength = "0" + messageLength;
     }
 
-    const messageToHide = initMessage + messageLength + message
+    const messageToHide = initMessage + messageLength + message;
 
     for (let i = 0; i < messageToHide.length; i++)
     {
@@ -55,10 +55,10 @@ const hideMessage = (image : Jimp , message : string) : Jimp => {
         }
     }
 
-    return image 
-}
+    return image; 
+};
 
 export default { 
     hideMessage , 
     readMessage
-}
+};

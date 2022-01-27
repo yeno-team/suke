@@ -10,13 +10,13 @@ import { ValidationError } from "../../exceptions/ValidationError";
 describe('UserId class', () => {
     describe('#constructor', () => {
         it('should throw a ValidationError if passed a non-valid userId', () => {
-            expect(() => {new UserId('' as unknown as number)}).toThrow(ValidationError);
-            expect(() => {new UserId({} as unknown as number)}).toThrow(ValidationError);
-            expect(() => {new UserId(true as unknown as number)}).toThrow(ValidationError);
+            expect(() => {new UserId('' as unknown as number);}).toThrow(ValidationError);
+            expect(() => {new UserId({} as unknown as number);}).toThrow(ValidationError);
+            expect(() => {new UserId(true as unknown as number);}).toThrow(ValidationError);
         });
 
         it('should not throw an error if a valid userId is passed', () => {
-            expect(() => {new UserId(1)}).not.toThrow(ValidationError);
+            expect(() => {new UserId(1);}).not.toThrow(ValidationError);
         });
 
         it('should default to id -1 if passed in null id', () => {
@@ -41,4 +41,4 @@ describe('UserId class', () => {
         });
     });
 
-})
+});

@@ -4,9 +4,9 @@
  * @group unit/classes/user
  */
 
-import { ValidationError } from "../../exceptions/ValidationError"
-import { Role } from "../../Role"
-import { User } from "./User"
+import { ValidationError } from "../../exceptions/ValidationError";
+import { Role } from "../../Role";
+import { User } from "./User";
 
 describe("User Class: Value Object", () => {
     describe('#constructor', () => {
@@ -24,7 +24,7 @@ describe("User Class: Value Object", () => {
                     desc: '',
                     roledUsers: []
                 }
-            })}).toThrowError(ValidationError);
+            });}).toThrowError(ValidationError);
 
             expect(() => {new User({
                 id: 1,
@@ -39,7 +39,7 @@ describe("User Class: Value Object", () => {
                     desc: '',
                     roledUsers: []
                 }
-            })}).toThrowError(ValidationError);
+            });}).toThrowError(ValidationError);
 
             expect(() => {new User({
                 id: 1,
@@ -54,7 +54,7 @@ describe("User Class: Value Object", () => {
                     desc: '',
                     roledUsers: []
                 }
-            })}).toThrowError(ValidationError);
+            });}).toThrowError(ValidationError);
 
 
             expect(() => {new User({
@@ -70,7 +70,7 @@ describe("User Class: Value Object", () => {
                     desc: '',
                     roledUsers: []
                 }
-            })}).toThrowError(ValidationError);
+            });}).toThrowError(ValidationError);
         });
 
         it('should throw ValidationError if email is not a valid email', () => {
@@ -87,7 +87,7 @@ describe("User Class: Value Object", () => {
                     desc: '',
                     roledUsers: []
                 }
-            })}).toThrowError(ValidationError);
+            });}).toThrowError(ValidationError);
 
             expect(() => {new User({
                 id: 1,
@@ -102,7 +102,7 @@ describe("User Class: Value Object", () => {
                     desc: '',
                     roledUsers: []
                 }
-            })}).toThrowError(ValidationError);
+            });}).toThrowError(ValidationError);
         });
 
         it('should default to User role if passed in a null role', () => {
@@ -138,7 +138,7 @@ describe("User Class: Value Object", () => {
                     desc: '',
                     roledUsers: []
                 }
-            })}).not.toThrow(ValidationError);
+            });}).not.toThrow(ValidationError);
         });
     });
 

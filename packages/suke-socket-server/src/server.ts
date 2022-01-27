@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import {v4 as uuid } from 'uuid';
-import EventEmitter from "events"
-import { Server, IncomingMessage} from 'http'
+import EventEmitter from "events";
+import { Server, IncomingMessage} from 'http';
 import { RequestHandler, Request, Response} from 'express';
 import TypedEmitter from "typed-emitter";
 import { IHasUser, User } from '@suke/suke-core/src/entities/User';
