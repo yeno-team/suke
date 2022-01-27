@@ -4,9 +4,13 @@
   "dependencies": {
     "@suke/requests": "workspace:packages/requests",
     "@suke/suke-core": "workspace:packages/suke-core",
+    "crypto-js": "^4.1.1",
     "typedi": "^0.10.0"
   },
   "scripts": {
     "start": "ts-node ./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.0"
   }
 }
