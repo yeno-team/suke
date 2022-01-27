@@ -21,7 +21,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
             case 'CHANNEL_REQUEST_ADD':
                 try {
                     if (user == null || user.Id().Equals(new UserId(0))) {
-                        return server.emit('clientError', new Error("You need an account to access requests feature."), ws)
+                        return server.emit('clientError', new Error("You need an account to access requests feature."), ws);
                     }
 
                     if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
@@ -41,7 +41,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
             case 'CHANNEL_REQUEST_REMOVE':
                 try {
                     if (user == null || user.Id().Equals(new UserId(0))) {
-                        return server.emit('clientError', new Error("You need an account to access requests feature."), ws)
+                        return server.emit('clientError', new Error("You need an account to access requests feature."), ws);
                     }
 
                     if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
@@ -49,7 +49,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     }
 
                     if (msg.data?.requestedBy.find(v => !(new UserId(v.userId).Equals(user.Id())) && msg.data.roomId.toLowerCase() != user.name.toLowerCase())) {
-                        server.emit('clientError', new Error("You do not have permission to remove this request."), ws)
+                        server.emit('clientError', new Error("You do not have permission to remove this request."), ws);
                     }
 
                     await requestManager.removeRequest(msg.data.roomId, msg.data);
@@ -67,8 +67,8 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     if (await roomManager.CheckIfUserInRoom(ws.id, msg.data)) {
                         return;
                     }
-                    const channel = await channelManager.getChannel(msg.data)
-                    const requests = await requestManager.getRequests(msg.data)
+                    const channel = await channelManager.getChannel(msg.data);
+                    const requests = await requestManager.getRequests(msg.data);
                     ws.send(JSON.stringify(new SocketMessage({
                         type: 'CHANNEL_REQUESTS',
                         data: requests
@@ -103,7 +103,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                                 ...updated,
                                 password: "*".repeat(updated.password.length)
                             }
-                        }), msg.data.channelId)
+                        }), msg.data.channelId);
                     } else {
                         ws.send(JSON.stringify(new SocketMessage({
                             type: 'SERVER_ERROR',
@@ -111,7 +111,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         })));
                     }
                 } catch (e) {
-                    server.emit('clientError', e, ws)
+                    server.emit('clientError', e, ws);
                 }
                 break;
             case 'CHANNEL_GET':
@@ -127,8 +127,8 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         })));
                     }
                 } catch (e) {
-                    server.emit('clientError', e, ws)
+                    server.emit('clientError', e, ws);
                 }
         }
-    }) 
-}
+    }); 
+};

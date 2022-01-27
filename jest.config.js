@@ -10,4 +10,4 @@ module.exports = {
     modulePathIgnorePatterns: ["<rootDir>/packages/suke-web", "dist"],
     runner: 'groups',
     watchPlugins: ['jest-watch-yarn-workspaces']
-}
+};

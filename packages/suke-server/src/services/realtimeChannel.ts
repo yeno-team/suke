@@ -30,7 +30,7 @@ export class RealtimeChannelService {
         return {
             data,
             nextCursor: channelScan.cursor
-        }   
+        };  
     }
 
     public async getSortedChannels(pageNumber = 1, limit = 20, order: "ASC" | "DESC" = "DESC"): Promise<RealtimeChannelData[]> {

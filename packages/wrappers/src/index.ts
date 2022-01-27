@@ -4,4 +4,4 @@ import { KickAssAnimeApiWrapper } from "./kickassanime";
 export {
     YoutubeApiWrapper,
     KickAssAnimeApiWrapper
-}
+};

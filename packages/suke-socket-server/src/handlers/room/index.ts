@@ -42,11 +42,11 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
                 setupListeners[ws.id] = 1;
 
                 ws.on('close', () => {
-                    server.emit('message', new SocketMessage({type: 'ROOM_LEAVE', data: {roomId}}), ws)
+                    server.emit('message', new SocketMessage({type: 'ROOM_LEAVE', data: {roomId}}), ws);
                     setupListeners[ws.id] = null;
                 });
             }
-        }
+        };
 
         switch (msg.type) {
             case 'ROOM_JOIN': {
@@ -92,5 +92,5 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
                 break;
             }
         }
-    })
-}
+    });
+};
