@@ -8,4 +8,4 @@ export const parsers = [
     Container.get(YoutubeParser),
     Container.get(KickAssAnimeParser),
     Container.get(GogoAnimeParser)
-]
+];

@@ -31,7 +31,7 @@ export class YoutubeParser implements IParser {
                     multi: await this.extractContinuationMultis(searchData)
                 },
                 nextPageToken: this.wrapper.extractContinuationToken(searchData)
-            }
+            };
         } else {
             searchData = await this.wrapper.search(searchTerm);
 
@@ -41,7 +41,7 @@ export class YoutubeParser implements IParser {
                     multi: await this.extractMultis(searchData)
                 },
                 nextPageToken: this.wrapper.extractContinuationToken(searchData)
-            }
+            };
         }
     }
 
@@ -55,7 +55,7 @@ export class YoutubeParser implements IParser {
             standalones = [
                 ...standalones,
                 ...(this.extractStandalonesFromItemSectionRenderer(contents as IHasItemSectionRenderer))
-            ]
+            ];
         }
         
         return standalones;
@@ -95,7 +95,7 @@ export class YoutubeParser implements IParser {
                                 quality: Quality.auto
                             }
                         ]
-                    })
+                    });
                 }
             } else if ((renderer = renderer as unknown as IHasVideoRenderer).videoRenderer != null) {
                 const videoRenderer = renderer.videoRenderer;
@@ -142,7 +142,7 @@ export class YoutubeParser implements IParser {
             if ((hasPlaylistRenderer = renderer as unknown as IHasPlaylistRenderer).playlistRenderer != null) {
                 const playlistRenderer = hasPlaylistRenderer.playlistRenderer;
                 
-                const highestQualityThumbnail = this.findHighestQualityThumbnail(playlistRenderer.thumbnails)
+                const highestQualityThumbnail = this.findHighestQualityThumbnail(playlistRenderer.thumbnails);
                 const playlistStandaloneVideos: IMultiStandaloneData[] = [];
 
                 const nextResp = await this.wrapper.next({playlistId: playlistRenderer.playlistId});
@@ -184,7 +184,7 @@ export class YoutubeParser implements IParser {
                 multis = [
                     ...multis,
                     ...await this.extractMultiFromItemSectionRenderer(renderer as IHasItemSectionRenderer)
-                ]
+                ];
             }
         }
 

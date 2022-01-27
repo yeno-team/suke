@@ -78,10 +78,8 @@ export class ChannelManager {
             return;
         }
 
-        // TODO FIX THIS, SEE #53 FOR MORE INFORMATION
         if (editedData.category != null && editedData.category != channel.category) {
             const categoryManager = this.server.getCategoryManager();
-            categoryManager.updateRoomViewerCount(channelId, channel.category, channel.viewerCount * -1);
             categoryManager.updateRoomViewerCount(channelId, editedData.category, channel.viewerCount);
         }
 

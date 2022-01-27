@@ -8,7 +8,7 @@ export const createErrorHandler: Handler = (server: SocketServer) => (): void =>
     server.on('error', (err: Error) => {
         console.error(err);
     });
-}
+};
 
 export const createClientErrorHandler: Handler = (server: SocketServer) => (): void => {
     server.on('clientError', (err: Error, ws: WebSocket) => {
@@ -20,4 +20,4 @@ export const createClientErrorHandler: Handler = (server: SocketServer) => (): v
         ws.send(JSON.stringify(response));
         console.error(err);
     });
-}
+};

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Service } from "typedi";
 import { IMultiData, ISearchData , StandaloneType , Quality, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
-import { ParserError } from "@suke/suke-core/src/exceptions/ParserError"
-import { KickAssAnimeApiWrapper } from "@suke/wrappers/src"
+import { ParserError } from "@suke/suke-core/src/exceptions/ParserError";
+import { KickAssAnimeApiWrapper } from "@suke/wrappers/src";
 import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { KickAssAnimeInfoResponse, KickAssAnimeSourceFile } from "@suke/wrappers/src/kickassanime";
 
@@ -50,28 +50,28 @@ export default class KickAssAnimeParser implements IParser {
      */
     private async query_search(searchTerm : string) : Promise<KickAssAnimeQuerySearchResponse> {
         if (searchTerm.length <= 3) 
-            throw new Error("Search Term should be greater than 3 characters.")
-        const queryResults = await this.wrapper.search(searchTerm)
+            throw new Error("Search Term should be greater than 3 characters.");
+        const queryResults = await this.wrapper.search(searchTerm);
 
         return {
             ...queryResults,
             data : await Promise.all(queryResults.map(async ({ url }) => this.wrapper.getAnimeInfo(url)))
-        }
+        };
     }
 
     private async getVideoSources(url : URL) : Promise<Array<KickAssAnimeSourceFile>>{
         // Catch error here
-        const videoPlayerUrl = await this.wrapper.getVideoPlayerUrl(url)
-        const externalServers = await this.wrapper.getExternalServers(videoPlayerUrl)
+        const videoPlayerUrl = await this.wrapper.getVideoPlayerUrl(url);
+        const externalServers = await this.wrapper.getExternalServers(videoPlayerUrl);
         
         for(let i = 0; i < externalServers.length; i++) {
             try {
-                return await this.wrapper.getVideoSourcesFiles(externalServers[i].src)
+                return await this.wrapper.getVideoSourcesFiles(externalServers[i].src);
             // eslint-disable-next-line no-empty
             } catch (e) {}
         }
 
-        return []
+        return [];
     }
 
     private async extractMultis({ name , image , episodes } : KickAssAnimeInfoResponse) : Promise<IMultiData> {
@@ -90,16 +90,16 @@ export default class KickAssAnimeParser implements IParser {
                     }
                 ]
             })))
-        }
+        };
     }
 
     public async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {
         if(options && options.token) {
-            throw new ParserError("Options token property is not supported on the KickAssAnime parser.")
+            throw new ParserError("Options token property is not supported on the KickAssAnime parser.");
         }
 
-        const { data , nextPageToken , prevPageToken } = await this.query_search(searchTerm)
-        const animes = data.map((anime) => ({ ...anime , episodes : anime.episodes }))
+        const { data , nextPageToken , prevPageToken } = await this.query_search(searchTerm);
+        const animes = data.map((anime) => ({ ...anime , episodes : anime.episodes }));
 
         return {
             results : {
@@ -108,6 +108,6 @@ export default class KickAssAnimeParser implements IParser {
             },
             nextPageToken,
             prevPageToken
-        }
+        };
     }
 }

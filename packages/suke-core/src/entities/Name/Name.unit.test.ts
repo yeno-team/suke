@@ -10,21 +10,21 @@ import { Name } from "./Name";
 describe("Name class", () => {
     describe("#constructor", () => {
         it('should throw ValidationError if name is not a valid name', () => {
-            expect(() => {new Name("")}).toThrow(ValidationError);
-            expect(() => {new Name("_username")}).toThrow(ValidationError);
-            expect(() => {new Name("abc")}).toThrow(ValidationError);
-            expect(() => {new Name("_20.")}).toThrow(ValidationError);
-            expect(() => {new Name("user_.name")}).toThrow(ValidationError);
+            expect(() => {new Name("");}).toThrow(ValidationError);
+            expect(() => {new Name("_username");}).toThrow(ValidationError);
+            expect(() => {new Name("abc");}).toThrow(ValidationError);
+            expect(() => {new Name("_20.");}).toThrow(ValidationError);
+            expect(() => {new Name("user_.name");}).toThrow(ValidationError);
         });
 
         it('should throw PropertyValidationError if passed a non-string', () => {
-            expect(() => {new Name(1 as unknown as string)}).toThrow(PropertyValidationError);
+            expect(() => {new Name(1 as unknown as string);}).toThrow(PropertyValidationError);
         });
 
         it('should not throw any errors if passed a correct name', () => {
-            expect(() => {new Name("user")}).not.toThrow(ValidationError);
-            expect(() => {new Name("user_d")}).not.toThrow(ValidationError);
-            expect(() => {new Name("user.guy")}).not.toThrow(ValidationError);
+            expect(() => {new Name("user");}).not.toThrow(ValidationError);
+            expect(() => {new Name("user_d");}).not.toThrow(ValidationError);
+            expect(() => {new Name("user.guy");}).not.toThrow(ValidationError);
         });
     });
 

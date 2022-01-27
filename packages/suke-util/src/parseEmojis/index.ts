@@ -7,7 +7,7 @@ export interface ParsedEmoji {
 }
 
 export function parseEmojis(str : string) : Array<ParsedEmoji> {
-    const parseEmojis : Array<ParsedEmoji> = []
+    const parseEmojis : Array<ParsedEmoji> = [];
     let parseEmoji : RegExpExecArray | null;
 
     while((parseEmoji = regex.exec(str)) !== null) {
@@ -15,8 +15,8 @@ export function parseEmojis(str : string) : Array<ParsedEmoji> {
             str : parseEmoji[0],
             id : parseEmoji[1],
             type : parseEmoji[2] as "channel" | "global",
-        })
+        });
     }
 
-    return parseEmojis
+    return parseEmojis;
 }

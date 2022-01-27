@@ -28,4 +28,4 @@ export const isRequestsEqual = (req1: Request, req2: Request): boolean => {
         }
     }
     return false;
-}
+};

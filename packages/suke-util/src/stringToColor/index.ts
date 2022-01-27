@@ -17,4 +17,4 @@ export const stringToColor = function (str: string): string {
       colour += ('00' + value.toString(16)).substr(-2);
     }
     return colour;
-}
+};

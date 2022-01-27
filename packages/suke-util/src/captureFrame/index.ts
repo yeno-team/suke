@@ -1,5 +1,5 @@
 /*! capture-frame. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-'use strict'
+'use strict';
 
 export function captureFrame (video: HTMLVideoElement, format: 'png' | 'jpeg' | 'webp'): { image: Buffer, width: number, height: number} {
   if (video == null || video.nodeName !== 'VIDEO') {
@@ -23,5 +23,5 @@ export function captureFrame (video: HTMLVideoElement, format: 'png' | 'jpeg' | 
     image: Buffer.from(data, 'base64'),
     width,
     height
-  }
+  };
 }
