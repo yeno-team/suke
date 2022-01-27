@@ -29,7 +29,7 @@ const defaultCategories = [
         label: "Anime",
         thumbnail_url: "https://www.fortressofsolitude.co.za/wp-content/uploads/2019/05/The-15-Most-Powerful-Anime-Characters-Of-All-Time-scaled.jpg"
     }
-]
+];
 
 createConnection({
     type: "postgres",

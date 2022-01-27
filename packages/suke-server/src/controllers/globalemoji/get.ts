@@ -17,20 +17,20 @@ export class GlobalEmojiGetController extends BaseController {
     }
 
     public Get = async (req : Request , res : Response) : Promise<void> => {
-        const globalEmojiCache = await this.GlobalEmojiCacheService.getGlobalEmojiCache()
+        const globalEmojiCache = await this.GlobalEmojiCacheService.getGlobalEmojiCache();
         
-        res.setHeader("Cache-Control","no-cache")
+        res.setHeader("Cache-Control","no-cache");
 
         if(globalEmojiCache) {
-            res.setHeader("ETag", createSHA256Hash(JSON.stringify(globalEmojiCache)))
-            res.status(200).json(globalEmojiCache)
-            return
+            res.setHeader("ETag", createSHA256Hash(JSON.stringify(globalEmojiCache)));
+            res.status(200).json(globalEmojiCache);
+            return;
         }
 
-        const emojis = await this.GlobalEmojiGetService.getGlobalEmojis(2)
-        await this.GlobalEmojiCacheService.setGlobalEmojiCache(emojis)
+        const emojis = await this.GlobalEmojiGetService.getGlobalEmojis(2);
+        await this.GlobalEmojiCacheService.setGlobalEmojiCache(emojis);
         
-        res.setHeader("ETag", createSHA256Hash(JSON.stringify(emojis)))
-        res.status(200).json(emojis)
+        res.setHeader("ETag", createSHA256Hash(JSON.stringify(emojis)));
+        res.status(200).json(emojis);
     }
 }

@@ -42,6 +42,6 @@ const config: IConfiguration = {
     recaptcha : {
         secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEY", true) as string
     }
-}
+};
 
 export default config;

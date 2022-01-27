@@ -51,4 +51,4 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
         default: 
             throw new Error("Unknown User Identifier");
     }
-})
+});

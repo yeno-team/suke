@@ -135,5 +135,5 @@ describe('RealtimeChannelDataObject class', () => {
 
             expect(channel5.Equals(channel6)).toBeFalsy();
         });
-    })
-})
+    });
+});

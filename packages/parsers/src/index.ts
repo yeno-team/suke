@@ -6,4 +6,4 @@ import { YoutubeParser } from "./youtube";
 export const parsers = [
     Container.get(YoutubeParser),
     Container.get(KickAssAnimeParser)
-]
+];

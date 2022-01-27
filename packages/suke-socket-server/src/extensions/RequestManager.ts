@@ -42,6 +42,6 @@ export class RequestManager {
     }
 
     private getRedisKey(channelId: string) {
-        return `channelRequests:${channelId}`
+        return `channelRequests:${channelId}`;
     }
 }

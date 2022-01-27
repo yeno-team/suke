@@ -9,5 +9,5 @@ export const createTestHandler: Handler = (server: SocketServer) => (): void => 
             console.log(message.data);
             console.log(server.getUserConnection(new Name("sup")));
         } 
-    })
-}
+    });
+};
