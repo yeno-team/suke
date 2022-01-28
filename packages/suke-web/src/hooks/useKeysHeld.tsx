@@ -1,4 +1,4 @@
-import React , { useEffect , useState } from "react";
+import { useEffect , useState } from "react";
 
 export const useKeysHeld = () => {
     const [ keysHeld , setKeysHeld ] = useState<string[]>([])
@@ -21,6 +21,7 @@ export const useKeysHeld = () => {
             window.removeEventListener("keydown" , keyPressed)
             window.removeEventListener("keyup", keyReleased)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     } , [])
 
     return [ isKeyHeld ]

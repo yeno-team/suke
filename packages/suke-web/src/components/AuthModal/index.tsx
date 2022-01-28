@@ -8,8 +8,7 @@ export type AuthModalProps = {
 export type AuthModalTitle = "Login into Suke!" | "Register An Account!"
 
 export const AuthModal = ({ className } : AuthModalProps) => {
-    const [ modalTitle , setModalTitle ] = useState<AuthModalTitle>("Login into Suke!")
-
+    const [ modalTitle ] = useState<AuthModalTitle>("Login into Suke!")
 
     return (
         <div className={classNames(

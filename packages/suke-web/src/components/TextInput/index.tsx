@@ -1,4 +1,3 @@
-import { placeholder } from "@babel/types"
 import classNames from "classnames"
 import { useRef, useState } from "react";
 

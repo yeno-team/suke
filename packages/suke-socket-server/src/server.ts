@@ -6,7 +6,6 @@ import { RequestHandler, Request, Response} from 'express';
 import TypedEmitter from "typed-emitter";
 import { IHasUser, User } from '@suke/suke-core/src/entities/User';
 import { SocketMessage } from '@suke/suke-core/src/entities/SocketMessage';
-import { UserId } from '@suke/suke-core/src/entities/UserId';
 import { isValidJson } from '@suke/suke-util/';
 import { IHasId } from '@suke/suke-core/src/IHasId';
 import { Role } from '@suke/suke-core/src/Role';

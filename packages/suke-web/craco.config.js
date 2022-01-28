@@ -1,4 +1,3 @@
-const CracoLessPlugin = require("craco-less")
 const path = require('path');
 const webpack = require('webpack');
 
