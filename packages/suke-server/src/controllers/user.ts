@@ -3,10 +3,13 @@ import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
 import { Request, Response , Express } from 'express';
 import { User } from "@suke/suke-core/src/entities/User";
+import { RateLimiterAbstract } from "rate-limiter-flexible";
 import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
+
 @Service()
 export class UserController extends BaseController {
+    public rateLimiters: Map<string, RateLimiterAbstract>;
     public route = "/api/user/:id?";
 
     constructor(

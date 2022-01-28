@@ -8,7 +8,9 @@ import { SocketServer } from "@suke/suke-socket-server/src/server";
 import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
-import { RedisClient } from "./config/index";
+import { RedisClient } from "./config";
+import { setGlobalRateLimiter } from "./middlewares/setGlobalRateLimiter";
+import { RateLimiterOpts } from "@suke/suke-core/src/entities/RateLimiterOpts";
 import handlers from "@suke/suke-socket-server/src/handlers";
 import { TypeormStore } from 'connect-typeorm';
 import { getRepository } from "typeorm";
@@ -16,6 +18,7 @@ import { SessionModel } from '@suke/suke-core/src/entities/Session';
 
 interface ExpressLocals {
     user?: UserModel;
+    limiters? : Array<RateLimiterOpts>
 }
 
 declare module 'express-session' {
@@ -67,9 +70,9 @@ export class Server {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({origin: "*"}));
         this.app.use(this.sessionParser);
+        this.app.use(setGlobalRateLimiter());
 
         this.setupControllers();
-
         this.app.use(ErrorHandler);
         
         // create socket handlers

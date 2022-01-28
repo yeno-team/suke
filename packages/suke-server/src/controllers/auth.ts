@@ -4,6 +4,7 @@ import { Service } from "typedi";
 import { createUserAttacher } from "../middlewares/createUserAttacher";
 import { BaseController } from "./BaseController";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
+import { setLoginFailRateLimiter } from "../middlewares/setLoginFailRateLimiter";
 import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
 
 @Service()
@@ -15,23 +16,27 @@ export class AuthController extends BaseController {
     }
 
     public execute(app: Express): void {
-        app.route(this.route)
-            .post(verifyRecaptchaToken() ,createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post));
-        
+        app.route(this.route + "/login")
+            .post(verifyRecaptchaToken(), setLoginFailRateLimiter(), createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+
         app.route(this.route + "/logout")
-            .post(catchErrorAsync(this.Logout));
-    }
+            .post(catchErrorAsync(this.Logout))
+    } 
 
     public Post = async (req: Request, res: Response): Promise<void> => {
         if (req.session.user != null) {
             throw new Error("Already Authenticated.");
         }
-
+        
         const password = req.body.password;
 
         const check = await res.locals.user?.testRawPassword(password);
 
         if (check) {
+            // Login fail Rate Limiter
+            const { limiter , key } = res.locals.limiters[1]
+            await limiter.delete(key)
+
             req.session.user = res.locals.user;
             res.send({
                 error: false,
