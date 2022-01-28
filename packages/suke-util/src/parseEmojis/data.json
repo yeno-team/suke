@@ -1,0 +1,39 @@
+[
+    {
+        "message" : "<@123:global/>",
+        "results" : [
+            {
+                "type" : "global",
+                "id" : "123"
+            }
+        ]
+    },
+    {
+        "message" : "<@3:channel/> <@among us:dasd/> <@3131233123:global/>",
+        "results" : [
+            {
+                "type" : "channel",
+                "id" : "3"
+            },
+            {
+                "startIndex" : 32,
+                "endIndex" : 53,
+                "type" : "global",
+                "id" : "3131233123"
+            }
+        ]
+    },
+    {
+        "message" : "<123123123123:channel/> <@123123123123:global/> <@3123123:channel/>",
+        "results" : [
+            {
+                "type" : "global",
+                "id" : "123123123123"
+            },
+            {
+                "type" : "channel",
+                "id" : "3123123"
+            }
+        ]
+    }
+]

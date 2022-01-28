@@ -1,6 +1,6 @@
 import { IMultiStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { Key, useEffect, useMemo, useState } from "react";
 import { MultiBrowserItemProps, MultiBrowserStandaloneItemProps } from ".";
 import useAuth from "../../hooks/useAuth";
 import { useChannel } from "../../hooks/useChannel";
@@ -10,11 +10,11 @@ import { getUrlSources } from "../../api/source";
 
 export function MultiBrowserItem({data, category, roomId, requestedBy, requestedStandalones, toggleModal, activeSource, requestedObject}: MultiBrowserItemProps) {
     const [toggleEpisodes, setToggleEpisodes] = useState(false);
-    const [multiItems, setMultiItems] = useState<(JSX.Element | null)[]>([]);
+    const [multiItems, setMultiItems] = useState<(JSX.Element | Key | null)[]>([]);
  
     useEffect(() => {
         const requests: Map<number, IMultiStandaloneData & {requestedBy?: string[]}> = new Map();
-        
+        const items: Map<number, string> = new Map();
         // goes through all requests and filters out requests for the same multi into a map,
         // returns the normal multi standalones that are not requested.
         const normalItems = data.data.map(v => {
@@ -34,17 +34,22 @@ export function MultiBrowserItem({data, category, roomId, requestedBy, requested
                     }
                 }
             }
+            
+            if (items.get(v.index) != null) return null;
+            items.set(v.index, "exists");
             return <MultiBrowserStandaloneItem requestedObject={requestedObject} activeSource={activeSource} data={data} key={v.index.toString()} standaloneData={v} roomId={roomId} toggleModal={toggleModal} category={category}></MultiBrowserStandaloneItem>
         });
         
         const requestedItems: JSX.Element[] = [];
         requests.forEach(v => requestedItems.push(<MultiBrowserStandaloneItem requestedObject={requestedObject} activeSource={activeSource} data={data} key={v.index.toString()} standaloneData={v} roomId={roomId} requestedBy={requestedBy} toggleModal={toggleModal} category={category}></MultiBrowserStandaloneItem>));
         
+        
         setMultiItems([
             ...requestedItems,
             ...normalItems
         ]);
-    }, [data, requestedBy, requestedStandalones, roomId, activeSource, toggleModal, category, requestedObject])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const toggleViewEpisodes = () => {
         setToggleEpisodes(!toggleEpisodes);
@@ -102,7 +107,7 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
         roomId
     };
 
-    const requestedByAuthenticatedUser = requestedBy && requestedBy.find(v => v.toLowerCase() === user?.name.toLowerCase()) != null;
+    const requestedByAuthenticatedUser = useMemo(() => requestedBy && requestedBy.find(v => v.toLowerCase() === user?.name.toLowerCase()) != null, [requestedBy, user?.name]);
 
     const handleRequest = () => {
         if (user?.name.toLowerCase() === roomId.toLowerCase())
@@ -133,7 +138,7 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
                     currentVideo: {
                         sources: sources.length > 0 ? sources : standaloneData.sources,
                         name: data.name as string,
-                        category: category
+                        thumbnail_url: data.thumbnail_url ?? ""
                     },
                     channelId: roomId
                 });

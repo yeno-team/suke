@@ -1,14 +1,13 @@
 import { SocketMessage, SocketMessageInput, SocketMessageType } from "@suke/suke-core/src/entities/SocketMessage";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-
-const ws = new WebSocket("ws://" + process.env.REACT_APP_SERVER_URL as string);
+import React, { useContext } from "react";
+import { useEffect, useState } from "react";
+import useWebSocket from "react-use-websocket";
 
 export type MessageListener = (message: SocketMessage) => void;
 
 export interface SocketContextInterface {
-    errors: Error[];
-    send: (message: SocketMessageInput) => void;
-    messages: SocketMessage[];
+    sendJsonMessage: (message: SocketMessageInput) => void;
+    messageHistory: SocketMessageInput[];
 }
 
 export type MessageListeners = {
@@ -16,65 +15,26 @@ export type MessageListeners = {
 }
 
 export const SocketContext = React.createContext<SocketContextInterface>({} as SocketContextInterface);
-let pingTimeout: NodeJS.Timer;
 
+// A wrapper around react-use-websocket package
 export const SocketContextProvider = ({children}: {children: React.ReactNode}): JSX.Element => {
-    const [messages, setMessages] = useState<SocketMessage[]>([])
-    const [errors, setErrors] = useState<Error[]>([]);
-
+    const resp = useWebSocket("ws://" + process.env.REACT_APP_SERVER_URL as string, {
+        onOpen: () => console.log('Connected to WebSocket.'),
+        onError: (err) => {},
+        shouldReconnect: (closeEvent) => true
+    });
+    const [messageHistory, setMessageHistory] = useState<SocketMessageInput[]>([]);
+    
     useEffect(() => {
-        ws.onerror = (err) => {
-            console.error("WebSocket Error: ", err);
+        if (resp.lastJsonMessage !== null) {
+            setMessageHistory(prev => prev.concat(resp.lastJsonMessage))
         }
-
-        ws.onopen = () => {
-            console.log("Successfully connected to the Socket Server.");
-        };
-
-        ws.onmessage = (msg) => {
-            try {
-                const data = msg.data;
-
-                const msgObj = new SocketMessage(JSON.parse(data.toString()));
-                
-                if (msgObj.type === 'CLIENT_ERROR') {
-                    console.error("CLIENT_ERROR", msgObj.data);
-                }
-
-                if (msgObj.type === 'SERVER_ERROR') {
-                    console.error("SERVER_ERROR", msgObj.data);
-                }
-
-                setMessages(messages => [
-                    ...messages,
-                    msgObj
-                ]);
-                
-            } catch (e) {
-                setErrors(errors => [...errors, e as Error]);
-            }
-        }
-
-        ws.onclose = () =>{
-            clearTimeout(pingTimeout);
-        };
-    }, []);
-
-    const memoedValue = useMemo(() => {
-        const send = (message: SocketMessageInput) => {
-            ws.send(JSON.stringify(message));
-        }
-
-        return {
-            errors, send, messages
-        }
-    }, [errors, messages])
-
+    }, [resp.lastJsonMessage]);
     return (
-        <SocketContext.Provider value={memoedValue}>
+        <SocketContext.Provider value={{messageHistory: messageHistory, sendJsonMessage: resp.sendJsonMessage }}>
             {children}
         </SocketContext.Provider>
-    )
+    );
 }
 
 export const useSocket = () => {

@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export abstract class ValueObject {
     protected abstract GetEqualityProperties(): Generator<unknown, unknown, unknown>;
     /**
@@ -11,14 +13,7 @@ export abstract class ValueObject {
 
         const objArr = Array.from(obj.GetEqualityProperties());
         const thisArr = Array.from(this.GetEqualityProperties());
-        let equal = true;
 
-        objArr.every((val, i) => {
-            if (val !== thisArr[i]) {
-                equal = false;
-            }
-        });
-
-        return equal;
+        return objArr.every((val, i) => _.isEqual(val, thisArr[i]));
     }
 }

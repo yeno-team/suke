@@ -14,4 +14,4 @@ export const ErrorHandler: ErrorRequestHandler = (err, req: Request, res: Respon
                (err && err.toString()) ||
                "Unknown Error Occured"
     });
-}
+};

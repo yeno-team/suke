@@ -3,4 +3,4 @@ import { AxiosRequest } from "./axios";
 
 export {
     AxiosRequest
-}
+};

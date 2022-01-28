@@ -1,10 +1,11 @@
 import { ValidationError } from "../../exceptions/ValidationError";
 import { RealtimeChannelData } from "../../types/UserChannelRealtime";
 import { ValueObject } from "../../ValueObject";
-import { IMessage } from "../Message";
+import { ISentMessage } from "../SentMessage";
+import { IReceivedMessage } from "../ReceivedMessage";
 import { Request } from "../Request";
 
-export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE" | "CHANNEL_UPDATE" | "CHANNEL_REQUEST_ADD" | "CHANNEL_REQUEST_REMOVE" | "CHANNEL_REQUESTS_GET" | "CHANNEL_REQUESTS" | "SOCKET_DISCONNECT";
+export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "SENT_CHAT_MESSAGE" | "RECEIVED_CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE" | "CHANNEL_UPDATE" | "CHANNEL_REQUEST_ADD" | "CHANNEL_REQUEST_REMOVE" | "CHANNEL_REQUESTS_GET" | "CHANNEL_REQUESTS" | "SOCKET_DISCONNECT" | "CHANNEL_GET";
 
 export interface IHasRoomId {
     roomId: string;
@@ -20,11 +21,14 @@ export type SocketMessageInput = {
     type: 'TEST_EVENT',
     data: string
 } | {
-    type: 'CHAT_MESSAGE',
-    data: IMessage
+    type: 'SENT_CHAT_MESSAGE',
+    data: ISentMessage
+} | {
+    type : "RECEIVED_CHAT_MESSAGE",
+    data : IReceivedMessage
 } | {
     type: 'ROOM_JOIN',
-    data: IHasRoomId
+    data: IHasRoomId & {password: string}
 } | {
     type: 'ROOM_LEAVE',
     data: IHasRoomId
@@ -40,13 +44,18 @@ export type SocketMessageInput = {
 } | {
     type: 'CHANNEL_REQUESTS_GET',
     data: string // channel id
-} | {
+} |
+{
+    type: 'CHANNEL_GET',
+    data: string // channel id
+} | 
+{
     type: 'CHANNEL_REQUESTS',
     data: Request[]
 } | {
     type: 'SOCKET_DISCONNECT',
     data: string // webSocket id
-}
+} 
 
 export interface ISocketMessage {
     type: SocketMessageType;

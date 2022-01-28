@@ -16,7 +16,7 @@ describe('UserChannel class', () => {
                 desc_title: 1 as unknown as string,
                 desc: '',
                 roledUsers: []
-            })}).toThrow(ValidationError);
+            });}).toThrow(ValidationError);
 
             expect(() => {new UserChannel({
                 id: 1,
@@ -24,7 +24,7 @@ describe('UserChannel class', () => {
                 desc_title: '',
                 desc: 1 as unknown as string,
                 roledUsers: []
-            })}).toThrow(ValidationError);
+            });}).toThrow(ValidationError);
         });
 
         it('should not throw ValidationError if channel object is valid', () => {
@@ -34,7 +34,7 @@ describe('UserChannel class', () => {
                 desc_title: '',
                 desc: '',
                 roledUsers: []
-            })}).not.toThrow(ValidationError);
+            });}).not.toThrow(ValidationError);
         });
 
         it('should throw PropertyValidationError if a property is of a wrong type', () => {
@@ -44,7 +44,7 @@ describe('UserChannel class', () => {
                 desc_title: '',
                 desc: '',
                 roledUsers: []
-            })}).toThrow();
+            });}).toThrow();
 
             expect(() => {new UserChannel({
                 id: 1,
@@ -52,7 +52,7 @@ describe('UserChannel class', () => {
                 desc_title: '',
                 desc: 1 as unknown as string,
                 roledUsers: []
-            })}).toThrow();
+            });}).toThrow();
         });
 
         it('should change followers to default value if passed in null', () => {
@@ -133,7 +133,7 @@ describe('UserChannel class', () => {
             });
 
             const channel2 = new UserChannel({
-                id: 1,
+                id: 2,
                 followers: [],
                 desc_title: '',
                 desc: '',
@@ -143,5 +143,5 @@ describe('UserChannel class', () => {
 
             expect(channel.Equals(channel2)).toBeFalsy();
         });
-    })
+    });
 });

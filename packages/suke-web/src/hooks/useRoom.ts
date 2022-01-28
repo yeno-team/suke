@@ -1,19 +1,20 @@
 import { useSocket } from "./useSocket";
 
 export const useRoom = () => {
-    const { send } = useSocket();
-    
-    const joinRoom = (roomId: string) => {
-        send({
+    const { sendJsonMessage } = useSocket();
+
+    const joinRoom = (roomId: string, password?: string) => {
+        sendJsonMessage({
             type: 'ROOM_JOIN',
             data: {
-                roomId
+                roomId,
+                password: password || ""
             }
         });
     }
 
     const leaveRoom = (roomId: string) => {
-        send({
+        sendJsonMessage({
             type: 'ROOM_LEAVE',
             data: {
                 roomId

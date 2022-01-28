@@ -4,7 +4,7 @@ export type RequestOptions = {
     method?: string,
     baseURL?: string,
     headers?: Record<string , string>,
-    params?: { name: string, value: unknown },
+    params?: { name: string, value: unknown } | URLSearchParams,
     body?: unknown,
     CORS?: boolean,
     maxRedirects?: number,

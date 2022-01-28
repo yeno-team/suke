@@ -1,18 +1,19 @@
 import WebSocket from 'ws';
-import { v4 as uuid } from 'uuid';
-import EventEmitter from "events"
-import { Server, IncomingMessage} from 'http'
+import {v4 as uuid } from 'uuid';
+import EventEmitter from "events";
+import { Server, IncomingMessage} from 'http';
 import { RequestHandler, Request, Response} from 'express';
 import TypedEmitter from "typed-emitter";
 import { IHasUser, User } from '@suke/suke-core/src/entities/User';
 import { SocketMessage } from '@suke/suke-core/src/entities/SocketMessage';
-import { UserId } from '@suke/suke-core/src/entities/UserId';
 import { isValidJson } from '@suke/suke-util/';
 import { IHasId } from '@suke/suke-core/src/IHasId';
 import { Role } from '@suke/suke-core/src/Role';
 import { UserChannel } from '@suke/suke-core/src/entities/UserChannel/UserChannel';
 import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
+import { CategoryManager } from './extensions/CategoryManager';
+import { Name } from '@suke/suke-core/src/entities/Name/Name';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -25,7 +26,7 @@ export type UserDataWithWebSocket = {
     ws: WebSocketConnection
 }
 
-export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolean };
+export type WebSocketConnection = WebSocket & IHasId<string> & { isAlive: boolean, remoteAddress: string };
 
 /**
  * This type extends the interface IHasUser to the session property. This allows usage of user object which is eventually passed in from express.
@@ -47,8 +48,11 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
 
     // Map uses the websocket id as key
     private guestMap: Map<string, WebSocketConnection>;
-    private userMap: Map<number, UserDataWithWebSocket>;
-    private roomManger: RoomManager;
+
+    // Map uses the user's name
+    private userMap: Map<string, UserDataWithWebSocket>;
+    private roomManager: RoomManager;
+    private categoryManager: CategoryManager;
     
     public connections: Map<string, WebSocketConnection>;
     private _redisClient: RedisClientType;
@@ -97,7 +101,8 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         this.userMap = new Map();
         this.guestMap = new Map();
         this.connections = new Map();
-        this.roomManger = new RoomManager(this);
+        this.roomManager = new RoomManager(this);
+        this.categoryManager = new CategoryManager(this);
         this.setup();
     }
 
@@ -110,27 +115,28 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
             try {
                 ws.id = uuid();
                 ws.isAlive = true;
+                ws.remoteAddress = req.socket.remoteAddress;
 
                 const user = new User(req.session.user as User);
 
                 console.log(user.name + " Connected!");
-
+                
                 if (user.id == 0) {
                     this.guestMap.set(ws.id, ws);
                 } else {
-                    this.userMap.set(user.id, {user, ws});
+                    this.userMap.set(user.name, {user, ws});
                 }
 
                 this.connections.set(ws.id, ws);
                 
-                ws.on('message', (message) => {
+                ws.on('message' , (message) => {
                     const msgStr = message.toString();
-
                     if (!isValidJson(msgStr))
                         return this.emit('clientError', new Error("Invalid Message from client."), ws);
 
+                    // SyntaxError: Unexpected token } in JSON at position 6.
+                    // If the user inputs {"123"}
                     const msgJson = JSON.parse(message.toString());
-
                     this.emit('message', new SocketMessage(msgJson), ws, user);
                 });
 
@@ -145,7 +151,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                     }
 
                     this.connections.delete(ws.id);
-                    this.userMap.delete(user.id);
+                    this.userMap.delete(user.name);
                     this.emit('message', new SocketMessage({
                         type: 'SOCKET_DISCONNECT',
                         data: ws.id
@@ -180,11 +186,11 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         return this.connections.get(id);
     }
 
-    public getUserConnection(idObj: UserId): UserDataWithWebSocket | undefined {
-        return this.userMap.get(idObj.value);
+    public getUserConnection(nameObj: Name): UserDataWithWebSocket | undefined {
+        return this.userMap.get(nameObj.name);
     }
 
-    public getUserConnections(): Map<number, UserDataWithWebSocket> {
+    public getUserConnections(): Map<string, UserDataWithWebSocket> {
         return this.userMap;
     }
 
@@ -197,7 +203,11 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
     }
 
     public getRoomManager(): RoomManager {
-        return this.roomManger;
+        return this.roomManager;
+    }
+
+    public getCategoryManager(): CategoryManager {
+        return this.categoryManager;
     }
 
     public getRedisClient(): RedisClientType {

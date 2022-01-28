@@ -4,20 +4,7 @@ import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
 import useRecaptcha from "../../hooks/useRecaptcha";
-import { useNotification } from "../../hooks/useNotifications";
-import { ReactNotificationOptions } from "react-notifications-component";
-
-const defaultNotificationOpts : ReactNotificationOptions = {
-    container : "bottom-right",
-    animationIn : ["animate__animated","animate__fadeIn"],
-    animationOut : ["animate__animated","animate__fadeOutDown"],
-    dismiss : {
-        duration : 3000,
-        pauseOnHover : true,
-        onScreen : true,
-        showIcon : true
-    }
-}
+import { defaultNotificationOpts, useNotification } from "../../hooks/useNotifications";
 
 export const LoginPage = () => {
     const [usernameInput, setUsernameInput] = useState("");
@@ -27,7 +14,7 @@ export const LoginPage = () => {
     const { login } = useAuth();
 
     const handleLogin = async () => {
-        await handleReCaptchaVerify()
+        await handleReCaptchaVerify();
 
         if(!(usernameInput)) {
             return notificationStore.addNotification({
@@ -35,7 +22,7 @@ export const LoginPage = () => {
                 type : "danger",
                 title : "Error",
                 message : "Please fill out the username field."
-            })
+            });
         }
 
         if(!(passwordInput)) {
@@ -44,7 +31,7 @@ export const LoginPage = () => {
                 type : "danger",
                 title : "Error",
                 message : "Please fill out the password field."
-            })
+            });
         }
 
         
@@ -55,8 +42,7 @@ export const LoginPage = () => {
             type : "success",
             title : "Success",
             message : "You've successfully logged in."
-        })
-
+        });
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,9 +59,9 @@ export const LoginPage = () => {
                 <p className="inline-block mt-2">Forgot your password? <a href="/forgot-password" className="text-teal underline">Click here.</a></p>
                 <form className="text-left mt-11 text-gray" onSubmit={handleSubmit}>
                     <label htmlFor="username" className="block text-white">Username</label>
-                    <input value={usernameInput} onChange={e => setUsernameInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray mb-4" type="text" name="username" placeholder="Username..."></input>
+                    <input value={usernameInput} onChange={e => setUsernameInput(e.target.value)} className="p-3 w-full rounded-md bg-black mb-4" type="text" name="username" placeholder="Username..."></input>
                     <label htmlFor="password" className="block text-white">Password</label>
-                    <input value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="p-3 w-full rounded-md bg-coolgray" type="password" name="password" placeholder="Password..."></input>
+                    <input value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="p-3 w-full rounded-md bg-black" type="password" name="password" placeholder="Password..."></input>
                     <input type="checkbox" name="remember" value="remember" className="mt-3 mr-2"></input>
                     <label htmlFor="remember" className="text-sm">Remember me</label>
                     <Button className="block w-full rounded-sm py-3 px-0 mt-8" backgroundColor="blue" fontWeight="semibold">LOGIN</Button>

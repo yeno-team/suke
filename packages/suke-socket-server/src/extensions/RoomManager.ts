@@ -20,8 +20,9 @@ export class RoomManager {
     }
 
     public async removeUser(roomId: string, userSocketId: string): Promise<void> {
+        const key = this.getRedisKey(roomId);
         const connections: string[] = await this.getRoom(roomId);
-        await this.redisClient.set(roomId, JSON.stringify(connections.filter(v => v !== userSocketId)));
+        await this.redisClient.set(key, JSON.stringify(connections.filter(v => v !== userSocketId)));
     }
 
     /**
@@ -40,13 +41,13 @@ export class RoomManager {
         return JSON.parse(val);
     }
 
-    public async CheckIfUserInRoom(userId: string, roomId: string): Promise<boolean> {
+    public async CheckIfUserInRoom(connection: string, roomId: string): Promise<boolean> {
         const roomConnections = await this.getRoom(roomId);
-        return Promise.resolve(roomConnections.find(v => v === userId) != null);
+        return Promise.resolve(roomConnections.find(v => v === connection) != null);
     }
 
     private getRedisKey(roomId: string) {
-        return `room:${roomId}`;
+        return `room:${roomId.toLowerCase()}`;
     }
 
 }

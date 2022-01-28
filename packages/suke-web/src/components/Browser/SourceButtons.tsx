@@ -9,7 +9,7 @@ export interface BrowserSourceBtnProps {
 }
 
 export const BrowserSourceButton = ({children, active, onClick}: BrowserSourceBtnProps) => (
-    <Button fontWeight="bold" onClick={onClick} backgroundColor={ active ? 'blue': 'coolgray'} className={
+    <Button fontWeight="bold" onClick={onClick} backgroundColor={ active ? 'blue': 'newblack'} className={
         classNames('block', active ? '' : 'hover:bg-opacity-75', 'block','text-base', 'py-4',)
     }>
         {children}
@@ -41,4 +41,20 @@ export const MobileSourceButtons = ({sources, activeSource, closeMobileMenu, set
             {buttons}
         </div>
     )
+}
+
+export interface DesktopSourceButtonsProps {
+    // The name of the site
+    sources: string[];
+    activeSource?: string;
+    className?: string;
+    setActiveSource: (source: string) => void;
+}
+
+export const DesktopSourceButtons = ({className, sources, activeSource, setActiveSource}: DesktopSourceButtonsProps) => {
+    const buttons = sources.map(sourceName => <BrowserSourceButton key={sourceName} onClick={() => setActiveSource(sourceName)} active={activeSource?.toLowerCase() === sourceName.toLowerCase()}>{sourceName.toUpperCase()}</BrowserSourceButton>);
+    
+    return <div className={classNames("flex flex-col absolute bg-newblack h-full lg:w-56", className)}>
+        {buttons}
+    </div>
 }
