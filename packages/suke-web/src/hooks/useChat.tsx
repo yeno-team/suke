@@ -1,22 +1,23 @@
-import { IMessage, Message } from "@suke/suke-core/src/entities/Message";
-import { SocketMessage } from "@suke/suke-core/src/entities/SocketMessage";
+import { IReceivedMessage , ReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
+import { ISentMessage } from "@suke/suke-core/src/entities/SentMessage";
+import { SocketMessageInput } from "@suke/suke-core/src/entities/SocketMessage";
 import { useEffect, useState } from "react";
 import { useChanged } from "./useChanged";
 import { useSocket } from "./useSocket";
 
-export const useChat = (defaultMessages: IMessage[] = []) => {
-    const [chatMessages, setChatMessages] = useState<IMessage[]>(defaultMessages);
-
-    const { send, messages } = useSocket();
-    const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessage[]>(messages);
+export const useChat = (defaultMessages: IReceivedMessage[] = []) => {
+    const [chatMessages, setChatMessages] = useState<IReceivedMessage[]>(defaultMessages);
+    const { sendJsonMessage, messageHistory } = useSocket();
+    const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
+   
 
     useEffect(() => {
         try {
             if (!socketMessagesChanged || prevSocketMessages == null)
                 return;
 
-            const newMessages = messages.slice(prevSocketMessages.length);
-            const newChatMessages = newMessages.flatMap((v => v.type === 'CHAT_MESSAGE' ? new Message(v.data as IMessage) : []))
+            const newMessages = messageHistory.slice(prevSocketMessages.length);
+            const newChatMessages = newMessages.flatMap((v => v.type === "RECEIVED_CHAT_MESSAGE" ? new ReceivedMessage(v.data as ReceivedMessage) : []))
 
             setChatMessages(chatMessages => [
                 ...chatMessages,
@@ -29,12 +30,12 @@ export const useChat = (defaultMessages: IMessage[] = []) => {
             console.log('Received Messages: ', chatMessages);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messages, chatMessages, socketMessagesChanged])
+    }, [chatMessages, socketMessagesChanged])
 
 
-    function sendMessage(msg: IMessage) {
-        send({
-            type: "CHAT_MESSAGE",
+    function sendMessage(msg: ISentMessage) {
+        sendJsonMessage({
+            type: "SENT_CHAT_MESSAGE",
             data: msg
         });
     }

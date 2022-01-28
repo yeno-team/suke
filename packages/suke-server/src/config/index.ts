@@ -10,6 +10,8 @@ dotenv.config({
 
 export const RedisClient = createClient({ url: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string});
 
+export type RedisClientType  = typeof RedisClient;
+
 RedisClient.on('error', (err) => console.error('RedisClientError: ', err));
 
 RedisClient.connect().then(() => {
@@ -40,6 +42,6 @@ const config: IConfiguration = {
     recaptcha : {
         secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEY", true) as string
     }
-}
+};
 
 export default config;

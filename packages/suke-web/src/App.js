@@ -3,8 +3,9 @@ import { ThemeContext } from './context/Theme';
 import { Routes } from './routes';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { AuthProvider } from './hooks/useAuth';
-import { SocketContextProvider } from './hooks/useSocket';
 import { NotificationProvider } from "./hooks/useNotifications";
+import { SocketContextProvider } from '@suke/suke-web/src/hooks/useSocket';
+import { ChannelContextProvider } from '@suke/suke-web/src/hooks/useChannel';
 
 function App() {
   return (
@@ -14,11 +15,13 @@ function App() {
       <NotificationProvider>
         <ThemeContext.Provider value="dark">
           <BrowserRouter>
-            <AuthProvider>
-              <SocketContextProvider>
-                <Routes />
-              </SocketContextProvider>
-            </AuthProvider>
+            <SocketContextProvider>
+              <AuthProvider>
+                <ChannelContextProvider>
+                  <Routes />
+                </ChannelContextProvider>
+              </AuthProvider>
+            </SocketContextProvider>
           </BrowserRouter>
         </ThemeContext.Provider>
       </NotificationProvider>

@@ -28,7 +28,7 @@ export class SourceGetController extends BaseController {
             return;
         }
         
-        const response = await parser.getSource(new URL(body.url))
+        const response = await parser.getSource(new URL(body.url));
 
         res.status(200).send(response);
     }

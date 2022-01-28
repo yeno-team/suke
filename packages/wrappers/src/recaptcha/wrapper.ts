@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { AxiosRequest } from "@suke/requests/src"
+import { AxiosRequest } from "@suke/requests/src";
 export interface VerifyTokenResponse {
     success : boolean;
     challenge_ts? : string;
@@ -26,7 +26,7 @@ export class RecaptchaApiWrapper {
             headers : {
                 "Content-Type" : "application/x-www-form-urlencoded"
             }
-        })
+        });
     }
 
 }

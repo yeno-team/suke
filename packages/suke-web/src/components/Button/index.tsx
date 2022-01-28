@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React , { FunctionComponent } from 'react';
 
 export interface ButtonProps {
     className?: string;
@@ -13,7 +13,7 @@ export interface ButtonProps {
     fontSize?: 'sm' | 'base' | 'lg' | 'xl' | 'xs'
 }
 
-export const Button = ({size, square, backgroundColor, color, children, onClick, fontWeight, fontSize, className}: ButtonProps) => {
+export const Button : FunctionComponent<ButtonProps> = ({size, square, backgroundColor, color, children, onClick, fontWeight, fontSize, className}: ButtonProps) => {
     return (
         <button onClick={onClick} className={classNames(
             'flex',

@@ -79,7 +79,7 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
                     currentVideo: {
                         sources: sources.length > 0 ? sources : data.sources,
                         name: data.name as string,
-                        category: category
+                        thumbnail_url: data.thumbnail_url ?? ""
                     },
                     channelId: roomId
                 });

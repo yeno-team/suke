@@ -1,10 +1,10 @@
-import { Service } from 'typedi'
-import { InjectRepository } from 'typeorm-typedi-extensions'
-import { User, UserModel } from '@suke/suke-core/src/entities/User'
-import { Repository } from 'typeorm'
+import { Service } from 'typedi';
+import { InjectRepository } from 'typeorm-typedi-extensions';
+import { User, UserModel } from '@suke/suke-core/src/entities/User';
+import { Repository } from 'typeorm';
 import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { UserChannelService } from './channel';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 
 @Service()
@@ -27,7 +27,7 @@ export class UserService {
                 }
             ],
             relations: ['channel', 'channel.followers', 'channel.followers.follower', 'following', 'following.followedTo']
-        }))
+        }));
     }
 
     public async create(user: User, rawPassword: string): Promise<UserModel> {
@@ -64,7 +64,7 @@ export class UserService {
         const found = channel.followers.find(v => v.follower.id === userFollowing.id);
         
         if (found) {
-            throw new Error("Already Followed.")
+            throw new Error("Already Followed.");
         }
 
         const followerObj = new Follower();
