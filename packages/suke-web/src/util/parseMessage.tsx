@@ -16,7 +16,7 @@ export const parseMessage = (emojis : Array<Emoji> , content : string) : JSX.Ele
             continue
         }
 
-        filteredParsedEmojis.push(emoji)
+        filteredParsedEmojis.push(emoji as Emoji)
         console.log(filteredParsedEmojis)
     }
 
