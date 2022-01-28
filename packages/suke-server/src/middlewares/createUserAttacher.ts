@@ -1,4 +1,4 @@
-import {  NextFunction, Request, RequestHandler, Response } from "express";
+import {  NextFunction, Request, RequestHandler, response, Response } from "express";
 import { UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { Container } from "typedi";
 import { UserService } from "../services/user";
@@ -7,7 +7,7 @@ import { catchErrorAsync } from "./catchErrorAsync";
 
 export const createUserAttacher = (identifier: UserIdentifier): RequestHandler => catchErrorAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const userService = Container.get(UserService);
-
+    
     switch(identifier) {
         case UserIdentifier.Id: {
                 const userId = req.params.id || req.body.id;
@@ -17,7 +17,7 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
                     res.status(404).send({
                         message: `UserId '${userId}' does match any users.`
                     });
-
+                    
                     return;
                 }
                 
@@ -41,7 +41,7 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
 
                     return;
                 }
-
+            
                 res.locals.user = user;
 
                 next();

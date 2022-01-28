@@ -12,6 +12,6 @@ export interface IConfiguration {
     },
     recaptcha : {
         secretKey : string
-    }
+    },
     session: SessionOptions
 }
