@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from '../../Role';
 import { ValueObject } from '../../ValueObject';
 import { lowercaseTransformer } from '../../transformers/ValueTransformers';
@@ -8,16 +8,18 @@ import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
 import * as bcrypt from 'bcrypt';
 import { Name } from "../Name/Name";
 import { UserId } from "../UserId";
+import { Follower } from "../Follower";
 
 export interface IUser {
     id: number;
     name: string;
     email: string;
     role: Role;
-    channel: IUserChannel
+    channel: IUserChannel,
+    following: Follower[]
 }
 
-export type Author = Pick<IUser, "id" | "name">
+export type Author = Pick<IUser, "id" | "name">;
 
 export interface IHasUser {
     user: IUser;
@@ -34,6 +36,7 @@ export class User extends ValueObject implements IUser {
     public email: string;
     public role: Role;
     public channel: IUserChannel;
+    public following: Follower[]
 
     private _name: Name;
     private _id: UserId;
@@ -48,6 +51,7 @@ export class User extends ValueObject implements IUser {
         this.email = user.email;
         this.role = user.role;
         this.channel = user.channel;
+        this.following = user.following;
 
         this.IsValid();
     }
@@ -123,6 +127,9 @@ export class UserModel extends BaseEntity implements IUser  {
     @OneToOne(() => UserChannelModel)
     @JoinColumn()
     public channel!: UserChannelModel;
+
+    @OneToMany(() => Follower, follower => follower.follower, { cascade: ['insert', 'update', 'remove'] })
+    public following!: Follower[];
 
     public async testRawPassword(rawPass: string): Promise<boolean> {
         const userRepo = getRepository(UserModel);

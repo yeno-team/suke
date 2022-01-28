@@ -1,19 +1,32 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { PropertyValidationError, ValidationError } from "../../exceptions/ValidationError";
 import { ValueObject } from "../../ValueObject";
+import { Follower } from "../Follower";
+
+export enum ChannelRole {
+    Moderator,
+    VIP
+}
+
+export type UserWithChannelRole = {
+    userId: number,
+    role: ChannelRole
+}
 
 export interface IUserChannel {
     id: number;
-    followers: number;
+    followers: Follower[];
     desc_title: string;
     desc: string;
+    roledUsers: UserWithChannelRole[]
 }
 
 export class UserChannel extends ValueObject implements IUserChannel {
     id: number;
-    followers: number;
+    followers: Follower[];
     desc_title: string;
     desc: string;
+    roledUsers: UserWithChannelRole[];
     
     constructor(channel: IUserChannel) {
         super();
@@ -22,6 +35,7 @@ export class UserChannel extends ValueObject implements IUserChannel {
         this.followers = channel.followers;
         this.desc_title = channel.desc_title;
         this.desc = channel.desc;
+        this.roledUsers = channel.roledUsers;
 
         if (!this.IsValid()) {
             throw new ValidationError(`Channel object ${JSON.stringify(channel)} is not valid`);
@@ -42,7 +56,7 @@ export class UserChannel extends ValueObject implements IUserChannel {
         }
 
         if (this.followers == null) {
-            this.followers = 0;
+            this.followers = [];
         }
 
         if (this.desc_title == null || this.desc_title === '') {
@@ -51,10 +65,6 @@ export class UserChannel extends ValueObject implements IUserChannel {
 
         if (this.desc == null || this.desc === '') {
             this.desc = "Welcome to my channel!";
-        }
-
-        if (typeof(this.followers) !== 'number') {
-            throw new PropertyValidationError('followers');
         }
 
         if (typeof(this.desc_title) !== 'string') {
@@ -73,13 +83,16 @@ export class UserChannel extends ValueObject implements IUserChannel {
 export class UserChannelModel extends BaseEntity implements IUserChannel {
     @PrimaryGeneratedColumn()
     id!: number;
-    
-    @Column()
-    followers!: number;
+
+    @OneToMany(() => Follower, follower => follower.followedTo)
+    followers!: Follower[];
 
     @Column()
     desc_title!: string;
 
     @Column()
     desc!: string;
+
+    @Column('jsonb', {nullable: true})
+    roledUsers!: UserWithChannelRole[];
 }

@@ -8,9 +8,10 @@ import { Role } from "@suke/suke-core/src/Role";
 export interface AuthContextInterface {
     errors: Error[];
     user?: IUser;
-    login: (name: string, password: string) => void;
-    register: (name: string, email: string, password: string) => void;
+    login: (name: string, password: string , reCaptchaToken : string) => void;
+    register: (name: string, email: string, password: string , reCaptchaToken : string) => void;
     logout: () => void;
+    updateUser: () => void;
     loading: boolean;
 }
 
@@ -33,8 +34,15 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
 
     // See if user is already authenticated
     useEffect(() => {
+        updateUser();
+    }, []);
+
+    const updateUser = () => {
         userApi.getAuthenticatedUser()
-            .then((user) => setUser(user))
+            .then((user) => {
+                console.log(user);
+                setUser(user)
+            })
             .catch((e) => {
                 // User is probably not authenticated
                 // Set to GUEST
@@ -43,22 +51,23 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                     email: 'guest@suke.app',
                     name: 'Guest',
                     role: Role.Guest,
+                    following: [],
                     channel: {
                         id: 0,
-                        followers: 0,
+                        followers: [],
                         desc: "",
-                        desc_title: ""
+                        desc_title: "",
+                        roledUsers: []
                     }
                 });
             })
             .finally(() => setLoadingInit(false))
-    }, [])
+    }
 
-
-    const login = (name: string, password: string): void => {
+    const login = (name: string, password: string , reCaptchaToken : string): void => {
         setLoading(true);
 
-        authApi.login({name, password})
+        authApi.login({name, password , reCaptchaToken })
             .then((data) => {
                 if (data.error === true) {
                     setErrors([...errors, new Error(data.message)]);
@@ -74,10 +83,10 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
             .finally(() => setLoading(false));
     } 
 
-    const register = (name: string, email: string, password: string) => {
+    const register = (name: string, email: string, password: string , reCaptchaToken : string) => {
         setLoading(true);
 
-        userApi.signup({name, email}, password)
+        userApi.signup({name, email}, password , reCaptchaToken)
             .then((data) => {
                 if (data.error === true) {
                     setErrors([...errors, new Error(data.message)]);
@@ -105,7 +114,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
 
     const memoedValue = useMemo(
         () => ({
-            user, loading, errors, login, register, logout
+            user, loading, errors, login, register, logout, updateUser
         }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [user, loading, errors]

@@ -6,11 +6,16 @@ import { Button } from "../../components/Button"
 export type UserProfileParams = {
     username: string;
     followerCount: number;
+    className: string;
+    followed: boolean;
+    handleFollow: () => void;
+    handleUnfollow: () => void;
 } 
 
-export const UserProfile = ({username, followerCount}: UserProfileParams) => {
+export const UserProfile = ({username, followerCount, className, followed, handleFollow, handleUnfollow}: UserProfileParams) => {
+    
     return (
-        <div className="flex bg-black font-sans">
+        <div className={"flex bg-black font-sans " + className}>
             <div className="flex px-4 py-5 flex-grow">
                 <ImageCircle src="https://picsum.photos/200" alt="user profile pic"></ImageCircle>
                 <div className="flex flex-col justify-center text-left  leading-none items-center">
@@ -19,15 +24,21 @@ export const UserProfile = ({username, followerCount}: UserProfileParams) => {
                 </div>
             </div>
             <div className="mr-4 my-auto">
-                <Button size={2} square backgroundColor="coolorange" fontWeight="semibold" >
+                <Button className="mr-1" size={2} square backgroundColor="coolorange" fontWeight="semibold" >
                     <Icon icon="fa-solid:share-alt" className="text-base text-white" />
                 </Button>
-                <Button size={2} square backgroundColor="red" fontWeight="semibold" >
+                <Button className="mr-1" size={2} square backgroundColor="red" fontWeight="semibold" >
                     <Icon icon="ic:sharp-report-problem" className="text-base text-white" />
                 </Button>
-                <Button size={3} backgroundColor="teal" fontWeight="semibold" >
-                    <Icon icon="akar-icons:plus" className="text-base mr-1 text-white" /> FOLLOW
-                </Button>
+                {
+                    !followed ?
+                    <Button size={3} backgroundColor="teal" fontWeight="semibold" onClick={handleFollow}>
+                        <Icon icon="akar-icons:plus" className="text-base mr-1 text-white" /> FOLLOW
+                    </Button> : 
+                    <Button size={3} backgroundColor="darkgray" fontWeight="semibold" onClick={handleUnfollow}>
+                        <Icon icon="akar-icons:cross" className="text-base mr-1 text-white" /> UNFOLLOW
+                    </Button>
+                }   
             </div>
         </div>
     )

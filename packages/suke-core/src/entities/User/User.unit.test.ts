@@ -16,11 +16,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'da@gmail.com',
                 role: Role.User,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -29,11 +31,13 @@ describe("User Class: Value Object", () => {
                 name: 2 as unknown as string,
                 email: 'da@gmail.com',
                 role: Role.User,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -42,11 +46,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 2 as unknown as string,
                 role: Role.User,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -56,11 +62,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'da@gmail.com',
                 role: '' as unknown as number,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
         });
@@ -71,11 +79,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: '',
                 role: Role.User,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
 
@@ -84,11 +94,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'test@test',
                 role: Role.User,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).toThrowError(ValidationError);
         });
@@ -99,11 +111,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'test@gmail.com',
                 role: null as unknown as Role,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -116,11 +130,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'test@gmail.com',
                 role: Role.User,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             })}).not.toThrow(ValidationError);
         });
@@ -133,11 +149,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'da@gmail.com',
                 role: 0,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -146,11 +164,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'da@gmail.com',
                 role: 0,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -163,11 +183,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'da@gmail.com',
                 role: 0,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 
@@ -176,11 +198,13 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'da@gmail.com',
                 role: 0,
+                following: [],
                 channel: {
                     id: 0,
-                    followers: 0,
+                    followers: [],
                     desc_title: '',
-                    desc: ''
+                    desc: '',
+                    roledUsers: []
                 }
             });
 

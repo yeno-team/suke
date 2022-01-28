@@ -2,24 +2,23 @@ import { Express, Request, Response } from "express";
 import { UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { Service } from "typedi";
 import { createUserAttacher } from "../middlewares/createUserAttacher";
-import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 import { setLoginFailRateLimiter } from "../middlewares/setLoginFailRateLimiter";
+import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
+
 @Service()
 export class AuthController extends BaseController {
     public route = "/api/auth";
 
-    constructor(
-        private userService: UserService
-    ) {
+    constructor() {
         super();
     }
 
     public execute(app: Express): void {
         app.route(this.route + "/login")
-            .post(setLoginFailRateLimiter() , createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
-        
+            .post(verifyRecaptchaToken(), setLoginFailRateLimiter(), createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+
         app.route(this.route + "/logout")
             .post(catchErrorAsync(this.Logout))
     } 
