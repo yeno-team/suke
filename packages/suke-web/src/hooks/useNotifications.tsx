@@ -1,5 +1,5 @@
 import React , { useContext } from "react";
-import ReactNotification , { ReactNotificationOptions, store } from "react-notifications-component";
+import ReactNotification, { ReactNotificationOptions, store } from "react-notifications-component";
 import 'react-notifications-component/dist/theme.css';
 
 export const defaultNotificationOpts : ReactNotificationOptions = {

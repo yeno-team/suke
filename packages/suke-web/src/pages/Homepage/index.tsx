@@ -63,7 +63,9 @@ export const HomePage = () => {
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Categories you might enjoy</h3>
                 <div>
                     {
-                        categories.map(v => <CategoryCard key={v.id} name={v.label} viewerCount={numeral(v.viewerCount).format("0.[0]a")} imageUrl={v.thumbnail_url}></CategoryCard>)
+                        categories.length > 0 ?
+                        categories.map(v => <CategoryCard key={v.id} name={v.label} viewerCount={numeral(v.viewerCount).format("0.[0]a")} imageUrl={v.thumbnail_url}></CategoryCard>) :
+                        <h1 className="text-gray font-semibold">Fetching categories...</h1>
                     }
                     
                 </div>

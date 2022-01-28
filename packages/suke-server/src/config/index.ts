@@ -3,13 +3,14 @@ import path from 'path';
 import { IConfiguration } from './Configuration';
 import { getEnvironmentVariable } from "@suke/suke-util";
 import { createClient } from 'redis';
-
+import Redis from 'ioredis';
 dotenv.config({
     path: path.resolve(__dirname, "../../server.conf")
 });
 
-export const RedisClient = createClient({ url: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string});
-
+const redisUrl = getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string;
+export const RedisClient = createClient({ url: redisUrl});
+export const TempRedisClientForRateLimiter = new Redis(redisUrl);
 export type RedisClientType  = typeof RedisClient;
 
 RedisClient.on('error', (err) => console.error('RedisClientError: ', err));
