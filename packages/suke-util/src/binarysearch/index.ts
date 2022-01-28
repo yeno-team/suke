@@ -3,7 +3,7 @@ export interface HasId {
 }
 
 
-export const binarySearch = (data : Array<HasId> , id : string) : any => {
+export const binarySearch = (data : Array<HasId> , id : string) : unknown => {
     const idAsInt = parseInt(id);
     let startIndex = 0;
     let stopIndex = data.length;

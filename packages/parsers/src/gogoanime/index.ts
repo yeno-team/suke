@@ -1,4 +1,4 @@
-import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
+import { IParser } from "@suke/suke-core/src/entities/Parser";
 import { IMultiData, IMultiStandaloneData, ISearchData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
 import { GogoAnimeApiWrapper } from "@suke/wrappers/src/gogoanime";
 import { GogoAnimeInfoResponse } from "@suke/wrappers/src/gogoanime/types";
@@ -18,22 +18,22 @@ export class GogoAnimeParser implements IParser {
     ) {}
 
     private async getVideoSources(url : URL) : Promise<IVideoSource[]> {
-        return this.gogoAnimeApiWrapper.getSources(url)
+        return this.gogoAnimeApiWrapper.getSources(url);
     }
 
     private async query_search(searchTerm : string) : Promise<GogoAnimeQuerySearhcResponse> {
-        const data = await this.gogoAnimeApiWrapper.search(searchTerm)
+        const data = await this.gogoAnimeApiWrapper.search(searchTerm);
 
         return {
             data : await Promise.all(data.map(async ({ url }) => await this.gogoAnimeApiWrapper.getAnimeInfo(url)))
-        }        
+        };        
     }
 
     private extract_multi({ title , imageUrl , episodes } : GogoAnimeInfoResponse) : IMultiData {
-        const data : IMultiStandaloneData[] = []
+        const data : IMultiStandaloneData[] = [];
 
         for(let i = 0; i < episodes.length; i++) {
-            const { epNum , url} = episodes[i]
+            const { epNum , url} = episodes[i];
 
             data.push({
                 type : StandaloneType.Video,
@@ -45,7 +45,7 @@ export class GogoAnimeParser implements IParser {
                         quality : Quality["auto"]
                     }
                 ]
-            })
+            });
         }
 
         return {
@@ -53,22 +53,22 @@ export class GogoAnimeParser implements IParser {
             name : title,
             thumbnail_url : imageUrl ? imageUrl.href : "",
             data
-        }
+        };
     }
 
-    public async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {
-        const { data : searchData } = await this.query_search(searchTerm)
+    public async search(searchTerm: string): Promise<ISearchData> {
+        const { data : searchData } = await this.query_search(searchTerm);
 
         return {
             results : {
                 standalone : [],
                 multi : searchData.map((data) => this.extract_multi(data))
             }
-        }
+        };
 
     }
 
     public async getSource(url: URL): Promise<IVideoSource[]> {
-        return this.getVideoSources(url)
+        return this.getVideoSources(url);
     }
 }

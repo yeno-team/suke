@@ -1,7 +1,7 @@
-import { Service } from "typedi";
-import { BetterTTVApiWrapper } from "@suke/wrappers/src/betterttv";
-import { BetterTTVEmote, BetterTTVEmoteOpts, BetterTTVEmoteResponse } from "@suke/wrappers/src/betterttv/types";
-import Jimp from "jimp";
+// import { Service } from "typedi";
+// import { BetterTTVApiWrapper } from "@suke/wrappers/src/betterttv";
+// import { BetterTTVEmote, BetterTTVEmoteOpts, BetterTTVEmoteResponse } from "@suke/wrappers/src/betterttv/types";
+// import Jimp from "jimp";
 
 // export interface CreateEmojiPackOpts {
 //     emotes : BetterTTVEmote[],

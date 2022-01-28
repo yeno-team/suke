@@ -6,7 +6,6 @@ import { createConnection, getRepository, Not, useContainer } from 'typeorm';
 import { Server } from './server';
 import { UserModel } from '@suke/suke-core/src/entities/User';
 import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
-import redis from 'redis';
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
