@@ -14,6 +14,7 @@ export interface IUser {
     id: number;
     name: string;
     email: string;
+    isVerified : boolean;
     role: Role;
     channel: IUserChannel,
     following: Follower[]
@@ -34,6 +35,7 @@ export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;
     public email: string;
+    public isVerified : boolean;
     public role: Role;
     public channel: IUserChannel;
     public following: Follower[]
@@ -47,12 +49,13 @@ export class User extends ValueObject implements IUser {
         this.id = user.id;
         this._id = new UserId(this.id);
         this.name = user.name;
+        this.isVerified = user.isVerified;
         this._name = new Name(this.name);
         this.email = user.email;
         this.role = user.role;
         this.channel = user.channel;
         this.following = user.following;
-
+        
         this.IsValid();
     }
 
@@ -106,6 +109,13 @@ export class UserModel extends BaseEntity implements IUser  {
         transformer: [lowercaseTransformer],
     })
     public name!: string;
+
+    @Column({
+        nullable : false,
+        transformer : [lowercaseTransformer],
+        default : false
+    })
+    public isVerified! : boolean;
 
     @Index({ unique: true })
     @Column({

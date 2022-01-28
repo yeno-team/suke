@@ -58,8 +58,7 @@ export class UserController extends BaseController {
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
-        const userObj = new User({ id: 0, ...req.body, password: null });
-
+        const userObj = new User({ id: 0, ...req.body, password: null , isVerified : false });
         const createdUser = await this.userService.create(userObj, req.body.password);
         
         // Removes salt from the response.
