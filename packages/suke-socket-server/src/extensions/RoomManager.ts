@@ -1,50 +1,52 @@
-import { SocketServer, WebSocketConnection } from "../server";
-
+import { RedisClientType, SocketServer } from "../server";
 
 /**
  * Manager that handles creating rooms, and manages the connections in those rooms.
+ * 
+ * Rooms are stored in redis as aan array of connection ids.
  */
 export class RoomManager {
-    /**
-     * Map where the key is the room id
-     */
-    private conections: Map<string, WebSocketConnection[]>;
+    private redisClient: RedisClientType;
 
     constructor(private server: SocketServer) {
-        this.conections = new Map();
+        this.redisClient = server.getRedisClient();
     }
 
-    public addUser(roomId: string, userSocket: WebSocketConnection): void {
-        this.conections.set(roomId, [...this.conections.get(roomId), userSocket]);
+    public async addUser(roomId: string, userSocketId: string): Promise<void> {
+        const key = this.getRedisKey(roomId);
+        const connections = await this.getRoom(roomId);
 
-        userSocket.on('close', () => {
-            this.removeUser(roomId, userSocket);
-        });
+        await this.redisClient.set(key, JSON.stringify([...connections, userSocketId]));
     }
 
-    public removeUser(roomId: string, userSocket: WebSocketConnection): void {
-        this.conections.set(roomId, [...this.conections.get(roomId).filter(v => v.id !== userSocket.id)]);
+    public async removeUser(roomId: string, userSocketId: string): Promise<void> {
+        const connections: string[] = await this.getRoom(roomId);
+        await this.redisClient.set(roomId, JSON.stringify(connections.filter(v => v !== userSocketId)));
     }
 
-    public getRoom(id: string): WebSocketConnection[] {
-        const room = this.conections.get(id);
-
-        if (room == null) {
-            this.conections.set(id, []);
+    /**
+     * Get a Room connections
+     * @param id 
+     * @returns string of connection ids
+     */
+    public async getRoom(id: string): Promise<string[]> {
+        const val = await this.redisClient.get(this.getRedisKey(id));
+        
+        if (val == null) {
+            await this.redisClient.set(this.getRedisKey(id), JSON.stringify([]));
             return [];
         }
-        
-        return room;
+
+        return JSON.parse(val);
     }
 
-    public CheckIfUserInRoom(userSocket: WebSocketConnection, roomId: string): boolean {
-        let room = this.conections.get(roomId);
-
-        if (room == null) {
-            this.conections.set(roomId, []);
-            room = [];
-        }
-
-        return room.find(v => v.id === userSocket.id) != null;
+    public async CheckIfUserInRoom(userId: string, roomId: string): Promise<boolean> {
+        const roomConnections = await this.getRoom(roomId);
+        return Promise.resolve(roomConnections.find(v => v === userId) != null);
     }
+
+    private getRedisKey(roomId: string) {
+        return `room:${roomId}`;
+    }
+
 }

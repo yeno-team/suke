@@ -9,7 +9,9 @@
     },
     "references": [
         {
-          "path": "../suke-util"
+          "path": [
+            "../suke-util"
+          ]
         }
     ],
     "include": [
