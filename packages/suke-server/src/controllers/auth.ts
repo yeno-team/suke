@@ -17,10 +17,10 @@ export class AuthController extends BaseController {
 
     public execute(app: Express): void {
         app.route(this.route + "/login")
-            .post(verifyRecaptchaToken(), setLoginFailRateLimiter(), createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post))
+            .post(verifyRecaptchaToken(), setLoginFailRateLimiter(), createUserAttacher(UserIdentifier.Username), catchErrorAsync(this.Post));
 
         app.route(this.route + "/logout")
-            .post(catchErrorAsync(this.Logout))
+            .post(catchErrorAsync(this.Logout));
     } 
 
     public Post = async (req: Request, res: Response): Promise<void> => {
@@ -34,8 +34,8 @@ export class AuthController extends BaseController {
 
         if (check) {
             // Login fail Rate Limiter
-            const { limiter , key } = res.locals.limiters[1]
-            await limiter.delete(key)
+            const { limiter , key } = res.locals.limiters[1];
+            await limiter.delete(key);
 
             req.session.user = res.locals.user;
             res.send({

@@ -77,6 +77,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                         email: 'guest@suke.app',
                         name: 'Guest',
                         role: Role.Guest,
+                        isVerified : false,
                         following: [],
                         channel: new UserChannel({
                             id: 0,

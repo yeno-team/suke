@@ -47,6 +47,7 @@ export class UserService {
         newUser.id = user.id;
         newUser.name = user.name;
         newUser.role = user.role;
+        newUser.isVerified = user.isVerified;
         newUser.channel = createdChannel;
         newUser.following = [];
         
