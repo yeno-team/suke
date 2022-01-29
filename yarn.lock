@@ -3972,6 +3972,7 @@ __metadata:
     "@types/express-session": ^1
     "@types/ioredis": ^4.28.7
     "@types/node": ^8.0.29
+    "@types/nodemailer": ^6.4.4
     "@types/pg": ^8
     "@types/swagger-jsdoc": ^6
     "@types/swagger-ui-express": ^4
@@ -3983,6 +3984,7 @@ __metadata:
     express-session: ^1.17.2
     ioredis: ^4.28.3
     mysql: ^2.14.1
+    nodemailer: ^6.7.2
     pg: ^8.7.1
     rate-limiter-flexible: ^2.3.0
     redis: ^4.0.1
@@ -4675,6 +4677,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:^8.5.8":
+  version: 8.5.8
+  resolution: "@types/jsonwebtoken@npm:8.5.8"
+  dependencies:
+    "@types/node": "*"
+  checksum: 56738a918c543dba30786066959f801212e7fb5cd4ec53cf7b8d227711ed358834feb9e5141f7f88ec7c642bb39757330a5a8917e3b22e0ff9084940d35f0d70
+  languageName: node
+  linkType: hard
+
 "@types/keyv@npm:*":
   version: 3.1.3
   resolution: "@types/keyv@npm:3.1.3"
@@ -4739,6 +4750,15 @@ __metadata:
   version: 8.10.66
   resolution: "@types/node@npm:8.10.66"
   checksum: c52039de862654a139abdc6a51de532a69dd80516ac35a959c3b3a2831ecbaaf065b0df5f9db943f5e28b544ebb9a891730d52b52f7a169b86a82bc060210000
+  languageName: node
+  linkType: hard
+
+"@types/nodemailer@npm:^6.4.4":
+  version: 6.4.4
+  resolution: "@types/nodemailer@npm:6.4.4"
+  dependencies:
+    "@types/node": "*"
+  checksum: 16ed1bad2cd8471fd3b026471e234da33ba3b65935dc44b31be3145eff7bdb067eb4d08ec4b41d23339b988075299abc1a0c0fe77b99f04ca235827bca95af81
   languageName: node
   linkType: hard
 
@@ -16008,6 +16028,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^6.7.2":
+  version: 6.7.2
+  resolution: "nodemailer@npm:6.7.2"
+  checksum: 3c37a40928448e2f5118a9f2f016c7a4f32228d0e6b7cc7d1834b8001374cc77280dc077a83239420f6daea4c898d9a1f336dfc2273bb7eddaf51a36bd126f72
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^4.0.1":
   version: 4.0.3
   resolution: "nopt@npm:4.0.3"
@@ -21091,6 +21118,7 @@ __metadata:
     "@types/bcrypt": ^5.0.0
     "@types/eslint": ^7
     "@types/jest": ^27.0.2
+    "@types/jsonwebtoken": ^8.5.8
     "@types/prettier": ^2
     "@types/react-notifications-component": ^3.1.1
     "@types/react-test-renderer": ^17

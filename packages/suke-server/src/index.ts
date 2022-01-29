@@ -9,6 +9,7 @@ import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
+import { MailServerService } from '@suke/suke-server/src/services/mailServer';
 
 useContainer(typeORMContainer);
 
@@ -26,6 +27,17 @@ createConnection({
     await categoryRepository.update({viewerCount: Not(0)}, {viewerCount: 0});
     console.log("Reset Categories Viewer Counts Successfully.");
     
+    const mailServer = new MailServerService();
+    await mailServer.createTransport({
+        host : "smtp.ethereal.email",
+        port : 587,
+        secure : false
+    });
+
+    Container.set<typeof mailServer>("mailServer", mailServer);
+    console.log("Mail server has been initalized.");
+
+
     new Server(config)
         .start();
 }).catch(error => {

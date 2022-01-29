@@ -71,6 +71,7 @@ export class User extends ValueObject implements IUser {
         yield this.id;
         yield this.name;
         yield this.email;
+        yield this.isVerified;
         yield this.role;
 
         return;
@@ -93,6 +94,10 @@ export class User extends ValueObject implements IUser {
             throw new PropertyValidationError('role');
         }
 
+        if (typeof(this.isVerified) !== "boolean") {
+            throw new PropertyValidationError("isVerified");
+        }
+
         return true;
     }
 }
@@ -110,12 +115,6 @@ export class UserModel extends BaseEntity implements IUser  {
     })
     public name!: string;
 
-    @Column({
-        nullable : false,
-        transformer : [lowercaseTransformer],
-        default : false
-    })
-    public isVerified! : boolean;
 
     @Index({ unique: true })
     @Column({
@@ -124,6 +123,20 @@ export class UserModel extends BaseEntity implements IUser  {
         transformer: [lowercaseTransformer],
     })
     public email!: string;
+
+    @Column({
+        unique : true,
+        nullable : true,
+        default : null,
+        select : false
+    })
+    public emailToken! : string | null;
+    
+    @Column({
+        nullable : false,
+        default : false
+    })
+    public isVerified! : boolean;
 
     @Column({
         nullable: false,

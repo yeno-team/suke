@@ -6,6 +6,7 @@ import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/User
 import { UserChannelService } from './channel';
 import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
+import { randomString } from '@suke/suke-util/src/randomString';
 
 @Service()
 export class UserService {
@@ -30,7 +31,7 @@ export class UserService {
         }));
     }
 
-    public async create(user: User, rawPassword: string): Promise<UserModel> {
+    public async create(user: User , rawPassword: string): Promise<UserModel> {
         const newChannel = new UserChannel({
             id: 0,
             followers: [],
@@ -40,10 +41,10 @@ export class UserService {
         });
 
         const createdChannel = await this.userChannelService.create(newChannel);
-
-        const newUser = new UserModel();
+        const newUser = new UserModel();    
 
         newUser.email = user.email;
+        newUser.emailToken = randomString(32) + "-" + randomString(32) + "-" + randomString(32) + "-" + randomString(32);
         newUser.id = user.id;
         newUser.name = user.name;
         newUser.role = user.role;
