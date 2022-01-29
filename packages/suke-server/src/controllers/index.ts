@@ -10,6 +10,7 @@ import { UserChannelUnfollowController } from "./unfollow";
 import { CategoryGetController } from "./categories/get";
 import { RealtimeChannelsController } from "./realtimeChannel";
 import { CategoryChannelsController } from "./categories/channels";
+import { VerifyEmailController } from "./verifyEmail";
 
 export default [
     AuthController,
@@ -25,4 +26,5 @@ export default [
     CategoryGetController,
     CategoryChannelsController,
     RealtimeChannelsController,
+    VerifyEmailController
 ];

@@ -31,6 +31,18 @@ export class UserService {
         }));
     }
 
+    public async findByEmailToken(token : string) : Promise<UserModel | undefined> {
+        return (await this.userRepository.findOne({
+            where : [{
+                emailToken : token
+            }]
+        }));
+    }
+
+    public async update(model : UserModel) : Promise<UserModel> {
+        return await this.userRepository.save(model);
+    }
+
     public async create(user: User , rawPassword: string): Promise<UserModel> {
         const newChannel = new UserChannel({
             id: 0,

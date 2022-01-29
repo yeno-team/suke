@@ -65,14 +65,16 @@ export class UserController extends BaseController {
         const userObj = new User({ id: 0, ...req.body, password: null , isVerified : false });
         const createdUser = await this.userService.create(userObj, req.body.password);
 
-        const jwtEmailToken = await jwt.sign({ t : createdUser.emailToken } , "khai is not god" , { issuer : "Suke" , expiresIn : "30m" , audience : createdUser.name });
+        const jwtEmailToken = await jwt.sign({ t : createdUser.emailToken } , "khai is not god" , { issuer : "Suke" , expiresIn : "5m" , audience : createdUser.name , subject : "Suke Email Verification" });
 
         try {
             this.mailEmailService.sendMail({
                 to : createdUser.email,
                 subject : "Suke Email Verification",
                 text : jwtEmailToken
-            });
+            }).then(data => console.log(nodemailer.getTestMessageUrl(data)));
+
+
         // eslint-disable-next-line no-empty
         } catch (e){}
 
