@@ -8,3 +8,12 @@ export const lowercaseTransformer: ValueTransformer = {
       return databaseValue;
     },
 };
+
+export const uppercaseTransformer: ValueTransformer = {
+  to: (entityValue: string) => {
+    return entityValue.toLocaleUpperCase();
+  },
+  from: (databaseValue: string) => {
+    return databaseValue;
+  },
+};
