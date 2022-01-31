@@ -1,10 +1,16 @@
 {
+	"ts-node": {
+		"files": true
+	},
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"outDir": "dist",
 		"rootDir": "src",
 		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"paths": {
+			"safe-eval": ["./src/safe-eval.d.ts"]
+		}
 	},
 	"references": [
         {
@@ -15,7 +21,7 @@
 		}
 	],
 	"include": [
-		"src/"
+		"./src/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

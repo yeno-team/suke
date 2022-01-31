@@ -5,6 +5,7 @@
     "@suke/requests": "workspace:packages/requests",
     "@suke/suke-core": "workspace:packages/suke-core",
     "crypto-js": "^4.1.1",
+    "safe-eval": "^0.4.1",
     "typedi": "^0.10.0"
   },
   "scripts": {
