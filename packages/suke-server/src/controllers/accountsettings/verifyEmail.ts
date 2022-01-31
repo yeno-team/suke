@@ -4,13 +4,13 @@ import { Request , Response } from "express";
 import { UserService } from "@suke/suke-server/src/services/user";
 import { BaseController } from "../BaseController";
 
-export interface DecodedEmailJWT extends jwt.JwtPayload {
+export interface DecodedEmailTokenJWT extends jwt.JwtPayload {
     t : string;
 }
 
 @Service()
 export class VerifyEmailController extends BaseController {
-    public route = "/api/email/verify";
+    public route = "/api/accountsettings/verify";
 
     constructor(
         private userService : UserService
@@ -31,11 +31,10 @@ export class VerifyEmailController extends BaseController {
             return;
         }
 
-
         const { t } = await jwt.verify(token , "khai is not god" , {
             issuer : "Suke",
             subject : "Suke Email Verification"
-        }) as DecodedEmailJWT;
+        }) as DecodedEmailTokenJWT;
 
         const user = await this.userService.findByEmailToken(t);
 
