@@ -27,6 +27,7 @@ RedisClient.connect().then(() => {
 
 const config: IConfiguration = {
     server: {
+        host: getEnvironmentVariable("HOST", false, "0.0.0.0") as string,
         port: parseInt(getEnvironmentVariable("PORT", false, "3000") as string)
     },
     db: {
@@ -42,6 +43,9 @@ const config: IConfiguration = {
     },
     recaptcha : {
         secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEY", true) as string
+    },
+    corsProxy: {
+        port: parseInt(getEnvironmentVariable("CORS_PROXY_PORT", false, "4382") as string)
     }
 };
 

@@ -70,7 +70,7 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
             try {
                 const engine = requestedObject?.engine ? requestedObject?.engine : activeSource;
                 const sources = await getUrlSources({engine: engine as string, url: data.sources[0].url})
-                
+ 
                 if (requestedObject != null) {
                     removeRequest(requestedObject);
                 }
