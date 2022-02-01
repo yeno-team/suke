@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Email, EmailModel, IEmail } from "../Email";
 import { Role } from '../../Role';
 import { ValueObject } from '../../ValueObject';
 import { lowercaseTransformer } from '../../transformers/ValueTransformers';
@@ -10,10 +11,11 @@ import { Name } from "../Name/Name";
 import { UserId } from "../UserId";
 import { Follower } from "../Follower";
 
+
 export interface IUser {
     id: number;
     name: string;
-    email: string;
+    email: IEmail;
     isVerified : boolean;
     role: Role;
     channel: IUserChannel,
@@ -34,7 +36,7 @@ export enum UserIdentifier {
 export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;
-    public email: string;
+    public email: IEmail;
     public isVerified : boolean;
     public role: Role;
     public channel: IUserChannel;
@@ -115,23 +117,10 @@ export class UserModel extends BaseEntity implements IUser  {
     })
     public name!: string;
 
+    @OneToOne(() => EmailModel , emailModel => emailModel.user)
+    @JoinColumn()
+    public email! : EmailModel    
 
-    @Index({ unique: true })
-    @Column({
-        unique: true,
-        nullable: false,
-        transformer: [lowercaseTransformer],
-    })
-    public email!: string;
-
-    @Column({
-        unique : true,
-        nullable : true,
-        default : null,
-        select : false
-    })
-    public emailToken! : string | null;
-    
     @Column({
         nullable : false,
         default : false

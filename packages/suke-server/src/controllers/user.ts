@@ -65,22 +65,22 @@ export class UserController extends BaseController {
         const userObj = new User({ id: 0, ...req.body, password: null , isVerified : false });
         const createdUser = await this.userService.create(userObj, req.body.password);
 
-        const jwtEmailToken = await jwt.sign({ t : createdUser.emailToken } , "khai is not god" , { issuer : "Suke" , expiresIn : "5m" , audience : createdUser.name , subject : "Suke Email Verification" });
+        // const jwtEmailToken = await jwt.sign({ t : createdUser.emailToken } , "khai is not god" , { issuer : "Suke" , expiresIn : "5m" , audience : createdUser.name , subject : "Suke Email Verification" });
 
-        try {
-            this.mailEmailService.sendMail({
-                to : createdUser.email,
-                subject : "Suke Email Verification",
-                text : jwtEmailToken
-            }).then(data => console.log(nodemailer.getTestMessageUrl(data)));
+        // try {
+        //     this.mailEmailService.sendMail({
+        //         to : createdUser.email,
+        //         subject : "Suke Email Verification",
+        //         text : jwtEmailToken
+        //     }).then(data => console.log(nodemailer.getTestMessageUrl(data)));
 
 
-        // eslint-disable-next-line no-empty
-        } catch (e){}
+        // // eslint-disable-next-line no-empty
+        // } catch (e){}
 
         // Removes salt from the response.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {salt, channel , emailToken, ...userRes } = createdUser;
+        const {salt, channel , email, ...userRes } = createdUser;
     
         req.session.user = createdUser;
         res.status(201).send({

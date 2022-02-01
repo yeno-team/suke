@@ -7,7 +7,8 @@ import { UserChannelService } from './channel';
 import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { randomString } from '@suke/suke-util/src/randomString';
-
+import { EmailModel } from '@suke/suke-core/src/entities/Email';
+import jwt from "jsonwebtoken";
 @Service()
 export class UserService {
     constructor(
@@ -51,22 +52,28 @@ export class UserService {
             desc: "Welcome to my channel!",
             roledUsers: []
         });
-
+        
+        const email = user.email as unknown as string;
         const createdChannel = await this.userChannelService.create(newChannel);
         const newUser = new UserModel();    
-
-        newUser.email = user.email;
-        newUser.emailToken = randomString(32) + "-" + randomString(32) + "-" + randomString(32) + "-" + randomString(32);
+        const newEmail = new EmailModel();
+        
+        newEmail.previousEmail = null;
+        newEmail.originalEmail = email;
+        newEmail.currentEmail = email;
+        newEmail.verificationToken = `${randomString(128)}-${randomString(128)}-${randomString(128)}`;
+    
         newUser.id = user.id;
         newUser.name = user.name;
         newUser.role = user.role;
         newUser.isVerified = user.isVerified;
         newUser.channel = createdChannel;
         newUser.following = [];
+        newUser.email = newEmail;
         
         const saltedPassword = await bcrypt.hash(rawPassword, 6);
         newUser.salt = saltedPassword;
-        
+    
         return newUser.save();
     }
 

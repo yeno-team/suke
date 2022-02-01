@@ -1,9 +1,12 @@
 import isValidEmail from "@suke/suke-util/src/isValidEmail";
-import { BaseEntity } from "typeorm";
+import { BaseEntity, Column, Entity, Index, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PropertyValidationError } from "../../exceptions/ValidationError";
+import { lowercaseTransformer } from "../../transformers/ValueTransformers";
 import { ValueObject } from "../../ValueObject";
+import { UserModel } from "../User";
 
 export interface IEmail {
+    id : number;
     originalEmail : string | null;
     verificationToken : string | null;
     previousEmail : string | null;
@@ -15,9 +18,11 @@ export class Email extends ValueObject implements IEmail {
     public verificationToken: string | null;
     public previousEmail: string | null;
     public currentEmail: string;
+    public id : number;
 
     constructor(email : IEmail) {
         super();
+        this.id = email.id;
         this.originalEmail = email.originalEmail;
         this.verificationToken = email.verificationToken;
         this.previousEmail = email.previousEmail;
@@ -72,6 +77,38 @@ export class Email extends ValueObject implements IEmail {
     }   
 }
 
-// export class EmailModel extends BaseEntity {
+@Entity()
+export class EmailModel extends BaseEntity implements IEmail {
+    @PrimaryGeneratedColumn()
+    public id! : number;
 
-// }
+    @Column({ 
+        nullable : false,
+        transformer : [ lowercaseTransformer ]
+    })
+    public originalEmail!: string;
+
+    @Column({ 
+        nullable : true , 
+        default : null,
+        transformer : [ lowercaseTransformer ]
+    })
+    public previousEmail! : string | null;
+
+    @Column({ 
+        nullable : true , 
+        default : null , 
+        select : false 
+    })
+    public verificationToken! : string | null;
+    
+    @Column({ 
+        unique : true , 
+        nullable : false,
+        transformer : [ lowercaseTransformer ] 
+    })
+    public currentEmail!: string;
+
+    @OneToOne(() => UserModel , user => user.email)
+    public user! : UserModel
+}

@@ -19,34 +19,34 @@ export class VerifyEmailController extends BaseController {
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
-        const { token } = req.body;
+        // const { token } = req.body;
 
-        if(!(token)) {
-            res.status(400).json({ error : true , message : "Token field is missing."});
-            return;
-        }
+        // if(!(token)) {
+        //     res.status(400).json({ error : true , message : "Token field is missing."});
+        //     return;
+        // }
 
-        if(typeof token !== "string") {
-            res.status(400).json({ error : true , message : "Token field must be type string."});
-            return;
-        }
+        // if(typeof token !== "string") {
+        //     res.status(400).json({ error : true , message : "Token field must be type string."});
+        //     return;
+        // }
 
-        const { t } = await jwt.verify(token , "khai is not god" , {
-            issuer : "Suke",
-            subject : "Suke Email Verification"
-        }) as DecodedEmailTokenJWT;
+        // const { t } = await jwt.verify(token , "khai is not god" , {
+        //     issuer : "Suke",
+        //     subject : "Suke Email Verification"
+        // }) as DecodedEmailTokenJWT;
 
-        const user = await this.userService.findByEmailToken(t);
+        // const user = await this.userService.findByEmailToken(t);
 
-        if(!(user)) {
-            res.status(400).json({success : false , message : "Email token doesn't exist."});
-            return;
-        }
+        // if(!(user)) {
+        //     res.status(400).json({success : false , message : "Email token doesn't exist."});
+        //     return;
+        // }
 
-        user.isVerified = true;
-        user.emailToken = null;
+        // user.isVerified = true;
+        // user.emailToken = null;
 
-        await this.userService.update(user);
+        // await this.userService.update(user);
 
         res.status(200).json({ success : true });
     }
