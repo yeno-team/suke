@@ -41,7 +41,7 @@ export class FzMoviesWrapper {
 
             const sources = await this.extractSources(downloadPage);
 
-            output.push(...sources.map(v => ({url: v,quality: i == 0 ? Quality["480p"] : Quality["720p"]}) as IVideoSource));
+            output.push(...sources.map(v => ({url: v,quality: i == 0 ? Quality["480p"] : Quality["720p"], proxyRequired: true}) as IVideoSource));
         }
 
         return output;
@@ -66,7 +66,6 @@ export class FzMoviesWrapper {
         
         return results;
     }
-
 
     private async getDownloadPage(download1PageSource: string): Promise<string> {
         const $ = cheerio.load(download1PageSource);
@@ -104,5 +103,4 @@ export class FzMoviesWrapper {
 
         return sources;
     }
-
 }
