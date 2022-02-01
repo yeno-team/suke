@@ -9,6 +9,7 @@ import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
+import cors_proxy from "cors-anywhere";
 
 useContainer(typeORMContainer);
 
@@ -31,4 +32,12 @@ createConnection({
 }).catch(error => {
     console.error(`Couldn't connect to the database!`);
     console.error(error);
+});
+
+cors_proxy.createServer({
+    originWhitelist: [], // Allow all origins
+    requireHeader: ['origin', 'x-requested-with'],
+    removeHeaders: ['cookie', 'cookie2']
+}).listen(config.corsProxy.port, config.server.host, function() {
+    console.log('Running CORS Anywhere on ' + config.server.host + ':' + config.corsProxy.port);
 });
