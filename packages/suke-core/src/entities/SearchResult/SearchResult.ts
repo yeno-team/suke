@@ -38,6 +38,7 @@ export interface IStandaloneData {
 export interface IVideoSource {
     url: URL;
     quality: Quality;
+    proxyRequired?: boolean;
 }
 
 export interface IMultiData {

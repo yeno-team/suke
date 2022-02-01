@@ -1,3 +1,4 @@
+import { IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
 import { RealtimeChannelData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { captureFrame } from '@suke/suke-util';
 import classNames from 'classnames';
@@ -52,7 +53,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
 
         if (setThumbnail) {
             getThumbnail();
-            setThumbnailTimer(setInterval(getThumbnail, 5000));
+            setThumbnailTimer(setInterval(getThumbnail, 10000));
         }
 
         return () => clearTimeout(thumbnailTimer!);
@@ -136,10 +137,24 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     }
 
     const currentVideoSource = useMemo(() => {
-        const foundSource = channelData.currentVideo?.sources.find(v => ReactPlayer.canPlay(v.url.toString()));
+        const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4382/";
+        let highestQuality: IVideoSource | undefined;
 
-        if (foundSource != null) {
-            return foundSource.url.toString();
+        for (const v of channelData.currentVideo?.sources) {
+            const canPlay = (v.proxyRequired ? ReactPlayer.canPlay(serverUrl + v.url.toString()) : ReactPlayer.canPlay(v.url.toString()));
+
+            if (canPlay && highestQuality == null) {
+                highestQuality = v;
+                continue;
+            } 
+
+            if (canPlay && v.quality > highestQuality!.quality) {
+                highestQuality = v;
+            }
+        }
+        
+        if (highestQuality != null) {
+            return (highestQuality.proxyRequired ? serverUrl : '') + highestQuality.url.toString();
         }
     }, [channelData.currentVideo?.sources]);
 
@@ -147,7 +162,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     return (
         <div className={classNames('h-full', className, 'flex flex-col')}>
             <VideoMenuHeader viewerCount={viewerCount ?? 0} handleOpenSettings={handleOpenSettings} handleOpenBrowser={handleOpenBrowser} isAuthenticated={isAuthenticated} category={channelData.category} title={channelData.title} isOwner={ownerView}/>
-            <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true} config={{ file: { attributes: {crossOrigin: 'true'}}}}/>
+            <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true} config={{ file: { attributes: {crossOrigin: 'anonymous'}}}}/>
         </div>
     )
 }
