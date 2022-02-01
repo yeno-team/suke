@@ -147,7 +147,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     return (
         <div className={classNames('h-full', className, 'flex flex-col')}>
             <VideoMenuHeader viewerCount={viewerCount ?? 0} handleOpenSettings={handleOpenSettings} handleOpenBrowser={handleOpenBrowser} isAuthenticated={isAuthenticated} category={channelData.category} title={channelData.title} isOwner={ownerView}/>
-            <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true} config={{ file: { attributes: {crossOrigin: 'anonymous'}}}}/>
+            <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true} config={{ file: { attributes: {crossOrigin: 'true'}}}}/>
         </div>
     )
 }

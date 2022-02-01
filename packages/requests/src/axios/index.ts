@@ -21,7 +21,7 @@ export class AxiosRequest implements IRequest {
             maxRedirects: options.maxRedirects,
             httpAgent: options.httpAgent,
             httpsAgent: options.httpsAgent,
-            proxy: options.proxy as unknown as AxiosProxyConfig
+            proxy: options.proxy as unknown as AxiosProxyConfig,
         };
 
         return axiosClientOpts;
@@ -29,6 +29,7 @@ export class AxiosRequest implements IRequest {
 
     async request<R>(options: RequestOptions):  Promise<R> {
         const req = await this.axiosInstance.request(this.convertToAxiosOpts(options));
+
         return req.data;
     }
 

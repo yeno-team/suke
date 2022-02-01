@@ -1,11 +1,17 @@
 {
+	"ts-node": {
+		"files": true
+	},
 	"extends": "../../tsconfig.build.json",
 	"compilerOptions": {
 		"rootDir": "src",
 		"outDir": "dist",
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-        "lib": ["es2019", "DOM","DOM.Iterable"]
+        "lib": ["es2019", "DOM","DOM.Iterable"],
+		"paths": {
+			"cors-anywhere": ["./cors-anywhere.d.ts"]
+		}
 	},
 	"references": [{
 			"path": "../suke-util"
@@ -18,7 +24,7 @@
 		}
 	],
 	"include": [
-        "src/"
+        "./src/**/*.ts"
     ],
 	"exclude": [
 		"node_modules",
