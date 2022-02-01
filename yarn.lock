@@ -3940,6 +3940,8 @@ __metadata:
   resolution: "@suke/requests@workspace:packages/requests"
   dependencies:
     axios: ^0.22.0
+    axios-cookiejar-support: ^2.0.3
+    tough-cookie: ^4.0.0
     typedi: ^0.10.0
   languageName: unknown
   linkType: soft
@@ -4077,7 +4079,10 @@ __metadata:
     "@suke/requests": "workspace:packages/requests"
     "@suke/suke-core": "workspace:packages/suke-core"
     "@types/crypto-js": ^4.1.0
+    "@types/tough-cookie": ^4.0.1
+    axios-cookiejar-support: ^2.0.3
     crypto-js: ^4.1.1
+    tough-cookie: ^4.0.0
     typedi: ^0.10.0
   languageName: unknown
   linkType: soft
@@ -4981,6 +4986,13 @@ __metadata:
   dependencies:
     "@types/jest": "*"
   checksum: e08715a565cc189112a6611485d779a0f1ceb546a9d4601b21aacff7596d7acf8b7c702e4c5f825677431ff601df3e635887dc8a5735da1a263cc857eb7c3833
+  languageName: node
+  linkType: hard
+
+"@types/tough-cookie@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@types/tough-cookie@npm:4.0.1"
+  checksum: 7570c1c2d74201f4ead3512cf8e4c99e97d92ab8a02ae2fb987fd720ced0ca1a2baf250c98a861a170b86762606c9bf6d32207675f13dffc5ab75c08c96578d2
   languageName: node
   linkType: hard
 
@@ -6426,6 +6438,18 @@ __metadata:
   version: 4.3.5
   resolution: "axe-core@npm:4.3.5"
   checksum: 973c6a80f0aaa663820b209d4202de7a0c240a2dea2f3cff168b09c0f221b27179b1f0988f00ad11ed63cbc50535920f8ca779de1c60dc82090ab2d275f71fdd
+  languageName: node
+  linkType: hard
+
+"axios-cookiejar-support@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "axios-cookiejar-support@npm:2.0.3"
+  dependencies:
+    http-cookie-agent: ^1.0.2
+  peerDependencies:
+    axios: ">=0.20.0"
+    tough-cookie: ">=4.0.0"
+  checksum: 151c2dd2412018e2e17f782d4055e769412703e36e7030b3b3d95027cbbd37f9b1e68bed83ee1ed3f8bf651c199b10927c3bd70e288d0488526d1bfff3818165
   languageName: node
   linkType: hard
 
@@ -11877,6 +11901,17 @@ __metadata:
   version: 4.1.0
   resolution: "http-cache-semantics@npm:4.1.0"
   checksum: 974de94a81c5474be07f269f9fd8383e92ebb5a448208223bfb39e172a9dbc26feff250192ecc23b9593b3f92098e010406b0f24bd4d588d631f80214648ed42
+  languageName: node
+  linkType: hard
+
+"http-cookie-agent@npm:^1.0.2":
+  version: 1.0.4
+  resolution: "http-cookie-agent@npm:1.0.4"
+  dependencies:
+    agent-base: ^6.0.2
+  peerDependencies:
+    tough-cookie: ^4.0.0
+  checksum: 01b49b10b763d68a4490a0f025c87c6c2bca5f122df4abb2a6e87a78cee5069207275f7d3eb75b111e498d3d6dca75008f1165ee025c0e7330f269d3e21d4231
   languageName: node
   linkType: hard
 

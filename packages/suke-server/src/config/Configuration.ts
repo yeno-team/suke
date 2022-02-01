@@ -2,6 +2,7 @@ import { SessionOptions } from "express-session";
 
 export interface IConfiguration {
     server: {
+        host: string,
         port: number
     },
     db: {
@@ -13,5 +14,8 @@ export interface IConfiguration {
     recaptcha : {
         secretKey : string
     },
-    session: SessionOptions
+    session: SessionOptions,
+    corsProxy: {
+        port: number
+    }
 }
