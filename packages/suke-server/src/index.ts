@@ -10,6 +10,7 @@ import { SessionModel } from '@suke/suke-core/src/entities/Session';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 import { MailServerService } from '@suke/suke-server/src/services/mailServer';
+import { EmailModel } from '@suke/suke-core/src/entities/Email';
 
 useContainer(typeORMContainer);
 
@@ -17,7 +18,7 @@ createConnection({
     type: "postgres",
     url: config.db.connectionUri,
     logger: 'advanced-console',
-    entities: [UserModel, UserChannelModel, SessionModel, Follower, CategoryModel],
+    entities: [UserModel, UserChannelModel, SessionModel, Follower, CategoryModel , EmailModel],
     synchronize: true,
 }).then(async () => {
     Container.set<RedisClientType>('redis', RedisClient);

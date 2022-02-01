@@ -14,6 +14,7 @@ import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
 import { CategoryManager } from './extensions/CategoryManager';
 import { Name } from '@suke/suke-core/src/entities/Name/Name';
+import { Email } from '@suke/suke-core/src/entities/Email';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -74,7 +75,13 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                     // ASSUME USER IS A GUEST
                     req.session.user = new User({
                         id: 0,
-                        email: 'guest@suke.app',
+                        email: {
+                            id : 0,
+                            previousEmail : null,
+                            originalEmail : null,
+                            currentEmail : "",
+                            verificationToken : null
+                        },
                         name: 'Guest',
                         role: Role.Guest,
                         isVerified : false,
