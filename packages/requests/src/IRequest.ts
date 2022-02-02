@@ -11,6 +11,7 @@ export type RequestOptions = {
     httpAgent?: Agent,
     httpsAgent?: Agent,
     responseType?: string,
+    cookies?: boolean,
     proxy?: { host: string, port: number, auth: Record<string , unknown> }
 }
 
