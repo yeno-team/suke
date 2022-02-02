@@ -4,7 +4,7 @@ export const catchErrorAsync = (func: RequestHandler): RequestHandler => async (
     try {
         await func(req, res, next);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         next(error);
     }
 };

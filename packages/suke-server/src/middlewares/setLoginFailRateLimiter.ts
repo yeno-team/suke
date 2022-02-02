@@ -10,13 +10,13 @@ export const setLoginFailRateLimiter = () : RequestHandler => catchErrorAsync(as
         limiter : LoginFailRateLimiter,
         pointsToConsume : 1,
         isGlobalLimiter : false
-    })
+    });
     
-    const { isRateLimited } = await createRateLimiter(res , opts)
+    const { isRateLimited } = await createRateLimiter(res , opts);
     
     if(isRateLimited) {
-        return
+        return;
     }
     
-    next()
-}) 
+    next();
+}); 
