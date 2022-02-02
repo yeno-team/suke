@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { AxiosRequest } from "@suke/requests/src";
 import { IVideoSource, Quality } from "@suke/suke-core/src/entities/SearchResult";
+import { RequestOptions } from "@suke/requests/src/IRequest";
 
 export type FzMovie = {
     name: string,
@@ -11,15 +12,16 @@ export type FzMovie = {
 
 @Service()
 export class FzMoviesWrapper {
-    private host = "https://fzmovies.net/";
+    private host = "https://www.fzmovies.net/";
+    private requestOptions: RequestOptions = { CORS: true, cookies: true}
     constructor(
         private request : AxiosRequest
     ) {}
 
     public async getSources(url: URL): Promise<IVideoSource[]> {
-        const download1Url = await this.request.get<string>(url, {CORS: true});
+        const download1Url = await this.request.get<string>(new URL(url.protocol + ("www." + url.hostname.replace(/www\./, "") + url.pathname + url.search)), this.requestOptions);
         const $ = cheerio.load(download1Url);
-
+    
         const downloadoptionslink2 = $('#downloadoptionslink2');
  
         if (downloadoptionslink2.length <= 0) {
@@ -36,7 +38,7 @@ export class FzMoviesWrapper {
             // const download1PageUrl = /window\.location\.href="(.*)";/g.exec(downloadoptionslink2.attr('onclick') as string);
             if (download1PageUrl == null) throw new Error("Unexpected parse error.");
 
-            const download1PageSource = await this.request.get<string>(new URL("https://fzmovies.net/" + download1PageUrl), {CORS: true});
+            const download1PageSource = await this.request.get<string>(new URL(this.host + download1PageUrl), this.requestOptions);
             const downloadPage = await this.getDownloadPage(download1PageSource);
 
             const sources = await this.extractSources(downloadPage);
@@ -52,16 +54,16 @@ export class FzMoviesWrapper {
         const $ = cheerio.load(resp);
         const results: FzMovie[] = [];
 
-        const anchorElements = $('.mainbox > table a');
+        const anchorElements = $('.mainbox > table td > a');
         const images = $('.mainbox > table img');
         const bElements = $('.mainbox > table a > small > b');
-        
         images.each((i, el) => {
             results.push({
                 url: new URL(this.host + anchorElements[i].attribs['href']),
                 name: $(bElements[i]).html()?.trim() as string,
                 posterUrl: new URL(this.host + el.attribs['src'])
             });
+            i++;
         });
         
         return results;
@@ -78,7 +80,7 @@ export class FzMoviesWrapper {
 
         const downloadPageParams = downloadlinkElements.attr('href');
 
-        return this.request.get<string>(new URL(this.host + downloadPageParams));
+        return this.request.get<string>(new URL(this.host + downloadPageParams), this.requestOptions);
     }
 
     private async extractSources(downloadPage: string): Promise<URL[]> {
@@ -90,7 +92,7 @@ export class FzMoviesWrapper {
         while (curr.length > 0) {
             const hrefVal = curr.attr('href');
             if (hrefVal != null) {
-                const dlinkPage = await this.request.get<string>(new URL(this.host + hrefVal));
+                const dlinkPage = await this.request.get<string>(new URL(this.host + hrefVal), this.requestOptions);
                 $ = cheerio.load(dlinkPage);
                 const source = $('input[name=download1]').attr('value');
                 if (source) {
