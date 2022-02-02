@@ -1,6 +1,5 @@
 import { Service } from "typedi";
 import { BaseController } from "./BaseController";
-import cors_proxy from 'cors-anywhere';
 import expressHttpProxy from 'express-http-proxy';
 import config from '../config';
 import { Express } from 'express';
