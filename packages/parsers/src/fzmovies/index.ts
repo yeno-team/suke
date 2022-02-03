@@ -6,7 +6,7 @@ import { Service } from "typedi";
 
 @Service()
 export class FzMoviesParser implements IParser {
-    name="fzmovies";
+    name="movies 1";
     hostname = new URL("https://fzmovies.net");
 
     constructor (
