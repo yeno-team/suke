@@ -33,7 +33,7 @@ export class UserController extends BaseController {
 
         if (id == null && req.session.user != null) {
             const foundUser = await this.userService.findById(req.session.user.id);
-
+            
             const serializedUser = {
                 ...foundUser,
                 email : foundUser.email.currentEmail

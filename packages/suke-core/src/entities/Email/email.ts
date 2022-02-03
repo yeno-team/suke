@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, Index, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PropertyValidationError } from "../../exceptions/ValidationError";
-import { lowercaseTransformer } from "../../transformers/ValueTransformers";
+import { hideEmailTransformer, lowercaseTransformer } from "../../transformers/ValueTransformers";
 import { ValueObject } from "../../ValueObject";
 import { UserModel } from "../User";
 import isValidEmail from "@suke/suke-util/src/isValidEmail";
@@ -90,14 +90,14 @@ export class EmailModel extends BaseEntity implements IEmail {
 
     @Column({ 
         nullable : false,
-        transformer : [ lowercaseTransformer ]
+        transformer : [ lowercaseTransformer , hideEmailTransformer ]
     })
     public originalEmail!: string;
 
     @Column({ 
         nullable : true , 
         default : null,
-        transformer : [ lowercaseTransformer ]
+        transformer : [ lowercaseTransformer  , hideEmailTransformer ]
     })
     public previousEmail! : string | null;
 
@@ -111,7 +111,7 @@ export class EmailModel extends BaseEntity implements IEmail {
     @Column({ 
         unique : true , 
         nullable : false,
-        transformer : [ lowercaseTransformer ] 
+        transformer : [ lowercaseTransformer , hideEmailTransformer ] 
     })
     public currentEmail!: string;
 
