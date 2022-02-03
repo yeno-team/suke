@@ -1,19 +1,19 @@
 import { ValueTransformer } from 'typeorm';
 
 export const lowercaseTransformer: ValueTransformer = {
-    to: (entityValue: string) => {
-      return entityValue.toLocaleLowerCase();
+    to: (entityValue: string | null) => {
+      return (entityValue === null) ? entityValue : entityValue.toLocaleLowerCase();
     },
-    from: (databaseValue: string) => {
+    from: (databaseValue: unknown) => {
       return databaseValue;
     },
 };
 
 export const uppercaseTransformer: ValueTransformer = {
-  to: (entityValue: string) => {
-    return entityValue.toLocaleUpperCase();
+  to: (entityValue: string | null) => {
+    return (entityValue === null) ? entityValue : entityValue.toLocaleUpperCase();
   },
-  from: (databaseValue: string) => {
+  from: (databaseValue: unknown) => {
     return databaseValue;
   },
 };

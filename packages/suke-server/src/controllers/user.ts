@@ -8,7 +8,6 @@ import { RateLimiterAbstract } from "rate-limiter-flexible";
 import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
 @Service()
 export class UserController extends BaseController {
     public rateLimiters: Map<string, RateLimiterAbstract>;
@@ -34,8 +33,14 @@ export class UserController extends BaseController {
 
         if (id == null && req.session.user != null) {
             const foundUser = await this.userService.findById(req.session.user.id);
-            req.session.user = foundUser;
-            res.send(foundUser);
+
+            const serializedUser = {
+                ...foundUser,
+                email : foundUser.email.currentEmail
+            };
+
+            req.session.user = serializedUser;
+            res.send(serializedUser);
             return;
         } 
         
@@ -62,30 +67,35 @@ export class UserController extends BaseController {
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
-        const userObj = new User({ id: 0, ...req.body, password: null , isVerified : false });
-        const createdUser = await this.userService.create(userObj, req.body.password);
+        const userObj = new User({ id: 0, ...req.body , isVerified : false });
+        const createdUser = await this.userService.create(userObj , req.body.email , req.body.password);
 
-        // const jwtEmailToken = await jwt.sign({ t : createdUser.emailToken } , "khai is not god" , { issuer : "Suke" , expiresIn : "5m" , audience : createdUser.name , subject : "Suke Email Verification" });
+        const jwtEmailToken = await jwt.sign({ t : createdUser.email.verificationToken } , "khai is not god" , { issuer : "Suke" , expiresIn : "5m" , audience : createdUser.name , subject : "Suke Email Verification" });
 
-        // try {
-        //     this.mailEmailService.sendMail({
-        //         to : createdUser.email,
-        //         subject : "Suke Email Verification",
-        //         text : jwtEmailToken
-        //     }).then(data => console.log(nodemailer.getTestMessageUrl(data)));
-
-
-        // // eslint-disable-next-line no-empty
-        // } catch (e){}
+        try {
+            this.mailEmailService.sendMail({
+                to : createdUser.email.currentEmail,
+                subject : "Suke Email Verification",
+                text : jwtEmailToken
+            });
+        // eslint-disable-next-line no-empty
+        } catch (e){}
 
         // Removes salt from the response.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {salt, channel , email, ...userRes } = createdUser;
-    
-        req.session.user = createdUser;
+        const {salt, channel , ...userRes } = createdUser;
+
+        req.session.user = {
+            ...createdUser,
+            email : createdUser.email.currentEmail,
+        };
+
         res.status(201).send({
             message: 'Created',
-            user: userRes
+            user: {
+                ...userRes,
+                email : userRes.email.currentEmail
+            }
         });
     }
 }

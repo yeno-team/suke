@@ -37,7 +37,7 @@ export class AuthController extends BaseController {
             const { limiter , key } = res.locals.limiters[1];
             await limiter.delete(key);
 
-            req.session.user = res.locals.user;
+            // req.session.user = res.locals.user;
             res.send({
                 error: false,
                 message: "Authenticated."

@@ -14,7 +14,6 @@ import { RoomManager } from './extensions/RoomManager';
 import { RedisClient } from "@suke/suke-server/src/config";
 import { CategoryManager } from './extensions/CategoryManager';
 import { Name } from '@suke/suke-core/src/entities/Name/Name';
-import { Email } from '@suke/suke-core/src/entities/Email';
 
 export interface SocketServerEvents {
     error: (error: Error) => void,
@@ -66,22 +65,17 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         httpServer.on('upgrade', (req: EventRequest, socket, head) => {
             sessionParser(req, {} as Response, () => {
                 if (!req.session.user) {
+                    
                     /* 
                     socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
                     socket.destroy();
                     return;
                     */
-                   
                     // ASSUME USER IS A GUEST
+
                     req.session.user = new User({
                         id: 0,
-                        email: {
-                            id : 0,
-                            previousEmail : null,
-                            originalEmail : null,
-                            currentEmail : "",
-                            verificationToken : null
-                        },
+                        email: "guest@suke.app",
                         name: 'Guest',
                         role: Role.Guest,
                         isVerified : false,
@@ -124,8 +118,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                 ws.id = uuid();
                 ws.isAlive = true;
                 ws.remoteAddress = req.socket.remoteAddress;
-
-                const user = new User(req.session.user as User);
+                const user = req.session.user as User;
 
                 console.log(user.name + " Connected!");
                 

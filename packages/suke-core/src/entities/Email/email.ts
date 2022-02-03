@@ -1,10 +1,9 @@
-import isValidEmail from "@suke/suke-util/src/isValidEmail";
 import { BaseEntity, Column, Entity, Index, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PropertyValidationError } from "../../exceptions/ValidationError";
 import { lowercaseTransformer } from "../../transformers/ValueTransformers";
 import { ValueObject } from "../../ValueObject";
 import { UserModel } from "../User";
-
+import isValidEmail from "@suke/suke-util/src/isValidEmail";
 export interface IEmail {
     id : number;
     originalEmail : string | null;
@@ -14,11 +13,11 @@ export interface IEmail {
 }
 
 export class Email extends ValueObject implements IEmail {
+    public id : number;
     public originalEmail : string | null;
     public verificationToken: string | null;
     public previousEmail: string | null;
     public currentEmail: string;
-    public id : number;
 
     constructor(email : IEmail) {
         super();
@@ -40,7 +39,12 @@ export class Email extends ValueObject implements IEmail {
     }
 
     protected IsValid(): boolean {
+        if(typeof (this.id) !== "number") {
+            throw new PropertyValidationError("email id is not a number");
+        }
+
         if(this.originalEmail) {
+            console.log(this.originalEmail);
             if(typeof this.originalEmail !== "string") {
                 throw new PropertyValidationError("originalEmail is not a string.");
             }
@@ -78,6 +82,8 @@ export class Email extends ValueObject implements IEmail {
 }
 
 @Entity()
+@Index(["originalEmail" , "previousEmail" , "currentEmail"])
+@Index(["currentEmail"] , { unique : true })
 export class EmailModel extends BaseEntity implements IEmail {
     @PrimaryGeneratedColumn()
     public id! : number;
