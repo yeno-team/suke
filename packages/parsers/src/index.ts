@@ -8,8 +8,8 @@ import { YoutubeParser } from "./youtube";
 
 export const parsers = [
     Container.get(YoutubeParser),
-    Container.get(GogoAnimeParser),
     Container.get(KickAssAnimeParser),
+    Container.get(GogoAnimeParser),
     Container.get(FzMoviesParser),
     Container.get(MobileTvShowsParser)
 ];
