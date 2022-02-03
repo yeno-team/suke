@@ -1,5 +1,5 @@
 import { SocketMessage, SocketMessageInput, SocketMessageType } from "@suke/suke-core/src/entities/SocketMessage";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 
@@ -8,6 +8,7 @@ export type MessageListener = (message: SocketMessage) => void;
 export interface SocketContextInterface {
     sendJsonMessage: (message: SocketMessageInput) => void;
     messageHistory: SocketMessageInput[];
+    setReconnectCallback: (callback: (closeEvent: CloseEvent) => void) => void;
 }
 
 export type MessageListeners = {
@@ -18,11 +19,23 @@ export const SocketContext = React.createContext<SocketContextInterface>({} as S
 
 // A wrapper around react-use-websocket package
 export const SocketContextProvider = ({children}: {children: React.ReactNode}): JSX.Element => {
+    const [reconnectCallback, setReconnectCallback] = useState<(closeEvent: CloseEvent) => void>();
+    const reconnectCallbackRef = useRef<(closeEvent: CloseEvent) => void>();
+    reconnectCallbackRef.current = reconnectCallback;
+    
     const resp = useWebSocket("ws://" + process.env.REACT_APP_SERVER_URL as string, {
         onOpen: () => console.log('Connected to WebSocket.'),
         onError: (err) => {},
-        shouldReconnect: (closeEvent) => true
+        shouldReconnect: (closeEvent) => {
+            if (reconnectCallbackRef.current != null) {
+                reconnectCallbackRef.current(closeEvent);
+            }
+            
+            return true;
+        }
     });
+
+    
     const [messageHistory, setMessageHistory] = useState<SocketMessageInput[]>([]);
     
     useEffect(() => {
@@ -31,7 +44,7 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
         }
     }, [resp.lastJsonMessage]);
     return (
-        <SocketContext.Provider value={{messageHistory: messageHistory, sendJsonMessage: resp.sendJsonMessage }}>
+        <SocketContext.Provider value={{messageHistory: messageHistory, sendJsonMessage: resp.sendJsonMessage, setReconnectCallback: (callback) => { setReconnectCallback(callback) }}}>
             {children}
         </SocketContext.Provider>
     );
