@@ -1,24 +1,25 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { User, UserModel } from '@suke/suke-core/src/entities/User';
-import { Repository } from 'typeorm';
+import { Repository, SimpleConsoleLogger } from 'typeorm';
 import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { UserChannelService } from './channel';
 import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { randomString } from '@suke/suke-util/src/randomString';
-import { EmailModel } from '@suke/suke-core/src/entities/Email';
-import jwt from "jsonwebtoken";
+import { Email } from '@suke/suke-core/src/entities/Email';
+import { EmailService } from './email';
 @Service()
 export class UserService {
     constructor(
         @InjectRepository(UserModel) private userRepository: Repository<UserModel>,
         @InjectRepository(Follower) private followerRepository: Repository<Follower>,
-        private userChannelService: UserChannelService    
+        private userChannelService: UserChannelService,    
+        private emailService : EmailService,
     ) {}
 
     public async findById(id: number): Promise<UserModel | undefined> {
-        return (await this.userRepository.findByIds([id], {relations: ['channel', 'channel.followers', 'following', 'following.followedTo']}))[0];
+        return (await this.userRepository.findByIds([id], {relations: ['channel', 'channel.followers', 'following', 'following.followedTo' , 'email']}))[0];
     }
 
     public async findByName(name: string): Promise<UserModel | undefined> {
@@ -44,7 +45,7 @@ export class UserService {
         return await this.userRepository.save(model);
     }
 
-    public async create(user: User , rawPassword: string): Promise<UserModel> {
+    public async create(user: User , email : string , rawPassword: string): Promise<UserModel> {
         const newChannel = new UserChannel({
             id: 0,
             followers: [],
@@ -52,29 +53,32 @@ export class UserService {
             desc: "Welcome to my channel!",
             roledUsers: []
         });
-        
-        const email = user.email as unknown as string;
+
+        const newEmail = new Email({
+            id : 0,
+            previousEmail : null,
+            originalEmail : email,
+            currentEmail : email,
+            verificationToken : `${randomString(128)}-${randomString(128)}-${randomString(128)}`,
+        });
+
         const createdChannel = await this.userChannelService.create(newChannel);
         const newUser = new UserModel();    
-        const newEmail = new EmailModel();
-        
-        newEmail.previousEmail = null;
-        newEmail.originalEmail = email;
-        newEmail.currentEmail = email;
-        newEmail.verificationToken = `${randomString(128)}-${randomString(128)}-${randomString(128)}`;
-    
+
         newUser.id = user.id;
         newUser.name = user.name;
         newUser.role = user.role;
         newUser.isVerified = user.isVerified;
         newUser.channel = createdChannel;
         newUser.following = [];
-        newUser.email = newEmail;
+
+        const createdEmail = await this.emailService.create(newEmail);
+        newUser.email = createdEmail;   
         
         const saltedPassword = await bcrypt.hash(rawPassword, 6);
         newUser.salt = saltedPassword;
-    
-        return newUser.save();
+        
+        return newUser.save();  
     }
 
     /**
