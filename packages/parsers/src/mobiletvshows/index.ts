@@ -6,7 +6,7 @@ import { Service } from "typedi";
 
 @Service()
 export class MobileTvShowsParser implements IParser {
-    name="mobiletvshows";
+    name="Tv Shows 1";
     hostname = new URL("https://www.mobiletvshows.net");
 
     constructor (
