@@ -23,11 +23,11 @@ export class VerifyEmailController extends BaseController {
         }
 
         if(typeof token !== "string") {
-            res.status(400).json({ error : true , message : "Token field must be type string."});
+            res.status(400).json({ error : true , message : "Token value must be type string."});
             return;
         }
         
-        const { t } = await this.emailUtilService.verify_verification_token(token);
+        const { t } = await this.emailUtilService.verifyVerificationToken(token);
         const data = await this.emailDBService.findByVerificationToken(t);
 
         if(!(data)) {
@@ -35,7 +35,6 @@ export class VerifyEmailController extends BaseController {
             return;
         }
 
-        // this didn't set i guess?
         data.user.isVerified = true;
         data.verificationToken = null;
 

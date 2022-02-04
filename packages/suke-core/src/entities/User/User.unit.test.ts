@@ -15,6 +15,7 @@ describe("User Class: Value Object", () => {
                 id: '' as unknown as number,
                 name: 'username',
                 email: 'da@gmail.com',
+                isVerified : false,
                 role: Role.User,
                 following: [],
                 channel: {
@@ -32,6 +33,7 @@ describe("User Class: Value Object", () => {
                 email: 'da@gmail.com',
                 role: Role.User,
                 following: [],
+                isVerified : false,
                 channel: {
                     id: 0,
                     followers: [],
@@ -46,6 +48,7 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 2 as unknown as string,
                 role: Role.User,
+                isVerified : false,
                 following: [],
                 channel: {
                     id: 0,
@@ -63,6 +66,7 @@ describe("User Class: Value Object", () => {
                 email: 'da@gmail.com',
                 role: '' as unknown as number,
                 following: [],
+                isVerified : false,
                 channel: {
                     id: 0,
                     followers: [],
@@ -80,6 +84,7 @@ describe("User Class: Value Object", () => {
                 email: '',
                 role: Role.User,
                 following: [],
+                isVerified : false,
                 channel: {
                     id: 0,
                     followers: [],
@@ -94,6 +99,7 @@ describe("User Class: Value Object", () => {
                 name: 'username',
                 email: 'test@test',
                 role: Role.User,
+                isVerified : false,
                 following: [],
                 channel: {
                     id: 0,
@@ -112,6 +118,7 @@ describe("User Class: Value Object", () => {
                 email: 'test@gmail.com',
                 role: null as unknown as Role,
                 following: [],
+                isVerified : false,
                 channel: {
                     id: 0,
                     followers: [],
@@ -129,6 +136,7 @@ describe("User Class: Value Object", () => {
                 id: 1,
                 name: 'username',
                 email: 'test@gmail.com',
+                isVerified : false,
                 role: Role.User,
                 following: [],
                 channel: {
@@ -148,6 +156,7 @@ describe("User Class: Value Object", () => {
                 id: 1,
                 name: 'username',
                 email: 'da@gmail.com',
+                isVerified : false,
                 role: 0,
                 following: [],
                 channel: {
@@ -165,6 +174,7 @@ describe("User Class: Value Object", () => {
                 email: 'da@gmail.com',
                 role: 0,
                 following: [],
+                isVerified : false,
                 channel: {
                     id: 0,
                     followers: [],
@@ -184,6 +194,7 @@ describe("User Class: Value Object", () => {
                 email: 'da@gmail.com',
                 role: 0,
                 following: [],
+                isVerified : false,
                 channel: {
                     id: 0,
                     followers: [],
@@ -199,6 +210,7 @@ describe("User Class: Value Object", () => {
                 email: 'da@gmail.com',
                 role: 0,
                 following: [],
+                isVerified : false,
                 channel: {
                     id: 0,
                     followers: [],

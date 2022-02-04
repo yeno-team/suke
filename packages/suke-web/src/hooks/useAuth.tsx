@@ -51,6 +51,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                     email: 'guest@suke.app',
                     name: 'Guest',
                     role: Role.Guest,
+                    isVerified : false,
                     following: [],
                     channel: {
                         id: 0,

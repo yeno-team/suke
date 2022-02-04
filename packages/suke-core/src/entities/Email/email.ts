@@ -103,15 +103,14 @@ export class EmailModel extends BaseEntity implements IEmail {
 
     @Column({ 
         nullable : true , 
-        default : null , 
-        select : false 
+        default : null
     })
     public verificationToken! : string | null;
     
     @Column({ 
         unique : true , 
         nullable : false,
-        transformer : [ lowercaseTransformer , hideEmailTransformer ] 
+        transformer : [ lowercaseTransformer ] 
     })
     public currentEmail!: string;
 

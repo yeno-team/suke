@@ -8,7 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { randomString } from '@suke/suke-util/src/randomString';
 import { Email } from '@suke/suke-core/src/entities/Email';
-import { EmailDBService } from './email';
+import { EmailDBService, EmailUtilService } from './email';
 @Service()
 export class UserService {
     constructor(
@@ -16,6 +16,7 @@ export class UserService {
         @InjectRepository(Follower) private followerRepository: Repository<Follower>,
         private userChannelService: UserChannelService,    
         private emailDBService : EmailDBService,
+        private emailUtilService : EmailUtilService
     ) {}
 
     public async findById(id: number): Promise<UserModel | undefined> {
@@ -51,7 +52,7 @@ export class UserService {
             previousEmail : null,
             originalEmail : email,
             currentEmail : email,
-            verificationToken : `${randomString(128)}-${randomString(128)}-${randomString(128)}`,
+            verificationToken : this.emailUtilService.createVerificationToken(),
         });
 
         const createdChannel = await this.userChannelService.create(newChannel);

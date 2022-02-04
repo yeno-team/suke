@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Email, EmailModel, IEmail } from "../Email";
+import { EmailModel, IEmail } from "../Email";
 import { Role } from '../../Role';
 import { ValueObject } from '../../ValueObject';
 import { lowercaseTransformer } from '../../transformers/ValueTransformers';
