@@ -13,5 +13,8 @@ export interface IConfiguration {
     recaptcha : {
         secretKey : string
     },
-    session: SessionOptions
+    session: SessionOptions,
+    email : {
+        jwtSecret : string
+    }
 }

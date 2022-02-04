@@ -1,25 +1,25 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { User, UserModel } from '@suke/suke-core/src/entities/User';
-import { Repository, SimpleConsoleLogger } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { UserChannelService } from './channel';
 import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { randomString } from '@suke/suke-util/src/randomString';
 import { Email } from '@suke/suke-core/src/entities/Email';
-import { EmailService } from './email';
+import { EmailDBService } from './email';
 @Service()
 export class UserService {
     constructor(
         @InjectRepository(UserModel) private userRepository: Repository<UserModel>,
         @InjectRepository(Follower) private followerRepository: Repository<Follower>,
         private userChannelService: UserChannelService,    
-        private emailService : EmailService,
+        private emailDBService : EmailDBService,
     ) {}
 
     public async findById(id: number): Promise<UserModel | undefined> {
-        return (await this.userRepository.findByIds([id], {relations: ['channel', 'channel.followers', 'following', 'following.followedTo' , 'email']}))[0];
+        return (await this.userRepository.findByIds([id], {relations: ['channel', 'channel.followers', 'following', 'following.followedTo',"email"]}))[0];
     }
 
     public async findByName(name: string): Promise<UserModel | undefined> {
@@ -29,15 +29,7 @@ export class UserService {
                     name: name
                 }
             ],
-            relations: ['channel', 'channel.followers', 'channel.followers.follower', 'following', 'following.followedTo']
-        }));
-    }
-
-    public async findByEmailToken(token : string) : Promise<UserModel | undefined> {
-        return (await this.userRepository.findOne({
-            where : [{
-                emailToken : token
-            }]
+            relations: ['channel', 'channel.followers', 'channel.followers.follower', 'following', 'following.followedTo' , "email"]
         }));
     }
 
@@ -72,7 +64,7 @@ export class UserService {
         newUser.channel = createdChannel;
         newUser.following = [];
 
-        const createdEmail = await this.emailService.create(newEmail);
+        const createdEmail = await this.emailDBService.create(newEmail);
         newUser.email = createdEmail;   
         
         const saltedPassword = await bcrypt.hash(rawPassword, 6);

@@ -2,7 +2,7 @@ import nodemailer , { SendMailOptions , TestAccount , Transporter } from "nodema
 import SESTransport from "nodemailer/lib/ses-transport";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
-export class MailServerService {
+export class NodeMailerService {
     public transporter : nodemailer.Transporter<unknown> | null;
     public testAccount : TestAccount | null;
 

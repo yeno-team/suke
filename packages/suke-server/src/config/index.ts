@@ -42,6 +42,9 @@ const config: IConfiguration = {
     },
     recaptcha : {
         secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEY", true) as string
+    },
+    email : {
+        jwtSecret : getEnvironmentVariable("EMAIL_JWT_SECRET" , true) as string
     }
 };
 
