@@ -1,4 +1,4 @@
-import { Inject, Service } from "typedi";
+import { Service } from "typedi";
 import { UserService } from "../services/user";
 import { BaseController } from "./BaseController";
 import { Request, Response , Express } from 'express';
@@ -6,8 +6,8 @@ import { User } from "@suke/suke-core/src/entities/User";
 import { RateLimiterAbstract } from "rate-limiter-flexible";
 import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
-import nodemailer from "nodemailer";
 import { EmailUtilService } from "@suke/suke-server/src/services/email";
+import { Name } from "@suke/suke-core/src/entities/Name";
 @Service()
 export class UserController extends BaseController {
     public rateLimiters: Map<string, RateLimiterAbstract>;
@@ -68,10 +68,10 @@ export class UserController extends BaseController {
     public Post = async (req: Request, res: Response): Promise<void> => {
         const userObj = new User({ id: 0, ...req.body , isVerified : false });
         const createdUser = await this.userService.create(userObj , req.body.email , req.body.password);
-        const tokenAsJwt = await this.emailUtilService.sign_verification_token(createdUser.email.verificationToken);
+        const tokenAsJwt = await this.emailUtilService.signVerificationToken(createdUser.email.verificationToken);
 
         try {
-            this.emailUtilService.sendVerificationLinkToEmail(createdUser.name , createdUser.email.currentEmail , tokenAsJwt);
+            this.emailUtilService.sendVerificationLinkToEmail(new Name(createdUser.name), createdUser.email.currentEmail , tokenAsJwt);
         // eslint-disable-next-line no-empty
         } catch (e){}
 

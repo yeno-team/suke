@@ -15,6 +15,10 @@ export interface IConfiguration {
     },
     session: SessionOptions,
     email : {
+        host : string,
+        port : number,
+        username : string,
+        password : string,
         jwtSecret : string
     }
 }

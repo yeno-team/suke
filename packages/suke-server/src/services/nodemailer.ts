@@ -1,28 +1,11 @@
-import nodemailer , { SendMailOptions , TestAccount , Transporter } from "nodemailer";
-import SESTransport from "nodemailer/lib/ses-transport";
+import nodemailer , { SendMailOptions , Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 export class NodeMailerService {
     public transporter : nodemailer.Transporter<unknown> | null;
-    public testAccount : TestAccount | null;
-
-    private async createTestAccount() : Promise<TestAccount> {
-        this.testAccount = await nodemailer.createTestAccount();
-        return this.testAccount;
-    }
 
     public async createTransport(options? : SMTPTransport | SMTPTransport.Options) : Promise<Transporter<unknown>> {
-        if(!(this.testAccount)) {
-            await this.createTestAccount();
-        }
-
-        this.transporter = await nodemailer.createTransport({
-            ...options,
-            auth : {
-                user : this.testAccount.user,
-                pass :  this.testAccount.pass
-            }
-        });
+        this.transporter = await nodemailer.createTransport(options);
         return this.transporter;
     }
 
@@ -33,7 +16,7 @@ export class NodeMailerService {
         
         const info = await this.transporter.sendMail({
             ...options,
-            from : "Yeno Team <yenoteam@example.com>",
+            from : '"Suke Team" <admin@suke.app>',
         }) as SMTPTransport.SentMessageInfo;
 
         return info;

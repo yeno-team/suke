@@ -44,6 +44,10 @@ const config: IConfiguration = {
         secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEY", true) as string
     },
     email : {
+        host : getEnvironmentVariable("SMTP_HOST" , true) as string,
+        port : parseInt(getEnvironmentVariable("SMTP_PORT" , true)) as number,
+        username : getEnvironmentVariable("SMTP_USERNAME",true) as string,
+        password : getEnvironmentVariable("SMTP_PASSWORD" , true) as string,
         jwtSecret : getEnvironmentVariable("EMAIL_JWT_SECRET" , true) as string
     }
 };

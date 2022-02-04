@@ -32,9 +32,13 @@ createConnection({
     
     const nodeMailerService = new NodeMailerService();
     await nodeMailerService.createTransport({
-        host : "smtp.ethereal.email",
-        port : 587,
-        secure : false
+        host : config.email.host,
+        port : config.email.port,
+        auth : {
+            user : config.email.username,
+            pass : config.email.password
+        },
+        secure : true
     });
 
     Container.set<typeof nodeMailerService>("NodeMailerService", nodeMailerService);
