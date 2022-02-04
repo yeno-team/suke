@@ -1,53 +1,45 @@
 import { Service } from "typedi";
-import jwt from "jsonwebtoken";
 import { Request , Response } from "express";
-import { UserService } from "@suke/suke-server/src/services/user";
+import { EmailUtilService, EmailDBService } from "@suke/suke-server/src/services/email";
 import { BaseController } from "../BaseController";
-
-export interface DecodedEmailTokenJWT extends jwt.JwtPayload {
-    t : string;
-}
 
 @Service()
 export class VerifyEmailController extends BaseController {
-    public route = "/api/accountsettings/verify";
+    public route = "/api/accountsettings/verifyemail";
 
     constructor(
-        private userService : UserService
+        private emailDBService : EmailDBService,
+        private emailUtilService : EmailUtilService
     ) {
         super();
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
-        // const { token } = req.body;
+        const { token } = req.body;
 
-        // if(!(token)) {
-        //     res.status(400).json({ error : true , message : "Token field is missing."});
-        //     return;
-        // }
+        if(!(token)) {
+            res.status(400).json({ error : true , message : "Token field is missing."});
+            return;
+        }
 
-        // if(typeof token !== "string") {
-        //     res.status(400).json({ error : true , message : "Token field must be type string."});
-        //     return;
-        // }
+        if(typeof token !== "string") {
+            res.status(400).json({ error : true , message : "Token field must be type string."});
+            return;
+        }
+        
+        const { t } = await this.emailUtilService.verify_verification_token(token);
+        const data = await this.emailDBService.findByVerificationToken(t);
 
-        // const { t } = await jwt.verify(token , "khai is not god" , {
-        //     issuer : "Suke",
-        //     subject : "Suke Email Verification"
-        // }) as DecodedEmailTokenJWT;
+        if(!(data)) {
+            res.status(400).json({success : false , message : "Token no longer exists."});
+            return;
+        }
 
-        // const user = await this.userService.findByEmailToken(t);
+        // this didn't set i guess?
+        data.user.isVerified = true;
+        data.verificationToken = null;
 
-        // if(!(user)) {
-        //     res.status(400).json({success : false , message : "Email token doesn't exist."});
-        //     return;
-        // }
-
-        // user.isVerified = true;
-        // user.emailToken = null;
-
-        // await this.userService.update(user);
-
+        await this.emailDBService.update(data);
         res.status(200).json({ success : true });
     }
 }

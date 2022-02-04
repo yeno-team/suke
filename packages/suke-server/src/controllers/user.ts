@@ -1,13 +1,13 @@
 import { Inject, Service } from "typedi";
 import { UserService } from "../services/user";
-import { MailServerService } from "../services/mailServer";
 import { BaseController } from "./BaseController";
 import { Request, Response , Express } from 'express';
 import { User } from "@suke/suke-core/src/entities/User";
 import { RateLimiterAbstract } from "rate-limiter-flexible";
 import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
-import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import { EmailUtilService } from "@suke/suke-server/src/services/email";
 @Service()
 export class UserController extends BaseController {
     public rateLimiters: Map<string, RateLimiterAbstract>;
@@ -15,8 +15,7 @@ export class UserController extends BaseController {
 
     constructor(
         private userService: UserService,
-        @Inject("mailServer")
-        private mailEmailService : MailServerService
+        private emailUtilService : EmailUtilService
     ) {
         super();
     }
@@ -69,15 +68,10 @@ export class UserController extends BaseController {
     public Post = async (req: Request, res: Response): Promise<void> => {
         const userObj = new User({ id: 0, ...req.body , isVerified : false });
         const createdUser = await this.userService.create(userObj , req.body.email , req.body.password);
-
-        const jwtEmailToken = await jwt.sign({ t : createdUser.email.verificationToken } , "khai is not god" , { issuer : "Suke" , expiresIn : "5m" , audience : createdUser.name , subject : "Suke Email Verification" });
+        const tokenAsJwt = await this.emailUtilService.sign_verification_token(createdUser.email.verificationToken);
 
         try {
-            this.mailEmailService.sendMail({
-                to : createdUser.email.currentEmail,
-                subject : "Suke Email Verification",
-                text : jwtEmailToken
-            });
+            this.emailUtilService.sendVerificationLinkToEmail(createdUser.name , createdUser.email.currentEmail , tokenAsJwt);
         // eslint-disable-next-line no-empty
         } catch (e){}
 
