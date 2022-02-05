@@ -6,8 +6,7 @@ import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/User
 import { UserChannelService } from './channel';
 import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
-import { randomString } from '@suke/suke-util/src/randomString';
-import { Email } from '@suke/suke-core/src/entities/Email';
+import { Email, EmailData } from '@suke/suke-core/src/entities/Email';
 import { EmailDBService, EmailUtilService } from './email';
 @Service()
 export class UserService {
@@ -38,7 +37,7 @@ export class UserService {
         return await this.userRepository.save(model);
     }
 
-    public async create(user: User , email : string , rawPassword: string): Promise<UserModel> {
+    public async create(user: User , email : Email , rawPassword: string): Promise<UserModel> {
         const newChannel = new UserChannel({
             id: 0,
             followers: [],
@@ -47,17 +46,17 @@ export class UserService {
             roledUsers: []
         });
 
-        const newEmail = new Email({
+        const newEmail = new EmailData({
             id : 0,
             previousEmail : null,
-            originalEmail : email,
-            currentEmail : email,
+            originalEmail : email.value,
+            currentEmail : email.value,
             verificationToken : this.emailUtilService.createVerificationToken(),
         });
 
         const createdChannel = await this.userChannelService.create(newChannel);
         const newUser = new UserModel();    
-
+        
         newUser.id = user.id;
         newUser.name = user.name;
         newUser.role = user.role;
