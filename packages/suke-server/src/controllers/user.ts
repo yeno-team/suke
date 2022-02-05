@@ -9,6 +9,7 @@ import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 import { EmailUtilService } from "@suke/suke-server/src/services/email";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { Email } from "@suke/suke-core/src/entities/Email";
+import nodemailer from "nodemailer";
 @Service()
 export class UserController extends BaseController {
     public rateLimiters: Map<string, RateLimiterAbstract>;
@@ -67,14 +68,18 @@ export class UserController extends BaseController {
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
+        const host = req.hostname.toLowerCase();
         const userObj = new User({ id: 0, ...req.body , isVerified : false });
         const createdUser = await this.userService.create(userObj , new Email(req.body.email) , req.body.password);
         const tokenAsJwt = await this.emailUtilService.signVerificationToken(createdUser.email.verificationToken);
 
-        try {
-            this.emailUtilService.sendVerificationLinkToEmail(new Name(createdUser.name), new Email(createdUser.email.currentEmail) , tokenAsJwt);
-        // eslint-disable-next-line no-empty
-        } catch (e){}
+        await this.emailUtilService.sendVerificationLinkToEmail({
+            username : new Name(createdUser.name),
+            email : new Email(createdUser.email.currentEmail),
+            token : tokenAsJwt,
+            host : new URL(host === "localhost" ? "http://localhost:3000" : host)
+        })
+        .then((res) => console.log(nodemailer.getTestMessageUrl(res)));
 
         // Removes salt from the response.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

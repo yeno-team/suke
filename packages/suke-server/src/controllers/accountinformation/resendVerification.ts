@@ -5,11 +5,11 @@ import { BaseController } from "../BaseController";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { Express } from "express";
 import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
-import { catchErrorAsync } from "../../middlewares/catchErrorAsync";
+import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { Email } from "@suke/suke-core/src/entities/Email";
 @Service()
 export class ResendVerificationController extends BaseController {
-    public route = "/api/accountsettings/resendverification";
+    public route = "/api/accountinformation/resendverification";
 
     constructor(
         private emailDBService : EmailDBService,
