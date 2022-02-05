@@ -11,6 +11,13 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 export interface DecodedEmailTokenJWT extends jwt.JwtPayload {
     t : string;
 }
+
+export interface SendVerificationLinkToEmailOpts {
+    username : Name;
+    email : Email;
+    host : URL;
+    token : string;
+}
 @Service()
 export class EmailUtilService { // i don't know what do call this
     @Inject("email_jwt_secret_key")
@@ -40,26 +47,28 @@ export class EmailUtilService { // i don't know what do call this
         return data;
     }
 
-    public async verifyVerificationToken(tokenAsJWT : string) : Promise<DecodedEmailTokenJWT> {
+    public async verifyVerificationToken(tokenAsJWT : string) : Promise<string> {
         const verifiedData = await jwt.verify(tokenAsJWT , this.secretKey , {
             issuer : "Suke",
             subject : "Suke Email Verification"
         }) as DecodedEmailTokenJWT;
 
-        return verifiedData;
+        return verifiedData.t;
     }
 
     /**
      * Send a verification token to an email address.
      * @param email
      */
-    public async sendVerificationLinkToEmail(username : Name , email : Email , tokenAsJWT : string) : Promise<SMTPTransport.SentMessageInfo> {
-        await this.verifyVerificationToken(tokenAsJWT);
+    public async sendVerificationLinkToEmail({ email , username , token , host } : SendVerificationLinkToEmailOpts) : Promise<SMTPTransport.SentMessageInfo> {
+        await this.verifyVerificationToken(token);
 
+        const verificationLink = new URL(host.href + `account/verifyemail/${token}`);
+        
         return await this.NodeMailerService.sendMail({
             to : email.value,
             subject : "Suke Email Verification",
-            html : `Hello, ${username}. Thanks for signing up! We just need you to verify your email addresse to complete setting up your account. <a> ${tokenAsJWT} </a>.`
+            html : `Hello, ${username.name}. <br> Thanks for signing up! We just need you to verify your email address to complete setting up your account. <br> <br> <a href="${verificationLink.href}">Click here to verify your account.</a>`
         });
     }
 

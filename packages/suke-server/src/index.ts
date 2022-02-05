@@ -24,22 +24,22 @@ createConnection({
     Container.set<RedisClientType>('redis', RedisClient);
     Container.set<string>("email_jwt_secret_key" , config.email.jwtSecret);
 
-    console.log("Connected to DB instance.");
-
     const categoryRepository = getRepository(CategoryModel);
     await categoryRepository.update({viewerCount: Not(0)}, {viewerCount: 0});
     console.log("Reset Categories Viewer Counts Successfully.");
     
     const nodeMailerService = new NodeMailerService();
-    await nodeMailerService.createTransport({
-        host : config.email.host,
-        port : config.email.port,
-        auth : {
-            user : config.email.username,
-            pass : config.email.password
-        },
-        secure : true
-    });
+    await nodeMailerService.setTestAccount() , await nodeMailerService.setTransport();
+    // const
+    // await nodeMailerService.createTransport({
+    //     host : config.email.host,
+    //     port : config.email.port,
+    //     auth : {
+    //         user : config.email.username,
+    //         pass : config.email.password
+    //     },
+    //     secure : true
+    // });
 
     Container.set<typeof nodeMailerService>("NodeMailerService", nodeMailerService);
     console.log("Mail server has been initalized.");
