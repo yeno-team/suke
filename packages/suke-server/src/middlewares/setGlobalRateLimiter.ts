@@ -10,13 +10,13 @@ export const setGlobalRateLimiter = () : RequestHandler => catchErrorAsync(async
         limiter : GlobalRateLimiter,
         pointsToConsume : 1,
         isGlobalLimiter : true
-    })
+    });
 
-    const { isRateLimited } = await createRateLimiter(res , opts)
+    const { isRateLimited } = await createRateLimiter(res , opts);
 
     if(isRateLimited) {
-        return
+        return;
     }
 
-    next()
-})
+    next();
+});

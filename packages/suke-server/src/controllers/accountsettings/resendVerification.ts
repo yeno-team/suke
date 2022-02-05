@@ -3,7 +3,10 @@ import { Request , Response } from "express";
 import { EmailUtilService, EmailDBService } from "@suke/suke-server/src/services/email";
 import { BaseController } from "../BaseController";
 import { Name } from "@suke/suke-core/src/entities/Name";
-
+import { Express } from "express";
+import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
+import { catchErrorAsync } from "../../middlewares/catchErrorAsync";
+import { Email } from "@suke/suke-core/src/entities/Email";
 @Service()
 export class ResendVerificationController extends BaseController {
     public route = "/api/accountsettings/resendverification";
@@ -15,14 +18,11 @@ export class ResendVerificationController extends BaseController {
         super();
     }
 
+    public execute(app : Express) : void {
+        app.route(this.route).post(isAuthenticated() , catchErrorAsync(this.Post));
+    }
+
     public Post = async(req : Request , res : Response) : Promise<void> => {
-        // should add is auth middle ware here
-
-        if(!(req.session.user)) {
-            res.status(401).json({ error : true , message : "You are not authenticated."});
-            return;
-        }
-
         const data = await this.emailDBService.findByUsername(new Name(req.session.user.name));
 
         if(!(data)) {
@@ -31,16 +31,13 @@ export class ResendVerificationController extends BaseController {
         }
 
         if(data.user.isVerified) {
-            res.status(400).json({ error : true , message : "Your email has already been verified"});
+            res.status(400).json({ error : true , message : "Your email is already been verified"});
             return;
         }
         
         const token = this.emailUtilService.createVerificationToken();
-
-        console.log(data.verificationToken);
-
         data.verificationToken = token;
-        
+
         // Update the previous verification token to the new one to invalidate it.
         await this.emailDBService.update(data);
 
@@ -48,7 +45,7 @@ export class ResendVerificationController extends BaseController {
         const tokenAsJWT = await this.emailUtilService.signVerificationToken(token);
 
         // Send the verification link to the recipient.
-        // await this.emailUtilService.resendVerificationLinkToEmail(new Name(data.user.name) , data.currentEmail , tokenAsJWT);
+        await this.emailUtilService.resendVerificationLinkToEmail(new Name(data.user.name) , new Email(data.currentEmail) , tokenAsJWT);
 
         res.status(200).json({ success : true });
     }

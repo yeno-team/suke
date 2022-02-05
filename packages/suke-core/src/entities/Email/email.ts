@@ -12,12 +12,37 @@ export interface IEmail {
     currentEmail : string;
 }
 
-export class Email extends ValueObject implements IEmail {
+export class Email extends ValueObject {
+    public value : string;
+
+    constructor(email : string) {
+        super();
+        this.value = email;
+
+        if(!(this.IsValid())) {
+            throw new PropertyValidationError("email");
+        }
+    }
+
+    protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
+        yield this.value;
+        return;
+    }
+    
+    protected IsValid() : boolean {
+        return isValidEmail(this.value);
+    }
+}
+
+export class EmailData extends ValueObject implements IEmail {
     public id : number;
     public originalEmail : string | null;
-    public verificationToken: string | null;
+    private _originalEmail : Email | undefined;
     public previousEmail: string | null;
+    private _previousEmail : Email | undefined;
     public currentEmail: string;
+    private _currentEmail : Email | undefined;
+    public verificationToken: string | null;
 
     constructor(email : IEmail) {
         super();
@@ -40,41 +65,23 @@ export class Email extends ValueObject implements IEmail {
 
     protected IsValid(): boolean {
         if(typeof (this.id) !== "number") {
-            throw new PropertyValidationError("email id is not a number");
+            throw new PropertyValidationError("id");
+        }
+
+        if((this.verificationToken) && (typeof this.verificationToken !== "string")) {
+            throw new PropertyValidationError("verificationToken");
         }
 
         if(this.originalEmail) {
-            console.log(this.originalEmail);
-            if(typeof this.originalEmail !== "string") {
-                throw new PropertyValidationError("originalEmail is not a string.");
-            }
-
-            if(!(isValidEmail(this.originalEmail))) {
-                throw new PropertyValidationError("originalEmail value is not a valid email.");
-            }
+            this._originalEmail = new Email(this.originalEmail);
         }
 
         if(this.previousEmail) {
-            if(typeof this.previousEmail !== "string") {
-                throw new PropertyValidationError("previousEmail is not a string.");
-            }
-
-            if(!(isValidEmail(this.previousEmail))) {
-                throw new PropertyValidationError("previousEmail is not a valid email.");
-            }
+            this._previousEmail = new Email(this.previousEmail);
         }
 
-
-        if((this.verificationToken) && (typeof this.verificationToken !== "string")) {
-            throw new PropertyValidationError("verificationToken is not a string.");
-        }
-
-        if(!(this.currentEmail)) {
-            throw new PropertyValidationError("currentEmail must be required.");
-        }
-
-        if(typeof this.currentEmail !== "string") {
-            throw new PropertyValidationError("currentEmail is not astring.");
+        if(this.currentEmail) {
+            this._currentEmail = new Email(this.currentEmail);
         }
 
         return true;

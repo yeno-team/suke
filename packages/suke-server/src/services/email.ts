@@ -2,7 +2,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { Repository } from "typeorm";
 import { Inject, Service } from "typedi";
 import jwt from "jsonwebtoken";
-import { Email , EmailModel} from "@suke/suke-core/src/entities/Email";
+import { Email, EmailData, EmailModel } from "@suke/suke-core/src/entities/Email";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { randomString } from "@suke/suke-util/src/randomString";
 import { NodeMailerService } from "./nodeMailer";
@@ -53,21 +53,21 @@ export class EmailUtilService { // i don't know what do call this
      * Send a verification token to an email address.
      * @param email
      */
-    public async sendVerificationLinkToEmail(username : Name , email : string , tokenAsJWT : string) : Promise<SMTPTransport.SentMessageInfo> {
+    public async sendVerificationLinkToEmail(username : Name , email : Email , tokenAsJWT : string) : Promise<SMTPTransport.SentMessageInfo> {
         await this.verifyVerificationToken(tokenAsJWT);
 
         return await this.NodeMailerService.sendMail({
-            to : email,
+            to : email.value,
             subject : "Suke Email Verification",
             html : `Hello, ${username}. Thanks for signing up! We just need you to verify your email addresse to complete setting up your account. <a> ${tokenAsJWT} </a>.`
         });
     }
 
-    public async resendVerificationLinkToEmail(username : Name , email : string , tokenAsJWT : string) : Promise<SMTPTransport.SentMessageInfo> {
+    public async resendVerificationLinkToEmail(username : Name , email : Email , tokenAsJWT : string) : Promise<SMTPTransport.SentMessageInfo> {
         await this.verifyVerificationToken(tokenAsJWT);
 
         return await this.NodeMailerService.sendMail({
-            to : email,
+            to : email.value,
             subject : "Suke Email Verification",
             html : `Hello , ${username}. You've requested us to resend you a new verification link.`
         });
@@ -94,7 +94,7 @@ export class EmailDBService {
         @InjectRepository(EmailModel) private emailRepository : Repository<EmailModel>
     ) {}
 
-    public async create(email : Email) : Promise<EmailModel> {
+    public async create(email : EmailData) : Promise<EmailModel> {
         const newEmail = new EmailModel();
 
         newEmail.verificationToken = email.verificationToken;
