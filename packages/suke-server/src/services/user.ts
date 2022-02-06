@@ -7,14 +7,14 @@ import { UserChannelService } from './channel';
 import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { Email, EmailData } from '@suke/suke-core/src/entities/Email';
-import { EmailDBService, EmailUtilService } from './email';
+import { EmailService, EmailUtilService } from './email';
 @Service()
 export class UserService {
     constructor(
         @InjectRepository(UserModel) private userRepository: Repository<UserModel>,
         @InjectRepository(Follower) private followerRepository: Repository<Follower>,
         private userChannelService: UserChannelService,    
-        private emailDBService : EmailDBService,
+        private emailDBService : EmailService,
         private emailUtilService : EmailUtilService
     ) {}
 

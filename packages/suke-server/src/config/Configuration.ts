@@ -1,6 +1,8 @@
 import { SessionOptions } from "express-session";
 
 export interface IConfiguration {
+    "node_env" : "development" | "production",
+    "production_url" : string
     server: {
         port: number
     },

@@ -68,16 +68,14 @@ export class UserController extends BaseController {
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
-        const host = req.hostname.toLowerCase();
         const userObj = new User({ id: 0, ...req.body , isVerified : false });
         const createdUser = await this.userService.create(userObj , new Email(req.body.email) , req.body.password);
-        const tokenAsJwt = await this.emailUtilService.signVerificationToken(createdUser.email.verificationToken);
+        const tokenAsJWT = await this.emailUtilService.signVerificationToken(createdUser.email.verificationToken);
 
         await this.emailUtilService.sendVerificationLinkToEmail({
             username : new Name(createdUser.name),
             email : new Email(createdUser.email.currentEmail),
-            token : tokenAsJwt,
-            host : new URL(host === "localhost" ? "http://localhost:3000" : host)
+            tokenAsJWT,
         })
         .then((res) => console.log(nodemailer.getTestMessageUrl(res)));
 
