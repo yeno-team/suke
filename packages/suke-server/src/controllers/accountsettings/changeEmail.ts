@@ -7,7 +7,6 @@ import { Email } from "@suke/suke-core/src/entities/Email";
 import { BaseController } from "../BaseController";
 import { UserService } from "@suke/suke-server/src/services/user";
 import { Name } from "@suke/suke-core/src/entities/Name";
-import nodemailer from "nodemailer";
 @Service()
 export class ChangeEmailController extends BaseController {
     public route = "/api/accountsettings/changeemail";
@@ -30,12 +29,16 @@ export class ChangeEmailController extends BaseController {
         const user = await this.userService.findById(req.session.user.id);
 
         if(!(user)) {
-            res.status(500).json({ message : "Session id cannot find the client user."});
+            res.status(500).json({ 
+                message : "Session id cannot find the client user."
+            });
             return;
         }   
 
         if((newEmail.value) === (user.email.currentEmail)) {
-            res.status(400).json({ message : "Cannot change new email address to your current email address"});
+            res.status(400).json({ 
+                message : "Cannot change email address to your current email address."
+            });
             return;
         }
 

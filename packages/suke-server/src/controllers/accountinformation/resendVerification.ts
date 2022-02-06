@@ -27,12 +27,16 @@ export class ResendVerificationController extends BaseController {
         const data = await this.emailService.findByUsername(new Name(req.session.user.name));
 
         if(!(data)) {
-            res.status(400).json({ message : "Something wrong happened."});
+            res.status(400).json({ 
+                message : "Something wrong happened."
+            });
             return;
         }
 
         if(data.user.isVerified) {
-            res.status(400).json({ message : "Your email is already been verified"});
+            res.status(400).json({ 
+                message : "Your email is already been verified"
+            });
             return;
         }
         
@@ -46,11 +50,11 @@ export class ResendVerificationController extends BaseController {
         const tokenAsJWT = await this.emailUtilService.signVerificationToken(token);
 
         // Send the verification link to the recipient.
-        await this.emailUtilService.resendVerificationLinkToEmail({
+        this.emailUtilService.resendVerificationLinkToEmail({
             username : new Name(data.user.name),
             tokenAsJWT,
             email : new Email(data.currentEmail)
-        }).then(res => console.log(nodemailer.getTestMessageUrl(res)));
+        });
 
         res.status(200).json({ success : true });
     }

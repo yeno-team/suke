@@ -92,7 +92,7 @@ export class EmailUtilService { // i don't know what do call this
         return await this.NodeMailerService.sendMail({
             to : email.value,
             subject : "Suke Email Verification",
-            html : `Hello, ${username.name}. <br> <br> You've requested us to resend you a new verification link. <br> <br> <a href="${verificationLink}>Click here to verify your account.</a>`
+            html : `Hello, ${username.name}. <br> <br> You've requested us to resend you a new verification link. <br> <br> <a href="${verificationLink}">Click here to verify your account.</a>`
         });
     }
 
