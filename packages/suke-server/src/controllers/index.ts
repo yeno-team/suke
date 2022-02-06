@@ -12,6 +12,7 @@ import { RealtimeChannelsController } from "./realtimeChannel";
 import { CategoryChannelsController } from "./categories/channels";
 import { VerifyEmailController } from "./accountsettings/verifyEmail";
 import { ResendVerificationController } from "./accountinformation/resendVerification";
+import { ChangeEmailController } from "./accountsettings/changeEmail";
 
 export default [
     AuthController,
@@ -28,5 +29,6 @@ export default [
     CategoryChannelsController,
     RealtimeChannelsController,
     VerifyEmailController,
-    ResendVerificationController
+    ResendVerificationController,
+    ChangeEmailController
 ];

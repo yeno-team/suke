@@ -4,20 +4,28 @@ import { Inject, Service } from "typedi";
 import jwt from "jsonwebtoken";
 import { Email, EmailData, EmailModel } from "@suke/suke-core/src/entities/Email";
 import { Name } from "@suke/suke-core/src/entities/Name";
+import { hideEmail } from "@suke/suke-util/src/hideEmail";
 import { randomString } from "@suke/suke-util/src/randomString";
-import { NodeMailerService } from "./nodeMailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import config from "@suke/suke-server/src/config";
+import { NodeMailerService } from "./nodeMailer";
 
 export interface DecodedEmailTokenJWT extends jwt.JwtPayload {
     t : string;
 }
 
-export interface SendVerificationLinkToEmailOpts {
+export interface VerificationRelatedLinkOpts {
     username : Name;
     email : Email;
-    host : URL;
-    token : string;
+    tokenAsJWT : string;
 }
+
+export interface SendEmailChangeToNewEmailOpts {
+    username : Name;
+    oldEmail : Email;
+    newEmail : Email;
+}
+
 @Service()
 export class EmailUtilService { // i don't know what do call this
     @Inject("email_jwt_secret_key")
@@ -26,7 +34,11 @@ export class EmailUtilService { // i don't know what do call this
     constructor(
         @Inject("NodeMailerService")
         private NodeMailerService : NodeMailerService
-    ) {}
+    ) {}    
+
+    private getHost() : URL {
+        return new URL(config.node_env === "production" ? config.production_url : "http://localhost:3000"); 
+    }
 
     public createVerificationToken() : string {
         return `${randomString(128)}-${randomString(128)}-${randomString(128)}`;
@@ -60,27 +72,42 @@ export class EmailUtilService { // i don't know what do call this
      * Send a verification token to an email address.
      * @param email
      */
-    public async sendVerificationLinkToEmail({ email , username , token , host } : SendVerificationLinkToEmailOpts) : Promise<SMTPTransport.SentMessageInfo> {
-        await this.verifyVerificationToken(token);
+    public async sendVerificationLinkToEmail({ email , username , tokenAsJWT } : VerificationRelatedLinkOpts) : Promise<SMTPTransport.SentMessageInfo> {
+        await this.verifyVerificationToken(tokenAsJWT);
 
-        const verificationLink = new URL(host.href + `account/verifyemail/${token}`);
+        const verificationLink = new URL(this.getHost().href + `account/verifyemail/${tokenAsJWT}`);
         
         return await this.NodeMailerService.sendMail({
             to : email.value,
             subject : "Suke Email Verification",
-            html : `Hello, ${username.name}. <br> Thanks for signing up! We just need you to verify your email address to complete setting up your account. <br> <br> <a href="${verificationLink.href}">Click here to verify your account.</a>`
+            html : `Hello, ${username.name}. <br> <br> Thanks for signing up! We just need you to verify your email address to complete setting up your account. <br> <br> <a href="${verificationLink.href}">Click here to verify your account.</a>`
         });
     }
 
-    public async resendVerificationLinkToEmail(username : Name , email : Email , tokenAsJWT : string) : Promise<SMTPTransport.SentMessageInfo> {
+    public async resendVerificationLinkToEmail({ username , tokenAsJWT , email } : VerificationRelatedLinkOpts) : Promise<SMTPTransport.SentMessageInfo> {
         await this.verifyVerificationToken(tokenAsJWT);
+
+        const verificationLink = new URL(this.getHost().href + `account/verifyemail/${tokenAsJWT}`);
 
         return await this.NodeMailerService.sendMail({
             to : email.value,
             subject : "Suke Email Verification",
-            html : `Hello , ${username}. You've requested us to resend you a new verification link.`
+            html : `Hello, ${username.name}. <br> <br> You've requested us to resend you a new verification link. <br> <br> <a href="${verificationLink}>Click here to verify your account.</a>`
         });
     }
+
+    public async sendReverifyEmailAddress({ email , username , tokenAsJWT } : VerificationRelatedLinkOpts) : Promise<SMTPTransport.SentMessageInfo> {
+        await this.verifyVerificationToken(tokenAsJWT);
+
+        const verificationLink = new URL(this.getHost().href + `account/verifyemail/${tokenAsJWT}`);
+
+        return await this.NodeMailerService.sendMail({
+            to : email.value,
+            subject : "Suke Email Verification",
+            html : `Hello, ${username.name}. <br> <br> You have recently changed your email address. Please re-verify your account again by clicking on the link. <br> <br> <a href="${verificationLink}">Click here to verify your account</a>.`
+        });
+
+    } 
 
     /**
      * Send an email update to the user's old email address when their email had been changed.
@@ -88,17 +115,17 @@ export class EmailUtilService { // i don't know what do call this
      * @param oldEmail 
      * @param newEmail 
      */
-    public async sendUpdateStatusToEmail(username : string , oldEmail : string , newEmail : string) : Promise<SMTPTransport.SentMessageInfo> {
+    public async sendEmailChangeToNewEmail({ oldEmail , newEmail , username } : SendEmailChangeToNewEmailOpts) : Promise<SMTPTransport.SentMessageInfo> {
         return await this.NodeMailerService.sendMail({
-            to : oldEmail,
+            to : oldEmail.value,
             subject : "Suke Account Email Changed",
-            html : `Hello, ${username}. Your email address had recently been changed from ${oldEmail} to ${newEmail}.`
+            html : `Hello, ${username.name}. <br> Your email address had recently been changed from ${hideEmail(oldEmail.value)} to ${hideEmail(newEmail.value)}.`
         });
     }
 }
 
 @Service()
-export class EmailDBService {
+export class EmailService {
     constructor(
         @InjectRepository(EmailModel) private emailRepository : Repository<EmailModel>
     ) {}

@@ -1,18 +1,19 @@
 import { Service } from "typedi";
 import { Request , Response } from "express";
-import { EmailUtilService, EmailDBService } from "@suke/suke-server/src/services/email";
+import { EmailUtilService, EmailService } from "@suke/suke-server/src/services/email";
 import { BaseController } from "../BaseController";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { Express } from "express";
 import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { Email } from "@suke/suke-core/src/entities/Email";
+import nodemailer from "nodemailer";
 @Service()
 export class ResendVerificationController extends BaseController {
     public route = "/api/accountinformation/resendverification";
 
     constructor(
-        private emailDBService : EmailDBService,
+        private emailService : EmailService,
         private emailUtilService : EmailUtilService
     ) {
         super();
@@ -23,15 +24,15 @@ export class ResendVerificationController extends BaseController {
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
-        const data = await this.emailDBService.findByUsername(new Name(req.session.user.name));
+        const data = await this.emailService.findByUsername(new Name(req.session.user.name));
 
         if(!(data)) {
-            res.status(400).json({ error : true , message : "Something wrong happened."});
+            res.status(400).json({ message : "Something wrong happened."});
             return;
         }
 
         if(data.user.isVerified) {
-            res.status(400).json({ error : true , message : "Your email is already been verified"});
+            res.status(400).json({ message : "Your email is already been verified"});
             return;
         }
         
@@ -39,13 +40,17 @@ export class ResendVerificationController extends BaseController {
         data.verificationToken = token;
 
         // Update the previous verification token to the new one to invalidate it.
-        await this.emailDBService.update(data);
+        await this.emailService.update(data);
 
         // Create A JWT with the verification token in the payload.
         const tokenAsJWT = await this.emailUtilService.signVerificationToken(token);
 
         // Send the verification link to the recipient.
-        await this.emailUtilService.resendVerificationLinkToEmail(new Name(data.user.name) , new Email(data.currentEmail) , tokenAsJWT);
+        await this.emailUtilService.resendVerificationLinkToEmail({
+            username : new Name(data.user.name),
+            tokenAsJWT,
+            email : new Email(data.currentEmail)
+        }).then(res => console.log(nodemailer.getTestMessageUrl(res)));
 
         res.status(200).json({ success : true });
     }

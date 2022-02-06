@@ -6,6 +6,8 @@ export const isAuthenticated = () : RequestHandler => (req  , res , next) => {
         return;
     }
 
-    res.status(401).json({ error : true , message : "You are unauthorized to perform this action."});
+    res.status(401).json({ 
+        message : "You are unauthorized to perform this action."
+    });
     return;
 };

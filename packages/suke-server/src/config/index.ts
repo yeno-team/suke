@@ -26,6 +26,8 @@ RedisClient.connect().then(() => {
 }).catch(err => console.error(err));
 
 const config: IConfiguration = {
+    "node_env" : getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",
+    "production_url" : getEnvironmentVariable("PRODUCTION_URL" , true),
     server: {
         port: parseInt(getEnvironmentVariable("PORT", false, "3000") as string)
     },
