@@ -7,7 +7,6 @@ import { Express } from "express";
 import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { Email } from "@suke/suke-core/src/entities/Email";
-import nodemailer from "nodemailer";
 @Service()
 export class ResendVerificationController extends BaseController {
     public route = "/api/accountinformation/resendverification";

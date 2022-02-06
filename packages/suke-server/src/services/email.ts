@@ -69,8 +69,8 @@ export class EmailUtilService { // i don't know what do call this
     }
 
     /**
-     * Send a verification token to an email address.
-     * @param email
+     * Send a verification link to an email recipent..
+     * @param opts
      */
     public async sendVerificationLinkToEmail({ email , username , tokenAsJWT } : VerificationRelatedLinkOpts) : Promise<SMTPTransport.SentMessageInfo> {
         await this.verifyVerificationToken(tokenAsJWT);
@@ -84,6 +84,11 @@ export class EmailUtilService { // i don't know what do call this
         });
     }
 
+    /**
+     * Resend the verification link to an email recipent.
+     * @param opts
+     * @returns 
+     */
     public async resendVerificationLinkToEmail({ username , tokenAsJWT , email } : VerificationRelatedLinkOpts) : Promise<SMTPTransport.SentMessageInfo> {
         await this.verifyVerificationToken(tokenAsJWT);
 
@@ -96,6 +101,11 @@ export class EmailUtilService { // i don't know what do call this
         });
     }
 
+    /**
+     * Send an verification link to the email recipient when a user changes their email address.
+     * @param opts
+     * @returns 
+     */
     public async sendReverifyEmailAddress({ email , username , tokenAsJWT } : VerificationRelatedLinkOpts) : Promise<SMTPTransport.SentMessageInfo> {
         await this.verifyVerificationToken(tokenAsJWT);
 
@@ -106,14 +116,12 @@ export class EmailUtilService { // i don't know what do call this
             subject : "Suke Email Verification",
             html : `Hello, ${username.name}. <br> <br> You have recently changed your email address. Please re-verify your account again by clicking on the link. <br> <br> <a href="${verificationLink}">Click here to verify your account</a>.`
         });
-
     } 
 
     /**
-     * Send an email update to the user's old email address when their email had been changed.
-     * @param username 
-     * @param oldEmail 
-     * @param newEmail 
+     * Send an email change update to the old email address.
+     * @param opts 
+     * @returns 
      */
     public async sendEmailChangeToNewEmail({ oldEmail , newEmail , username } : SendEmailChangeToNewEmailOpts) : Promise<SMTPTransport.SentMessageInfo> {
         return await this.NodeMailerService.sendMail({

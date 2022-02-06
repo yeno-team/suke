@@ -4,11 +4,13 @@ import { EmailUtilService, EmailService } from "@suke/suke-server/src/services/e
 import { BaseController } from "../BaseController";
 import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
+import { UserService } from "@suke/suke-server/src/services/user";
 @Service()
 export class VerifyEmailController extends BaseController {
     public route = "/api/accountsettings/verifyemail";
 
     constructor(
+        private userService : UserService,
         private emailService : EmailService,
         private emailUtilService : EmailUtilService
     ) {
@@ -48,7 +50,7 @@ export class VerifyEmailController extends BaseController {
 
         if(!(data.user.isVerified)) {
             data.user.isVerified = true;
-            await data.user.save();
+            await this.userService.update(data.user);
         }
 
         data.verificationToken = null;
