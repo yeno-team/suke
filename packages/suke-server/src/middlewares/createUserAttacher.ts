@@ -1,4 +1,4 @@
-import {  NextFunction, Request, RequestHandler, response, Response } from "express";
+import {  NextFunction, Request, RequestHandler, Response } from "express";
 import { UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { Container } from "typedi";
 import { UserService } from "../services/user";
