@@ -10,6 +10,7 @@ import { EmailUtilService } from "@suke/suke-server/src/services/email";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { Email } from "@suke/suke-core/src/entities/Email";
 import nodemailer from "nodemailer";
+import { hideEmail } from "@suke/suke-util/src/hideEmail";
 @Service()
 export class UserController extends BaseController {
     public rateLimiters: Map<string, RateLimiterAbstract>;
@@ -41,7 +42,11 @@ export class UserController extends BaseController {
             };
 
             req.session.user = serializedUser;
-            res.send(serializedUser);
+            
+            res.send({
+                ...serializedUser,
+                email : hideEmail(foundUser.email.currentEmail)
+            });
             return;
         } 
         
@@ -61,9 +66,11 @@ export class UserController extends BaseController {
             return;
         }
 
+        delete foundUser.salt;
+
         res.send({
             ...foundUser,
-            salt: null
+            email : hideEmail(foundUser.email.currentEmail)
         });
     }
 
@@ -76,8 +83,7 @@ export class UserController extends BaseController {
             username : new Name(createdUser.name),
             email : new Email(createdUser.email.currentEmail),
             tokenAsJWT,
-        })
-        .then((res) => console.log(nodemailer.getTestMessageUrl(res)));
+        });
 
         // Removes salt from the response.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -92,7 +98,7 @@ export class UserController extends BaseController {
             message: 'Created',
             user: {
                 ...userRes,
-                email : userRes.email.currentEmail
+                email : hideEmail(userRes.email.currentEmail)
             }
         });
     }
