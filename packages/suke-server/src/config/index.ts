@@ -29,6 +29,7 @@ const config: IConfiguration = {
     "node_env" : getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",
     "production_url" : getEnvironmentVariable("PRODUCTION_URL" , true),
     server: {
+        host: getEnvironmentVariable("HOST", false, "0.0.0.0") as string,
         port: parseInt(getEnvironmentVariable("PORT", false, "3000") as string)
     },
     db: {
@@ -51,6 +52,9 @@ const config: IConfiguration = {
         username : getEnvironmentVariable("SMTP_USERNAME",true) as string,
         password : getEnvironmentVariable("SMTP_PASSWORD" , true) as string,
         jwtSecret : getEnvironmentVariable("EMAIL_JWT_SECRET" , true) as string
+    },
+    corsProxy: {
+        port: parseInt(getEnvironmentVariable("CORS_PROXY_PORT", false, "4382") as string)
     }
 };
 

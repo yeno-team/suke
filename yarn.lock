@@ -3940,6 +3940,8 @@ __metadata:
   resolution: "@suke/requests@workspace:packages/requests"
   dependencies:
     axios: ^0.22.0
+    axios-cookiejar-support: ^2.0.3
+    tough-cookie: ^4.0.0
     typedi: ^0.10.0
   languageName: unknown
   linkType: soft
@@ -3979,8 +3981,10 @@ __metadata:
     bluebird: ^3.7.2
     connect-typeorm: ^1.1.4
     cors: ^2.8.5
+    cors-anywhere: ^0.4.4
     dotenv: ^10.0.0
     express: ^4.17.1
+    express-http-proxy: ^1.6.3
     express-session: ^1.17.2
     ioredis: ^4.28.3
     mysql: ^2.14.1
@@ -4079,7 +4083,10 @@ __metadata:
     "@suke/requests": "workspace:packages/requests"
     "@suke/suke-core": "workspace:packages/suke-core"
     "@types/crypto-js": ^4.1.0
+    "@types/tough-cookie": ^4.0.1
+    axios-cookiejar-support: ^2.0.3
     crypto-js: ^4.1.1
+    tough-cookie: ^4.0.0
     typedi: ^0.10.0
   languageName: unknown
   linkType: soft
@@ -5001,6 +5008,13 @@ __metadata:
   dependencies:
     "@types/jest": "*"
   checksum: e08715a565cc189112a6611485d779a0f1ceb546a9d4601b21aacff7596d7acf8b7c702e4c5f825677431ff601df3e635887dc8a5735da1a263cc857eb7c3833
+  languageName: node
+  linkType: hard
+
+"@types/tough-cookie@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@types/tough-cookie@npm:4.0.1"
+  checksum: 7570c1c2d74201f4ead3512cf8e4c99e97d92ab8a02ae2fb987fd720ced0ca1a2baf250c98a861a170b86762606c9bf6d32207675f13dffc5ab75c08c96578d2
   languageName: node
   linkType: hard
 
@@ -6446,6 +6460,18 @@ __metadata:
   version: 4.3.5
   resolution: "axe-core@npm:4.3.5"
   checksum: 973c6a80f0aaa663820b209d4202de7a0c240a2dea2f3cff168b09c0f221b27179b1f0988f00ad11ed63cbc50535920f8ca779de1c60dc82090ab2d275f71fdd
+  languageName: node
+  linkType: hard
+
+"axios-cookiejar-support@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "axios-cookiejar-support@npm:2.0.3"
+  dependencies:
+    http-cookie-agent: ^1.0.2
+  peerDependencies:
+    axios: ">=0.20.0"
+    tough-cookie: ">=4.0.0"
+  checksum: 151c2dd2412018e2e17f782d4055e769412703e36e7030b3b3d95027cbbd37f9b1e68bed83ee1ed3f8bf651c199b10927c3bd70e288d0488526d1bfff3818165
   languageName: node
   linkType: hard
 
@@ -8371,6 +8397,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cors-anywhere@npm:^0.4.4":
+  version: 0.4.4
+  resolution: "cors-anywhere@npm:0.4.4"
+  dependencies:
+    http-proxy: 1.11.1
+    proxy-from-env: 0.0.1
+  checksum: 02e87cbebafc371c1d50535b6282feb0ae4b576500a6e3b07cd9b5f7fcd24f6bf4f6edbd3eef3eb730365f109475a1ec33ea116931769762646e78950d4a8696
+  languageName: node
+  linkType: hard
+
 "cors@npm:^2.8.5":
   version: 2.8.5
   resolution: "cors@npm:2.8.5"
@@ -8942,7 +8978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.1.1, debug@npm:^3.2.6, debug@npm:^3.2.7":
+"debug@npm:^3.0.1, debug@npm:^3.1.1, debug@npm:^3.2.6, debug@npm:^3.2.7":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
@@ -9816,6 +9852,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es6-promise@npm:^4.1.1":
+  version: 4.2.8
+  resolution: "es6-promise@npm:4.2.8"
+  checksum: 95614a88873611cb9165a85d36afa7268af5c03a378b35ca7bda9508e1d4f1f6f19a788d4bc755b3fd37c8ebba40782018e02034564ff24c9d6fa37e959ad57d
+  languageName: node
+  linkType: hard
+
 "es6-symbol@npm:^3.1.1, es6-symbol@npm:~3.1.3":
   version: 3.1.3
   resolution: "es6-symbol@npm:3.1.3"
@@ -10317,6 +10360,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventemitter3@npm:1.x.x":
+  version: 1.2.0
+  resolution: "eventemitter3@npm:1.2.0"
+  checksum: 1ce3c91340f5038bd611c31a32c69167ccc598049a6844f58400583b4d70f5c0c2d13a201c763624f81de461498fe2767d0bfadcb2c0c417e37556a481b00c1d
+  languageName: node
+  linkType: hard
+
 "eventemitter3@npm:^4.0.0, eventemitter3@npm:^4.0.4":
   version: 4.0.7
   resolution: "eventemitter3@npm:4.0.7"
@@ -10468,6 +10518,17 @@ __metadata:
     jest-matcher-utils: ^27.4.6
     jest-message-util: ^27.4.6
   checksum: 593eaa8ff34320f9a70f961bc25eeae932df4f48ebcc5ecc1033f1cddffd286fc42a2f312929222541cec1077de2604ff4fc6e97012afcbd36b333bfaba82f7f
+  languageName: node
+  linkType: hard
+
+"express-http-proxy@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "express-http-proxy@npm:1.6.3"
+  dependencies:
+    debug: ^3.0.1
+    es6-promise: ^4.1.1
+    raw-body: ^2.3.0
+  checksum: 67fa357a29404e22778cfa59e60cdf410d876caeeaab7d34946d40ac6555cfcc666a0fd28fc087149b1f9bbb8349b057ad575485331126b1b99b696ab2528488
   languageName: node
   linkType: hard
 
@@ -11916,6 +11977,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"http-cookie-agent@npm:^1.0.2":
+  version: 1.0.4
+  resolution: "http-cookie-agent@npm:1.0.4"
+  dependencies:
+    agent-base: ^6.0.2
+  peerDependencies:
+    tough-cookie: ^4.0.0
+  checksum: 01b49b10b763d68a4490a0f025c87c6c2bca5f122df4abb2a6e87a78cee5069207275f7d3eb75b111e498d3d6dca75008f1165ee025c0e7330f269d3e21d4231
+  languageName: node
+  linkType: hard
+
 "http-deceiver@npm:^1.2.7":
   version: 1.2.7
   resolution: "http-deceiver@npm:1.2.7"
@@ -11990,6 +12062,16 @@ __metadata:
   peerDependencies:
     "@types/express": ^4.17.13
   checksum: f9f95dc4e7a2c92947be0c72e80e4fe3e385db8a4695c418286816a367fbeaff7ee1a2f38598ecafcdb4380bb0c66ddcd40ef6999d9fb39ff2d80ee344534527
+  languageName: node
+  linkType: hard
+
+"http-proxy@npm:1.11.1":
+  version: 1.11.1
+  resolution: "http-proxy@npm:1.11.1"
+  dependencies:
+    eventemitter3: 1.x.x
+    requires-port: 0.x.x
+  checksum: 2bd44ed6f45d49de125862df3818edd64fa6bcdc54baa509c4d3665e19dd3c4a95b80de3e7d9550b95b920c5e235564ff21eb9aff7f74b4df81892555d096ec7
   languageName: node
   linkType: hard
 
@@ -18518,6 +18600,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:0.0.1":
+  version: 0.0.1
+  resolution: "proxy-from-env@npm:0.0.1"
+  checksum: 801947dd787b417528dee516599bfa4a66ab8508025ee7fe31ce8dddffbd2571a2c113c8fff4a794886fb68a75316af97559f87c0f86fcd59399a300f2bfe6a7
+  languageName: node
+  linkType: hard
+
 "prr@npm:~1.0.1":
   version: 1.0.1
   resolution: "prr@npm:1.0.1"
@@ -18752,7 +18841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"raw-body@npm:2.4.2":
+"raw-body@npm:2.4.2, raw-body@npm:^2.3.0":
   version: 2.4.2
   resolution: "raw-body@npm:2.4.2"
   dependencies:
@@ -19525,6 +19614,13 @@ __metadata:
   version: 2.0.0
   resolution: "require-main-filename@npm:2.0.0"
   checksum: e9e294695fea08b076457e9ddff854e81bffbe248ed34c1eec348b7abbd22a0d02e8d75506559e2265e96978f3c4720bd77a6dad84755de8162b357eb6c778c7
+  languageName: node
+  linkType: hard
+
+"requires-port@npm:0.x.x":
+  version: 0.0.1
+  resolution: "requires-port@npm:0.0.1"
+  checksum: 36a3414a76ff1dd4f7df519c2315e7af3eb54312d764319cf9aea4e0ab3a084772ff01edb46487c04fa5c9abe5de627e8eeb500d350b9b21407b94fe346358e2
   languageName: node
   linkType: hard
 

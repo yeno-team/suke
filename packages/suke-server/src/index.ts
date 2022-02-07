@@ -11,6 +11,7 @@ import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 import { NodeMailerService } from '@suke/suke-server/src/services/nodemailer';
 import { EmailModel } from '@suke/suke-core/src/entities/Email';
+import cors_proxy from "cors-anywhere";
 
 useContainer(typeORMContainer);
 
@@ -50,4 +51,12 @@ createConnection({
 }).catch(error => {
     console.error(`Couldn't connect to the database!`);
     console.error(error);
+});
+
+cors_proxy.createServer({
+    originWhitelist: [], // Allow all origins
+    requireHeader: ['origin', 'x-requested-with'],
+    removeHeaders: ['cookie', 'cookie2']
+}).listen(config.corsProxy.port, config.server.host, function() {
+    console.log('Running CORS Anywhere on ' + config.server.host + ':' + config.corsProxy.port);
 });
