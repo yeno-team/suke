@@ -41,6 +41,20 @@ export class ChangeEmailController extends BaseController {
             return;
         }
 
+        if(!(email)) {
+            res.status(400).json({
+                message : "Email field is missing."
+            });
+            return;
+        }
+
+        if((typeof email) !== "string") {
+            res.status(400).json({
+                message : "Email value must be type string"
+            });
+            return;
+        }
+
         const newEmail = new Email(email);
         const user = await this.userService.findById(req.session.user.id);
 
