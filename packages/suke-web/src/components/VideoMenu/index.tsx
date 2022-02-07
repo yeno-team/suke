@@ -1,3 +1,4 @@
+import { IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
 import { RealtimeChannelData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { captureFrame } from '@suke/suke-util';
 import classNames from 'classnames';
@@ -34,6 +35,8 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState<PlayerProgressState>({} as PlayerProgressState);
     const [seeking, setSeeking] = useState(false);
+    const [seekingTimer, setSeekingTimer] = useState<NodeJS.Timer>();
+    
     const [thumbnailTimer, setThumbnailTimer] = useState<NodeJS.Timer>();
     const isOwner = (isAuthenticated && ownerView ? true : false);
 
@@ -41,6 +44,8 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     channelDataRef.current = channelData;
     const playerRef = useRef<ReactPlayer | null>();
     playerRef.current = player;
+    const seekingRef = useRef<NodeJS.Timer>();
+    seekingRef.current = seekingTimer;
 
     useEffect(() => {
         if (!isOwner) return;
@@ -52,7 +57,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
 
         if (setThumbnail) {
             getThumbnail();
-            setThumbnailTimer(setInterval(getThumbnail, 5000));
+            setThumbnailTimer(setInterval(getThumbnail, 10000));
         }
 
         return () => clearTimeout(thumbnailTimer!);
@@ -100,10 +105,14 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
         }
  
         if (Math.abs(progress.playedSeconds - channelData.progress?.currentTime) > 2.5 && !isOwner && !seeking ) {
+            if (seekingRef.current != null) {
+                clearTimeout(seekingRef.current);
+            }
             setSeeking(true);
             player?.seekTo(channelData.progress?.currentTime);
             setPlaying(true);
-            setTimeout(() => setSeeking(false), 2000);
+
+            setSeekingTimer(setTimeout(() => setSeeking(false), 2000));
         }
     }
  
@@ -136,10 +145,24 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     }
 
     const currentVideoSource = useMemo(() => {
-        const foundSource = channelData.currentVideo?.sources.find(v => ReactPlayer.canPlay(v.url.toString()));
+        const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4382/";
+        let highestQuality: IVideoSource | undefined;
+        
+        for (const v of channelData.currentVideo?.sources) {
+            const canPlay = (v.proxyRequired ? ReactPlayer.canPlay(serverUrl + v.url.toString()) : ReactPlayer.canPlay(v.url.toString()));
 
-        if (foundSource != null) {
-            return foundSource.url.toString();
+            if (canPlay && highestQuality == null) {
+                highestQuality = v;
+                continue;
+            } 
+
+            if (canPlay && v.quality > highestQuality!.quality) {
+                highestQuality = v;
+            }
+        }
+        
+        if (highestQuality != null) {
+            return (highestQuality.proxyRequired ? serverUrl : '') + highestQuality.url.toString();
         }
     }, [channelData.currentVideo?.sources]);
 

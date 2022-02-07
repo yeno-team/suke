@@ -25,7 +25,7 @@ export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}
             </div>
 
             <Link to={"/" + author.name}>
-                <img src={thumbnailUrl} alt="Thumbnail preview of channel" className="w-full max-h-52 max-w-full transform hover:scale-105 cursor-pointer"></img>
+                <div className="h-44 bg-cover bg-no-repeat bg-center transform hover:scale-105" style={{backgroundImage: `url(${thumbnailUrl})`}}></div>
             </Link>
             <div className="flex p-2 pl-0">
                 <Link to={"/" + author.name}>

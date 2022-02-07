@@ -1,4 +1,4 @@
-import { AxiosInstanceToken } from "../container";
+import { AxiosCookieJarInstanceToken, AxiosInstanceToken } from "../container";
 import { Service , Inject } from "typedi";
 import { IRequest, RequestOptions } from "../IRequest";
 import { AxiosInstance, AxiosProxyConfig, AxiosRequestConfig, Method } from "axios";
@@ -6,7 +6,8 @@ import { AxiosInstance, AxiosProxyConfig, AxiosRequestConfig, Method } from "axi
 @Service()
 export class AxiosRequest implements IRequest {
     constructor(
-        @Inject(AxiosInstanceToken) public axiosInstance : AxiosInstance 
+        @Inject(AxiosInstanceToken) public axiosInstance : AxiosInstance,
+        @Inject(AxiosCookieJarInstanceToken) public axiosCookieInstance : AxiosInstance
     ) {}
 
     private convertToAxiosOpts(options : RequestOptions) : AxiosRequestConfig {
@@ -21,14 +22,15 @@ export class AxiosRequest implements IRequest {
             maxRedirects: options.maxRedirects,
             httpAgent: options.httpAgent,
             httpsAgent: options.httpsAgent,
-            proxy: options.proxy as unknown as AxiosProxyConfig
+            proxy: options.proxy as unknown as AxiosProxyConfig,
         };
 
         return axiosClientOpts;
     }
 
     async request<R>(options: RequestOptions):  Promise<R> {
-        const req = await this.axiosInstance.request(this.convertToAxiosOpts(options));
+        const instance = options.cookies ? this.axiosCookieInstance : this.axiosInstance;
+        const req = await instance.request(this.convertToAxiosOpts(options));
         return req.data;
     }
 

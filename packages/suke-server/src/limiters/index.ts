@@ -4,4 +4,4 @@ import GlobalRateLimiter from "./GlobalRouteRateLimiter";
 export {
     LoginFailRateLimiter,
     GlobalRateLimiter
-}
+};
