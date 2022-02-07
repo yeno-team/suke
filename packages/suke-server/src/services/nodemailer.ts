@@ -38,6 +38,10 @@ export class NodeMailerService {
             from : '"Suke Team" <admin@suke.app>',
         }) as SMTPTransport.SentMessageInfo;
 
+        if(this.testAccount) {
+            console.log(`Sent a test email : ${nodemailer.getTestMessageUrl(info)}`);
+        }
+
         return info;
     }
 

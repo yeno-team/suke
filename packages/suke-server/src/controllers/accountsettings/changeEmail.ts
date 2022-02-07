@@ -7,6 +7,7 @@ import { Email } from "@suke/suke-core/src/entities/Email";
 import { BaseController } from "../BaseController";
 import { UserService } from "@suke/suke-server/src/services/user";
 import { Name } from "@suke/suke-core/src/entities/Name";
+import * as bcrypt from "bcrypt";
 @Service()
 export class ChangeEmailController extends BaseController {
     public route = "/api/accountsettings/changeemail";
@@ -24,7 +25,22 @@ export class ChangeEmailController extends BaseController {
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
-        const { email } = req.body;
+        const { email , password } = req.body;
+
+        if(!(password)) {
+            res.status(400).json({
+                message : "Password field is missing."
+            });
+            return;
+        }
+
+        if((typeof password) !== "string") {
+            res.status(400).json({
+                message : "Password value must be type string."
+            });
+            return;
+        }
+
         const newEmail = new Email(email);
         const user = await this.userService.findById(req.session.user.id);
 
@@ -35,6 +51,16 @@ export class ChangeEmailController extends BaseController {
             return;
         }   
 
+        const userWithSalt = await this.userService.findByIdWithSaltOnly(req.session.user.id);
+        const comparePassword = await bcrypt.compare(password , userWithSalt.salt);
+
+        if(!(comparePassword)) {
+            res.status(400).json({
+                message : "Incorrect password."
+            });
+            return;
+        }
+
         if((newEmail.value) === (user.email.currentEmail)) {
             res.status(400).json({ 
                 message : "Cannot change email address to your current email address."
@@ -42,7 +68,6 @@ export class ChangeEmailController extends BaseController {
             return;
         }
 
-        // Set the user verification status to false.
         user.isVerified = false;
         await this.userService.update(user);
 
