@@ -1,7 +1,6 @@
 import { Express, Request, Response } from "express";
-import { UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { Service } from "typedi";
-import { createUserAttacher } from "../middlewares/createUserAttacher";
+import { createUserAttacher, UserIdentifier } from "../middlewares/createUserAttacher";
 import { BaseController } from "./BaseController";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 import { setLoginFailRateLimiter } from "../middlewares/setLoginFailRateLimiter";

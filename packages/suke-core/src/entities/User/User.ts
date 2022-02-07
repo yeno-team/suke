@@ -25,11 +25,6 @@ export interface IHasUser {
     user: IUser;
 }
 
-export enum UserIdentifier {
-    Id,
-    Username
-}
-
 export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;
