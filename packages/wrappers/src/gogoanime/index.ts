@@ -120,7 +120,8 @@ export class GogoAnimeApiWrapper {
             data.push({
                 url : new URL(file),
                 quality : Quality[label.toLowerCase().split(" ").join("") as QualityAsUnion],
-                type
+                type,
+                proxyRequired: true
             });
         }
 

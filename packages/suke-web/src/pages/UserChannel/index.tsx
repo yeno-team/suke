@@ -38,12 +38,12 @@ export const UserChannelPage = (): JSX.Element => {
     const { joinRoom } = useRoom();
     const { user, updateUser } = useAuth();
     const { channelData, requestChannelData, updateRealtimeChannelData } = useChannel();
-    const { messageHistory } = useSocket();
+    const { messageHistory, setReconnectCallback } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
     const notificationStore = useNotification();
     const screen = useScreenSize();
     
-    const isOwner = user?.name === username;
+    const isOwner = user ? user.name === username : false;
     
     useEffect(() => {
         const sendGetChannel = async () => {
@@ -55,25 +55,13 @@ export const UserChannelPage = (): JSX.Element => {
                 console.warn(e);
             } finally { 
                 setSearching(false);
-
-                if (!joinedRoom) {
-                    if (!isOwner) return;
-                    if (channelData.private === true && channelData.password !== "") return;
-                    
-                    joinRoom(username!);
-                    setJoinedRoom(true);
-                }
             }
         }
         sendGetChannel();
-       
-        if (!init) {
-            setInit(true);
-            requestChannelData(username!);
-        }
+        requestChannelData(username!);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    
     useEffect(() => {
         try {
             if (!socketMessagesChanged || prevSocketMessages == null)
@@ -172,11 +160,30 @@ export const UserChannelPage = (): JSX.Element => {
             channelId: username!
         });
     }
+    useEffect(() => {
+        const sendInitJoinRoom = () => {
+            const roomIsPrivateWithPassword = !isOwner && channelData.private === true && channelData.password !== "";
+
+            if (roomIsPrivateWithPassword) return;
+        
+            joinRoom(username!);
+            setJoinedRoom(true);
+        }
+
+        if (!init && Object.values(channelData).length > 0) {
+            setInit(true);
+            requestChannelData(username!);
+            setReconnectCallback((closeEvent) => {
+                console.log("RECONNECTING");
+                setJoinedRoom(false);
+                sendInitJoinRoom();
+            })
+        }
+    }, [channelData, init, isOwner, joinRoom, requestChannelData, setReconnectCallback, username]);
+
 
     const mobileClassListIfBrowserActive = browserActive ? "hidden lg:flex" : "block";
     const alreadyFollowed = user?.following?.find(v => v.followedTo?.id === channel?.id) != null || clientFollowed;
-
-    console.log(channelData);
 
     const ChannelPage = joinedRoom ? 
     <div className="h-screen flex flex-col lg:block channel_elements lg:overflow-y-scroll lg:relative lg:mt-17 lg:mr-96">
