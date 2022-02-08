@@ -5,6 +5,8 @@ import { BaseController } from "../BaseController";
 import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { UserService } from "@suke/suke-server/src/services/user";
+import { createUserAttacher } from "@suke/suke-server/src/middlewares/createUserAttacher";
+import { UserIdentifier } from "@suke/suke-core/src/entities/User";
 @Service()
 export class VerifyEmailController extends BaseController {
     public route = "/api/accountsettings/verifyemail";
@@ -18,11 +20,12 @@ export class VerifyEmailController extends BaseController {
     }
 
     public execute(app : Express) : void {
-        app.route(this.route).post(isAuthenticated() , catchErrorAsync(this.Post));
+        app.route(this.route).post(createUserAttacher(UserIdentifier.Session) , catchErrorAsync(this.Post));
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
         const { token : tokenAsJWT } = req.body;
+        const user = res.locals.user;
 
         if(!(tokenAsJWT)) {
             res.status(400).json({ message : "Token field is missing."});
@@ -30,31 +33,35 @@ export class VerifyEmailController extends BaseController {
         }
 
         if(typeof tokenAsJWT !== "string") {
-            res.status(400).json({ message : "Token value must be type string."});
+            res.status(400).json({ 
+                message : "Token value must be type string."
+            });
             return;
         }
         
         // Verify the JWT if had been signed with our secret key. 
         const token = await this.emailUtilService.verifyVerificationToken(tokenAsJWT);
-        const data = await this.emailService.findByVerificationToken(token);
+        const userVerificationToken = user.email.verificationToken;
 
-        if(!(data)) {
-            res.status(400).json({ message : "Token no longer exists."});
+        if(!(userVerificationToken)) {
+            res.status(400).json({ 
+                message : "No token is assigned to this account at this time."
+            });
             return;
         }
 
-        if((data.user.name !== req.session.user.name)) {
+        if((userVerificationToken !== token)) {
             res.status(400).json({ message : "Token mismatch."});
             return;
         }
 
-        if(!(data.user.isVerified)) {
-            data.user.isVerified = true;
-            await this.userService.update(data.user);
+        if(!(user.isVerified)) {
+            user.isVerified = true;
+            await this.userService.update(user);
         }
 
-        data.verificationToken = null;
-        await this.emailService.update(data);
+        user.email.verificationToken = null;
+        await this.emailService.update(user.email);
 
         res.status(200).json({ success : true });
     }
