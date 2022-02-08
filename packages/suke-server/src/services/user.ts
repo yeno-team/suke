@@ -22,15 +22,6 @@ export class UserService {
         return (await this.userRepository.findByIds([id], {relations: ['channel', 'channel.followers', 'following', 'following.followedTo',"email"]}))[0];
     }
 
-    public async findByIdWithSaltOnly(id : number) : Promise<UserModel | undefined> {
-        return (await this.userRepository.findOne({
-            where : [{
-                id
-            }],
-            select : ["id" , "salt"],
-        }));
-    }
-
     public async findByName(name: string): Promise<UserModel | undefined> {
         return (await this.userRepository.findOne({
             where: [
