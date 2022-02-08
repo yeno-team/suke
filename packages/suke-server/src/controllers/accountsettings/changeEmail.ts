@@ -8,6 +8,8 @@ import { BaseController } from "../BaseController";
 import { UserService } from "@suke/suke-server/src/services/user";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import * as bcrypt from "bcrypt";
+import { createUserAttacher } from "@suke/suke-server/src/middlewares/createUserAttacher";
+import { UserIdentifier } from "@suke/suke-core/src/entities/User";
 @Service()
 export class ChangeEmailController extends BaseController {
     public route = "/api/accountsettings/changeemail";
@@ -21,10 +23,11 @@ export class ChangeEmailController extends BaseController {
     }
 
     public execute(app : Express) : void {
-        app.route(this.route).post(isAuthenticated() , catchErrorAsync(this.Post));
+        app.route(this.route).post(createUserAttacher(UserIdentifier.Session) , catchErrorAsync(this.Post));
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
+        const user = res.locals.user;
         const { email , password } = req.body;
 
         if(!(password)) {
@@ -56,19 +59,7 @@ export class ChangeEmailController extends BaseController {
         }
 
         const newEmail = new Email(email);
-        const user = await this.userService.findById(req.session.user.id);
-
-        if(!(user)) {
-            res.status(500).json({ 
-                message : "Session id cannot find the client user."
-            });
-            return;
-        }   
-
-        const userWithSalt = await this.userService.findByIdWithSaltOnly(req.session.user.id);
-        const comparePassword = await bcrypt.compare(password , userWithSalt.salt);
-
-        if(!(comparePassword)) {
+        if(!(user.testRawPassword(password))) {
             res.status(400).json({
                 message : "Incorrect password."
             });

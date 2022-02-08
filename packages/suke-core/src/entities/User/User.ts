@@ -35,7 +35,8 @@ export interface IHasUser {
 
 export enum UserIdentifier {
     Id,
-    Username
+    Username,
+    Session
 }
 
 export class User extends ValueObject implements IUser {
