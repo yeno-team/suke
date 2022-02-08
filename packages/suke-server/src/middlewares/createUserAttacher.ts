@@ -51,7 +51,7 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
         case UserIdentifier.Session : {
             if(!(req.session.user)) {
                 res.status(401).json({
-                    message : "You are unauthenticated."
+                    message : "You are not authenticated."
                 });
                 return;
             }
