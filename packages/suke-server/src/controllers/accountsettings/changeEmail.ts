@@ -1,13 +1,11 @@
 import { Service } from "typedi";
 import { Request , Response , Express } from "express";
 import { EmailService, EmailUtilService } from "@suke/suke-server/src/services/email";
-import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { Email } from "@suke/suke-core/src/entities/Email";
 import { BaseController } from "../BaseController";
 import { UserService } from "@suke/suke-server/src/services/user";
 import { Name } from "@suke/suke-core/src/entities/Name";
-import * as bcrypt from "bcrypt";
 import { createUserAttacher } from "@suke/suke-server/src/middlewares/createUserAttacher";
 import { UserIdentifier } from "@suke/suke-core/src/entities/User";
 @Service()
