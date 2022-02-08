@@ -3973,6 +3973,7 @@ __metadata:
     "@types/express": ^4
     "@types/express-session": ^1
     "@types/ioredis": ^4.28.7
+    "@types/jsonwebtoken": ^8.5.8
     "@types/node": ^8.0.29
     "@types/nodemailer": ^6.4.4
     "@types/pg": ^8
@@ -3987,6 +3988,7 @@ __metadata:
     express-http-proxy: ^1.6.3
     express-session: ^1.17.2
     ioredis: ^4.28.3
+    jsonwebtoken: ^8.5.1
     mysql: ^2.14.1
     nodemailer: ^6.7.2
     pg: ^8.7.1
@@ -21214,7 +21216,6 @@ __metadata:
     "@types/bcrypt": ^5.0.0
     "@types/eslint": ^7
     "@types/jest": ^27.0.2
-    "@types/jsonwebtoken": ^8.5.8
     "@types/prettier": ^2
     "@types/react-notifications-component": ^3.1.1
     "@types/react-test-renderer": ^17
@@ -21228,7 +21229,6 @@ __metadata:
     jest-runner: ^27.2.2
     jest-runner-groups: ^2.1.0
     jest-watch-yarn-workspaces: ^1.1.0
-    jsonwebtoken: ^8.5.1
     lerna: ^4.0.0
     postcss: ^8.4.5
     prettier: ^2.4.1
