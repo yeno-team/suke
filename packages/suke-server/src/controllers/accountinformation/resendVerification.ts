@@ -7,6 +7,8 @@ import { Express } from "express";
 import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { Email } from "@suke/suke-core/src/entities/Email";
+import { createUserAttacher } from "@suke/suke-server/src/middlewares/createUserAttacher";
+import { UserIdentifier } from "@suke/suke-core/src/entities/User";
 @Service()
 export class ResendVerificationController extends BaseController {
     public route = "/api/accountinformation/resendverification";
@@ -19,20 +21,13 @@ export class ResendVerificationController extends BaseController {
     }
 
     public execute(app : Express) : void {
-        app.route(this.route).post(isAuthenticated() , catchErrorAsync(this.Post));
+        app.route(this.route).post(createUserAttacher(UserIdentifier.Session) , catchErrorAsync(this.Post));
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
-        const data = await this.emailService.findByUsername(new Name(req.session.user.name));
+        const user = res.locals.user;
 
-        if(!(data)) {
-            res.status(400).json({ 
-                message : "Something wrong happened."
-            });
-            return;
-        }
-
-        if(data.user.isVerified) {
+        if(user.isVerified) {
             res.status(400).json({ 
                 message : "Your email is already been verified"
             });
@@ -40,19 +35,19 @@ export class ResendVerificationController extends BaseController {
         }
         
         const token = this.emailUtilService.createVerificationToken();
-        data.verificationToken = token;
+        user.email.verificationToken = token;
 
         // Update the previous verification token to the new one to invalidate it.
-        await this.emailService.update(data);
+        await this.emailService.update(user.email);
 
         // Create A JWT with the verification token in the payload.
         const tokenAsJWT = await this.emailUtilService.signVerificationToken(token);
 
         // Send the verification link to the recipient.
         this.emailUtilService.resendVerificationLinkToEmail({
-            username : new Name(data.user.name),
+            username : new Name(user.name),
+            email : new Email(user.email.currentEmail),
             tokenAsJWT,
-            email : new Email(data.currentEmail)
         });
 
         res.status(200).json({ success : true });
