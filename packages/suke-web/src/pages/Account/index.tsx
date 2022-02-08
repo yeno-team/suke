@@ -1,5 +1,6 @@
 import React , { useState } from "react";
 import { changeEmail , resendEmail } from "@suke/suke-web/src/api/account";
+import { useNotification , defaultNotificationOpts } from "@suke/suke-web/src/hooks/useNotifications";
 import { IUser } from "@suke/suke-core/src/entities/User";
 
 export interface AccountPageProps {
@@ -9,6 +10,7 @@ export interface AccountPageProps {
 export const AccountPage = ({ user } : AccountPageProps) => {
     const [ newEmailFieldInput , setNewEmailInput ] = useState("");
     const [ passwordFieldInput , setPasswordFieldInput ] = useState("");
+    const notificationStore = useNotification();
 
     const changeEmailHandler = async (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault(); 
@@ -18,8 +20,21 @@ export const AccountPage = ({ user } : AccountPageProps) => {
                 email : newEmailFieldInput, 
                 password : passwordFieldInput
             })
+
+            notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                title : "Success",
+                type : "success",
+                message : "You've successfully changed your email."
+            })
+
         } catch (e) {
-            console.log(e)
+            notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                title : "Error",
+                type : "danger",
+                message : (e as Error).message
+            })
         }
 
         setNewEmailInput("");
