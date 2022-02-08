@@ -57,6 +57,8 @@ export class User extends ValueObject implements IUser {
         this.role = user.role;
         this.channel = user.channel;
         this.following = user.following;
+
+        this.IsValid();
     }
 
     public Name() : Name {
