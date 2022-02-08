@@ -57,7 +57,8 @@ export class ChangeEmailController extends BaseController {
         }
 
         const newEmail = new Email(email);
-        if(!(user.testRawPassword(password))) {
+
+        if(!(await user.testRawPassword(password))) {
             res.status(400).json({
                 message : "Incorrect password."
             });
