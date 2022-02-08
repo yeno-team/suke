@@ -2,11 +2,10 @@ import { Service } from "typedi";
 import { Request , Response , Express } from "express";
 import { EmailUtilService, EmailService } from "@suke/suke-server/src/services/email";
 import { BaseController } from "../BaseController";
-import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { UserService } from "@suke/suke-server/src/services/user";
-import { createUserAttacher } from "@suke/suke-server/src/middlewares/createUserAttacher";
-import { UserIdentifier } from "@suke/suke-core/src/entities/User";
+import { createUserAttacher, UserIdentifier } from "@suke/suke-server/src/middlewares/createUserAttacher";
+
 @Service()
 export class VerifyEmailController extends BaseController {
     public route = "/api/accountsettings/verifyemail";

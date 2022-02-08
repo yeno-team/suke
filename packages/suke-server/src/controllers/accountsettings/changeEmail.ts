@@ -6,8 +6,8 @@ import { Email } from "@suke/suke-core/src/entities/Email";
 import { BaseController } from "../BaseController";
 import { UserService } from "@suke/suke-server/src/services/user";
 import { Name } from "@suke/suke-core/src/entities/Name";
-import { createUserAttacher } from "@suke/suke-server/src/middlewares/createUserAttacher";
-import { UserIdentifier } from "@suke/suke-core/src/entities/User";
+import { createUserAttacher, UserIdentifier } from "@suke/suke-server/src/middlewares/createUserAttacher";
+
 @Service()
 export class ChangeEmailController extends BaseController {
     public route = "/api/accountsettings/changeemail";

@@ -4,11 +4,10 @@ import { EmailUtilService, EmailService } from "@suke/suke-server/src/services/e
 import { BaseController } from "../BaseController";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { Express } from "express";
-import { isAuthenticated } from "@suke/suke-server/src/middlewares/IsAuthenticated";
 import { catchErrorAsync } from "@suke/suke-server/src/middlewares/catchErrorAsync";
 import { Email } from "@suke/suke-core/src/entities/Email";
-import { createUserAttacher } from "@suke/suke-server/src/middlewares/createUserAttacher";
-import { UserIdentifier } from "@suke/suke-core/src/entities/User";
+import { createUserAttacher, UserIdentifier } from "@suke/suke-server/src/middlewares/createUserAttacher";
+
 @Service()
 export class ResendVerificationController extends BaseController {
     public route = "/api/accountinformation/resendverification";
