@@ -9,7 +9,6 @@ import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 import { EmailUtilService } from "@suke/suke-server/src/services/email";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { Email } from "@suke/suke-core/src/entities/Email";
-import nodemailer from "nodemailer";
 import { hideEmail } from "@suke/suke-util/src/hideEmail";
 @Service()
 export class UserController extends BaseController {

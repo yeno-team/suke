@@ -5,6 +5,7 @@ import { BaseController } from "./BaseController";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
 import { setLoginFailRateLimiter } from "../middlewares/setLoginFailRateLimiter";
 import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
+import { User } from "@suke/suke-core/src/entities/User";
 
 @Service()
 export class AuthController extends BaseController {
@@ -36,7 +37,11 @@ export class AuthController extends BaseController {
             const { limiter , key } = res.locals.limiters[1];
             await limiter.delete(key);
 
-            // req.session.user = res.locals.user;
+            req.session.user = new User({
+                ...res.locals.user,
+                email: res.locals.user.email.currentEmail
+            });
+
             res.send({
                 error: false,
                 message: "Authenticated."
