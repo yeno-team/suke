@@ -18,8 +18,19 @@ export class UserService {
         private emailUtilService : EmailUtilService
     ) {}
 
-    public async findById(id: number): Promise<UserModel | undefined> {
-        return (await this.userRepository.findByIds([id], {relations: ['channel', 'channel.followers', 'following', 'following.followedTo',"email"]}))[0];
+    public async findById(id : number) : Promise<UserModel | undefined> {
+        return (await this.userRepository.findOne({
+            where: [
+                {
+                    id
+                }
+            ],
+            relations: ['channel', 'channel.followers', 'channel.followers.follower', 'following', 'following.followedTo' , "email"]
+        }));
+    }
+ 
+    public async findByIds(ids: Array<number>): Promise<UserModel[] | undefined> {
+        return (await this.userRepository.findByIds(ids , {relations: ['channel', 'channel.followers', 'following', 'following.followedTo',"email"]}));
     }
 
     public async findByName(name: string): Promise<UserModel | undefined> {
