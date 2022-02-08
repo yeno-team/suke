@@ -1,16 +1,32 @@
 import {  NextFunction, Request, RequestHandler, Response } from "express";
-import { UserIdentifier } from "@suke/suke-core/src/entities/User/User";
 import { Container } from "typedi";
 import { UserService } from "../services/user";
 import { Name } from "@suke/suke-core/src/entities/Name/Name";
 import { catchErrorAsync } from "./catchErrorAsync";
 
+export enum UserIdentifier {
+    Id,
+    Username,
+    Session
+}
+
+/**
+ * Attaches a user object to `res.locals.user` if it could find the user using the identifier method provided.
+ * It will send a 404 if it could not find the user.
+ * 
+ * For example, you would use the Id Identifier 
+ * if you wanted to make a route that needed the user object 
+ * while the client will pass an id to either params, body, or query.
+ * 
+ * @param identifier 
+ * @returns 
+ */
 export const createUserAttacher = (identifier: UserIdentifier): RequestHandler => catchErrorAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const userService = Container.get(UserService);
     
     switch(identifier) {
         case UserIdentifier.Id: {
-                const userId = req.params.id || req.body.id;
+                const userId = req.params.id || req.body.id || req.query.id;
                 const user = await userService.findById(userId);
 
                 if (user == null) {
@@ -28,8 +44,7 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
         }
 
         case UserIdentifier.Username: {
-            const username = req.params.name || req.body.name;
-
+            const username = req.params.name || req.body.name || req.query.name;
             const nameObj = new Name(username);
 
             const user = await userService.findByName(nameObj.name);

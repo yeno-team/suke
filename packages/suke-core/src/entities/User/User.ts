@@ -33,12 +33,6 @@ export interface IHasUser {
     user: IUser;
 }
 
-export enum UserIdentifier {
-    Id,
-    Username,
-    Session
-}
-
 export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;
