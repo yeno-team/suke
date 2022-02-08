@@ -13,8 +13,6 @@ export const AccountPage = ({ user } : AccountPageProps) => {
     const notificationStore = useNotification();
 
     const changeEmailHandler = async (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault(); 
-
         try {
             await changeEmail({ 
                 email : newEmailFieldInput, 
@@ -41,6 +39,26 @@ export const AccountPage = ({ user } : AccountPageProps) => {
         setPasswordFieldInput("");
     }
 
+    const resendEmailHandler = async(e : React.MouseEvent<HTMLButtonElement , MouseEvent>) => {     
+        try {
+            await resendEmail()
+
+            notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                title : "Success",
+                type : "success",
+                message : "We have sent you a verification link to your new email address."
+            })
+        } catch (e) {
+            notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                title : "Error",
+                type : "danger",
+                message : (e as Error).message
+            })
+        }
+    }
+
     return (
         <React.Fragment>
             {/* <Navigation/> */}
@@ -50,14 +68,14 @@ export const AccountPage = ({ user } : AccountPageProps) => {
                     <h1> Username : {user.name} </h1>
                     <h1> Email : {user.email} </h1>
                     <h1> isVerified : {user.isVerified ? "true" : "false"} </h1>
-                    
-                    {!(user.isVerified) && <button className="cursor-pointer" onClick={resendEmail}> Resend Email </button> }
 
+                    {!(user.isVerified) && <button className="cursor-pointer bg-green" onClick={resendEmailHandler}> Resend Email </button> }
                     <h1> Change Email </h1>
 
                     <input type="email" className="bg-gray border" name="newEmailField" placeholder="New Email" onChange={(e) => setNewEmailInput(e.target.value)} value={newEmailFieldInput}/>
                     <input type="password" className="bg-gray border" name="passField" placeholder="Password" onChange={(e) => setPasswordFieldInput(e.target.value)}value={passwordFieldInput}/>
                     <button className="bg-green cursor-pointer" onClick={changeEmailHandler}> Change Email </button>
+                    
                 </div>
             }
         </React.Fragment>
