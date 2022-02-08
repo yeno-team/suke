@@ -6,14 +6,19 @@ import { User } from "@suke/suke-core/src/entities/User";
 import { RateLimiterAbstract } from "rate-limiter-flexible";
 import { verifyRecaptchaToken } from "../middlewares/verifyRecaptchaToken";
 import { catchErrorAsync } from "../middlewares/catchErrorAsync";
-
+import { EmailUtilService } from "@suke/suke-server/src/services/email";
+import { Name } from "@suke/suke-core/src/entities/Name";
+import { Email } from "@suke/suke-core/src/entities/Email";
+import nodemailer from "nodemailer";
+import { hideEmail } from "@suke/suke-util/src/hideEmail";
 @Service()
 export class UserController extends BaseController {
     public rateLimiters: Map<string, RateLimiterAbstract>;
     public route = "/api/user/:id?";
 
     constructor(
-        private userService: UserService
+        private userService: UserService,
+        private emailUtilService : EmailUtilService
     ) {
         super();
     }
@@ -30,8 +35,18 @@ export class UserController extends BaseController {
 
         if (id == null && req.session.user != null) {
             const foundUser = await this.userService.findById(req.session.user.id);
-            req.session.user = foundUser;
-            res.send(foundUser);
+            
+            const serializedUser = {
+                ...foundUser,
+                email : foundUser.email.currentEmail
+            };
+
+            req.session.user = serializedUser;
+            
+            res.send({
+                ...serializedUser,
+                email : hideEmail(foundUser.email.currentEmail)
+            });
             return;
         } 
         
@@ -51,25 +66,40 @@ export class UserController extends BaseController {
             return;
         }
 
+        delete foundUser.salt;
+
         res.send({
             ...foundUser,
-            salt: null
+            email : hideEmail(foundUser.email.currentEmail)
         });
     }
 
     public Post = async (req: Request, res: Response): Promise<void> => {
-        const userObj = new User({ id: 0, ...req.body, password: null });
+        const userObj = new User({ id: 0, ...req.body , isVerified : false });
+        const createdUser = await this.userService.create(userObj , new Email(req.body.email) , req.body.password);
+        const tokenAsJWT = await this.emailUtilService.signVerificationToken(createdUser.email.verificationToken);
 
-        const createdUser = await this.userService.create(userObj, req.body.password);
-        
+        await this.emailUtilService.sendVerificationLinkToEmail({
+            username : new Name(createdUser.name),
+            email : new Email(createdUser.email.currentEmail),
+            tokenAsJWT,
+        });
+
         // Removes salt from the response.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {salt, channel, ...userRes } = createdUser;
-        
-        req.session.user = createdUser;
+        const {salt, channel , ...userRes } = createdUser;
+
+        req.session.user = {
+            ...createdUser,
+            email : createdUser.email.currentEmail,
+        };
+
         res.status(201).send({
             message: 'Created',
-            user: userRes
+            user: {
+                ...userRes,
+                email : hideEmail(userRes.email.currentEmail)
+            }
         });
     }
 }

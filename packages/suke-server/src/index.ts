@@ -9,6 +9,8 @@ import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
+import { NodeMailerService } from '@suke/suke-server/src/services/nodemailer';
+import { EmailModel } from '@suke/suke-core/src/entities/Email';
 import cors_proxy from "cors-anywhere";
 
 useContainer(typeORMContainer);
@@ -17,16 +19,33 @@ createConnection({
     type: "postgres",
     url: config.db.connectionUri,
     logger: 'advanced-console',
-    entities: [UserModel, UserChannelModel, SessionModel, Follower, CategoryModel],
+    entities: [UserModel, UserChannelModel, SessionModel, Follower, CategoryModel , EmailModel],
     synchronize: true,
 }).then(async () => {
     Container.set<RedisClientType>('redis', RedisClient);
-    console.log("Connected to DB instance.");
+    Container.set<string>("email_jwt_secret_key" , config.email.jwtSecret);
 
     const categoryRepository = getRepository(CategoryModel);
     await categoryRepository.update({viewerCount: Not(0)}, {viewerCount: 0});
     console.log("Reset Categories Viewer Counts Successfully.");
     
+    const nodeMailerService = new NodeMailerService();
+    await nodeMailerService.setTestAccount() , await nodeMailerService.setTransport();
+    // const
+    // await nodeMailerService.createTransport({
+    //     host : config.email.host,
+    //     port : config.email.port,
+    //     auth : {
+    //         user : config.email.username,
+    //         pass : config.email.password
+    //     },
+    //     secure : true
+    // });
+
+    Container.set<typeof nodeMailerService>("NodeMailerService", nodeMailerService);
+    console.log("Mail server has been initalized.");
+
+
     new Server(config)
         .start();
 }).catch(error => {

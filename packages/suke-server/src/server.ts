@@ -40,8 +40,7 @@ export class Server {
     private sessionParser: RequestHandler;
 
     constructor(private config: IConfiguration) {
-
-        this.app = express();
+        this.app = express();   
         this.server = http.createServer(this.app);
         this.sessionParser = session({
             store: new TypeormStore({

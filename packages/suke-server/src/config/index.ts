@@ -26,6 +26,8 @@ RedisClient.connect().then(() => {
 }).catch(err => console.error(err));
 
 const config: IConfiguration = {
+    "node_env" : getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",
+    "production_url" : getEnvironmentVariable("PRODUCTION_URL" , true),
     server: {
         host: getEnvironmentVariable("HOST", false, "0.0.0.0") as string,
         port: parseInt(getEnvironmentVariable("PORT", false, "3000") as string)
@@ -43,6 +45,13 @@ const config: IConfiguration = {
     },
     recaptcha : {
         secretKey : getEnvironmentVariable("RECAPTCHA_SECRET_KEY", true) as string
+    },
+    email : {
+        host : getEnvironmentVariable("SMTP_HOST" , true) as string,
+        port : parseInt(getEnvironmentVariable("SMTP_PORT" , true)) as number,
+        username : getEnvironmentVariable("SMTP_USERNAME",true) as string,
+        password : getEnvironmentVariable("SMTP_PASSWORD" , true) as string,
+        jwtSecret : getEnvironmentVariable("EMAIL_JWT_SECRET" , true) as string
     },
     corsProxy: {
         port: parseInt(getEnvironmentVariable("CORS_PROXY_PORT", false, "4382") as string)

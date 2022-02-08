@@ -63,7 +63,7 @@ export class EmojiController extends BaseController {
             }
         }
         
-        await main.write("./faggot.png");
+        await main.write("./emoji.png");
 
         res.status(200).json({ success : true });
 
