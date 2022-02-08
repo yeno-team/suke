@@ -1,6 +1,8 @@
 import { SessionOptions } from "express-session";
 
 export interface IConfiguration {
+    "node_env" : "development" | "production",
+    "production_url" : string
     server: {
         host: string,
         port: number
@@ -15,6 +17,13 @@ export interface IConfiguration {
         secretKey : string
     },
     session: SessionOptions,
+    email : {
+        host : string,
+        port : number,
+        username : string,
+        password : string,
+        jwtSecret : string
+    },
     corsProxy: {
         port: number
     }

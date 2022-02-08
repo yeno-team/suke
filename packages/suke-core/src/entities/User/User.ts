@@ -1,22 +1,30 @@
 import { BaseEntity, Column, Entity, getRepository, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { EmailModel, IEmail } from "../Email";
 import { Role } from '../../Role';
 import { ValueObject } from '../../ValueObject';
 import { lowercaseTransformer } from '../../transformers/ValueTransformers';
 import { PropertyValidationError } from "../../exceptions/ValidationError";
-import { isValidEmail } from '@suke/suke-util/src';
 import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
 import * as bcrypt from 'bcrypt';
 import { Name } from "../Name/Name";
 import { UserId } from "../UserId";
 import { Follower } from "../Follower";
+import isValidEmail from "@suke/suke-util/src/isValidEmail";
 
-export interface IUser {
-    id: number;
-    name: string;
-    email: string;
-    role: Role;
-    channel: IUserChannel,
-    following: Follower[]
+export interface IBaseUser {
+    id : number;
+    name : string;
+    isVerified : boolean;
+    channel : IUserChannel;
+    following : Follower[];
+    role : Role;
+}
+export interface IUser extends IBaseUser {
+    email : string;
+}
+
+export interface IDBUser extends IBaseUser {
+    email : IEmail;
 }
 
 export type Author = Pick<IUser, "id" | "name">;
@@ -28,46 +36,48 @@ export interface IHasUser {
 export class User extends ValueObject implements IUser {
     public id: number;
     public name: string;
-    public email: string;
+    public isVerified: boolean;
     public role: Role;
+    public email : string;
     public channel: IUserChannel;
-    public following: Follower[]
+    public following: Follower[];
 
-    private _name: Name;
-    private _id: UserId;
- 
-    constructor(user: IUser) {
+    private _name : Name;
+    private _id : UserId;
+
+    constructor(user : IUser) {
         super();
 
         this.id = user.id;
         this._id = new UserId(this.id);
         this.name = user.name;
         this._name = new Name(this.name);
+        this.isVerified = user.isVerified;
         this.email = user.email;
         this.role = user.role;
         this.channel = user.channel;
         this.following = user.following;
-
-        this.IsValid();
     }
 
-    public Name(): Name {
+    public Name() : Name {
         return this._name;
     }
 
     public Id(): UserId {
         return this._id;
     }
-
+        
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.id;
         yield this.name;
-        yield this.email;
+        yield this.isVerified;
         yield this.role;
+        yield this.channel;
+        yield this.following;
 
         return;
     }
-
+    
     protected IsValid(): boolean {
         if (this.role == null) {
             this.role = Role.User;
@@ -77,20 +87,36 @@ export class User extends ValueObject implements IUser {
             throw new PropertyValidationError('id');
         }
 
-        if (typeof(this.email) !== 'string' || !isValidEmail(this.email)) {
-            throw new PropertyValidationError('email');
-        }
-
         if (typeof(this.role) !== 'number') {
             throw new PropertyValidationError('role');
         }
 
+        if (typeof(this.isVerified) !== "boolean") {
+            throw new PropertyValidationError("isVerified");
+        }
+
+        if(typeof(this.email) !== "string" || !(isValidEmail(this.email))) {
+            throw new PropertyValidationError("email");
+        }
+        
         return true;
     }
 }
 
+// export class DBUser extends User implements IUser {
+//     // public email: IEmail;
+//     public _email : Email;
+
+//     constructor(user : IUser) {
+//         super(user);
+
+//         // this.email = user.email;
+//         // this._email = new Email(this.email);
+//     }
+// }
+
 @Entity()
-export class UserModel extends BaseEntity implements IUser  {
+export class UserModel extends BaseEntity implements IDBUser  {
     @PrimaryGeneratedColumn()
     public id!: number;
 
@@ -102,13 +128,15 @@ export class UserModel extends BaseEntity implements IUser  {
     })
     public name!: string;
 
-    @Index({ unique: true })
+    @OneToOne(() => EmailModel , emailModel => emailModel.user)
+    @JoinColumn()
+    public email! : EmailModel    
+
     @Column({
-        unique: true,
-        nullable: false,
-        transformer: [lowercaseTransformer],
+        nullable : false,
+        default : false
     })
-    public email!: string;
+    public isVerified! : boolean;
 
     @Column({
         nullable: false,

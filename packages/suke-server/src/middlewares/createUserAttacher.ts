@@ -6,7 +6,8 @@ import { catchErrorAsync } from "./catchErrorAsync";
 
 export enum UserIdentifier {
     Id,
-    Username
+    Username,
+    Session
 }
 
 /**
@@ -43,23 +44,45 @@ export const createUserAttacher = (identifier: UserIdentifier): RequestHandler =
         }
 
         case UserIdentifier.Username: {
-                const username = req.params.name || req.body.name || req.query.name;
+            const username = req.params.name || req.body.name || req.query.name;
+            const nameObj = new Name(username);
 
-                const nameObj = new Name(username);
+            const user = await userService.findByName(nameObj.name);
 
-                const user = await userService.findByName(nameObj.name);
+            if (user == null) {
+                res.status(404).send({
+                    message: `Username '${username}' does match any users.`
+                });
 
-                if (user == null) {
-                    res.status(404).send({
-                        message: `Username '${username}' does match any users.`
-                    });
+                return;
+            }
+        
+            res.locals.user = user;
 
-                    return;
-                }
-            
-                res.locals.user = user;
+            next();
+            break;
+        }
 
-                next();
+        case UserIdentifier.Session : {
+            if(!(req.session.user)) {
+                res.status(401).json({
+                    message : "You are not authenticated."
+                });
+                return;
+            }
+
+            const userId = req.session.user.id;
+            const userModel = await userService.findById(userId);
+
+            if(!(userModel)) {
+                res.status(500).json({
+                    message : "User model not found."
+                });
+                return;
+            }
+
+            res.locals.user = userModel;
+            next();
             break;
         }
 

@@ -6,17 +6,31 @@ import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/User
 import { UserChannelService } from './channel';
 import * as bcrypt from 'bcrypt';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
-
+import { Email, EmailData } from '@suke/suke-core/src/entities/Email';
+import { EmailService, EmailUtilService } from './email';
 @Service()
 export class UserService {
     constructor(
         @InjectRepository(UserModel) private userRepository: Repository<UserModel>,
         @InjectRepository(Follower) private followerRepository: Repository<Follower>,
-        private userChannelService: UserChannelService    
+        private userChannelService: UserChannelService,    
+        private emailDBService : EmailService,
+        private emailUtilService : EmailUtilService
     ) {}
 
-    public async findById(id: number): Promise<UserModel | undefined> {
-        return (await this.userRepository.findByIds([id], {relations: ['channel', 'channel.followers', 'following', 'following.followedTo']}))[0];
+    public async findById(id : number) : Promise<UserModel | undefined> {
+        return (await this.userRepository.findOne({
+            where: [
+                {
+                    id
+                }
+            ],
+            relations: ['channel', 'channel.followers', 'channel.followers.follower', 'following', 'following.followedTo' , "email"]
+        }));
+    }
+ 
+    public async findByIds(ids: Array<number>): Promise<UserModel[] | undefined> {
+        return (await this.userRepository.findByIds(ids , {relations: ['channel', 'channel.followers', 'following', 'following.followedTo',"email"]}));
     }
 
     public async findByName(name: string): Promise<UserModel | undefined> {
@@ -26,11 +40,15 @@ export class UserService {
                     name: name
                 }
             ],
-            relations: ['channel', 'channel.followers', 'channel.followers.follower', 'following', 'following.followedTo']
+            relations: ['channel', 'channel.followers', 'channel.followers.follower', 'following', 'following.followedTo' , "email"]
         }));
     }
 
-    public async create(user: User, rawPassword: string): Promise<UserModel> {
+    public async update(model : UserModel) : Promise<UserModel> {
+        return await this.userRepository.save(model);
+    }
+
+    public async create(user: User , email : Email , rawPassword: string): Promise<UserModel> {
         const newChannel = new UserChannel({
             id: 0,
             followers: [],
@@ -39,21 +57,31 @@ export class UserService {
             roledUsers: []
         });
 
+        const newEmail = new EmailData({
+            id : 0,
+            previousEmail : null,
+            originalEmail : email.value,
+            currentEmail : email.value,
+            verificationToken : this.emailUtilService.createVerificationToken(),
+        });
+
         const createdChannel = await this.userChannelService.create(newChannel);
-
-        const newUser = new UserModel();
-
-        newUser.email = user.email;
+        const newUser = new UserModel();    
+        
         newUser.id = user.id;
         newUser.name = user.name;
         newUser.role = user.role;
+        newUser.isVerified = user.isVerified;
         newUser.channel = createdChannel;
         newUser.following = [];
+
+        const createdEmail = await this.emailDBService.create(newEmail);
+        newUser.email = createdEmail;   
         
         const saltedPassword = await bcrypt.hash(rawPassword, 6);
         newUser.salt = saltedPassword;
         
-        return newUser.save();
+        return newUser.save();  
     }
 
     /**
