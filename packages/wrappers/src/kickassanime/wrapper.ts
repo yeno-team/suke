@@ -1,11 +1,11 @@
 import { AxiosRequest } from "@suke/requests/src";
 import { createFormData } from "@suke/suke-util/src";
 import { Service } from "typedi";
-import * as cheerio from "cheerio";
 import hjson from "hjson";
 import { KickAssAnimeApiSearchResponse, KickAssAnimeInfoResponse, KickAssAnimeServer, KickAssAnimeSourceFile } from "./types";
 import { KickAssAnimeApiRawSearchResponse, KickAssAnimeInfoRawResponse } from ".";
 import { QualityAsUnion } from "@suke/suke-core/src/entities/SearchResult";
+import { GogoPlayApiWrapper } from "@suke/wrappers/src/";
 
 @Service()
 export class KickAssAnimeApiWrapper {
@@ -13,7 +13,8 @@ export class KickAssAnimeApiWrapper {
     private sapAndPinkQualities = ["720p","1080p","480p","360p","240p"]
 
     constructor(
-        private request : AxiosRequest
+        private readonly gogoPlayApiWrapper : GogoPlayApiWrapper,
+        private readonly request : AxiosRequest,
     ) {}
         
     private findAndDecodeBase64Str(data : string , min = 1200 , max = 2000) : string {
@@ -34,21 +35,22 @@ export class KickAssAnimeApiWrapper {
      * @param url 
      * @returns 
      */
-    private async getOldVideoPlayerSourceFiles(url : URL) : Promise<Array<KickAssAnimeSourceFile>> {
-        if(!(url.searchParams.has("id"))) {
-            throw new Error("Couldn't find an id param in the url.");
+    public async getOldVideoPlayerSources(url : URL) : Promise<Array<KickAssAnimeSourceFile>> {
+        const gogoplayVideoSources = await (await this.gogoPlayApiWrapper.getSources(url)).source;
+        const kickAssAnimeSources : Array<KickAssAnimeSourceFile> = [];
+
+        for(let i = 0; i < gogoplayVideoSources.length; i++) {
+            const source = gogoplayVideoSources[i];
+
+            kickAssAnimeSources.push({
+                url : new URL(source.file),
+                quality : (source.label.toLowerCase()).split(" ").join("") as QualityAsUnion,
+                type : source.type
+            });
         }
 
-        const resp = await this.request.get<string>(new URL(`https://gogoplay1.com/download?id=${url.searchParams.get("id")}`));
-        const $ = cheerio.load(resp);
-        
-        return $('.dowload a:not([target])')
-        .map((_ , element) => ({
-            quality : $(element).text().replace(/\n| /g,"") as QualityAsUnion, // Remove unncessary whitespace and a line break.
-            url : new URL(element.attribs.href),
-            type : "mp4"
-        }))
-        .toArray();
+
+        return kickAssAnimeSources;
     }
 
     /**
@@ -56,7 +58,7 @@ export class KickAssAnimeApiWrapper {
      * @param url 
      * @returns
      */
-    private async getNewVideoPlayerSourceFiles(url : URL) : Promise<Array<KickAssAnimeSourceFile>> {
+    public async getNewVideoPlayerSourceFiles(url : URL) : Promise<Array<KickAssAnimeSourceFile>> {
         if(url.hostname.includes("dailymotion") || url.hostname.includes("maverickki")) {
             throw new Error("");
         }
@@ -196,12 +198,14 @@ export class KickAssAnimeApiWrapper {
      * @param {url}
      * @returns 
      */    
-    public async getExternalServers(url : URL) : Promise<Array<KickAssAnimeServer>> {
+    public async getNewVideoPlayerExternalServers(url : URL) : Promise<Array<KickAssAnimeServer>> {
         const resp = await this.request.get<string>(url);
         const parseListOfServersRegex = new RegExp(/sources = (.+);/);
         let result;
 
-        if(url.searchParams.has("id")) {
+        /**
+         * this was used when parsing the external servers for gogoplay.
+         * if(url.searchParams.has("id")) {
             const $ = cheerio.load(resp);
             
             // Removes the current active server from the arr because the data attributes is set to an empty string.
@@ -213,7 +217,10 @@ export class KickAssAnimeApiWrapper {
                 src : new URL(element.attribs["data-video"])
             }))
             .toArray();
-        } else if((result = parseListOfServersRegex.exec(resp)) !== null) {
+        } 
+        */
+
+        if((result = parseListOfServersRegex.exec(resp)) !== null) {
             result = hjson.parse(result[1]) as Array<{ name : string , src : string }>;
 
             return result.map(({ name , src }) => ({
@@ -227,19 +234,6 @@ export class KickAssAnimeApiWrapper {
         }
 
         throw new Error("Unable to parse the list of servers.");
-    }
-
-    /**
-     * Get the episode video source files.
-     * @param url 
-     * @returns 
-     */
-    public async getVideoSourcesFiles(url : URL) : Promise<Array<KickAssAnimeSourceFile>> {
-        if(url.hostname.includes("gogoplay1")) {
-            return this.getOldVideoPlayerSourceFiles(url);
-        }
-
-        return this.getNewVideoPlayerSourceFiles(url);
     }
 
     public preappendHostname(str : string) : URL {
