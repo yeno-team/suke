@@ -1,3 +1,4 @@
+import { Follower } from "../Follower";
 
 
 export interface FeaturedTheaterItem {
@@ -11,6 +12,23 @@ export interface TheaterItem {
     id: number,
     title: string,
     viewerCount: number,
+    followers: Follower[],
     posterUrl: string,
-    episode?: number
+    episode?: number,
+    schedules: TheaterItemSchedule[]
+}
+
+export enum ScheduleState {
+    Waiting,
+    Starting,
+    Started,
+    Ended
+}
+
+export interface TheaterItemSchedule {
+    id: number,
+    time: Date,
+    // an array of user ids of users who subscribed to this schedule
+    subscribed: Follower[],
+    state: ScheduleState
 }
