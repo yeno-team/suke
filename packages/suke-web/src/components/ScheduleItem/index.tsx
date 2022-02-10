@@ -15,7 +15,7 @@ export const ScheduleItem = ({item, className}: ScheduleItemProps) => {
             "border inline-block w-20 mt-2 mr-2 text-center p-1 px-2 rounded-full text-sm font-semibold", 
             item.state === ScheduleState.Ended && "border-darkgray text-gray line-through",
             item.state === ScheduleState.Waiting && "border-reallywhite",
-            item.state === ScheduleState.Starting && "border-none bg-green text-white",
+            item.state === ScheduleState.Starting && "border-none bg-bettergreen text-white",
             item.state === ScheduleState.Started && "border-none bg-coolorange text-white",
             className
         )}>
