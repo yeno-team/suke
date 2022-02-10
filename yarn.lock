@@ -4075,6 +4075,7 @@ __metadata:
     react-use-websocket: ^2.9.1
     stylelint: ^14.0.0
     tailwindcss: "npm:@tailwindcss/postcss7-compat@2"
+    use-onclickoutside: ^0.4.0
     web-vitals: ^1.0.1
   languageName: unknown
   linkType: soft
@@ -6093,6 +6094,13 @@ __metadata:
   version: 1.2.0
   resolution: "aproba@npm:1.2.0"
   checksum: 0fca141966559d195072ed047658b6e6c4fe92428c385dd38e288eacfc55807e7b4989322f030faff32c0f46bb0bc10f1e0ac32ec22d25315a1e5bbc0ebb76dc
+  languageName: node
+  linkType: hard
+
+"are-passive-events-supported@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "are-passive-events-supported@npm:1.1.1"
+  checksum: 3295a7b3aeb026d26c1b256decdb5ded8bf26f6c02fd0b37c63c7dc9affd57b7474ee9b6230b5d5ac4f0fc624a19acdcfdd76c5155025d97cc7d8bb5dc83e61b
   languageName: node
   linkType: hard
 
@@ -22521,6 +22529,18 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f0cb3a49119e14ed46db8a946b1aa17b838b8834c8a652bde314877ede6057c55b50654a97ee802597a5839c070180195e58ea3a756b7c33db7f540642f0ddea
+  languageName: node
+  linkType: hard
+
+"use-onclickoutside@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "use-onclickoutside@npm:0.4.0"
+  dependencies:
+    are-passive-events-supported: ^1.1.0
+    use-latest: ^1.0.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+  checksum: bef953e5138736f6cb67ba8c7343ff6fc6bb25b758ad0e0a8776c5f2ec9b6818be50a67d7d24f15d06d521ad90fccb06c3acaabf1cafda64e4f546fd306122cc
   languageName: node
   linkType: hard
 
