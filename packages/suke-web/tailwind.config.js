@@ -33,6 +33,7 @@ module.exports = {
       },
       width: {
         'reallybig': '60rem',
+        'toobig': '150rem',
         '32' : '32px',
         '128': '35rem',
         '46': '11.5rem'
