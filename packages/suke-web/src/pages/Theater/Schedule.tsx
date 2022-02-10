@@ -1,4 +1,4 @@
-import { ScheduleState, TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
+import { ScheduleState, TheaterCategory, TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale"
 import { getScheduleDayNames } from "@suke/suke-web/src/util/getScheduleDayNames";
 import classNames from "classnames";
@@ -9,9 +9,10 @@ import { SectionSliders } from "./SectionSliders";
 
 export interface ScheduleProps {
     searchInput: string;
+    activeCategory: TheaterCategory;
 }
 
-export const Schedule = ({searchInput}: ScheduleProps) => {
+export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
     const [activeDate, setActiveDate] = useState<Date>(new Date(Date.now()));
     const [activeIndex, setActiveIndex] = useState(0);
     const clientLocale = useLocale();
@@ -28,37 +29,136 @@ export const Schedule = ({searchInput}: ScheduleProps) => {
         const placeholderSchedules = [
             {
                 id: 0,
-                time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+3);return d})(),
+                time: (() => {const d = new Date(Date.now());d.setHours(3);return d})(),
                 subscribed: [],
                 state: ScheduleState.Ended
             },
             {
                 id: 1,
-                time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+6);return d})(),
+                time: (() => {const d = new Date(Date.now());d.setHours(6);return d})(),
                 subscribed: [],
                 state: ScheduleState.Ended
             },
             {
                 id: 2,
-                time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+9);return d})(),
+                time: (() => {const d = new Date(Date.now());d.setHours(8);return d})(),
                 subscribed: [],
                 state: ScheduleState.Starting
             },
             {
                 id: 3,
-                time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+12);return d})(),
+                time: (() => {const d = new Date(Date.now());d.setHours(10);return d})(),
                 subscribed: [],
-                state: ScheduleState.Started
+                state: ScheduleState.Waiting
             },
             {
                 id: 4,
-                time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+15);return d})(),
+                time: (() => {const d = new Date(Date.now());d.setHours(14);return d})(),
                 subscribed: [],
                 state: ScheduleState.Waiting
             },
             {
                 id: 5,
+                time: (() => {const d = new Date(Date.now());d.setHours(17);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 6,
+                time: (() => {const d = new Date(Date.now());d.setHours(20);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 7,
                 time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+18);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 8,
+                time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(3);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 9,
+                time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(6);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 10,
+                time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(8);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            }
+        ];
+
+        const placeholderSchedules2 = [
+            {
+                id: 0,
+                time: (() => {const d = new Date(Date.now());d.setHours(3);return d})(),
+                subscribed: [],
+                state: ScheduleState.Ended
+            },
+            {
+                id: 1,
+                time: (() => {const d = new Date(Date.now());d.setHours(6);return d})(),
+                subscribed: [],
+                state: ScheduleState.Ended
+            },
+            {
+                id: 2,
+                time: (() => {const d = new Date(Date.now());d.setHours(8);return d})(),
+                subscribed: [],
+                state: ScheduleState.Started
+            },
+            {
+                id: 3,
+                time: (() => {const d = new Date(Date.now());d.setHours(10);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 4,
+                time: (() => {const d = new Date(Date.now());d.setHours(14);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 5,
+                time: (() => {const d = new Date(Date.now());d.setHours(17);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 6,
+                time: (() => {const d = new Date(Date.now());d.setHours(20);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 7,
+                time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+18);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 8,
+                time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(3);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 9,
+                time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(6);return d})(),
+                subscribed: [],
+                state: ScheduleState.Waiting
+            },
+            {
+                id: 10,
+                time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(8);return d})(),
                 subscribed: [],
                 state: ScheduleState.Waiting
             }
@@ -71,6 +171,7 @@ export const Schedule = ({searchInput}: ScheduleProps) => {
                 viewerCount: 523,
                 posterUrl: "https://m.media-amazon.com/images/M/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_FMjpg_UX1000_.jpg",
                 followers: [],
+                category: TheaterCategory.Movie,
                 schedules: placeholderSchedules
             },
             {
@@ -80,7 +181,8 @@ export const Schedule = ({searchInput}: ScheduleProps) => {
                 posterUrl: "https://www.themoviedb.org/t/p/original/c4lulIeTZxPh4xqOcUNH5qlZVpx.jpg",
                 episode: 4,
                 followers: [],
-                schedules: placeholderSchedules
+                category: TheaterCategory.TvShow,
+                schedules: placeholderSchedules2
             },
             {
                 title: 'One Piece',
@@ -89,6 +191,7 @@ export const Schedule = ({searchInput}: ScheduleProps) => {
                 viewerCount: 43,
                 episode: 1003,
                 followers: [],
+                category: TheaterCategory.Anime,
                 schedules: placeholderSchedules
             },
             {
@@ -98,7 +201,8 @@ export const Schedule = ({searchInput}: ScheduleProps) => {
                 viewerCount: 52,
                 episode: 12,
                 followers: [],
-                schedules: placeholderSchedules
+                category: TheaterCategory.TvShow,
+                schedules: placeholderSchedules2
             },
             {
                 title: 'Attack On Titan: Final Season',
@@ -107,14 +211,32 @@ export const Schedule = ({searchInput}: ScheduleProps) => {
                 viewerCount: 109,
                 episode: 6,
                 followers: [],
+                category: TheaterCategory.Anime,
                 schedules: placeholderSchedules
-            }
-        ].filter(v => new RegExp(`${searchInput}`, 'i').test(v.title))
-    }, [searchInput]);
-
+            },
+            {
+                title: 'Uncharted',
+                id: 5,
+                posterUrl: "https://assets-prd.ignimgs.com/2022/01/13/uncharted-poster-full-1642086040683.jpg",
+                viewerCount: 52,
+                followers: [],
+                category: TheaterCategory.Movie,
+                schedules: placeholderSchedules2
+            },
+            {
+                title: 'Sonic The Hedgehog 2',
+                id: 6,
+                posterUrl: "https://m.media-amazon.com/images/M/MV5BMzExMWVjODMtYjgzOC00ZDljLTgxMTktYWQ0NGNiOTcxNGYxXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg",
+                viewerCount: 17,
+                followers: [],
+                category: TheaterCategory.Movie,
+                schedules: placeholderSchedules
+            },
+        ].filter(v => new RegExp(`${searchInput}`, 'i').test(v.title) && (v.category === activeCategory || activeCategory === TheaterCategory.Everything))
+    }, [activeCategory, searchInput]);
 
     return (
-        <div className="mt-5 px-5 font-sans lg:mx-1/10 xl:mx-2/10 md:justify-center h-full">
+        <div className="mt-5 px-5 font-sans lg:mx-1/10 xl:mx-3/20 md:justify-center h-full">
             <h1 className="text-white mb-3">Schedule Times</h1>
             <AliceCarousel
                 mouseTracking
@@ -123,6 +245,9 @@ export const Schedule = ({searchInput}: ScheduleProps) => {
                 responsive={{0:{items: 4}, 875:{items:7}}}
                 items={scheduleDayNameElements}
                 activeIndex={activeIndex}
+                renderPrevButton={(e) => <div className={classNames("absolute text-xl hover:opacity-80 -top-9 w-32 h-20 right-14 cursor-pointer select-none", e.isDisabled ? 'text-darkgray' : 'text-reallywhite')}>&larr;</div>}
+                renderNextButton={(e) => <div className={classNames("absolute text-xl hover:opacity-80 -top-9 w-32 h-20 right-0 cursor-pointer select-none", e.isDisabled ? 'text-darkgray' : 'text-reallywhite')}>&rarr;</div>}
+               
                 onSlideChanged={e => setActiveIndex(e.item)}
             ></AliceCarousel>
             <SectionSliders title="New Releases" items={items} activeDate={activeDate} />
