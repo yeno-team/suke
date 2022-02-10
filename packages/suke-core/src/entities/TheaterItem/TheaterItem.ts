@@ -8,6 +8,13 @@ export interface FeaturedTheaterItem {
     id: number
 }
 
+export enum TheaterCategory {
+    Everything,
+    Movie,
+    TvShow,
+    Anime
+}
+
 export interface TheaterItem {
     id: number,
     title: string,
@@ -15,6 +22,7 @@ export interface TheaterItem {
     followers: Follower[],
     posterUrl: string,
     episode?: number,
+    category: TheaterCategory,
     schedules: TheaterItemSchedule[]
 }
 
