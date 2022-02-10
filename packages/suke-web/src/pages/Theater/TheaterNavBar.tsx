@@ -2,7 +2,12 @@ import { Icon } from "@iconify/react";
 import classNames from "classnames";
 import { useState } from "react";
 
-export const TheaterNavBar = () => {
+export interface TheaterNavBarProps {
+    searchInput: string,
+    setSearchInput: (s: string) => void
+}
+
+export const TheaterNavBar = ({searchInput, setSearchInput}: TheaterNavBarProps) => {
     const [activeCategory, setActiveCategory] = useState('Everything');
     const [mobileSearchActive, setMobileSearchActive] = useState(false);
     const categoryItems = ['Everything', 'Movies', 'TV Shows', 'Anime'];
@@ -18,11 +23,11 @@ export const TheaterNavBar = () => {
             </nav>
             <Icon icon="ant-design:search-outlined" color="white" className="my-auto cursor-pointer md:hidden" fontSize={21} onClick={()=>setMobileSearchActive(prev => !prev)}/>
             <div className={classNames("relative hidden md:block")}>
-                <input type="text" placeholder="Search Theater..." className="w-64 px-2 py-2 ml-36 font-light lg:ml-14 xl:ml-80 lg:w-80" />
+                <input type="text" placeholder="Search Theater..." className="w-64 px-2 py-2 ml-36 font-light lg:ml-14 xl:ml-80 lg:w-80" value={searchInput} onChange={e => setSearchInput(e.target.value)}/>
                 <Icon icon="ant-design:search-outlined" color="gray" className="my-auto cursor-pointer absolute bottom-2 right-2" fontSize={23} onClick={()=>setMobileSearchActive(false)}/>
             </div>
             <div className={classNames("absolute right-7 bottom-2", mobileSearchActive ? 'block' : 'hidden')}>
-                <input type="text" placeholder="Search Theater..." className="w-80 px-2 py-2 font-light" />
+                <input type="text" placeholder="Search Theater..." className="w-80 px-2 py-2 font-light" value={searchInput} onChange={e => setSearchInput(e.target.value)}/>
                 <Icon icon="ant-design:close-circle-outlined" color="gray" className="my-auto cursor-pointer absolute bottom-2 right-2" fontSize={23} onClick={()=>setMobileSearchActive(false)}/>
             </div>
         </div>
