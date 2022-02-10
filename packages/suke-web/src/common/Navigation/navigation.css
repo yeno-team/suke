@@ -1,5 +1,5 @@
 .nav-link {
-    @apply block mt-2 lg:inline-block lg:mt-0 text-gray hover:text-white mr-6;
+    @apply block mt-2 lg:inline-block lg:mt-0 tracking-wider text-gray hover:text-white mr-6;
 }
 
 .mobile-nav-link {

@@ -9,7 +9,11 @@ module.exports = {
       margin: {
         '17': '4.15em',
         '18': '4.6em',
-        '15.8rem': '15.8rem'
+        '15.8rem': '15.8rem',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '3/20': '15%'
       },
       spacing: {
         '1.5px': '1.5px',
@@ -29,7 +33,9 @@ module.exports = {
         '7/10': '70%',
         '8/10': '80%',
         '9/10': '90%',
-        '100': '25rem'
+        '100': '25rem',
+        '110': '28rem',
+        '120':'30rem'
       },
       width: {
         'reallybig': '60rem',
@@ -81,7 +87,8 @@ module.exports = {
       teal: "#339EA5",
       darkblue : "#003366",
       transparent : "#ffffff00",
-      green: "#1DBC60"
+      green: "#1DBC60",
+      bettergreen: '#169A5B'
     },
     fontFamily: {
       sans: ['Open Sans', 'sans-serif'],

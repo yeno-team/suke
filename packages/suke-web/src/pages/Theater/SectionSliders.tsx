@@ -19,8 +19,6 @@ export const SectionSliders = ({title, items, className, activeDate}: SectionSli
         return availableSchedules.length > 0 ? <TheaterItemComponent key={i} index={i} slideTo={aliceRef?.slideTo} item={v} schedules={availableSchedules}></TheaterItemComponent> : null;
     }).filter(v => v != null), [activeDate, aliceRef?.slideTo, items]);
 
-    const responsive: Responsive = useMemo(() => {return {0: {items: 1}, 800: {items:3}}}, []);
-
     return itemElements.length > 0 ? (
         <div className={classNames("font-sans px-10", className)}>
             <h1 className="text-white text-lg font-bold mb-2">{title}</h1>
@@ -32,7 +30,6 @@ export const SectionSliders = ({title, items, className, activeDate}: SectionSli
                     disableDotsControls
                     paddingLeft={40}
                     paddingRight={80}
-                    responsive={responsive}
                     renderNextButton={() => 
                         <div className="cursor-pointer transform rotate-180 top-0 select-none absolute z-10 -right-10 flex text-4xl text-center h-64 w-6 hover:bg-black bg-opacity-40"><p className="my-auto mx-auto" >&lang;</p></div>
                     }
