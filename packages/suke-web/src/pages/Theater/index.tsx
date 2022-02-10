@@ -4,10 +4,12 @@ import { FeaturedTheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { Button } from "@suke/suke-web/src/components/Button";
 import { TheaterNavBar } from "./TheaterNavBar";
 import { Schedule } from "./Schedule";
-import { SectionSliders } from "./SectionSliders";
+import { useState } from "react";
 
 
 export const TheaterPage = () => {
+    const [searchInput, setSearchInput] = useState("");
+ 
     const featuredMovies: FeaturedTheaterItem[] = [
         {
             title: 'Spider-Man: No Way Home',
@@ -23,9 +25,9 @@ export const TheaterPage = () => {
         }
     ]  
 
-    const items = featuredMovies.map(v => 
+    const featuredItems = featuredMovies.map(v => 
         <div key={v.id} className="h-100 w-full relative">
-            <div className="bg-greatblack fixed top-0 w-screen h-100 opacity-80"></div>
+            <div className="bg-greatblack fixed top-0 w-screen h-full opacity-80"></div>
             <div 
              style={{backgroundImage: `url("${v.backgroundImage}")`}} 
              className="w-full h-full bg-no-repeat bg-cover"
@@ -38,11 +40,11 @@ export const TheaterPage = () => {
         </div>
     );
     return (
-        <div className="bg-spaceblack">
+        <div className="bg-spaceblack h-screen overflow-y-scroll overflow-x-hidden">
             <Navigation />
-            <FeaturedSlider items={items} />
-            <TheaterNavBar />
-            <Schedule />
+            <FeaturedSlider items={featuredItems} />
+            <TheaterNavBar searchInput={searchInput} setSearchInput={setSearchInput} />
+            <Schedule searchInput={searchInput} />
         </div>
     )
 }
