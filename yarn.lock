@@ -4061,6 +4061,7 @@ __metadata:
     postcss: 7
     process: ^0.11.10
     react: ^17.0.2
+    react-alice-carousel: ^2.5.1
     react-dom: ^17.0.2
     react-error-overlay: 6.0.9
     react-google-recaptcha-v3: ^1.9.7
@@ -4074,6 +4075,7 @@ __metadata:
     react-use-websocket: ^2.9.1
     stylelint: ^14.0.0
     tailwindcss: "npm:@tailwindcss/postcss7-compat@2"
+    use-onclickoutside: ^0.4.0
     web-vitals: ^1.0.1
   languageName: unknown
   linkType: soft
@@ -6092,6 +6094,13 @@ __metadata:
   version: 1.2.0
   resolution: "aproba@npm:1.2.0"
   checksum: 0fca141966559d195072ed047658b6e6c4fe92428c385dd38e288eacfc55807e7b4989322f030faff32c0f46bb0bc10f1e0ac32ec22d25315a1e5bbc0ebb76dc
+  languageName: node
+  linkType: hard
+
+"are-passive-events-supported@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "are-passive-events-supported@npm:1.1.1"
+  checksum: 3295a7b3aeb026d26c1b256decdb5ded8bf26f6c02fd0b37c63c7dc9affd57b7474ee9b6230b5d5ac4f0fc624a19acdcfdd76c5155025d97cc7d8bb5dc83e61b
   languageName: node
   linkType: hard
 
@@ -18855,6 +18864,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-alice-carousel@npm:^2.5.1":
+  version: 2.5.1
+  resolution: "react-alice-carousel@npm:2.5.1"
+  dependencies:
+    vanilla-swipe: ^2.2.0
+  peerDependencies:
+    react: ">=15.4"
+  checksum: 7e7bb1a05ff982dbb9311254bec8b598e37caa5a9c3e60b51468eb21017200b20e90a0e7202fb9f66024b033ffe367aea331b1c3acf8535abddd094087c83e4a
+  languageName: node
+  linkType: hard
+
 "react-app-polyfill@npm:^2.0.0":
   version: 2.0.0
   resolution: "react-app-polyfill@npm:2.0.0"
@@ -22512,6 +22532,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-onclickoutside@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "use-onclickoutside@npm:0.4.0"
+  dependencies:
+    are-passive-events-supported: ^1.1.0
+    use-latest: ^1.0.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+  checksum: bef953e5138736f6cb67ba8c7343ff6fc6bb25b758ad0e0a8776c5f2ec9b6818be50a67d7d24f15d06d521ad90fccb06c3acaabf1cafda64e4f546fd306122cc
+  languageName: node
+  linkType: hard
+
 "use@npm:^3.1.0":
   version: 3.1.1
   resolution: "use@npm:3.1.1"
@@ -22668,6 +22700,13 @@ __metadata:
   version: 13.7.0
   resolution: "validator@npm:13.7.0"
   checksum: 2b83283de1222ca549a7ef57f46e8d49c6669213348db78b7045bce36a3b5843ff1e9f709ebf74574e06223461ee1f264f8cc9a26a0060a79a27de079d8286ef
+  languageName: node
+  linkType: hard
+
+"vanilla-swipe@npm:^2.2.0":
+  version: 2.3.0
+  resolution: "vanilla-swipe@npm:2.3.0"
+  checksum: d8e839743349b8c1e61b23b300d6181b683075387d697de049f093a45828010c7e17535f9717d564f087014dc105a31f152202d9103dec6986f77f4f5438ea76
   languageName: node
   linkType: hard
 
