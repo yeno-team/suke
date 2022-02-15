@@ -88,10 +88,10 @@ export class UserChannelModel extends BaseEntity implements IUserChannel {
     @OneToMany(() => Follower, follower => follower.followedTo)
     followers!: Follower[];
 
-    @Column()
+    @Column('text')
     desc_title!: string;
 
-    @Column()
+    @Column('text')
     desc!: string;
 
     @Column('jsonb', {nullable: true})

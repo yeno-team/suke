@@ -97,27 +97,31 @@ export class EmailModel extends BaseEntity implements IEmail {
 
     @Column({ 
         nullable : false,
-        transformer : [ lowercaseTransformer , hideEmailTransformer ]
+        transformer : [ lowercaseTransformer , hideEmailTransformer ],
+        type: 'text'
     })
     public originalEmail!: string;
 
     @Column({ 
         nullable : true , 
         default : null,
-        transformer : [ lowercaseTransformer  , hideEmailTransformer ]
+        transformer : [ lowercaseTransformer  , hideEmailTransformer ],
+        type: 'text'
     })
     public previousEmail! : string | null;
 
     @Column({ 
-        nullable : true , 
-        default : null
+        nullable : true, 
+        default : null,
+        type: 'text'
     })
     public verificationToken! : string | null;
     
     @Column({ 
         unique : true , 
         nullable : false,
-        transformer : [ lowercaseTransformer ] 
+        transformer : [ lowercaseTransformer ],
+        type: 'text'
     })
     public currentEmail!: string;
 

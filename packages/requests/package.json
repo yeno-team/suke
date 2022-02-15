@@ -4,7 +4,6 @@
   "dependencies": {
     "axios": "^0.22.0",
     "axios-cookiejar-support": "^2.0.3",
-    "tough-cookie": "^4.0.0",
-    "typedi": "^0.10.0"
+    "tough-cookie": "^4.0.0"
   }
 }

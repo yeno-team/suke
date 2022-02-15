@@ -38,7 +38,7 @@ export const HomePage = () => {
                     <Button className="mx-auto rounded px-5" backgroundColor="blue" fontWeight="bold">BROWSE THEATER</Button>
                 </div>
             </HeroImage>
-            <div className="bg-black h-full pt-6 px-4 lg:pl-32">
+            <div className="bg-darkblack h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Popular channels right now</h3>
                 <div>
                     {
@@ -51,7 +51,7 @@ export const HomePage = () => {
                 </div>
             </div>
 
-            <div className="bg-black h-full pt-6 px-4 lg:pl-32">
+            <div className="bg-darkblack h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Theater rooms that are about to start!</h3>
                 <div>
                     <TheaterCard subheading="EPISODE 1" title="BLEACH: TYBW" countdown="4:23" viewerCount={324} coverUrl="https://cdn.myanimelist.net/images/anime/1256/120125.jpg"></TheaterCard>
@@ -59,7 +59,7 @@ export const HomePage = () => {
                 </div>
             </div>
 
-            <div className="bg-black h-full pt-6 px-4 lg:pl-32">
+            <div className="bg-darkblack h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Categories you might enjoy</h3>
                 <div>
                     {
@@ -71,7 +71,7 @@ export const HomePage = () => {
                 </div>
             </div>
 
-            <div className="bg-black h-full pt-6 px-4 lg:pl-32">
+            <div className="bg-darkblack h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Channels You Follow</h3>
                 <div>
                     <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>

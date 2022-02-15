@@ -11,6 +11,9 @@
     ],
     "references": [
         {
+            "path": "../wrappers"
+        },
+        {
             "path" : "../suke-core"
         },
         {
@@ -18,9 +21,6 @@
         },
         {
             "path": "../requests"
-        },
-        {
-            "path": "../wrappers"
         }
     ],
     "exclude": [

@@ -1,6 +1,6 @@
 import { IUser } from "@suke/suke-core/src/entities/User/User";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as userApi from "../api/user";
 import * as authApi from "../api/auth";
 import { Role } from "@suke/suke-core/src/Role";
@@ -8,7 +8,7 @@ import { Role } from "@suke/suke-core/src/Role";
 export interface AuthContextInterface {
     errors: Error[];
     user?: IUser;
-    login: (name: string, password: string , reCaptchaToken : string) => void;
+    login: (name: string, password: string , reCaptchaToken : string) => Promise<boolean>;
     register: (name: string, email: string, password: string , reCaptchaToken : string) => void;
     logout: () => void;
     updateUser: () => void;
@@ -65,21 +65,23 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
             .finally(() => setLoadingInit(false))
     }
 
-    const login = (name: string, password: string , reCaptchaToken : string): void => {
+    const login = (name: string, password: string , reCaptchaToken : string): Promise<boolean> => {
         setLoading(true);
 
-        authApi.login({name, password , reCaptchaToken })
+        return authApi.login({name, password , reCaptchaToken })
             .then((data) => {
                 if (data.error === true) {
                     setErrors([...errors, new Error(data.message)]);
-                    return;
+                    return false;
                 }
 
                 setUser(data);
                 navigate("/");
+                return true;
             })
             .catch((e: Error) => {
                 setErrors([...errors, e]);
+                return false;
             })
             .finally(() => setLoading(false));
     } 
