@@ -1,9 +1,8 @@
 import { TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { TheaterItemComponent } from "@suke/suke-web/src/components/TheaterItemComponent";
 import classNames from "classnames";
-import React, { useRef } from "react";
 import { useMemo, useState } from "react";
-import AliceCarousel, { Responsive } from "react-alice-carousel";
+import AliceCarousel from "react-alice-carousel";
 
 export interface SectionSlidersProps {
     activeDate: Date;

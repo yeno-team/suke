@@ -21,10 +21,10 @@ export class TheaterItemScheduleModel extends BaseEntity implements TheaterItemS
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column('timestamp with time zone')
     time!: Date;
 
-    @Column()
+    @Column('enum', { enum: ScheduleState, default: ScheduleState.Waiting })
     state!: ScheduleState;
 
     @ManyToOne(() => TheaterItemModel, item => item.schedules, { eager: true })

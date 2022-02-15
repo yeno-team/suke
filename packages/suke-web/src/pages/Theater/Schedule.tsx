@@ -1,4 +1,5 @@
-import { ScheduleState, TheaterCategory, TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
+import { TheaterCategory, TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
+import { ScheduleState } from "@suke/suke-core/src/entities/TheaterItemSchedule";
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale"
 import { getScheduleDayNames } from "@suke/suke-web/src/util/getScheduleDayNames";
 import classNames from "classnames";
@@ -31,67 +32,78 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 id: 0,
                 time: (() => {const d = new Date(Date.now());d.setHours(3);return d})(),
                 subscribed: [],
-                state: ScheduleState.Ended
+                state: ScheduleState.Ended,
+                item: {} as TheaterItem
             },
             {
                 id: 1,
                 time: (() => {const d = new Date(Date.now());d.setHours(6);return d})(),
                 subscribed: [],
-                state: ScheduleState.Ended
+                state: ScheduleState.Ended,
+                item: {} as TheaterItem
             },
             {
                 id: 2,
                 time: (() => {const d = new Date(Date.now());d.setHours(8);return d})(),
                 subscribed: [],
-                state: ScheduleState.Starting
+                state: ScheduleState.Starting,
+                item: {} as TheaterItem
             },
             {
                 id: 3,
                 time: (() => {const d = new Date(Date.now());d.setHours(10);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 4,
                 time: (() => {const d = new Date(Date.now());d.setHours(14);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 5,
                 time: (() => {const d = new Date(Date.now());d.setHours(17);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 6,
                 time: (() => {const d = new Date(Date.now());d.setHours(20);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 7,
                 time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+18);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 8,
                 time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(3);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 9,
                 time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(6);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 10,
                 time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(8);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             }
         ];
 
@@ -100,67 +112,78 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 id: 0,
                 time: (() => {const d = new Date(Date.now());d.setHours(3);return d})(),
                 subscribed: [],
-                state: ScheduleState.Ended
+                state: ScheduleState.Ended,
+                item: {} as TheaterItem
             },
             {
                 id: 1,
                 time: (() => {const d = new Date(Date.now());d.setHours(6);return d})(),
                 subscribed: [],
-                state: ScheduleState.Ended
+                state: ScheduleState.Ended,
+                item: {} as TheaterItem
             },
             {
                 id: 2,
                 time: (() => {const d = new Date(Date.now());d.setHours(8);return d})(),
                 subscribed: [],
-                state: ScheduleState.Started
+                state: ScheduleState.Started,
+                item: {} as TheaterItem
             },
             {
                 id: 3,
                 time: (() => {const d = new Date(Date.now());d.setHours(10);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 4,
                 time: (() => {const d = new Date(Date.now());d.setHours(14);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 5,
                 time: (() => {const d = new Date(Date.now());d.setHours(17);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 6,
                 time: (() => {const d = new Date(Date.now());d.setHours(20);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 7,
                 time: (() => {const d = new Date(Date.now());d.setHours(d.getHours()+18);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 8,
                 time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(3);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 9,
                 time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(6);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             },
             {
                 id: 10,
                 time: (() => {const d = new Date(Date.now());d.setDate(d.getDate()+1);d.setHours(8);return d})(),
                 subscribed: [],
-                state: ScheduleState.Waiting
+                state: ScheduleState.Waiting,
+                item: {} as TheaterItem
             }
         ];
         
@@ -172,7 +195,8 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 posterUrl: "https://m.media-amazon.com/images/M/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_FMjpg_UX1000_.jpg",
                 followers: [],
                 category: TheaterCategory.Movie,
-                schedules: placeholderSchedules
+                schedules: placeholderSchedules,
+                featured: true
             },
             {
                 title: 'Daredevil Season 8',
@@ -182,7 +206,8 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 episode: 4,
                 followers: [],
                 category: TheaterCategory.TvShow,
-                schedules: placeholderSchedules2
+                schedules: placeholderSchedules2,
+                featured: false
             },
             {
                 title: 'One Piece',
@@ -192,7 +217,8 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 episode: 1003,
                 followers: [],
                 category: TheaterCategory.Anime,
-                schedules: placeholderSchedules
+                schedules: placeholderSchedules,
+                featured: false
             },
             {
                 title: 'The 100 Season 6',
@@ -202,7 +228,8 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 episode: 12,
                 followers: [],
                 category: TheaterCategory.TvShow,
-                schedules: placeholderSchedules2
+                schedules: placeholderSchedules2,
+                featured: false
             },
             {
                 title: 'Attack On Titan: Final Season',
@@ -212,7 +239,8 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 episode: 6,
                 followers: [],
                 category: TheaterCategory.Anime,
-                schedules: placeholderSchedules
+                schedules: placeholderSchedules,
+                featured: false
             },
             {
                 title: 'Uncharted',
@@ -221,7 +249,8 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 viewerCount: 52,
                 followers: [],
                 category: TheaterCategory.Movie,
-                schedules: placeholderSchedules2
+                schedules: placeholderSchedules2,
+                featured: true
             },
             {
                 title: 'Sonic The Hedgehog 2',
@@ -230,7 +259,8 @@ export const Schedule = ({searchInput, activeCategory}: ScheduleProps) => {
                 viewerCount: 17,
                 followers: [],
                 category: TheaterCategory.Movie,
-                schedules: placeholderSchedules
+                schedules: placeholderSchedules,
+                featured: false
             },
         ].filter(v => new RegExp(`${searchInput}`, 'i').test(v.title) && (v.category === activeCategory || activeCategory === TheaterCategory.Everything))
     }, [activeCategory, searchInput]);

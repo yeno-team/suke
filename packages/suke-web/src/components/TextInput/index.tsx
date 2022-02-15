@@ -17,7 +17,7 @@ export interface TextInputProps {
 
 export const TextInput = ({type, onChange, onInputEnd, onInputStart, className, children, autoComplete, placeholder, autoSubmit, autoSubmitDelay = 500}: TextInputProps) => {
     const [value, setValue] = useState("");
-    const [inputTimer, setInputTimer] = useState<NodeJS.Timer>();
+    const [inputTimer, setInputTimer] = useState<number>();
     const valueRef = useRef(value);
     valueRef.current = value;
     
@@ -26,7 +26,7 @@ export const TextInput = ({type, onChange, onInputEnd, onInputStart, className, 
         setValue(val);
         if (onChange) onChange(value);
         if (onInputStart) onInputStart();
-        if (autoSubmit) setInputTimer(setTimeout(triggerInputEnd, autoSubmitDelay));
+        if (autoSubmit) setInputTimer(setTimeout(triggerInputEnd, autoSubmitDelay) as unknown as number);
     }
 
     const triggerInputEnd = () => {

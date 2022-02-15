@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { AxiosRequest } from "@suke/requests/src";
 import { createFormData } from "@suke/suke-util/src";
 import { Service } from "typedi";

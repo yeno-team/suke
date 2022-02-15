@@ -4,7 +4,7 @@ import { User, UserModel } from '@suke/suke-core/src/entities/User';
 import { Repository } from 'typeorm';
 import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { UserChannelService } from './channel';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { Follower } from '@suke/suke-core/src/entities/Follower';
 import { Email, EmailData } from '@suke/suke-core/src/entities/Email';
 import { EmailService, EmailUtilService } from './email';
