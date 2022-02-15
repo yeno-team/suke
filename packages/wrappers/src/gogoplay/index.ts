@@ -34,6 +34,7 @@ export class GogoPlayApiWrapper {
         return str;
     }
 
+    // remove this and add to
     public async getVideoPlayerURL(url : URL) : Promise<URL> {
         const resp = await this.request.get<string>(url);
         const videoPlayerUrl = this.parseIFrameSrcRegex.exec(resp);
