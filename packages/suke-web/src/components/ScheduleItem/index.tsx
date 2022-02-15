@@ -1,4 +1,4 @@
-import { ScheduleState, TheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItem"
+import { ScheduleState, TheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale"
 import classNames from "classnames"
 

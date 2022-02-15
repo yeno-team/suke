@@ -1,5 +1,6 @@
-import { ScheduleState, TheaterItem, TheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItem"
-import { Button } from "@suke/suke-web/src/components/Button";
+import { TheaterItem } from "@suke/suke-core/src/entities/TheaterItem"
+import { ScheduleState, TheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
+import { Button } from "../../components/Button";
 import classNames from "classnames";
 import { useMemo, useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";

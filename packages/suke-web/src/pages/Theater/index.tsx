@@ -1,7 +1,6 @@
 import { Navigation } from "../../common/Navigation";
 import { FeaturedSlider } from "./FeaturedSlider"
 import { FeaturedTheaterItem, TheaterCategory } from "@suke/suke-core/src/entities/TheaterItem";
-import { Button } from "@suke/suke-web/src/components/Button";
 import { TheaterNavBar } from "./TheaterNavBar";
 import { Schedule } from "./Schedule";
 import { useState } from "react";

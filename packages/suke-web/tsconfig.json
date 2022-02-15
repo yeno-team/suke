@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es6",
     "lib": [
@@ -21,9 +22,9 @@
     "isolatedModules": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noEmit": true,
     "jsx": "react-jsx",
-    "module": "esnext"
+    "module": "esnext",
+    "noEmit": true
   },
   "references": [
     {

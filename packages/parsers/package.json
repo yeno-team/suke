@@ -8,8 +8,7 @@
     "@suke/suke-util": "workspace:packages/suke-util",
     "@suke/wrappers": "workspace:packages/wrappers",
     "cheerio": "^1.0.0-rc.10",
-    "hjson": "^3.2.2",
-    "typedi": "^0.10.0"
+    "hjson": "^3.2.2"
   },
   "scripts": {
     "start": "ts-node ./src/test"

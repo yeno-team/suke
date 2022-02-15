@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { YoutubeApiWrapper } from "./youtube";
 import { KickAssAnimeApiWrapper } from "./kickassanime";
 import { FzMoviesWrapper } from "./fzmovies";

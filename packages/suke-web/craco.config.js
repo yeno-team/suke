@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     webpack: {
@@ -24,7 +25,6 @@ module.exports = {
               );
 
               const newIncludePaths = [
-                // relative path to my yarn workspace library  
                 path.resolve(__dirname, '../suke-core'),
                 path.resolve(__dirname , "../suke-util")
               ];
@@ -37,7 +37,11 @@ module.exports = {
                 }
               }
             }
-          return webpackConfig;
+
+            webpackConfig.externals = ['aws-sdk', 'mock-aws-s3', 'nock', 'npm', 'react-native-sqlite-storage'];
+ 
+
+            return webpackConfig;
         },
       },
     },

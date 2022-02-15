@@ -2,7 +2,6 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "t
 import { TheaterItemFollower } from "../Follower";
 import { TheaterItemSchedule, TheaterItemScheduleModel } from "../TheaterItemSchedule";
 
-
 export interface FeaturedTheaterItem {
     title: string,
     description: string,
@@ -34,30 +33,32 @@ export class TheaterItemModel extends BaseEntity implements TheaterItem {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column('text')
     title!: string;
 
-    @Column()
+    @Column('integer')
     viewerCount!: number;
 
     @OneToMany(() => TheaterItemFollower, follower => follower.followedTo)
     followers!: TheaterItemFollower[];
 
-    @Column()
+    @Column('text')
     posterUrl!: string;
 
     @Column({
-        nullable: true
+        nullable: true,
+        type: 'integer'
     })
     episode!: number | undefined;
 
-    @Column()
+    @Column('enum', { enum: TheaterCategory })
     category!: TheaterCategory;
 
+    @Column('timestamp with time zone')
     @OneToMany(() => TheaterItemScheduleModel, schedule => schedule.item)
     schedules!: TheaterItemSchedule[];
 
-    @Column({default: false})
+    @Column({default: false, type: 'bool'})
     featured!: boolean;
 }
 

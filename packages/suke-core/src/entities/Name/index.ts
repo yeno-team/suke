@@ -1,6 +1,1 @@
-import { IName, Name } from "./Name";
-
-export {
-    IName,
-    Name
-};
+export * from "./Name";

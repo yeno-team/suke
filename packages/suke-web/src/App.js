@@ -1,3 +1,4 @@
+import React from "react"; 
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeContext } from './context/Theme';
 import { Routes } from './routes';
@@ -15,13 +16,13 @@ function App() {
       <NotificationProvider>
         <ThemeContext.Provider value="dark">
           <BrowserRouter>
-            <SocketContextProvider>
-              <AuthProvider>
-                <ChannelContextProvider>
-                  <Routes />
-                </ChannelContextProvider>
-              </AuthProvider>
-            </SocketContextProvider>
+            <AuthProvider>
+              <SocketContextProvider>
+                  <ChannelContextProvider>
+                    <Routes />
+                  </ChannelContextProvider>
+              </SocketContextProvider>
+            </AuthProvider>
           </BrowserRouter>
         </ThemeContext.Provider>
       </NotificationProvider>

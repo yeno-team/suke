@@ -35,7 +35,16 @@ export const LoginPage = () => {
         }
 
         
-        await login(usernameInput, passwordInput , reCaptchaToken);
+        const success = await login(usernameInput, passwordInput , reCaptchaToken);
+
+        if (!success) {
+            return notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                type : "danger",
+                title : "Error",
+                message : "Incorrect Login Details."
+            });
+        }
 
         return notificationStore.addNotification({
             ...defaultNotificationOpts,
