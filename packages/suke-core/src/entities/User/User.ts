@@ -5,11 +5,12 @@ import { ValueObject } from '../../ValueObject';
 import { lowercaseTransformer } from '../../transformers/ValueTransformers';
 import { PropertyValidationError } from "../../exceptions/ValidationError";
 import { IUserChannel, UserChannelModel } from "../UserChannel/UserChannel";
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { Name } from "../Name/Name";
 import { UserId } from "../UserId";
 import { Follower } from "../Follower";
 import isValidEmail from "@suke/suke-util/src/isValidEmail";
+
 
 export interface IBaseUser {
     id : number;
@@ -127,6 +128,7 @@ export class UserModel extends BaseEntity implements IDBUser  {
         unique: true,
         nullable: false,
         transformer: [lowercaseTransformer],
+        type: 'text'
     })
     public name!: string;
 
@@ -136,13 +138,15 @@ export class UserModel extends BaseEntity implements IDBUser  {
 
     @Column({
         nullable : false,
-        default : false
+        default : false,
+        type: 'boolean'
     })
     public isVerified! : boolean;
 
     @Column({
         nullable: false,
-        select: false
+        select: false,
+        type: 'text'
     })
     public salt!: string;
 

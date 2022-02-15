@@ -52,13 +52,18 @@ export const CategoryPage = () => {
         getChannels();
     }, [categoryValue, sortDirection]);
 
-    const categoryDisplayName = categoryValue!.split("_").flatMap(v => v.charAt(0).toUpperCase() + v.substr(1)).join(" ");
+    const categoryDisplayName = categoryValue?.split("_").flatMap(v => v.charAt(0).toUpperCase() + v.substr(1)).join(" ");
 
     return (
         <div className="bg-darkblack h-full flex flex-col flex-wrap text-center md:text-left" onScroll={handleScroll}>
             <Navigation></Navigation>
             <div className="flex mt-12 mb-4 md:ml-20 font-sans">
-                <h1 className="text-white font-semibold text-2xl"><h3 className="inline-block font-black">{ categoryDisplayName }</h3> Channels</h1>
+                <h1 className="text-white font-semibold text-2xl">
+                    <span className="inline-block font-black">
+                        { categoryDisplayName }
+                    </span> 
+                    Channels
+                </h1>
                 <div className="ml-auto md:mr-20 flex">
                     <h1 className="text-white font-semibold mr-3 leading-none my-auto">Sort By</h1>
                     <select className="bg-black text-lightgray rounded text-sm p-1" value={sortDirection} onChange={(e) => setSortDirection(e.target.value as "ASC" | "DESC")}>

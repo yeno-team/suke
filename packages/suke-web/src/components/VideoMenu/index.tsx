@@ -35,16 +35,16 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState<PlayerProgressState>({} as PlayerProgressState);
     const [seeking, setSeeking] = useState(false);
-    const [seekingTimer, setSeekingTimer] = useState<NodeJS.Timer>();
+    const [seekingTimer, setSeekingTimer] = useState<number>();
     
-    const [thumbnailTimer, setThumbnailTimer] = useState<NodeJS.Timer>();
+    const [thumbnailTimer, setThumbnailTimer] = useState<number>();
     const isOwner = (isAuthenticated && ownerView ? true : false);
 
     const channelDataRef = useRef<RealtimeChannelData>();
     channelDataRef.current = channelData;
     const playerRef = useRef<ReactPlayer | null>();
     playerRef.current = player;
-    const seekingRef = useRef<NodeJS.Timer>();
+    const seekingRef = useRef<number>();
     seekingRef.current = seekingTimer;
 
     useEffect(() => {
@@ -57,7 +57,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
 
         if (setThumbnail) {
             getThumbnail();
-            setThumbnailTimer(setInterval(getThumbnail, 10000));
+            setThumbnailTimer(setInterval(getThumbnail, 10000) as unknown as number);
         }
 
         return () => clearTimeout(thumbnailTimer!);
@@ -112,7 +112,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
             player?.seekTo(channelData.progress?.currentTime);
             setPlaying(true);
 
-            setSeekingTimer(setTimeout(() => setSeeking(false), 2000));
+            setSeekingTimer(setTimeout(() => setSeeking(false), 2000) as unknown as number);
         }
     }
  

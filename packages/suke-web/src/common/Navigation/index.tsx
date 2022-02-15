@@ -24,7 +24,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
             'items-center',
             'lg:justify-between',
             'flex-wrap',
-            'bg-black',
+            'bg-newblack',
             'pt-1 lg:pt-3',
             'pb-3',
             'px-4 lg:px-6',

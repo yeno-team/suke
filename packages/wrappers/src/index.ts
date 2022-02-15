@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { GogoPlayApiWrapper } from "./gogoplay";
 import { YoutubeApiWrapper } from "./youtube";
 import { KickAssAnimeApiWrapper } from "./kickassanime";

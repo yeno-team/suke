@@ -49,6 +49,7 @@ export class RateLimiterOpts extends ValueObject implements IRateLimterOpts {
         }
 
         if(!(this.limiter instanceof RateLimiterRedis)) {
+            console.log(this.limiter );
             throw new PropertyValidationError("limiter property must be an instance of RateLimterRedis.");
         }
 

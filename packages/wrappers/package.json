@@ -4,11 +4,14 @@
   "dependencies": {
     "@suke/requests": "workspace:packages/requests",
     "@suke/suke-core": "workspace:packages/suke-core",
+    "@suke/suke-util": "workspace:^",
+    "@types/hjson": "^2.4.3",
     "@types/tough-cookie": "^4.0.1",
     "axios-cookiejar-support": "^2.0.3",
+    "cheerio": "^1.0.0-rc.10",
     "crypto-js": "^4.1.1",
-    "tough-cookie": "^4.0.0",
-    "typedi": "^0.10.0"
+    "hjson": "^3.2.2",
+    "tough-cookie": "^4.0.0"
   },
   "scripts": {
     "start": "ts-node ./src/index.ts"

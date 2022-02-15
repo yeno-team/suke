@@ -118,7 +118,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                 ws.id = uuid();
                 ws.isAlive = true;
                 ws.remoteAddress = req.socket.remoteAddress;
-                const user = req.session.user as User;
+                const user = new User(req.session.user);
 
                 console.log(user.name + " Connected!");
                 
