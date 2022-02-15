@@ -11,6 +11,7 @@ import { UserId } from "../UserId";
 import { Follower } from "../Follower";
 import isValidEmail from "@suke/suke-util/src/isValidEmail";
 
+
 export interface IBaseUser {
     id : number;
     name : string;

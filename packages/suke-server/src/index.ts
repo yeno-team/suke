@@ -7,11 +7,13 @@ import { Server } from './server';
 import { UserModel } from '@suke/suke-core/src/entities/User';
 import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
-import { Follower } from '@suke/suke-core/src/entities/Follower';
+import { Follower, TheaterItemFollower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 import { NodeMailerService } from '@suke/suke-server/src/services/nodemailer';
 import { EmailModel } from '@suke/suke-core/src/entities/Email';
 import cors_proxy from "cors-anywhere";
+import { TheaterItemModel } from '@suke/suke-core/src/entities/TheaterItem';
+import { TheaterItemScheduleModel } from '@suke/suke-core/src/entities/TheaterItemSchedule';
 
 useContainer(typeORMContainer);
 
@@ -19,7 +21,17 @@ createConnection({
     type: "postgres",
     url: config.db.connectionUri,
     logger: 'advanced-console',
-    entities: [UserModel, UserChannelModel, SessionModel, Follower, CategoryModel , EmailModel],
+    entities: [
+        UserModel, 
+        UserChannelModel, 
+        SessionModel, 
+        Follower, 
+        CategoryModel, 
+        EmailModel, 
+        TheaterItemModel, 
+        TheaterItemFollower, 
+        TheaterItemScheduleModel
+    ],
     synchronize: true,
 }).then(async () => {
     Container.set<RedisClientType>('redis', RedisClient);
@@ -45,7 +57,6 @@ createConnection({
     Container.set<typeof nodeMailerService>("NodeMailerService", nodeMailerService);
     console.log("Mail server has been initalized.");
 
-
     new Server(config)
         .start();
 }).catch(error => {
@@ -54,7 +65,7 @@ createConnection({
 });
 
 cors_proxy.createServer({
-    originWhitelist: [], // Allow all origins
+    originWhitelist: [], // WARNING: DO NOT ALLOW ALL ORIGINS IN PRODUCTION
     requireHeader: ['origin', 'x-requested-with'],
     removeHeaders: ['cookie', 'cookie2']
 }).listen(config.corsProxy.port, config.server.host, function() {
