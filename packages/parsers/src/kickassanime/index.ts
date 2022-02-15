@@ -36,7 +36,8 @@ export default class KickAssAnimeParser implements IParser {
         
         const videoSources = sources.map(v => ({
             url: v.url,
-            quality: v.quality as keyof typeof Quality
+            quality: v.quality as keyof typeof Quality,
+            proxyRequired: true
         }));
 
         return videoSources as unknown as IVideoSource[];
@@ -90,7 +91,8 @@ export default class KickAssAnimeParser implements IParser {
                 sources : [
                     {
                         url,
-                        quality: Quality.auto
+                        quality: Quality.auto,
+                        proxyRequired: true
                     }
                 ]
             })))
