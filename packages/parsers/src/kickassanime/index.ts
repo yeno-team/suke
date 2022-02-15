@@ -2,7 +2,7 @@
 import { Service } from "typedi";
 import { IMultiData, ISearchData , StandaloneType , Quality, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError";
-import { KickAssAnimeApiWrapper } from "@suke/wrappers/src";
+import { KickAssAnimeApiWrapper  } from "@suke/wrappers/src";
 import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { KickAssAnimeInfoResponse, KickAssAnimeSourceFile } from "@suke/wrappers/src/kickassanime";
 
@@ -60,13 +60,17 @@ export default class KickAssAnimeParser implements IParser {
     }
 
     private async getVideoSources(url : URL) : Promise<Array<KickAssAnimeSourceFile>>{
-        // Catch error here
         const videoPlayerUrl = await this.wrapper.getVideoPlayerUrl(url);
-        const externalServers = await this.wrapper.getExternalServers(videoPlayerUrl);
+        
+        if(videoPlayerUrl.hostname.includes("gogoplay1.com")) {
+            return await (this.wrapper.getOldVideoPlayerSources(videoPlayerUrl));
+        }    
+
+        const externalServers = await this.wrapper.getNewVideoPlayerExternalServers(videoPlayerUrl);
         
         for(let i = 0; i < externalServers.length; i++) {
             try {
-                return await this.wrapper.getVideoSourcesFiles(externalServers[i].src);
+                return await this.wrapper.getNewVideoPlayerSourceFiles(externalServers[i].src);
             // eslint-disable-next-line no-empty
             } catch (e) {}
         }
