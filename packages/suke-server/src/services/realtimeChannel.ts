@@ -1,4 +1,4 @@
-import { RealtimeChannelData } from "@suke/suke-core/src/types/UserChannelRealtime";
+import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import { RedisClientType } from "@suke/suke-server/src/config";
 import { Inject, Service } from "typedi";
 
@@ -7,17 +7,17 @@ import { Inject, Service } from "typedi";
 export class RealtimeChannelService {
     constructor(@Inject("redis") private redisClient : RedisClientType) {}
 
-    public async getChannels(cursor = 0, limit = 20): Promise<{data: RealtimeChannelData[], nextCursor: number}> {
+    public async getChannels(cursor = 0, limit = 20): Promise<{data: RealtimeRoomData[], nextCursor: number}> {
         const keyPattern = "channel:*";
         const channelScan = await this.redisClient.scan(cursor, { MATCH: keyPattern, COUNT: limit});
         
-        const data: RealtimeChannelData[] = [];
+        const data: RealtimeRoomData[] = [];
 
         for (const key of channelScan.keys) {
             const channel = await this.redisClient.get(key);
             
             if (channel != null ) {
-                const parsedChannel: RealtimeChannelData = JSON.parse(channel);
+                const parsedChannel: RealtimeRoomData = JSON.parse(channel);
                 if (!parsedChannel.private) {
                     data.push({
                         ...parsedChannel,
@@ -33,7 +33,7 @@ export class RealtimeChannelService {
         };  
     }
 
-    public async getSortedChannels(pageNumber = 1, limit = 20, order: "ASC" | "DESC" = "DESC"): Promise<RealtimeChannelData[]> {
+    public async getSortedChannels(pageNumber = 1, limit = 20, order: "ASC" | "DESC" = "DESC"): Promise<RealtimeRoomData[]> {
         if (pageNumber <= 0) throw new Error("Page Number should be greater than 0");
         
         const startIndex = (pageNumber-1) * limit;
@@ -41,13 +41,13 @@ export class RealtimeChannelService {
 
         const sortedChannels = await this.redisClient.ZRANGE("channel_viewers", startIndex, endIndex, order === "DESC" ? {REV: true} : {});
 
-        const data: RealtimeChannelData[] = [];
+        const data: RealtimeRoomData[] = [];
 
         for (const key of sortedChannels) {
             const channel = await this.redisClient.get(key);
             
             if (channel != null) {
-                const parsedChannel: RealtimeChannelData = JSON.parse(channel);
+                const parsedChannel: RealtimeRoomData = JSON.parse(channel);
                 data.push({
                     ...parsedChannel,
                     password: "*".repeat(parsedChannel.password.length)

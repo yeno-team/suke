@@ -17,9 +17,11 @@ export const ScheduleItem = ({item, className}: ScheduleItemProps) => {
             item.state === ScheduleState.Waiting && "border-reallywhite",
             item.state === ScheduleState.Starting && "border-none bg-bettergreen text-white",
             item.state === ScheduleState.Started && "border-none bg-coolorange text-white",
+            item.state === ScheduleState.Delayed && "border-none bg-black text-white",
+            item.state === ScheduleState.Canceled && "border-none bg-red line-through text-white",
             className
         )}>
-            {item.time.toLocaleString(locale, { hour: 'numeric', minute: 'numeric', hour12: true })}
+            {new Date(item.time).toLocaleString(locale, { hour: 'numeric', minute: 'numeric', hour12: true })}
         </div>
     )
 }

@@ -20,6 +20,13 @@ export class MobileTvShowsWrapper {
         private request : AxiosRequest
     ) {}
 
+    // public async getData(url: URL, season: number,  episodeNumber: number): Promise<MobileTvShow> {
+    //     const resp = await this.request.get<string>(new URL(url.protocol + ("www." + url.hostname.replace(/www\./, "") + url.pathname + url.search)), this.requestConfig);
+    //     const $  = cheerio.load(resp);
+
+
+    // }
+
     public async getSources(url: URL): Promise<IVideoSource[]> {
         const download1Url = await this.request.get<string>(new URL(url.protocol + ("www." + url.hostname.replace(/www\./, "") + url.pathname + url.search)), this.requestConfig);
         const $ = cheerio.load(download1Url);

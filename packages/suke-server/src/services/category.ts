@@ -1,5 +1,5 @@
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
-import { RealtimeChannelData } from "@suke/suke-core/src/types/UserChannelRealtime";
+import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import { RedisClientType } from "@suke/suke-server/src/config";
 import { Inject, Service } from "typedi";
 import { Repository } from "typeorm";
@@ -27,7 +27,7 @@ export class CategoryService {
         });
     }
 
-    public async getCategoryChannels(categoryVal: string, pageNumber = 1, limit = 20, order: "ASC" | "DESC" = "DESC"): Promise<RealtimeChannelData[]> {
+    public async getCategoryChannels(categoryVal: string, pageNumber = 1, limit = 20, order: "ASC" | "DESC" = "DESC"): Promise<RealtimeRoomData[]> {
         if (pageNumber <= 0) throw new Error("Page Number should be greater than 0");
         
         const startIndex = (pageNumber-1) * limit;
@@ -35,13 +35,13 @@ export class CategoryService {
 
         const sortedChannels = await this.redisClient.ZRANGE("category_channels:" + categoryVal, startIndex, endIndex, order === "DESC" ? {REV: true} : {});
 
-        const data: RealtimeChannelData[] = [];
+        const data: RealtimeRoomData[] = [];
 
         for (const key of sortedChannels) {
             const channel = await this.redisClient.get(key);
 
             if (channel != null) {
-                const parsedChannel: RealtimeChannelData = JSON.parse(channel);
+                const parsedChannel: RealtimeRoomData = JSON.parse(channel);
                 data.push({
                     ...parsedChannel,
                     password: "*".repeat(parsedChannel.password.length)

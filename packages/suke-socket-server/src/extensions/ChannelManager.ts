@@ -1,5 +1,5 @@
 import { RoomManager } from "./RoomManager";
-import { RealtimeChannelData } from '@suke/suke-core/src/types/UserChannelRealtime';
+import { RealtimeRoomData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { Quality } from "@suke/suke-core/src/entities/SearchResult";
 import { RedisClientType, SocketServer } from "../server";
 import { Repository, getRepository } from "typeorm";
@@ -24,7 +24,7 @@ export class ChannelManager {
         this.userRepository = getRepository(UserModel);
     }
 
-    public async getChannel(channelId: string, createIfNotExist = true): Promise<RealtimeChannelData> {
+    public async getChannel(channelId: string, createIfNotExist = true): Promise<RealtimeRoomData> {
         const key = this.getRedisKey(channelId);
 
         const foundUser = await this.userRepository.findOne({where: {name: channelId.toLowerCase()}});
@@ -38,7 +38,7 @@ export class ChannelManager {
             return;
 
         if (val == null && createIfNotExist) {
-            const defaultValue: RealtimeChannelData = {
+            const defaultValue: RealtimeRoomData = {
                 id: channelId,
                 title: "Looking for something to watch",
                 category: "browsing",
@@ -68,7 +68,7 @@ export class ChannelManager {
         return JSON.parse(val);
     }
     
-    public async editRealtimeChannel(channelId: string, editedData: Partial<RealtimeChannelData>): Promise<RealtimeChannelData> {
+    public async editRealtimeChannel(channelId: string, editedData: Partial<RealtimeRoomData>): Promise<RealtimeRoomData> {
         const key = this.getRedisKey(channelId);
         const channel = await this.getChannel(channelId);
         
@@ -98,7 +98,7 @@ export class ChannelManager {
             await this.redisClient.ZADD("channel_viewers", [{value: key, score: editedData.viewerCount}]);
         }
 
-        const updatedData: RealtimeChannelData = {
+        const updatedData: RealtimeRoomData = {
             ...channel,
             ...editedData
         };

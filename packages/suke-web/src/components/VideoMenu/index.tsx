@@ -1,5 +1,5 @@
 import { IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
-import { RealtimeChannelData } from '@suke/suke-core/src/types/UserChannelRealtime';
+import { RealtimeRoomData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { captureFrame } from '@suke/suke-util';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -18,7 +18,7 @@ export interface VideoMenuProps {
     ownerView: boolean;
     viewerCount?: number;
     setThumbnail?: (v: string) => void;
-    channelData: RealtimeChannelData
+    channelData: RealtimeRoomData
 }
 
 export interface PlayerProgressState {
@@ -29,7 +29,7 @@ export interface PlayerProgressState {
 }
 
 const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, className, playerHeight, playerWidth, isAuthenticated, ownerView, channelId, handleOpenSettings, channelData}: VideoMenuProps): JSX.Element => {
-    const { updateRealtimeChannelData } = useChannel();
+    const { updateRealtimeRoomData } = useChannel();
     const [player, setPlayer] = useState<ReactPlayer | null>(null);
     const [clientPaused, setClientPaused] = useState(true);
     const [playing, setPlaying] = useState(false);
@@ -40,7 +40,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     const [thumbnailTimer, setThumbnailTimer] = useState<number>();
     const isOwner = (isAuthenticated && ownerView ? true : false);
 
-    const channelDataRef = useRef<RealtimeChannelData>();
+    const channelDataRef = useRef<RealtimeRoomData>();
     channelDataRef.current = channelData;
     const playerRef = useRef<ReactPlayer | null>();
     playerRef.current = player;
@@ -80,14 +80,14 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     }
 
     const updateCurrentRealtimeTime = useCallback((currentTime) => {
-        updateRealtimeChannelData({
+        updateRealtimeRoomData({
             progress: {
                 currentTime: currentTime
             },
             paused: false,
             channelId: channelId
         });
-    }, [channelId, updateRealtimeChannelData])
+    }, [channelId, updateRealtimeRoomData])
 
     const handleProgress = (state: PlayerProgressState) => {
         setProgress(state);
@@ -118,7 +118,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
  
     const handlePause = () => {
         if (isOwner) {
-            updateRealtimeChannelData({
+            updateRealtimeRoomData({
                 paused: true,
                 channelId: channelId
             });
@@ -131,7 +131,7 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
 
     const handlePlay = () => {
         if (isOwner) {
-            updateRealtimeChannelData({
+            updateRealtimeRoomData({
                 paused: false,
                 channelId: channelId
             });

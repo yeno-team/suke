@@ -1,4 +1,4 @@
-import { ISearchData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
+import { IMultiData, ISearchData, IStandaloneData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { ValueObject } from "@suke/suke-core/src/ValueObject";
 
 export interface IParserSearchOptions {
@@ -27,6 +27,8 @@ export class ParserSearchOptions extends ValueObject implements IParserSearchOpt
     }
 }
 
+export type ParserDataResponse = {multi: true, data: IMultiData} | {multi: false, data: IStandaloneData};
+
 export interface IParser {
     /**
      * Unique Parser Name
@@ -39,4 +41,6 @@ export interface IParser {
 
     // get source if required for an engine. This method should return an empty array if grabbing the sources is not required.
     getSource(url: URL): Promise<IVideoSource[]>;
+
+    getData(url: URL, opts?: {season?: number,  episode?: number}): Promise<ParserDataResponse | undefined>;
 }
