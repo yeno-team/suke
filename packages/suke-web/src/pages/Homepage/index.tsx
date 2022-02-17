@@ -7,12 +7,12 @@ import { TheaterCard } from "../../components/TheaterCard";
 import { CategoryCard } from "../../components/CategoryCard";
 import { useCategory } from "../../hooks/useCategory";
 import React, { useEffect, useState } from "react";
-import { RealtimeChannelData } from "@suke/suke-core/src/types/UserChannelRealtime";
+import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import { getRealtimeChannels } from "@suke/suke-web/src/api/realtime";
 import numeral from "numeral";
 
 export const HomePage = () => {
-    const [realtimeChannels, setRealtimeChannels] = useState<RealtimeChannelData[]>();
+    const [realtimeChannels, setRealtimeChannels] = useState<RealtimeRoomData[]>();
     const { categories } = useCategory();
 
     useEffect(() => {

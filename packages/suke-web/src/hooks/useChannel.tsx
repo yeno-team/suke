@@ -1,6 +1,6 @@
 import { isRequestsEqual, Request } from "@suke/suke-core/src/entities/Request";
 import { SocketMessageInput } from "@suke/suke-core/src/entities/SocketMessage";
-import { RealtimeChannelData } from "@suke/suke-core/src/types/UserChannelRealtime";
+import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useChanged } from "./useChanged";
 import { useSocket } from "./useSocket";
@@ -9,12 +9,12 @@ import React from "react";
 
 export interface ChannelContextInterface {
     requests: Request[],
-    channelData: RealtimeChannelData,
+    channelData: RealtimeRoomData,
     createRequest: (request: Request) => void,
     removeRequest: (request: Request) => void,
     getRequests: (roomId: string) => void,
     requestChannelData: (roomId: string) => void,
-    updateRealtimeChannelData: (updatedChannelData: Partial<RealtimeChannelData> & { channelId: string }) => void
+    updateRealtimeRoomData: (updatedChannelData: Partial<RealtimeRoomData> & { channelId: string }) => void
 }
 
 export const ChannelContext = React.createContext<ChannelContextInterface>({} as ChannelContextInterface);
@@ -23,7 +23,7 @@ export const ChannelContextProvider = ({children}: {children: React.ReactNode}):
     const [requests, setRequests] = useState<Request[]>([]);
     const { sendJsonMessage, messageHistory } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
-    const [ channelData, setChannelData ] = useState<RealtimeChannelData>({} as RealtimeChannelData);
+    const [ channelData, setChannelData ] = useState<RealtimeRoomData>({} as RealtimeRoomData);
 
     useEffect(() => {
         if (!socketMessagesChanged || prevSocketMessages == null)
@@ -54,7 +54,7 @@ export const ChannelContextProvider = ({children}: {children: React.ReactNode}):
                     }
                     break;
                 case "CHANNEL_UPDATE": {
-                    const oldData: RealtimeChannelData = {
+                    const oldData: RealtimeRoomData = {
                         id: channelData.id!,
                         title: channelData.title!,
                         category: channelData.category!,
@@ -70,7 +70,7 @@ export const ChannelContextProvider = ({children}: {children: React.ReactNode}):
                     }
 
                     if (!_.isEqual(oldData, msg.data)) {
-                        setChannelData(msg.data as RealtimeChannelData );
+                        setChannelData(msg.data as RealtimeRoomData );
                     }
                     break;
                 }
@@ -112,7 +112,7 @@ export const ChannelContextProvider = ({children}: {children: React.ReactNode}):
             });
         }
 
-        const updateRealtimeChannelData = (updatedChannelData: Partial<RealtimeChannelData> & { channelId: string }) => {
+        const updateRealtimeRoomData = (updatedChannelData: Partial<RealtimeRoomData> & { channelId: string }) => {
             sendJsonMessage({
                 type: 'CHANNEL_UPDATE',
                 data: {
@@ -120,7 +120,7 @@ export const ChannelContextProvider = ({children}: {children: React.ReactNode}):
                 }
             });
         }
-        return { createRequest, removeRequest, updateRealtimeChannelData, requests, getRequests, channelData, requestChannelData};
+        return { createRequest, removeRequest, updateRealtimeRoomData, requests, getRequests, channelData, requestChannelData};
     }, [channelData, requests, sendJsonMessage]);
 
     return (

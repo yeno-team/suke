@@ -19,32 +19,6 @@ export class CategoryManager {
         this.categoryCache = new Map();
         this.categoryRepository = getRepository(CategoryModel);
         this.redisClient = server.getRedisClient();
-        this.startUpdateTimer();
-    }
-
-    private startUpdateTimer() {
-        /**
-         * MAYBE MOVE THIS INTO SOMETHING THAT IS OUTSIDE THE SCOPE OF THE APPLICATION WHERE IT CAN RUN ON ITS OWN
-         * Something like using node-schedule
-         */
-        setInterval(async () => {
-            /**
-             * Update categories viewer count in db every 10 seconds
-             */
-
-            const categoryChannelsKeys = await this.redisClient.KEYS("category_channels:*");
-            
-            for (const key of categoryChannelsKeys) {
-                const category = await this.categoryRepository.findOne({ where: { value: key.split("category_channels:")[1] } });
-                
-                if (category != null) {
-                    const set = await this.redisClient.ZRANGE_WITHSCORES(key, 0, -1);
-                    const totalViewerCount = set.reduce((prev, curr) => prev + curr.score, 0);
-                    category.viewerCount = Math.max(totalViewerCount, 0);
-                    category.save();
-                }
-            }
-        }, 10000);
     }
 
     public async updateRoomViewerCount(roomId: string, category: string, viewerCount: number): Promise<void> {

@@ -1,5 +1,5 @@
 import { ValidationError } from "../../exceptions/ValidationError";
-import { RealtimeChannelData } from "../../types/UserChannelRealtime";
+import { RealtimeRoomData } from "../../types/UserChannelRealtime";
 import { ValueObject } from "../../ValueObject";
 import { ISentMessage } from "../SentMessage";
 import { IReceivedMessage } from "../ReceivedMessage";
@@ -34,7 +34,7 @@ export type SocketMessageInput = {
     data: IHasRoomId
 } | {
     type: 'CHANNEL_UPDATE',
-    data: Partial<RealtimeChannelData & {channelId: string}>
+    data: Partial<RealtimeRoomData & {channelId: string}>
 } | {
     type: 'CHANNEL_REQUEST_ADD',
     data: Request

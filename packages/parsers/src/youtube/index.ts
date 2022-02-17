@@ -1,6 +1,6 @@
 import { ISearchData, IStandaloneData, StandaloneType, Quality, IMultiData, IMultiStandaloneData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { Service } from "typedi";
-import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
+import { IParser, ParserDataResponse, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { YoutubeApiWrapper } from "@suke/wrappers/src";
 import { ChannelRenderer, IHasChannelRenderer, IHasItemSectionRenderer, IHasPlaylistRenderer, IHasShelfRenderer, IHasVideoRenderer, Thumbnail, YoutubeApiSearchContinuationResponse, YoutubeApiSearchResponse } from "@suke/wrappers/src/youtube";
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError";
@@ -13,7 +13,11 @@ export class YoutubeParser implements IParser {
     constructor (
         private wrapper: YoutubeApiWrapper
     ) {  }
-        
+
+    getData(url: URL): Promise<ParserDataResponse> {
+        throw new Error("Method not implemented.");
+    }
+
     async getSource(): Promise<IVideoSource[]> {
         return [];
     }

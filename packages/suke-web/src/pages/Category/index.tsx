@@ -1,4 +1,4 @@
-import { RealtimeChannelData } from "@suke/suke-core/src/types/UserChannelRealtime";
+import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import { getCategoryChannels } from "@suke/suke-web/src/api/category";
 import { ChannelCard } from "@suke/suke-web/src/components/ChannelCard";
 import React, { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ type CategoryPageParams = {
 }
 
 export const CategoryPage = () => {
-    const [channels, setChannels] = useState<RealtimeChannelData[]>([]);
+    const [channels, setChannels] = useState<RealtimeRoomData[]>([]);
     const [loading, setLoading] = useState(true);
     const { categoryValue } = useParams<CategoryPageParams>();
     const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");

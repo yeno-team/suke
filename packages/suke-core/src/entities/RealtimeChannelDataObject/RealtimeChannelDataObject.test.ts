@@ -1,15 +1,15 @@
 /**
- * Tests RealtimeChannelDataObject Class
+ * Tests RealtimeRoomDataObject Class
  * 
- * @group unit/classes/realtimeChannelDataObject
+ * @group unit/classes/RealtimeRoomDataObject
  */
 
-import { RealtimeChannelDataObject } from ".";
+import { RealtimeRoomDataObject } from ".";
 
-describe('RealtimeChannelDataObject class', () => {
+describe('RealtimeRoomDataObject class', () => {
     describe('#Equals', () => {
         it('should return true if passed in matching objects', () => {
-            const channel = new RealtimeChannelDataObject({
+            const channel = new RealtimeRoomDataObject({
                 id: 'test',
                 title: 'test',
                 category: 'test',
@@ -23,7 +23,7 @@ describe('RealtimeChannelDataObject class', () => {
                 followerOnlyChat: false,
                 live: false
             });
-            const channel2 = new RealtimeChannelDataObject({
+            const channel2 = new RealtimeRoomDataObject({
                 id: 'test',
                 title: 'test',
                 category: 'test',
@@ -42,7 +42,7 @@ describe('RealtimeChannelDataObject class', () => {
         });
 
         it('should return false if passed in non-matching objects', () => {
-            const channel = new RealtimeChannelDataObject({
+            const channel = new RealtimeRoomDataObject({
                 id: 'test',
                 title: 'test',
                 category: 'test',
@@ -56,7 +56,7 @@ describe('RealtimeChannelDataObject class', () => {
                 followerOnlyChat: false,
                 live: false
             });
-            const channel2 = new RealtimeChannelDataObject({
+            const channel2 = new RealtimeRoomDataObject({
                 id: 'test1',
                 title: 'test',
                 category: 'test',
@@ -73,7 +73,7 @@ describe('RealtimeChannelDataObject class', () => {
 
             expect(channel.Equals(channel2)).toBeFalsy();
 
-            const channel3 = new RealtimeChannelDataObject({
+            const channel3 = new RealtimeRoomDataObject({
                 id: 'test',
                 title: 'test',
                 category: 'test',
@@ -87,7 +87,7 @@ describe('RealtimeChannelDataObject class', () => {
                 followerOnlyChat: false,
                 live: false
             });
-            const channel4 = new RealtimeChannelDataObject({
+            const channel4 = new RealtimeRoomDataObject({
                 id: 'test',
                 title: 'test',
                 category: 'test',
@@ -104,7 +104,7 @@ describe('RealtimeChannelDataObject class', () => {
 
             expect(channel3.Equals(channel4)).toBeFalsy();
 
-            const channel5 = new RealtimeChannelDataObject({
+            const channel5 = new RealtimeRoomDataObject({
                 id: 'test',
                 title: 'test',
                 category: 'test',
@@ -118,7 +118,7 @@ describe('RealtimeChannelDataObject class', () => {
                 followerOnlyChat: false,
                 live: false
             });
-            const channel6 = new RealtimeChannelDataObject({
+            const channel6 = new RealtimeRoomDataObject({
                 id: 'test',
                 title: 'test',
                 category: 'test',

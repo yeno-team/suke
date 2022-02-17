@@ -1,15 +1,29 @@
 import { Navigation } from "../../common/Navigation";
 import { FeaturedSlider } from "./FeaturedSlider"
-import { FeaturedTheaterItem, TheaterCategory } from "@suke/suke-core/src/entities/TheaterItem";
+import { FeaturedTheaterItem, TheaterCategory, TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { TheaterNavBar } from "./TheaterNavBar";
 import { Schedule } from "./Schedule";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getTheaterItems } from "@suke/suke-web/src/api/theater";
 
 
 export const TheaterPage = () => {
     const [searchInput, setSearchInput] = useState("");
-    const [activeCategory, setActiveCategory] = useState(TheaterCategory.Everything);
- 
+    const [theaterItems, setTheaterItems] = useState<TheaterItem[]>([]);
+    const [activeCategory, setActiveCategory] = useState(TheaterCategory.everything);
+    
+    useEffect(() => {
+        async function fetchTheaterItems() {    
+            try {
+                setTheaterItems(await getTheaterItems());
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        fetchTheaterItems();
+    }, []);
+
+
     const featuredMovies: FeaturedTheaterItem[] = [
         {
             title: 'Spider-Man: No Way Home',
@@ -44,7 +58,7 @@ export const TheaterPage = () => {
             <Navigation />
             <FeaturedSlider items={featuredItems} />
             <TheaterNavBar activeCategory={activeCategory} setActiveCategory={setActiveCategory} searchInput={searchInput} setSearchInput={setSearchInput}  />
-            <Schedule searchInput={searchInput} activeCategory={activeCategory}/>
+            <Schedule searchInput={searchInput} activeCategory={activeCategory} theaterItems={theaterItems}/>
         </div>
     )
 }
