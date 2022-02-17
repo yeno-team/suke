@@ -37,7 +37,7 @@ export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
     const { joinRoom } = useRoom();
     const { user, updateUser } = useAuth();
-    const { channelData, requestChannelData, updateRealtimeChannelData } = useChannel();
+    const { channelData, requestChannelData, updateRealtimeRoomData } = useChannel();
     const { messageHistory, setReconnectCallback } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
     const notificationStore = useNotification();
@@ -153,7 +153,7 @@ export const UserChannelPage = (): JSX.Element => {
     const changeChannelThumbnail = (imageUrl: string) => {
         if (channelData.thumbnail.url === imageUrl) return;
 
-        updateRealtimeChannelData({
+        updateRealtimeRoomData({
             thumbnail: {
                 url: imageUrl
             },

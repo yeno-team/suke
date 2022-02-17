@@ -10,10 +10,10 @@ export interface FeaturedTheaterItem {
 }
 
 export enum TheaterCategory {
-    Everything,
-    Movie,
-    TvShow,
-    Anime
+    everything = "Everything",
+    movie = "Movies",
+    tvShow = "TV Shows",
+    anime = "Anime"
 }
 
 export interface TheaterItem {
@@ -39,7 +39,7 @@ export class TheaterItemModel extends BaseEntity implements TheaterItem {
     @Column('integer')
     viewerCount!: number;
 
-    @OneToMany(() => TheaterItemFollower, follower => follower.followedTo)
+    @OneToMany(() => TheaterItemFollower, follower => follower.followedTo, { cascade: true })
     followers!: TheaterItemFollower[];
 
     @Column('text')
@@ -49,12 +49,27 @@ export class TheaterItemModel extends BaseEntity implements TheaterItem {
         nullable: true,
         type: 'integer'
     })
+    season!: number | undefined;
+
+    @Column({
+        nullable: true,
+        type: 'integer'
+    })
     episode!: number | undefined;
+
+    @Column({
+        type: 'text'
+    })
+    engine!: string;
+
+    @Column({
+        type: 'text'
+    })
+    sourceUrl!: string;
 
     @Column('enum', { enum: TheaterCategory })
     category!: TheaterCategory;
 
-    @Column('timestamp with time zone')
     @OneToMany(() => TheaterItemScheduleModel, schedule => schedule.item)
     schedules!: TheaterItemSchedule[];
 

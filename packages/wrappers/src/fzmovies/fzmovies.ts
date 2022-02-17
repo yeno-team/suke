@@ -3,7 +3,6 @@ import * as cheerio from "cheerio";
 import { AxiosRequest } from "@suke/requests/src";
 import { IVideoSource, Quality } from "@suke/suke-core/src/entities/SearchResult";
 import { RequestOptions } from "@suke/requests/src/IRequest";
-
 export type FzMovie = {
     name: string,
     posterUrl: URL,
@@ -17,6 +16,26 @@ export class FzMoviesWrapper {
     constructor(
         private request : AxiosRequest
     ) {}
+
+    public async getData(url: URL): Promise<FzMovie | undefined> {
+        const resp = await this.request.get<string>(new URL(url.protocol + ("www." + url.hostname.replace(/www\./, "") + url.pathname + url.search)), this.requestOptions);
+        const $ = cheerio.load(resp);
+
+        const data: FzMovie = {} as FzMovie;
+        const titleEle = $('.moviename > span');
+        if (titleEle.length > 0) {
+            data.name = $(titleEle[0]).html()?.trim() as string;
+        }
+
+        const images = $('.moviedesc img');
+        if (images.length > 0) {
+            data.posterUrl = new URL($(images[0]).attr('src')?.trim() as string, this.host);
+        }
+
+        data.url = url;
+
+        return data;
+    }
 
     public async getSources(url: URL): Promise<IVideoSource[]> {
         const download1Url = await this.request.get<string>(new URL(url.protocol + ("www." + url.hostname.replace(/www\./, "") + url.pathname + url.search)), this.requestOptions);

@@ -42,7 +42,7 @@ export interface MultiBrowserStandaloneItemProps {
 }
 
 export function BrowserItem({data, category, roomId, requestedBy, requestedObject, toggleModal, activeSource}: BrowserItemProps) {
-    const { createRequest, removeRequest, updateRealtimeChannelData } = useChannel();
+    const { createRequest, removeRequest, updateRealtimeRoomData } = useChannel();
     const { user } = useAuth();
     
     const requestObj: Request = {
@@ -75,7 +75,7 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
                     removeRequest(requestedObject);
                 }
                 
-                updateRealtimeChannelData({
+                updateRealtimeRoomData({
                     currentVideo: {
                         sources: sources.length > 0 ? sources : data.sources,
                         name: data.name as string,

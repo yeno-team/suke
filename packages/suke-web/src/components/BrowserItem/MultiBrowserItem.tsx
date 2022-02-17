@@ -92,7 +92,7 @@ export function MultiBrowserItem({data, category, roomId, requestedBy, requested
 }
 
 export function MultiBrowserStandaloneItem({data, standaloneData, roomId, requestedBy, toggleModal, category, activeSource, requestedObject}: MultiBrowserStandaloneItemProps) {
-    const { createRequest, removeRequest, updateRealtimeChannelData } = useChannel();
+    const { createRequest, removeRequest, updateRealtimeRoomData } = useChannel();
     const { user } = useAuth();
     
     const reqObj: Request = {
@@ -134,7 +134,7 @@ export function MultiBrowserStandaloneItem({data, standaloneData, roomId, reques
                     removeRequest(requestedObject);
                 }
                 
-                updateRealtimeChannelData({
+                updateRealtimeRoomData({
                     currentVideo: {
                         sources: sources.length > 0 ? sources : standaloneData.sources,
                         name: data.name as string,

@@ -3,7 +3,7 @@ import { Service } from "typedi";
 import { IMultiData, ISearchData , StandaloneType , Quality, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { ParserError } from "@suke/suke-core/src/exceptions/ParserError";
 import { KickAssAnimeApiWrapper  } from "@suke/wrappers/src";
-import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
+import { IParser, ParserDataResponse, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { KickAssAnimeInfoResponse, KickAssAnimeSourceFile } from "@suke/wrappers/src/kickassanime";
 
 export type KickAssAnimePaginationResponse<T> = {
@@ -30,6 +30,10 @@ export default class KickAssAnimeParser implements IParser {
     constructor(
         private wrapper : KickAssAnimeApiWrapper
     ){}
+
+    getData(url: URL): Promise<ParserDataResponse> {
+        throw new Error("Method not implemented.");
+    }
     
     async getSource(url: URL): Promise<IVideoSource[]> {
         const sources = await this.getVideoSources(url);

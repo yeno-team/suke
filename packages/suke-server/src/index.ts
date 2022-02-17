@@ -14,7 +14,7 @@ import { EmailModel } from '@suke/suke-core/src/entities/Email';
 import cors_proxy from "cors-anywhere";
 import { TheaterItemModel } from '@suke/suke-core/src/entities/TheaterItem';
 import { TheaterItemScheduleModel } from '@suke/suke-core/src/entities/TheaterItemSchedule';
-
+import { startScheduler } from "@suke/suke-scheduler/src";
 useContainer(typeORMContainer);
 
 createConnection({
@@ -56,6 +56,9 @@ createConnection({
 
     Container.set<typeof nodeMailerService>("NodeMailerService", nodeMailerService);
     console.log("Mail server has been initalized.");
+
+    startScheduler();
+    console.log("Scheduler Started.");
 
     new Server(config)
         .start();

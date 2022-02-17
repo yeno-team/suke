@@ -13,7 +13,7 @@ import { CategoryChannelsController } from "./categories/channels";
 import { VerifyEmailController } from "./accountsettings/verifyEmail";
 import { ResendVerificationController } from "./accountinformation/resendVerification";
 import { ChangeEmailController } from "./accountsettings/changeEmail";
-import { ProxyController } from "./proxy";
+import { TheaterItemsController } from "./theater/items";
 
 export default [
     AuthController,
@@ -32,5 +32,5 @@ export default [
     VerifyEmailController,
     ResendVerificationController,
     ChangeEmailController,
-    ProxyController
+    TheaterItemsController
 ];

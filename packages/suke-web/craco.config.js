@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     webpack: {
@@ -39,7 +38,7 @@ module.exports = {
             }
 
             webpackConfig.externals = ['aws-sdk', 'mock-aws-s3', 'nock', 'npm', 'react-native-sqlite-storage'];
- 
+
 
             return webpackConfig;
         },

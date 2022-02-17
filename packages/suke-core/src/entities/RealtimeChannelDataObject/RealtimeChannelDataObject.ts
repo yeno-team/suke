@@ -1,9 +1,9 @@
 import { ValueObject } from "../../ValueObject";
-import { RealtimeChannelData } from "../../types/UserChannelRealtime";
+import { RealtimeRoomData } from "../../types/UserChannelRealtime";
 import { IVideoSource } from "../SearchResult";
 import { ValidationError } from "../../exceptions/ValidationError";
 
-export class RealtimeChannelDataObject extends ValueObject implements RealtimeChannelData {
+export class RealtimeRoomDataObject extends ValueObject implements RealtimeRoomData {
     id: string;
     title: string;
     category: string;
@@ -17,7 +17,7 @@ export class RealtimeChannelDataObject extends ValueObject implements RealtimeCh
     followerOnlyChat: boolean;
     live: boolean;
 
-    constructor(msg: RealtimeChannelData) {
+    constructor(msg: RealtimeRoomData) {
         super();
 
         this.id = msg.id;

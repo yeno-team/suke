@@ -1,6 +1,6 @@
 import { IVideoSource } from "../entities/SearchResult";
 
-export interface RealtimeChannelData {
+export interface RealtimeRoomData {
     id: string,
     title: string,
     category: string,
@@ -21,4 +21,8 @@ export interface RealtimeChannelData {
     private: boolean,
     followerOnlyChat: boolean,
     live: boolean
+}
+
+export interface RealtimeTheaterRoomData extends RealtimeRoomData {
+    duration: number
 }
