@@ -1,4 +1,4 @@
-import { IParser } from "@suke/suke-core/src/entities/Parser";
+import { IParser, ParserDataResponse } from "@suke/suke-core/src/entities/Parser";
 import { IMultiData, IMultiStandaloneData, ISearchData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
 import { GogoAnimeApiWrapper } from "@suke/wrappers/src/gogoanime";
 import { GogoAnimeInfoResponse } from "@suke/wrappers/src/gogoanime/types";
@@ -16,6 +16,10 @@ export class GogoAnimeParser implements IParser {
     constructor(
         private gogoAnimeApiWrapper : GogoAnimeApiWrapper
     ) {}
+    getData(url: URL): Promise<ParserDataResponse> {
+        throw new Error("Method not implemented.");
+    }
+    
 
     private async getVideoSources(url : URL) : Promise<IVideoSource[]> {
         return this.gogoAnimeApiWrapper.getSources(url);

@@ -3,9 +3,11 @@ import { TheaterItem, TheaterItemModel } from "../TheaterItem";
 
 export enum ScheduleState {
     Waiting,
+    Delayed,
     Starting,
     Started,
-    Ended
+    Ended,
+    Canceled
 }
 
 export interface TheaterItemSchedule {
@@ -21,12 +23,12 @@ export class TheaterItemScheduleModel extends BaseEntity implements TheaterItemS
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column('timestamp with time zone')
+    @Column('timestamptz')
     time!: Date;
 
     @Column('enum', { enum: ScheduleState, default: ScheduleState.Waiting })
     state!: ScheduleState;
 
-    @ManyToOne(() => TheaterItemModel, item => item.schedules, { eager: true })
+    @ManyToOne(() => TheaterItemModel, item => item.schedules, { eager: true, cascade: true })
     item!: TheaterItemModel
 }

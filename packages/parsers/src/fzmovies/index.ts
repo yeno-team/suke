@@ -1,4 +1,4 @@
-import { IParser, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
+import { IParser, ParserDataResponse, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
 import { ISearchData, IStandaloneData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
 import { FzMoviesWrapper } from "@suke/wrappers/src";
 import { Service } from "typedi";
@@ -12,6 +12,25 @@ export class FzMoviesParser implements IParser {
     constructor (
         private wrapper: FzMoviesWrapper 
     ) { }
+
+    async getData(url: URL, opts?: {season?: number,  episode?: number}): Promise<ParserDataResponse | undefined> {
+        const movie = await this.wrapper.getData(url);
+
+        if (movie == null) {
+            return;
+        }
+
+        return {
+            multi: false,
+            data: {
+                type: StandaloneType.Movie,
+                name: movie.name,
+                id: 'fzmov-' + movie.name+movie.posterUrl.toString().slice(10,12),
+                thumbnail_url: movie.posterUrl.toString(),
+                sources: [{url: movie.url, quality: Quality.auto}]
+            }
+        };
+    }
 
     async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {
         let pageNumber = 1;
@@ -28,7 +47,7 @@ export class FzMoviesParser implements IParser {
                     return {
                         type: StandaloneType.Movie,
                         name: v.name,
-                        id: v.name+v.posterUrl.toString().slice(10,12),
+                        id: 'fzmov-' + v.name+v.posterUrl.toString().slice(10,12),
                         thumbnail_url: v.posterUrl.toString(),
                         sources: [{url: v.url, quality: Quality.auto}]
                     } as IStandaloneData;

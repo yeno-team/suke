@@ -14,7 +14,7 @@ export interface ChannelSettingsProps {
 }
 
 export const ChannelSettings = ({setActive, active, roomId}: ChannelSettingsProps) => {
-    const { channelData, updateRealtimeChannelData } = useChannel();
+    const { channelData, updateRealtimeRoomData } = useChannel();
     const [title, setTitle] = useState(channelData.title || "");
     const [category, setCategory] = useState(channelData.category || "");
     const [privateRoom, setPrivateRoom] = useState(channelData.private || false);
@@ -58,7 +58,7 @@ export const ChannelSettings = ({setActive, active, roomId}: ChannelSettingsProp
             channelId: roomId
         };
 
-        updateRealtimeChannelData(updatedChannelData);
+        updateRealtimeRoomData(updatedChannelData);
         setChangedPassword(false);
     }
 

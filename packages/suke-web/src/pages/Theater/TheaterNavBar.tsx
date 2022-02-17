@@ -12,7 +12,7 @@ export interface TheaterNavBarProps {
 
 export const TheaterNavBar = ({searchInput, setSearchInput, activeCategory, setActiveCategory}: TheaterNavBarProps) => {
     const [mobileSearchActive, setMobileSearchActive] = useState(false);
-    const categoryItems = [{cat: TheaterCategory.Everything, val: 'Everything'}, {cat: TheaterCategory.Movie, val: 'Movies'},{cat: TheaterCategory.TvShow, val: 'Tv Shows'}, {cat: TheaterCategory.Anime, val: 'Anime'}];
+    const categoryItems = [{cat: TheaterCategory.everything, val: 'Everything'}, {cat: TheaterCategory.movie, val: 'Movies'},{cat: TheaterCategory.tvShow, val: 'TV Shows'}, {cat: TheaterCategory.anime, val: 'Anime'}];
 
     return (
         <div className="flex py-4 px-5 font-signika relative md:justify-center">
