@@ -7,6 +7,7 @@ import { AuthProvider } from './hooks/useAuth';
 import { NotificationProvider } from "./hooks/useNotifications";
 import { SocketContextProvider } from '@suke/suke-web/src/hooks/useSocket';
 import { ChannelContextProvider } from '@suke/suke-web/src/hooks/useChannel';
+import { TheaterRoomContextProvider } from "@suke/suke-web/src/hooks/useTheaterRoom";
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
           <BrowserRouter>
             <AuthProvider>
               <SocketContextProvider>
-                  <ChannelContextProvider>
-                    <Routes />
-                  </ChannelContextProvider>
+                  <TheaterRoomContextProvider>
+                    <ChannelContextProvider>
+                      <Routes />
+                    </ChannelContextProvider>
+                  </TheaterRoomContextProvider>
               </SocketContextProvider>
             </AuthProvider>
           </BrowserRouter>

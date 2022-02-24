@@ -1,6 +1,6 @@
 import { IUser } from "@suke/suke-core/src/entities/User/User";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import * as userApi from "../api/user";
 import * as authApi from "../api/auth";
 import { Role } from "@suke/suke-core/src/Role";
@@ -23,7 +23,6 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
     const [loadingInit, setLoadingInit] = useState(true);
     const [errors, setErrors] = useState<Error[]>([]);
 
-    const navigate = useNavigate();
     const location = useLocation();
 
     // remove all errors if pathname changes
@@ -76,7 +75,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                 }
 
                 setUser(data);
-                navigate("/");
+                window.location.assign("/");
                 return true;
             })
             .catch((e: Error) => {
@@ -97,7 +96,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                 }
 
                 setUser(data);
-                navigate("/")
+                window.location.assign("/");
             })
             .catch((e: Error) => {
                 setErrors([...errors, e]);

@@ -17,7 +17,7 @@ export const ChatEmbed = () : JSX.Element => {
     const [ hasUserJoinedRoom , setHasUserJoinedRoom ] = useState(false);
     const [ chatMessages , sendMessage ] = useChat([]);
     const { user } = useAuth();
-    const { joinRoom } = useRoom();
+    const { joinChannelRoom } = useRoom();
 
     useEffect(() => {
         const sendGetChannel = async () => {
@@ -28,7 +28,7 @@ export const ChatEmbed = () : JSX.Element => {
 
             try {
                 await getChannel(channelId)
-                joinRoom(channelId)
+                joinChannelRoom(channelId)
                 setHasUserJoinedRoom(true)
                 setDoesChannelExist(true)
             } catch (e) {
@@ -54,6 +54,7 @@ export const ChatEmbed = () : JSX.Element => {
             channelId={channelId}
             hasUserJoinedRoom={hasUserJoinedRoom}
             doesChannelExist={doesChannelExist}
+            channel="channel"
         />
     )
 }

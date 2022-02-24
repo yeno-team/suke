@@ -3,9 +3,9 @@ import { useSocket } from "./useSocket";
 export const useRoom = () => {
     const { sendJsonMessage } = useSocket();
 
-    const joinRoom = (roomId: string, password?: string) => {
+    const joinChannelRoom = (roomId: string, password?: string) => {
         sendJsonMessage({
-            type: 'ROOM_JOIN',
+            type: 'CHANNEL_ROOM_JOIN',
             data: {
                 roomId,
                 password: password || ""
@@ -13,14 +13,28 @@ export const useRoom = () => {
         });
     }
 
-    const leaveRoom = (roomId: string) => {
+    const leaveChannelRoom = (roomId: string) => {
         sendJsonMessage({
-            type: 'ROOM_LEAVE',
+            type: 'CHANNEL_ROOM_LEAVE',
             data: {
                 roomId
             }
         });
     }
 
-    return { joinRoom, leaveRoom };
+    const joinTheaterRoom = (roomId: string) => {
+        sendJsonMessage({
+            type: 'THEATER_ROOM_JOIN',
+            data: roomId
+        });
+    }
+
+    const leaveTheaterRoom = (roomId: string) => {
+        sendJsonMessage({
+            type: 'THEATER_ROOM_LEAVE',
+            data: roomId
+        });
+    }
+
+    return { joinChannelRoom, leaveChannelRoom, joinTheaterRoom, leaveTheaterRoom};
 }

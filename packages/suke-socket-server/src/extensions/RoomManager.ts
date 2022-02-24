@@ -1,4 +1,6 @@
+import { SocketMessage } from "@suke/suke-core/src/entities/SocketMessage";
 import { RedisClientType, SocketServer } from "../server";
+import { BroadcasterOptions } from "./Broadcaster";
 
 /**
  * Manager that handles creating rooms, and manages the connections in those rooms.
@@ -8,7 +10,7 @@ import { RedisClientType, SocketServer } from "../server";
 export class RoomManager {
     private redisClient: RedisClientType;
 
-    constructor(private server: SocketServer) {
+    constructor(private prefix: string = "", private server: SocketServer) {
         this.redisClient = server.getRedisClient();
     }
 
@@ -46,8 +48,30 @@ export class RoomManager {
         return Promise.resolve(roomConnections.find(v => v === connection) != null);
     }
 
+    public async broadcastToRoom(data: SocketMessage, roomId: string, opts?: BroadcasterOptions): Promise<void> {
+        const roomConnections = await this.getRoom(roomId);
+
+        roomConnections.forEach(async id => {
+            if (opts != null) {
+                if (opts.blacklist?.indexOf(id) !== -1) 
+                    return;
+
+                if (opts.whitelist?.indexOf(id) === -1) {
+                    return;
+                }
+            }
+        
+            const connection = this.server.getConnection(id);
+            if (connection == null) {
+                await this.removeUser(roomId, id);
+            } else {
+                connection.send(JSON.stringify(data));
+            }
+        });
+    }
+
     private getRedisKey(roomId: string) {
-        return `room:${roomId.toLowerCase()}`;
+        return `room:${this.prefix+roomId.toLowerCase()}`;
     }
 
 }

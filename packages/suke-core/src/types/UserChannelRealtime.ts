@@ -24,5 +24,6 @@ export interface RealtimeRoomData {
 }
 
 export interface RealtimeTheaterRoomData extends RealtimeRoomData {
-    duration: number
+    duration: number,
+    startedAt: number
 }

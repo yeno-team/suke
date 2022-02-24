@@ -7,6 +7,7 @@ import { SearchBar } from '../../components/SearchBar';
 import { MobileMenu } from './MobileMenu';
 import { NotificationIcon } from '../../components/NotificationIcon';
 import { Link } from 'react-router-dom';
+import { useScreenSize } from '@suke/suke-web/src/hooks/useScreenSize';
 
 export interface NavigationProps {
     position?: 'sticky' | 'fixed' | 'absolute' | 'relative' | 'static',
@@ -15,7 +16,7 @@ export interface NavigationProps {
 
 export const Navigation = ({position, className}: NavigationProps): JSX.Element => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
-
+    const screen = useScreenSize();
     return (
         <nav className={classNames(
             position ? position : 'sticky',
@@ -45,7 +46,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
             </div>
 
             <MobileMenu active={mobileMenuActive} />
-
+            
             <div className={classNames(
                 'mr-2',
                 'w-20',
@@ -56,7 +57,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 </Link>
             </div>
 
-            <SearchBar size="36" className={classNames(
+            <SearchBar size="52" className={classNames(
                 'lg:hidden',
                 'ml-3',
                 'py-2'
@@ -83,7 +84,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                         THEATER
                     </a>
                     <span className="nav-link mx-5">
-                        <SearchBar size='128' py="2" rounded/>
+                        <SearchBar size={screen.width < 1300 ? '64' : '128'} py="2" rounded/>
                     </span>
                 </div>
                 

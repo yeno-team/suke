@@ -10,10 +10,12 @@ dotenv.config({
 
 const redisUrl = getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string;
 export const RedisClient = createClient({ url: redisUrl});
+export const RedisPubClient = createClient({ url: redisUrl});
 export const TempRedisClientForRateLimiter = new Redis(redisUrl);
 export type RedisClientType  = typeof RedisClient;
 
 RedisClient.on('error', (err) => console.error('RedisClientError: ', err));
+RedisPubClient.on('error', (err) => console.error('RedisClientError: ', err));
 
 RedisClient.connect().then(() => {
     RedisClient.flushDb()
@@ -24,6 +26,8 @@ RedisClient.connect().then(() => {
         console.error(err);
     });
 }).catch(err => console.error(err));
+
+RedisPubClient.connect().then(() => console.log("Connected to Pub redis instance.")).catch(err => console.error(err));
 
 const config: IConfiguration = {
     "node_env" : getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",

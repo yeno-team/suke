@@ -13,7 +13,7 @@ import { ScheduledTask } from '../ScheduledTask';
 const getRoomKey = (id: number) => 'theater:rooms:' + id;
 
 export class TheaterTask implements ScheduledTask {
-    intervalTime: number = 20 * 1000;
+    intervalTime: number = 15 * 1000;
 
     // How much time to give for the scheduler to find the source until it delays
     // TODO: CHANGE BACK TO 5 MINUTES
@@ -65,7 +65,6 @@ export class TheaterTask implements ScheduledTask {
                     
                     item.state = ScheduleState.Starting; 
                     const defaultData = await getDefaultTheaterRoomData(item, foundSources);
-                    console.log(defaultData);
                     await this.redisClient.set(key, JSON.stringify(defaultData));
                     await item.save();
                     break;
@@ -98,6 +97,7 @@ export class TheaterTask implements ScheduledTask {
                         item.state = ScheduleState.Started;
                         const value: RealtimeTheaterRoomData = await this.getTheaterRoomData(key, item);
                         value.live = true;
+                        value.startedAt = new Date(Date.now()).getTime();
                         await this.redisClient.set(key, JSON.stringify(value));
                         await this.redisClient.publish("theater-live", JSON.stringify(value));
                         await item.save();
@@ -110,6 +110,8 @@ export class TheaterTask implements ScheduledTask {
 
                     // If video has ended
                     if (now.getTime() - item.time.getTime() >= (value.duration*1000)) {
+                        value.live = false;
+                        await this.redisClient.set(key, JSON.stringify(value));
                         await this.redisClient.publish("theater-end", JSON.stringify(value));
                         item.state = ScheduleState.Ended;
                         await item.save();
@@ -182,7 +184,8 @@ const getDefaultTheaterRoomData = async (item: TheaterItemScheduleModel, foundSo
         password: "",
         followerOnlyChat: false,
         live: false,
-        duration: await getVideoDurationInSeconds(foundSources[0].url.toString())
+        duration: await getVideoDurationInSeconds(foundSources[0].url.toString()),
+        startedAt: 0
     };
 };
 

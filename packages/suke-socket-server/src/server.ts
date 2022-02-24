@@ -51,7 +51,8 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
 
     // Map uses the user's name
     private userMap: Map<string, UserDataWithWebSocket>;
-    private roomManager: RoomManager;
+    
+    private roomManagers: Map<string, RoomManager>;
     private categoryManager: CategoryManager;
     
     public connections: Map<string, WebSocketConnection>;
@@ -103,7 +104,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         this.userMap = new Map();
         this.guestMap = new Map();
         this.connections = new Map();
-        this.roomManager = new RoomManager(this);
+        this.roomManagers = new Map();
         this.categoryManager = new CategoryManager(this);
         this.setup();
     }
@@ -203,8 +204,19 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         return this.guestMap;
     }
 
-    public getRoomManager(): RoomManager {
-        return this.roomManager;
+    public getRoomManager(key: string): RoomManager {
+        const found = this.roomManagers.get(key);
+
+        if (found == null) {
+            return this.createRoomManager(key);
+        }
+
+        return found;
+    }
+
+    public createRoomManager(key: string): RoomManager {
+        const updated = this.roomManagers.set(key, new RoomManager(key+"_", this));
+        return updated.get(key);
     }
 
     public getCategoryManager(): CategoryManager {

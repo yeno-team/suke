@@ -15,12 +15,12 @@ export interface PasswordPageProps {
 
 export const PasswordPage = ({active, channelId, setJoinedRoom}: PasswordPageProps) => {
     const [joining, setJoining] = useState(false);
-    const { joinRoom } = useRoom();
+    const { joinChannelRoom } = useRoom();
     const { messageHistory } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
     
     const joinPrivateRoom = (passwordInput: string) => {
-        joinRoom(channelId, passwordInput);
+        joinChannelRoom(channelId, passwordInput);
         setJoining(true);
     }
 
@@ -32,7 +32,7 @@ export const PasswordPage = ({active, channelId, setJoinedRoom}: PasswordPagePro
 
         for (const msg of newMessages) {
             switch (msg.type) {
-                case "ROOM_JOIN":
+                case "CHANNEL_ROOM_JOIN":
                     if (joining) {
                         setJoining(false);
                         setJoinedRoom(true);

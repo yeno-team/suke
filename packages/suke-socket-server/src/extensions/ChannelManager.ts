@@ -20,7 +20,7 @@ export class ChannelManager {
     constructor(private socketServer: SocketServer) {
         this.server = socketServer;
         this.redisClient = socketServer.getRedisClient();
-        this.roomManager = socketServer.getRoomManager();
+        this.roomManager = socketServer.getRoomManager('channel');
         this.userRepository = getRepository(UserModel);
     }
 
