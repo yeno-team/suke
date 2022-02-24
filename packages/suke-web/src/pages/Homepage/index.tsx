@@ -10,11 +10,12 @@ import React, { useEffect, useState } from "react";
 import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import { getRealtimeChannels } from "@suke/suke-web/src/api/realtime";
 import numeral from "numeral";
+import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
     const [realtimeChannels, setRealtimeChannels] = useState<RealtimeRoomData[]>();
     const { categories } = useCategory();
-
+    const navigate = useNavigate();
     useEffect(() => {
         async function sendRequest() {
             try {
@@ -35,7 +36,7 @@ export const HomePage = () => {
             <HeroImage imageUrl={HeroImageFile} className="text-white">
                 <div className='text-center py-28'>
                     <h1 className="font-bold text-2xl font-signika mb-5">Watch new TV show episodes or Movies together with others</h1>
-                    <Button className="mx-auto rounded px-5" backgroundColor="blue" fontWeight="bold">BROWSE THEATER</Button>
+                    <Button className="mx-auto rounded px-5" backgroundColor="blue" fontWeight="bold" onClick={() => navigate('/theater')}>BROWSE THEATER</Button>
                 </div>
             </HeroImage>
             <div className="bg-darkblack h-full pt-6 px-4 lg:pl-32">

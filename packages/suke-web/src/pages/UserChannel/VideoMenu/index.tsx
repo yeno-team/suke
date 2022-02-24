@@ -1,11 +1,13 @@
 import { IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
 import { RealtimeRoomData } from '@suke/suke-core/src/types/UserChannelRealtime';
-import { captureFrame } from '@suke/suke-util';
+import { captureFrame, canPlayVideoUrl } from '@suke/suke-util';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
-import { useChannel } from '../../hooks/useChannel';
+import { useChannel } from '../../../hooks/useChannel';
 import { VideoMenuHeader } from './VideoMenuHeader';
+import { browserName } from 'react-device-detect';
+
 
 export interface VideoMenuProps {
     channelId: string,
@@ -50,7 +52,6 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
     useEffect(() => {
         if (!isOwner) return;
         
-
         if (thumbnailTimer != null) {
             clearTimeout(thumbnailTimer);
         }
@@ -149,19 +150,21 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
         let highestQuality: IVideoSource | undefined;
         
         for (const v of channelData.currentVideo?.sources) {
-            const canPlay = (v.proxyRequired ? ReactPlayer.canPlay(serverUrl + v.url.toString()) : ReactPlayer.canPlay(v.url.toString()));
+            console.log(v.url);
+            const canPlay = canPlayVideoUrl(new URL(v.url)) || ReactPlayer.canPlay(v.url.toString());
 
             if (canPlay && highestQuality == null) {
                 highestQuality = v;
                 continue;
             } 
 
-            if (canPlay && v.quality > highestQuality!.quality) {
+            if ((canPlay || (v.url.toString().endsWith('.mkv') && browserName === "Chrome")) && v.quality > highestQuality!.quality) {
                 highestQuality = v;
             }
         }
         
-        if (highestQuality != null) {
+        if (highestQuality != null) 
+        {
             return (highestQuality.proxyRequired ? serverUrl : '') + highestQuality.url.toString();
         }
     }, [channelData.currentVideo?.sources]);

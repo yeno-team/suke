@@ -7,3 +7,4 @@ export {default as steggy} from "./steggy";
 export * from './stringToColor';
 export * from './colorShade';
 export * from './captureFrame';
+export * from './canPlayVideoUrl';

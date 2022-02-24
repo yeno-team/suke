@@ -1,5 +1,6 @@
 import { SocketMessage } from "@suke/suke-core/src/entities/SocketMessage";
 import { SocketServer, WebSocketConnection } from "../server";
+import { RoomManager } from "./RoomManager";
 
 export interface BroadcasterOptions {
     blacklist?: string,
@@ -34,9 +35,7 @@ export class SocketBroadcaster {
         });
     }
 
-    public async broadcastToRoom(data: SocketMessage, roomId: string, opts?: BroadcasterOptions): Promise<void> {
-        const roomManager = this.server.getRoomManager();
-
+    public async broadcastToRoom(data: SocketMessage, roomId: string, roomManager: RoomManager, opts?: BroadcasterOptions): Promise<void> {
         const roomConnections = await roomManager.getRoom(roomId);
 
         roomConnections.forEach(async id => {

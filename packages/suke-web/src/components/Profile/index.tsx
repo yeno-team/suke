@@ -1,23 +1,24 @@
 import React from "react"
 import { Icon } from '@iconify/react';
-import { ImageCircle } from "../../components/ImageCircle"
-import { Button } from "../../components/Button"
+import { ImageCircle } from "../ImageCircle"
+import { Button } from "../Button"
 import classNames from "classnames"
 
-export type UserProfileParams = {
-    username: string;
+export type ProfileParams = {
+    username?: string;
     description: {
         title: string,
         content: string
     };
-    followerCount: number;
+    followerButtonActive?: boolean;
+    followerCount?: number;
     className: string;
-    followed: boolean;
-    handleFollow: () => void;
-    handleUnfollow: () => void;
+    followed?: boolean;
+    handleFollow?: () => void;
+    handleUnfollow?: () => void;
 } 
 
-export const UserProfile = ({username, followerCount, className, followed, handleFollow, handleUnfollow, description}: UserProfileParams) => {
+export const Profile = ({username, followerCount, className, followed, handleFollow, handleUnfollow, description, followerButtonActive}: ProfileParams) => {
     return (
         <div className={classNames("flex flex-col bg-black font-sans", className)}>
             <div className="flex flex-1">
@@ -42,6 +43,7 @@ export const UserProfile = ({username, followerCount, className, followed, handl
                         </span>
                     </Button>
                     {
+                        followerButtonActive &&
                         !followed ?
                         <Button size={3} backgroundColor="teal" fontWeight="semibold" onClick={handleFollow}>
                             <Icon icon="akar-icons:plus" className="text-base mr-1 text-white" /> FOLLOW

@@ -13,10 +13,11 @@ export interface MessagesProps {
     messages: IReceivedMessage[];
     emojis : Array<Emoji>;
     replyHandler : (authorName : string) => void;
+    title?: string,
     doesChannelExist : boolean
 }
 
-export const Messages = ({messages , channelId , className , replyHandler , doesChannelExist , emojis }: MessagesProps) => {
+export const Messages = ({messages , channelId , className , replyHandler , doesChannelExist , emojis, title = `Welcome to ${channelId} chat room!`}: MessagesProps) => {
     const messagesContainerRef = useRef<HTMLDivElement>(null)
     const [isToolTipVisible , setIsToolTipVisible] = useState(false)
     const [isMessagesContainerFocused , setIsMessagesContainerFocused] = useState(false)
@@ -107,7 +108,7 @@ export const Messages = ({messages , channelId , className , replyHandler , does
                 <p className="px-1.5 py-0.5">
                     {
                         (channelId && doesChannelExist) ? 
-                        `Welcome to ${channelId} chat room!`:
+                        title :
                         "This chat room does not exist or has been suspended."
                     }
                 </p>

@@ -10,6 +10,7 @@ export class ReceivedMessage extends ValueObject implements IReceivedMessage {
     content: string;
     author: Author;
     channelId: string;
+    channel: string;
 
     constructor(msg: IReceivedMessage) {
         super();
@@ -17,11 +18,13 @@ export class ReceivedMessage extends ValueObject implements IReceivedMessage {
         this.content = msg.content;
         this.author = msg.author;
         this.channelId = msg.channelId;
+        this.channel = msg.channel;
 
         if (!this.IsValid()) {
             throw new ValidationError(`msg obj: ${JSON.stringify(msg)} is not valid.`);
         }
     }
+    
 
     protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
         yield this.content;
@@ -41,6 +44,10 @@ export class ReceivedMessage extends ValueObject implements IReceivedMessage {
 
         if (typeof(this.channelId) !== "string") {
             throw new PropertyValidationError('channelId');
+        }
+
+        if (typeof(this.channel) !== "string") {
+            throw new PropertyValidationError('channel');
         }
 
         return true;

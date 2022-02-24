@@ -13,7 +13,7 @@ export class FzMoviesParser implements IParser {
         private wrapper: FzMoviesWrapper 
     ) { }
 
-    async getData(url: URL, opts?: {season?: number,  episode?: number}): Promise<ParserDataResponse | undefined> {
+    async getData(url: URL): Promise<ParserDataResponse | undefined> {
         const movie = await this.wrapper.getData(url);
 
         if (movie == null) {
