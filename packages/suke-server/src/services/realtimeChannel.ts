@@ -18,7 +18,7 @@ export class RealtimeChannelService {
             
             if (channel != null ) {
                 const parsedChannel: RealtimeRoomData = JSON.parse(channel);
-                if (!parsedChannel.private) {
+                if (parsedChannel.live) {
                     data.push({
                         ...parsedChannel,
                         password: "*".repeat(parsedChannel.password.length)
@@ -48,10 +48,13 @@ export class RealtimeChannelService {
             
             if (channel != null) {
                 const parsedChannel: RealtimeRoomData = JSON.parse(channel);
-                data.push({
-                    ...parsedChannel,
-                    password: "*".repeat(parsedChannel.password.length)
-                });
+
+                if (parsedChannel.live) {
+                    data.push({
+                        ...parsedChannel,
+                        password: "*".repeat(parsedChannel.password.length)
+                    });
+                }
             }
         }
 

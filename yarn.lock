@@ -4213,6 +4213,7 @@ __metadata:
     process: ^0.11.10
     react: ^17.0.2
     react-alice-carousel: ^2.5.1
+    react-device-detect: ^2.1.2
     react-dom: ^17.0.2
     react-error-overlay: 6.0.9
     react-google-recaptcha-v3: ^1.9.7
@@ -19170,6 +19171,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-device-detect@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "react-device-detect@npm:2.1.2"
+  dependencies:
+    ua-parser-js: ^0.7.30
+  peerDependencies:
+    react: ">= 0.14.0 < 18.0.0"
+    react-dom: ">= 0.14.0 < 18.0.0"
+  checksum: 3cc16b41324194cb812c2a6214107a2d75d8d4c44f3457b547040e24c24774e3b062d28be6dfa1775608d05a83dbc0dc226ed6e52077e27c1fc957e11dd553dc
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
@@ -22536,6 +22549,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: bd629ad0da4a15d79aaad56baf3ee7d96f6a181760d430ae77f8c5325df7bffd9edee57544a3970e3651e8b796fe03a5838a7eb39c6d46cc3866c0b23d36a0dd
+  languageName: node
+  linkType: hard
+
+"ua-parser-js@npm:^0.7.30":
+  version: 0.7.31
+  resolution: "ua-parser-js@npm:0.7.31"
+  checksum: e2f8324a83d1715601576af85b2b6c03890699aaa7272950fc77ea925c70c5e4f75060ae147dc92124e49f7f0e3d6dd2b0a91e7f40d267e92df8894be967ba8b
   languageName: node
   linkType: hard
 

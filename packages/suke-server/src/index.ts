@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import config, { RedisClient, RedisClientType } from './config';
+import config, { RedisClient, RedisClientType, RedisPubClient } from './config';
 import { Container } from 'typedi';
 import { Container as typeORMContainer } from 'typeorm-typedi-extensions';
 import { createConnection, getRepository, Not, useContainer } from 'typeorm';
@@ -35,6 +35,7 @@ createConnection({
     synchronize: true,
 }).then(async () => {
     Container.set<RedisClientType>('redis', RedisClient);
+    Container.set<RedisClientType>('pubredis', RedisPubClient);
     Container.set<string>("email_jwt_secret_key" , config.email.jwtSecret);
 
     const categoryRepository = getRepository(CategoryModel);

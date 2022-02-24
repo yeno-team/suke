@@ -1,14 +1,18 @@
 import { createChannelHandler } from "./channel";
-import { createChatMessageHandler } from "./chat";
+import { createChannelRoomHandler } from "./channel/room";
+import { createChatMessageHandlers } from "./chat";
 import { createClientErrorHandler, createErrorHandler } from "./error";
-import { createRoomJoinHandler } from "./room";
 import { createTestHandler } from "./test";
+import { createTheaterHandler } from "./theater";
+import { createTheaterRoomHandler } from "./theater/room";
 
 export default [
     createTestHandler,
     createErrorHandler,
     createClientErrorHandler,
-    createChatMessageHandler,
-    createRoomJoinHandler,
-    createChannelHandler
+    createChatMessageHandlers,
+    createChannelHandler,
+    createChannelRoomHandler,
+    createTheaterHandler,
+    createTheaterRoomHandler
 ];

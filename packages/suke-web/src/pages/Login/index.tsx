@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "../../common/Navigation"
 import { Button } from "../../components/Button"
 import useAuth from "../../hooks/useAuth";
@@ -11,7 +11,14 @@ export const LoginPage = () => {
     const [passwordInput, setPasswordInput] = useState("");
     const [ reCaptchaToken , handleReCaptchaVerify ] = useRecaptcha("login");
     const notificationStore = useNotification();
-    const { login } = useAuth();
+    const { login, user } = useAuth();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (user?.id !== 0) {
+            navigate("/");
+        }
+    }, [navigate, user])
+    
 
     const handleLogin = async () => {
         await handleReCaptchaVerify();

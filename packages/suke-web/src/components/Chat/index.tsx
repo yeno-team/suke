@@ -10,6 +10,7 @@ import './Chat.css';
 import { IReceivedMessage } from '@suke/suke-core/src/entities/ReceivedMessage';
 import { ISentMessage } from '@suke/suke-core/src/entities/SentMessage';
 import { Emoji } from '@suke/suke-web/src/components/Emoji';
+
 export interface ChatProps {
     className?: string;
     messages: IReceivedMessage[];
@@ -18,6 +19,8 @@ export interface ChatProps {
     doesChannelExist : boolean;
     submitMessage: (message: ISentMessage) => void;
     user : IUser | undefined;
+    title?: string | undefined;
+    channel: string;
     height?: string;
 }
 
@@ -30,7 +33,9 @@ export const Chat = (
         user,
         hasUserJoinedRoom,
         doesChannelExist,
-        height
+        height,
+        title,
+        channel
     } : ChatProps
 ) => {
     const [ globalEmoji , hasGlobalEmojiBeenFetched ] = useGlobalEmoji(); 
@@ -79,6 +84,7 @@ export const Chat = (
                     id: user.id,
                     name: user.name
                 },
+                channel,
                 channelId : channelId
             });
         }
@@ -104,12 +110,12 @@ export const Chat = (
             "lg:flex",
             "lg:flex-col"
         )}>
-            <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-newblack font-semibold">
+            <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
                 CHAT
             </header>
-            <Messages className={classNames("text-white p-4 text-sm xl:text-base lg:flex-grow overflow-y-scroll bg-spaceblack", 'h-' + height)} messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji}/>
+            <Messages className={classNames("text-white p-4 text-sm xl:text-base lg:flex-grow overflow-y-scroll bg-spaceblack", 'h-' + height)} messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji} title={title}/>
             <div className="p-5 bg-spaceblack">
-                <div className="w-full flex items-center bg-newblack rounded-md pr-5 relative">
+                <div className="w-full flex items-center bg-black rounded-md pr-5 relative">
                     {
                         (!isUserAbleToChat) &&
                             <div className="absolute text-white -top-8 w-full px-4 py-2 text-sm bg-black flex items-center rounded"> 

@@ -1,11 +1,11 @@
 import { ValidationError } from "../../exceptions/ValidationError";
-import { RealtimeRoomData } from "../../types/UserChannelRealtime";
+import { RealtimeRoomData, RealtimeTheaterRoomData } from "../../types/UserChannelRealtime";
 import { ValueObject } from "../../ValueObject";
 import { ISentMessage } from "../SentMessage";
 import { IReceivedMessage } from "../ReceivedMessage";
 import { Request } from "../Request";
 
-export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "SENT_CHAT_MESSAGE" | "RECEIVED_CHAT_MESSAGE" | "ROOM_JOIN" | "ROOM_LEAVE" | "CHANNEL_UPDATE" | "CHANNEL_REQUEST_ADD" | "CHANNEL_REQUEST_REMOVE" | "CHANNEL_REQUESTS_GET" | "CHANNEL_REQUESTS" | "SOCKET_DISCONNECT" | "CHANNEL_GET";
+export type SocketMessageType = "TEST_EVENT" | "SERVER_ERROR" | "CLIENT_ERROR" | "SENT_CHAT_MESSAGE" | "RECEIVED_CHAT_MESSAGE" | "CHANNEL_ROOM_JOIN" | "CHANNEL_ROOM_LEAVE" | "CHANNEL_UPDATE" | "CHANNEL_REQUEST_ADD" | "CHANNEL_REQUEST_REMOVE" | "CHANNEL_REQUESTS_GET" | "CHANNEL_REQUESTS" | "SOCKET_DISCONNECT" | "CHANNEL_GET" | "THEATER_ROOM_JOIN" | "THEATER_ROOM_LEAVE" | "THEATER_ROOM_UPDATE" | "THEATER_ROOM_GET";
 
 export interface IHasRoomId {
     roomId: string;
@@ -27,10 +27,10 @@ export type SocketMessageInput = {
     type : "RECEIVED_CHAT_MESSAGE",
     data : IReceivedMessage
 } | {
-    type: 'ROOM_JOIN',
+    type: 'CHANNEL_ROOM_JOIN',
     data: IHasRoomId & {password: string}
 } | {
-    type: 'ROOM_LEAVE',
+    type: 'CHANNEL_ROOM_LEAVE',
     data: IHasRoomId
 } | {
     type: 'CHANNEL_UPDATE',
@@ -55,6 +55,18 @@ export type SocketMessageInput = {
 } | {
     type: 'SOCKET_DISCONNECT',
     data: string // webSocket id
+} | {
+    type: 'THEATER_ROOM_JOIN',
+    data: string // room id
+} | {
+    type: 'THEATER_ROOM_LEAVE',
+    data: string // room id
+} | {
+    type: 'THEATER_ROOM_UPDATE',
+    data: RealtimeTheaterRoomData
+} | {
+    type: 'THEATER_ROOM_GET',
+    data: string // room id
 } 
 
 export interface ISocketMessage {

@@ -1,9 +1,8 @@
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 import { RedisClientType } from "@suke/suke-server/src/config";
-import Container, { Inject, Service } from "typedi";
+import Container from "typedi";
 import { getRepository, Repository } from "typeorm";
 import { ScheduledTask } from "../ScheduledTask";
-import { InjectRepository } from "typeorm-typedi-extensions";
 
 
 export class CategoryViewerTask implements ScheduledTask {

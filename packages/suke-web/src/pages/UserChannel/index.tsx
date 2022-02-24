@@ -5,12 +5,12 @@ import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import { followChannel, getChannel, unfollowChannel } from "../../api/channel";
 import { Navigation } from "../../common/Navigation"
-import { VideoMenu } from "../../components/VideoMenu";
+import { VideoMenu } from "./VideoMenu";
 import useAuth from "../../hooks/useAuth";
 import { useRoom } from "../../hooks/useRoom";
 import { BrowserModal } from "./BrowserModal";
-import { ChatBox } from "./ChatBox";
-import { UserProfile } from "./UserProfile";
+import { ChatBox } from "../../components/ChatBox";
+import { Profile } from "../../components/Profile";
 import "./UserChannel.css";
 import { defaultNotificationOpts, useNotification } from "../../hooks/useNotifications";
 import { useChannel } from "../../hooks/useChannel";
@@ -35,7 +35,7 @@ export const UserChannelPage = (): JSX.Element => {
     const [joinedRoom, setJoinedRoom] = useState(false);
     const notifications = useNotification();
     const { username } = useParams<UserChannelPageParams>();
-    const { joinRoom } = useRoom();
+    const { joinChannelRoom } = useRoom();
     const { user, updateUser } = useAuth();
     const { channelData, requestChannelData, updateRealtimeRoomData } = useChannel();
     const { messageHistory, setReconnectCallback } = useSocket();
@@ -70,7 +70,6 @@ export const UserChannelPage = (): JSX.Element => {
             const newMessages = messageHistory.slice(prevSocketMessages.length);
             
             for (const msg of newMessages) {
-                console.log(msg);
                 switch(msg.type) {
                     case "CLIENT_ERROR":
                         notificationStore.addNotification({
@@ -166,7 +165,7 @@ export const UserChannelPage = (): JSX.Element => {
 
             if (roomIsPrivateWithPassword) return;
         
-            joinRoom(username!);
+            joinChannelRoom(username!);
             setJoinedRoom(true);
         }
 
@@ -179,7 +178,7 @@ export const UserChannelPage = (): JSX.Element => {
                 sendInitJoinRoom();
             })
         }
-    }, [channelData, init, isOwner, joinRoom, requestChannelData, setReconnectCallback, username]);
+    }, [channelData, init, isOwner, joinChannelRoom, requestChannelData, setReconnectCallback, username]);
 
 
     const mobileClassListIfBrowserActive = browserActive ? "hidden lg:flex" : "block";
@@ -192,10 +191,10 @@ export const UserChannelPage = (): JSX.Element => {
         {
             channelData.live ?
             <VideoMenu channelData={channelData} ownerView={isOwner} className={classNames(mobileClassListIfBrowserActive, 'md:h-5/6', 'bg-darkblack')} handleOpenBrowser={toggleBrowserActive} handleOpenSettings={toggleSettingsActive} isAuthenticated={user?.id !== 0} channelId={username!} playerHeight={screen.isTablet || screen.isMobile ? "100%" : "91.2%"} viewerCount={channelData.viewerCount} setThumbnail={changeChannelThumbnail} /> :
-            <div className="w-full bg-spaceblack h-5/6 flex justify-center items-center text-white">This channel is offline.</div>
+            <div className="w-full bg-spaceblack h-6/20 flex justify-center items-center text-white">This channel is offline.</div>
         }
-        <ChatBox className={classNames(mobileClassListIfBrowserActive, channelData.live ? "h-2/12" : "h-7/12", "lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-93p lg:w-96")}  username={username as string} />
-        <UserProfile className={classNames(mobileClassListIfBrowserActive, "z-10 lg:pb-96")} username={username as string} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={channel ? {title: channel.desc_title  , content: channel.desc} : {title: "Loading", content: "Loading..."}}/>
+        <ChatBox channel="channel" className={classNames(mobileClassListIfBrowserActive, "lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-94p lg:w-96")} height={screen.width <= 600 ? "80" : "72"}  identifier={username as string} />
+        <Profile className={classNames(mobileClassListIfBrowserActive, "z-10 pb-24 lg:pb-96")} username={username as string} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={channel ? {title: channel.desc_title  , content: channel.desc} : {title: "Loading", content: "Loading..."}}/>
     </div> : <PasswordPage active={!joinedRoom} channelId={username!} setJoinedRoom={setJoinedRoom} ></PasswordPage>
 
     return (

@@ -5,10 +5,10 @@ import { ChannelManager } from "../../extensions/ChannelManager";
 import { SocketServer, WebSocketConnection } from "../../server";
 import { Handler } from "../Handler";
 
-export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void => {
+export const createChannelRoomHandler: Handler = (server: SocketServer) => (): void => {
     server.on('message', async (message: SocketMessage, ws: WebSocketConnection, user) => {
         const msg = message as SocketMessageInput; // For type-safe data type
-        const roomManager = server.getRoomManager();
+        const roomManager = server.getRoomManager('channel');
         const channelManager = new ChannelManager(server);
         const broadcaster = new SocketBroadcaster(server);
         const categoryManager = server.getCategoryManager();
@@ -30,7 +30,7 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
                 broadcaster.broadcastToRoom(new SocketMessage({
                     type: 'CHANNEL_UPDATE',
                     data: updated
-                }), roomId);
+                }), roomId, roomManager);
             } else {
                 ws.send(JSON.stringify(new SocketMessage({
                     type: 'SERVER_ERROR',
@@ -42,14 +42,14 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
                 setupListeners[ws.id] = 1;
 
                 ws.on('close', () => {
-                    server.emit('message', new SocketMessage({type: 'ROOM_LEAVE', data: {roomId}}), ws);
+                    server.emit('message', new SocketMessage({type: 'CHANNEL_ROOM_LEAVE', data: {roomId}}), ws);
                     setupListeners[ws.id] = null;
                 });
             }
         };
 
         switch (msg.type) {
-            case 'ROOM_JOIN': {
+            case 'CHANNEL_ROOM_JOIN': {
                 if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                     return;
                 }
@@ -70,12 +70,12 @@ export const createRoomJoinHandler: Handler = (server: SocketServer) => (): void
 
                 await sendUpdateMessage(msg.data.roomId);
                 ws.send(JSON.stringify(new SocketMessage({
-                    type: 'ROOM_JOIN',
+                    type: 'CHANNEL_ROOM_JOIN',
                     data: msg.data
                 })));
                 break;
             }
-            case 'ROOM_LEAVE': {
+            case 'CHANNEL_ROOM_LEAVE': {
                 if (!await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                     return server.emit('clientError', new Error("Cannot leave room that you have not joined."), ws);
                 }

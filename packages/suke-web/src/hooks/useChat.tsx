@@ -10,7 +10,6 @@ export const useChat = (defaultMessages: IReceivedMessage[] = []) => {
     const { sendJsonMessage, messageHistory } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
    
-
     useEffect(() => {
         try {
             if (!socketMessagesChanged || prevSocketMessages == null)
