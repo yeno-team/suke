@@ -6,11 +6,13 @@ export interface ISentMessage {
     content: string;
     author: Author;
     channelId: string;
+    channel: string;
 }
 export class SentMessage extends ValueObject implements ISentMessage {    
     content: string;
     author: Author;
     channelId: string;
+    channel: string;
 
     constructor(msg: ISentMessage) {
         super();
@@ -18,6 +20,7 @@ export class SentMessage extends ValueObject implements ISentMessage {
         this.content = msg.content;
         this.author = msg.author;
         this.channelId = msg.channelId;
+        this.channel = msg.channel;
 
         if (!this.IsValid()) {
             throw new ValidationError(`msg obj: ${JSON.stringify(msg)} is not valid.`);
@@ -42,6 +45,10 @@ export class SentMessage extends ValueObject implements ISentMessage {
 
         if (typeof(this.channelId) !== "string") {
             throw new PropertyValidationError('channelId');
+        }
+
+        if (typeof(this.channel) !== "string") {
+            throw new PropertyValidationError('channel');
         }
 
         return true;

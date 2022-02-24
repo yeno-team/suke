@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { useMemo, useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import { ScheduleItem } from "../ScheduleItem";
+import { useNavigate } from "react-router-dom";
 
 export interface TheaterItemProps {
     index: number,
@@ -15,6 +16,7 @@ export interface TheaterItemProps {
 
 export const TheaterItemComponent = ({index, item, schedules, slideTo}: TheaterItemProps) => {
     const [showSchedules, setShowSchedules] = useState(false);
+    const navigate = useNavigate();
     const ref = useRef(null);
    
     const activeSchedule = useMemo(() => { 
@@ -58,7 +60,7 @@ export const TheaterItemComponent = ({index, item, schedules, slideTo}: TheaterI
                 </div>
             }
 
-            <Button className={classNames("absolute z-40 bottom-2 transform left-1/2 -translate-x-1/2 px-3 font-signika", showSchedules && ButtonText !== '' ? 'block' : 'hidden')} size={1} fontSize={'sm'} fontWeight="normal" backgroundColor={activeSchedule?.state === ScheduleState.Starting ? 'bettergreen' : 'coolorange'}>
+            <Button className={classNames("absolute z-40 bottom-2 transform left-1/2 -translate-x-1/2 px-3 font-signika", showSchedules && ButtonText !== '' ? 'block' : 'hidden')} size={1} fontSize={'sm'} fontWeight="normal" backgroundColor={activeSchedule?.state === ScheduleState.Starting ? 'bettergreen' : 'coolorange'} onClick={() => navigate('/theater/' + activeSchedule?.id)}>
                 {
                     ButtonText
                 }

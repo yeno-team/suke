@@ -15,7 +15,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
 
         const broadcaster = new SocketBroadcaster(server);
         const requestManager = new RequestManager(server);
-        const roomManager = server.getRoomManager();
+        const roomManager = server.getRoomManager('channel');
 
         switch(msg.type) {
             case 'CHANNEL_REQUEST_ADD':
@@ -33,7 +33,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     broadcaster.broadcastToRoom(new SocketMessage({
                         type: "CHANNEL_REQUEST_ADD",
                         data: msg.data
-                    }), msg.data.roomId);
+                    }), msg.data.roomId, roomManager);
                 } catch (e) {
                     server.emit('error', e);
                 }
@@ -57,7 +57,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                     broadcaster.broadcastToRoom(new SocketMessage({
                         type: "CHANNEL_REQUEST_REMOVE",
                         data: msg.data
-                    }), msg.data.roomId);
+                    }), msg.data.roomId, roomManager);
                 } catch (e) {
                     server.emit('error', e);
                 }
@@ -103,7 +103,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                                 ...updated,
                                 password: "*".repeat(updated.password.length)
                             }
-                        }), msg.data.channelId);
+                        }), msg.data.channelId, roomManager);
                     } else {
                         ws.send(JSON.stringify(new SocketMessage({
                             type: 'SERVER_ERROR',
@@ -129,6 +129,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                 } catch (e) {
                     server.emit('clientError', e, ws);
                 }
+                break;
         }
     }); 
 };

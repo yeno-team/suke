@@ -6,17 +6,19 @@ import { Handler } from "../Handler";
 import { getRepository } from "typeorm";
 import { UserModel } from "@suke/suke-core/src/entities/User";
 
-export const createChatMessageHandler: Handler = (server: SocketServer) => (): void => {
-    server.on('message', async (msg , ws: WebSocketConnection, user) => {
+const createChatMessageHandler: Handler = (server: SocketServer, roomManagerKey: string) => (): void => {
+    server.on('message', async (msg, ws: WebSocketConnection, user) => {
         const message = msg as SocketMessageInput;
 
         const broadcaster = new SocketBroadcaster(server);   
-        const roomManager = server.getRoomManager();
+        const roomManager = server.getRoomManager(roomManagerKey);
         const channelManager = new ChannelManager(server);
         const userRepository = getRepository(UserModel);
 
         if (message.type === "SENT_CHAT_MESSAGE") {
-            if (!(await roomManager.CheckIfUserInRoom(ws.id, message.data.channelId))) return server.emit('clientError', new Error("Cannot send message."), ws);
+            if (message.data.content.trim() === "") return;
+            if (message.data.channel.toLowerCase() != roomManagerKey.toLowerCase()) return;
+            if (!(await roomManager.CheckIfUserInRoom(ws.id, message.data.channelId))) return;
             if (server.getGuestConnection(ws.id) != null) return server.emit('clientError', new Error("Sign up to chat!"), ws);
             
             const channel = await channelManager.getChannel(message.data.channelId);
@@ -28,7 +30,7 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
                     return server.emit('clientError', new Error("The chat is on follower only mode! Follow if you want to chat!"), ws);
                 }
             }
-
+            console.log("SUP");
             msg = new SocketMessage({
                 type : "RECEIVED_CHAT_MESSAGE",
                 data : {
@@ -36,7 +38,12 @@ export const createChatMessageHandler: Handler = (server: SocketServer) => (): v
                 }
             });
 
-            await broadcaster.broadcastToRoom(msg, message.data.channelId);
+            await broadcaster.broadcastToRoom(msg, message.data.channelId, roomManager);
         }
     });
+};
+
+export const createChatMessageHandlers: Handler = (server: SocketServer) => (): void => {
+    createChatMessageHandler(server, 'channel')();
+    createChatMessageHandler(server, 'theater')();
 };

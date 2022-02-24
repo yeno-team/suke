@@ -65,7 +65,7 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
     return (
         <div 
             className={classNames(
-                "bg-coolgray",
+                "bg-black",
                 "absolute",
                 "-top-80",
                 'right-0',
