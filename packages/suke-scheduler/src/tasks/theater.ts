@@ -28,11 +28,11 @@ export class TheaterTask implements ScheduledTask {
     private gracePeriod = 30 * 1000;
 
     private redisClient: RedisClientType;
-    private scheduleItemRepo: Repository<TheaterItemScheduleModel>;
+    private scheduleItemRepo: Repository<TheaterItemScheduleModel >;
 
     async execute(): Promise<void> {
         this.redisClient = Container.get<RedisClientType>('redis');
-        this.scheduleItemRepo = getRepository(TheaterItemScheduleModel);
+        this.scheduleItemRepo = getRepository(TheaterItemScheduleModel );
 
         const now = new Date(Date.now());
 
@@ -123,7 +123,7 @@ export class TheaterTask implements ScheduledTask {
         });
     }
 
-    private async getTheaterRoomData(key: string, item: TheaterItemScheduleModel): Promise<RealtimeTheaterRoomData> {
+    private async getTheaterRoomData(key: string, item: TheaterItemScheduleModel ): Promise<RealtimeTheaterRoomData> {
         let value: RealtimeTheaterRoomData = JSON.parse(await this.redisClient.get(key) as string);
                     
         if (value == null) {
@@ -138,7 +138,7 @@ export class TheaterTask implements ScheduledTask {
     }
 }
 
-const findSources = async (parser: IParser, item: TheaterItemScheduleModel) => {
+const findSources = async (parser: IParser, item: TheaterItemScheduleModel ) => {
     const foundSources: IVideoSource[] = [];
     try {
         const data = await parser.getData(new URL(item.item.sourceUrl), {season: item.item.season});
@@ -164,7 +164,7 @@ const findSources = async (parser: IParser, item: TheaterItemScheduleModel) => {
     return foundSources;
 };
 
-const getDefaultTheaterRoomData = async (item: TheaterItemScheduleModel, foundSources: IVideoSource[]) => {
+const getDefaultTheaterRoomData = async (item: TheaterItemScheduleModel , foundSources: IVideoSource[]) => {
     return {
         id: item.id.toString(),
         title: item.item.title,

@@ -37,7 +37,8 @@ const config: IConfiguration = {
         port: parseInt(getEnvironmentVariable("PORT", false, "3000") as string)
     },
     db: {
-        connectionUri: getEnvironmentVariable("DB_CONNECTION_URI", true) as string
+        connectionUri: getEnvironmentVariable("DB_CONNECTION_URI", true) as string,
+        defaultAdminPassword: getEnvironmentVariable("DEFAULT_ADMIN_PASSWORD", true) as string
     },
     redis: {
         connectionUri: getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string

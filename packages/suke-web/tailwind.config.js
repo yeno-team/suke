@@ -62,7 +62,8 @@ module.exports = {
         'toobig': '150rem',
         '32' : '32px',
         '128': '35rem',
-        '46': '11.5rem'
+        '46': '11.5rem',
+        'fit-content': 'fit-content'
       },
       height: {
         'big': '50rem',

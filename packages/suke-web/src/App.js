@@ -11,12 +11,12 @@ import { TheaterRoomContextProvider } from "@suke/suke-web/src/hooks/useTheaterR
 
 function App() {
   return (
-    <GoogleReCaptchaProvider
-      reCaptchaKey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
-    >
-      <NotificationProvider>
-        <ThemeContext.Provider value="dark">
-          <BrowserRouter>
+    <BrowserRouter>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+      >
+        <NotificationProvider>
+          <ThemeContext.Provider value="dark">
             <AuthProvider>
               <SocketContextProvider>
                   <TheaterRoomContextProvider>
@@ -26,10 +26,10 @@ function App() {
                   </TheaterRoomContextProvider>
               </SocketContextProvider>
             </AuthProvider>
-          </BrowserRouter>
-        </ThemeContext.Provider>
-      </NotificationProvider>
-    </GoogleReCaptchaProvider>
+          </ThemeContext.Provider>
+        </NotificationProvider>
+      </GoogleReCaptchaProvider>
+    </BrowserRouter>
   );
 }
 

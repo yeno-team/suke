@@ -1,5 +1,5 @@
-import { TheaterItem } from "@suke/suke-core/src/entities/TheaterItem"
-import { ScheduleState, TheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
+import { ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem"
+import { ScheduleState, ITheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
 import { Button } from "../../components/Button";
 import classNames from "classnames";
 import { useMemo, useRef, useState } from "react";
@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 export interface TheaterItemProps {
     index: number,
-    item: TheaterItem,
-    schedules: TheaterItemSchedule[],
+    item: ITheaterItem,
+    schedules: ITheaterItemSchedule[],
     slideTo?: (index: number) => void
 }
 

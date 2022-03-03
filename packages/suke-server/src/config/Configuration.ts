@@ -8,7 +8,8 @@ export interface IConfiguration {
         port: number
     },
     db: {
-        connectionUri: string
+        connectionUri: string,
+        defaultAdminPassword: string
     },
     redis: {
         connectionUri: string
