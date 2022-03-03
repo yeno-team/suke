@@ -4,17 +4,19 @@ import { Container } from 'typedi';
 import { Container as typeORMContainer } from 'typeorm-typedi-extensions';
 import { createConnection, getRepository, Not, useContainer } from 'typeorm';
 import { Server } from './server';
-import { UserModel } from '@suke/suke-core/src/entities/User';
-import { UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
+import { User, UserModel } from '@suke/suke-core/src/entities/User';
+import { IUserChannel, UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
 import { Follower, TheaterItemFollower } from '@suke/suke-core/src/entities/Follower';
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 import { NodeMailerService } from '@suke/suke-server/src/services/nodemailer';
-import { EmailModel } from '@suke/suke-core/src/entities/Email';
+import { Email, EmailModel } from '@suke/suke-core/src/entities/Email';
 import cors_proxy from "cors-anywhere";
 import { TheaterItemModel } from '@suke/suke-core/src/entities/TheaterItem';
 import { TheaterItemScheduleModel } from '@suke/suke-core/src/entities/TheaterItemSchedule';
 import { startScheduler } from "@suke/suke-scheduler/src";
+import { UserService } from '@suke/suke-server/src/services/user';
+import { Role } from '@suke/suke-core/src/Role';
 useContainer(typeORMContainer);
 
 createConnection({
@@ -60,6 +62,20 @@ createConnection({
 
     startScheduler();
     console.log("Scheduler Started.");
+
+    const userService = Container.get(UserService);
+    if (await userService.findByName('admin') == null) {
+        userService.create(new User({
+            name: 'admin',
+            email: 'admin@suke.app',
+            isVerified: true,
+            following: [],
+            role: Role.Admin,
+            channel: {} as IUserChannel,
+            id: 0
+        }), new Email('admin@suke.app'), config.db.defaultAdminPassword);
+        console.log("Created Default Admin User");
+    }
 
     new Server(config)
         .start();

@@ -3965,6 +3965,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:^2.9.2":
+  version: 2.11.2
+  resolution: "@popperjs/core@npm:2.11.2"
+  checksum: 5695bf020eda54636e16a62dc9b5fdd92beaf7b2d19f62fcef049d57c5cff92773562d80cbf760b217c3ec928da310eb24994ab6a00fd39dffa0af9b5dfc01a6
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-node-resolve@npm:^7.1.1":
   version: 7.1.3
   resolution: "@rollup/plugin-node-resolve@npm:7.1.3"
@@ -4198,9 +4205,11 @@ __metadata:
     "@types/mdx-js__react": ^1
     "@types/numeral": ^2.0.2
     "@types/react": ^17
+    "@types/react-datepicker": ^4.3.4
     "@types/react-dom": ^17
     "@types/react-lazyload": ^3.1.1
     "@types/react-router-dom": ^5
+    "@types/react-time-picker": ^4.0.2
     "@types/testing-library__jest-dom": ^5
     animate.css: ^4.1.1
     autoprefixer: 9
@@ -4208,11 +4217,14 @@ __metadata:
     craco-less: ^2.0.0
     jest-watch-typeahead: ^0.6.4
     jimp: ^0.16.1
+    moment: ^2.29.1
     numeral: ^2.0.6
     postcss: 7
     process: ^0.11.10
     react: ^17.0.2
     react-alice-carousel: ^2.5.1
+    react-datepicker: ^4.7.0
+    react-datetime: ^3.1.1
     react-device-detect: ^2.1.2
     react-dom: ^17.0.2
     react-error-overlay: 6.0.9
@@ -4225,6 +4237,7 @@ __metadata:
     react-scripts: 4.0.3
     react-select: ^5.2.1
     react-textarea-autosize: ^8.3.3
+    react-time-picker: ^4.5.0
     react-use-websocket: ^2.9.1
     requirejs: ^2.3.6
     stylelint: ^14.0.0
@@ -5013,6 +5026,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-clock@npm:*":
+  version: 3.0.1
+  resolution: "@types/react-clock@npm:3.0.1"
+  checksum: e95af9d40d2ac3625a50837d7bff1d04247d8258e7e7734e9f8678abf7fc21e63fdc560266164c2acffa8e76a8408e0c9affe0229af922fcdd209794ea78fef0
+  languageName: node
+  linkType: hard
+
+"@types/react-datepicker@npm:^4.3.4":
+  version: 4.3.4
+  resolution: "@types/react-datepicker@npm:4.3.4"
+  dependencies:
+    "@popperjs/core": ^2.9.2
+    "@types/react": "*"
+    date-fns: ^2.0.1
+    react-popper: ^2.2.5
+  checksum: 1107b09feefea90be6dce63e008c2a4b3641a0a300773e4d47891ecd380aec77a4d3410259be6d781d88b57f96e754a35dcfc65d0b86b25c5c741ebc21c360c5
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:^17":
   version: 17.0.11
   resolution: "@types/react-dom@npm:17.0.11"
@@ -5067,6 +5099,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: ecaae8df36cd8cfeb89080d52534856acc3789bad9a6e369ff5119426377c827b4e5b5daa638507f2c1c2fd6c994bf45de288a698143178cd4049c2cd8b77b35
+  languageName: node
+  linkType: hard
+
+"@types/react-time-picker@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@types/react-time-picker@npm:4.0.2"
+  dependencies:
+    "@types/react-clock": "*"
+  checksum: 47b9873faa4f61e21989f6d8f51ab2646a134c1c215787320b0b43e8067d16ea49152a7143760c734de8a3549b273d4acea4d603a5d315be0600f9f418d3c84f
   languageName: node
   linkType: hard
 
@@ -5733,6 +5774,13 @@ __metadata:
     "@webassemblyjs/wast-parser": 1.9.0
     "@xtuc/long": 4.2.2
   checksum: 3d1e1b2e84745a963f69acd1c02425b321dd2e608e11dabc467cae0c9a808962bc769ec9afc46fbcea7188cc1e47d72370da762d258f716fb367cb1a7865c54b
+  languageName: node
+  linkType: hard
+
+"@wojtekmaj/date-utils@npm:^1.0.0":
+  version: 1.0.3
+  resolution: "@wojtekmaj/date-utils@npm:1.0.3"
+  checksum: 70b7152160529295319ead97e070f85a50c0eab7973b5845e3a58eab9b0c999023975d2739b5e2a059d27b108ce7cdbf14da99737d6fa3e3822d4dafb76b06f0
   languageName: node
   linkType: hard
 
@@ -7908,7 +7956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.3.1":
+"classnames@npm:^2.2.6, classnames@npm:^2.3.1":
   version: 2.3.1
   resolution: "classnames@npm:2.3.1"
   checksum: 14db8889d56c267a591f08b0834989fe542d47fac659af5a539e110cc4266694e8de86e4e3bbd271157dbd831361310a8293e0167141e80b0f03a0f175c80960
@@ -9172,6 +9220,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0":
+  version: 2.28.0
+  resolution: "date-fns@npm:2.28.0"
+  checksum: a0516b2e4f99b8bffc6cc5193349f185f195398385bdcaf07f17c2c4a24473c99d933eb0018be4142a86a6d46cb0b06be6440ad874f15e795acbedd6fd727a1f
+  languageName: node
+  linkType: hard
+
 "dateformat@npm:^3.0.0":
   version: 3.0.3
   resolution: "dateformat@npm:3.0.3"
@@ -9432,6 +9487,13 @@ __metadata:
   version: 1.0.4
   resolution: "destroy@npm:1.0.4"
   checksum: da9ab4961dc61677c709da0c25ef01733042614453924d65636a7db37308fef8a24cd1e07172e61173d471ca175371295fbc984b0af5b2b4ff47cd57bd784c03
+  languageName: node
+  linkType: hard
+
+"detect-element-overflow@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "detect-element-overflow@npm:1.2.0"
+  checksum: 89999c89f28e61fdc6ed61105b5fdbb1e6910d14dfae7da3b33f72dc94c28dc43f399b3e2ed41a784f07c7066d8637090a6fd05b2fde7d4b0d1350de06c8f8e4
   languageName: node
   linkType: hard
 
@@ -11551,6 +11613,15 @@ __metadata:
     call-bind: ^1.0.2
     get-intrinsic: ^1.1.1
   checksum: 9ceff8fe968f9270a37a1f73bf3f1f7bda69ca80f4f80850670e0e7b9444ff99323f7ac52f96567f8b5f5fbe7ac717a0d81d3407c7313e82810c6199446a5247
+  languageName: node
+  linkType: hard
+
+"get-user-locale@npm:^1.2.0, get-user-locale@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "get-user-locale@npm:1.4.0"
+  dependencies:
+    lodash.once: ^4.1.1
+  checksum: d27a6cf7b1aacdec1786c6877511efc956eb17810e10c55a408753af38f13b5d854f3a0033320f94a6046e95d3c0fc2248c950aeecfc181353599facd344b7e4
   languageName: node
   linkType: hard
 
@@ -15195,7 +15266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.once@npm:^4.0.0":
+"lodash.once@npm:^4.0.0, lodash.once@npm:^4.1.1":
   version: 4.1.1
   resolution: "lodash.once@npm:4.1.1"
   checksum: d768fa9f9b4e1dc6453be99b753906f58990e0c45e7b2ca5a3b40a33111e5d17f6edf2f768786e2716af90a8e78f8f91431ab8435f761fef00f9b0c256f6d245
@@ -15256,7 +15327,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -15342,6 +15413,13 @@ __metadata:
   version: 1.3.6
   resolution: "make-error@npm:1.3.6"
   checksum: b86e5e0e25f7f777b77fabd8e2cbf15737972869d852a22b7e73c17623928fccb826d8e46b9951501d3f20e51ad74ba8c59ed584f610526a48f8ccf88aaec402
+  languageName: node
+  linkType: hard
+
+"make-event-props@npm:^1.1.0":
+  version: 1.3.0
+  resolution: "make-event-props@npm:1.3.0"
+  checksum: 92b8845f63a25fc7da80ed2a5cc5055fba30066b83ad88e4f8c090cd99ae53a13297156df0bd0487d340507994362deaed5580266f73dfe142dc46163b5b8a6a
   languageName: node
   linkType: hard
 
@@ -15550,10 +15628,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"merge-class-names@npm:^1.1.1":
+  version: 1.4.2
+  resolution: "merge-class-names@npm:1.4.2"
+  checksum: 569c333ab0d7fa1e06ae6e637d58e0d4623d7b165ea78d085c1bbd042568d8793bb7ce54ec55580679416046b11fc6eaf4956d68d19964cb320edc034e182c1d
+  languageName: node
+  linkType: hard
+
 "merge-descriptors@npm:1.0.1":
   version: 1.0.1
   resolution: "merge-descriptors@npm:1.0.1"
   checksum: 5abc259d2ae25bb06d19ce2b94a21632583c74e2a9109ee1ba7fd147aa7362b380d971e0251069f8b3eb7d48c21ac839e21fa177b335e82c76ec172e30c31a26
+  languageName: node
+  linkType: hard
+
+"merge-refs@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "merge-refs@npm:1.0.0"
+  checksum: 3b4ea1a178c52349a0e725281aa34b130fb6819d22f8e616ae30da6f4da223d9c3a53f6e1a427c5ba56bf6b162c98de95a53f76e01a343e10162823fee33f64a
   languageName: node
   linkType: hard
 
@@ -15966,7 +16058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:>= 2.9.0":
+"moment@npm:>= 2.9.0, moment@npm:^2.29.1":
   version: 2.29.1
   resolution: "moment@npm:2.29.1"
   checksum: 1e14d5f422a2687996be11dd2d50c8de3bd577c4a4ca79ba5d02c397242a933e5b941655de6c8cb90ac18f01cc4127e55b4a12ae3c527a6c0a274e455979345e
@@ -18814,7 +18906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.5.7, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -19139,6 +19231,50 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-clock@npm:^3.0.0":
+  version: 3.1.0
+  resolution: "react-clock@npm:3.1.0"
+  dependencies:
+    "@wojtekmaj/date-utils": ^1.0.0
+    get-user-locale: ^1.4.0
+    merge-class-names: ^1.1.1
+    prop-types: ^15.6.0
+  peerDependencies:
+    react: ^15.5.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.5.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 5046a24caacbf8cf6a86c00172533f0914e849d246299a0a2e6335d06b89bc8393734d71413e75c42275d872f160953255f48c7b88cb0f791273f3d10dfb6691
+  languageName: node
+  linkType: hard
+
+"react-datepicker@npm:^4.7.0":
+  version: 4.7.0
+  resolution: "react-datepicker@npm:4.7.0"
+  dependencies:
+    "@popperjs/core": ^2.9.2
+    classnames: ^2.2.6
+    date-fns: ^2.24.0
+    prop-types: ^15.7.2
+    react-onclickoutside: ^6.12.0
+    react-popper: ^2.2.5
+  peerDependencies:
+    react: ^16.9.0 || ^17
+    react-dom: ^16.9.0 || ^17
+  checksum: e79d9c0c4832f061499296643b8ded4d5ecde3ceca0b3fff1d69669227fcd6418ce7c1c657ab672f76412507c1d47237bb327ed9d3e9b1c38b98c58c81be7aec
+  languageName: node
+  linkType: hard
+
+"react-datetime@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "react-datetime@npm:3.1.1"
+  dependencies:
+    prop-types: ^15.5.7
+  peerDependencies:
+    moment: ^2.16.0
+    react: ^16.5.0 || ^17.0.0
+  checksum: a8ef1c9c19c8d896595b1fec4b97785ae15230303ae804c01db9280ec0414ede1e8648b8d87c87644b4298971d974a45507b749e8013d829d75ab2e93f8387e3
+  languageName: node
+  linkType: hard
+
 "react-dev-utils@npm:^11.0.3":
   version: 11.0.4
   resolution: "react-dev-utils@npm:11.0.4"
@@ -19217,6 +19353,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-fit@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "react-fit@npm:1.4.0"
+  dependencies:
+    detect-element-overflow: ^1.2.0
+    prop-types: ^15.6.0
+    tiny-warning: ^1.0.0
+  peerDependencies:
+    react: ^15.5.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.5.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: c645e6b6a023cf2fcb88d9a0e4c929e37cda2b76576921f70bb35cb2fc33ed5177e694fbaf36612a642e61914d0270c629606646bbf82f3576e116fc9dd94d5d
+  languageName: node
+  linkType: hard
+
 "react-google-recaptcha-v3@npm:^1.9.7":
   version: 1.9.7
   resolution: "react-google-recaptcha-v3@npm:1.9.7"
@@ -19262,6 +19412,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-onclickoutside@npm:^6.12.0":
+  version: 6.12.1
+  resolution: "react-onclickoutside@npm:6.12.1"
+  peerDependencies:
+    react: ^15.5.x || ^16.x || ^17.x
+    react-dom: ^15.5.x || ^16.x || ^17.x
+  checksum: aae4c1c2e77a4c601d53ba0aa0fbb4ab295a518b3f522ea29e7712c2310c57f2a051a70bdb0bc62424ca124b804a1a007ea1c32319e8c0cfbac417c601ff0f1a
+  languageName: node
+  linkType: hard
+
 "react-player@npm:^2.9.0":
   version: 2.9.0
   resolution: "react-player@npm:2.9.0"
@@ -19274,6 +19434,19 @@ __metadata:
   peerDependencies:
     react: ">=16.6.0"
   checksum: 928fc38c36b713a1a2cc5ab972b1971181e407ab942dcdb0c8759e69f6d593fc15d413ab2ffaea2dfe4ecec106531ad7db02b4d996060d670fba68c75c262e1b
+  languageName: node
+  linkType: hard
+
+"react-popper@npm:^2.2.5":
+  version: 2.2.5
+  resolution: "react-popper@npm:2.2.5"
+  dependencies:
+    react-fast-compare: ^3.0.1
+    warning: ^4.0.2
+  peerDependencies:
+    "@popperjs/core": ^2.0.0
+    react: ^16.8.0 || ^17
+  checksum: 915fcf08e1da4fd48a200074fcdd936f601ee2173f1e730cfed8a54fd47716aa8bf9cce2392463e3bcbe64a096d0baf463809ed2874b94d3a9d430ae6d817b5d
   languageName: node
   linkType: hard
 
@@ -19414,6 +19587,26 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: da3d0192825df3d9f27eef33e7eddf928359a7e3e2b01ae7f7f672ecf4e5c1f7a34f27bdde9ccc24e2e9fbe1d1b9dd2a39c7d47323c9bdf63e7b9bd05c325a71
+  languageName: node
+  linkType: hard
+
+"react-time-picker@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "react-time-picker@npm:4.5.0"
+  dependencies:
+    "@wojtekmaj/date-utils": ^1.0.0
+    get-user-locale: ^1.2.0
+    make-event-props: ^1.1.0
+    merge-class-names: ^1.1.1
+    merge-refs: ^1.0.0
+    prop-types: ^15.6.0
+    react-clock: ^3.0.0
+    react-fit: ^1.4.0
+    update-input-width: ^1.2.2
+  peerDependencies:
+    react: ^16.3.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0
+  checksum: 9bcf598500153e05d018cff52a282ed678526853952e67e8dd1deca333335f97aa45110d9a288a0afb232006e91f7937387b1f4c82cb0882c32a0be4250d0ff6
   languageName: node
   linkType: hard
 
@@ -21990,6 +22183,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-warning@npm:^1.0.0":
+  version: 1.0.3
+  resolution: "tiny-warning@npm:1.0.3"
+  checksum: da62c4acac565902f0624b123eed6dd3509bc9a8d30c06e017104bedcf5d35810da8ff72864400ad19c5c7806fc0a8323c68baf3e326af7cb7d969f846100d71
+  languageName: node
+  linkType: hard
+
 "tinycolor2@npm:^1.4.1":
   version: 1.4.2
   resolution: "tinycolor2@npm:1.4.2"
@@ -22746,6 +22946,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"update-input-width@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "update-input-width@npm:1.2.2"
+  checksum: bfa5d87e005d482a23086c0380d39911aeff6f4784204b04a066d72c6178dd86af19f7ce44eae08f594a693312d97346f3fea9f7a89094c7f6c140e7d200539c
+  languageName: node
+  linkType: hard
+
 "uri-js@npm:^4.2.2":
   version: 4.4.1
   resolution: "uri-js@npm:4.4.1"
@@ -23075,6 +23282,15 @@ __metadata:
   dependencies:
     makeerror: 1.0.12
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
+  languageName: node
+  linkType: hard
+
+"warning@npm:^4.0.2":
+  version: 4.0.3
+  resolution: "warning@npm:4.0.3"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: 4f2cb6a9575e4faf71ddad9ad1ae7a00d0a75d24521c193fa464f30e6b04027bd97aa5d9546b0e13d3a150ab402eda216d59c1d0f2d6ca60124d96cd40dfa35c
   languageName: node
   linkType: hard
 
