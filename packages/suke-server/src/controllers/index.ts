@@ -14,6 +14,9 @@ import { VerifyEmailController } from "./accountsettings/verifyEmail";
 import { ResendVerificationController } from "./accountinformation/resendVerification";
 import { ChangeEmailController } from "./accountsettings/changeEmail";
 import { TheaterItemsController } from "./theater/items";
+import { TheaterItemController } from "./theater";
+import { TheaterScheduleItemController } from "./theater/scheduleItem";
+import { TheaterScheduleItemsController } from "./theater/scheduleItems";
 
 export default [
     AuthController,
@@ -32,5 +35,8 @@ export default [
     VerifyEmailController,
     ResendVerificationController,
     ChangeEmailController,
-    TheaterItemsController
+    TheaterItemsController,
+    TheaterItemController,
+    TheaterScheduleItemController,
+    TheaterScheduleItemsController
 ];

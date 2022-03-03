@@ -15,13 +15,13 @@ export class TheaterManager {
     private roomManager: RoomManager;
     private redisClient: RedisClientType;
     private server: SocketServer;
-    private theaterItemScheduleRepo: Repository<TheaterItemScheduleModel>;
+    private ITheaterItemScheduleRepo: Repository<TheaterItemScheduleModel >;
 
     constructor(private socketServer: SocketServer) {
         this.server = socketServer;
         this.redisClient = socketServer.getRedisClient();
         this.roomManager = socketServer.getRoomManager('theater');
-        this.theaterItemScheduleRepo = getRepository(TheaterItemScheduleModel);
+        this.ITheaterItemScheduleRepo = getRepository(TheaterItemScheduleModel );
     }
     
     public async getRoom(roomId: string): Promise<RealtimeTheaterRoomData> {

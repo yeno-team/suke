@@ -1,14 +1,15 @@
-import { ScheduleState, TheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
+import { ScheduleState, ITheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale"
 import classNames from "classnames"
 
 
 export interface ScheduleItemProps {
-    item: TheaterItemSchedule,
+    item: ITheaterItemSchedule,
+    showDate?: boolean,
     className?: string 
 }
 
-export const ScheduleItem = ({item, className}: ScheduleItemProps) => {
+export const ScheduleItem = ({item, className, showDate}: ScheduleItemProps) => {
     const locale = useLocale();
     return (
         <div className={classNames(

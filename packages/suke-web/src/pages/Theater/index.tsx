@@ -1,16 +1,24 @@
 import { Navigation } from "../../common/Navigation";
 import { FeaturedSlider } from "./FeaturedSlider"
-import { FeaturedTheaterItem, TheaterCategory, TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
+import { FeaturedTheaterItem, TheaterCategory, ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { TheaterNavBar } from "./TheaterNavBar";
 import { Schedule } from "./Schedule";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getTheaterItems } from "@suke/suke-web/src/api/theater";
+import classNames from "classnames";
 
 
 export const TheaterPage = () => {
     const [searchInput, setSearchInput] = useState("");
-    const [theaterItems, setTheaterItems] = useState<TheaterItem[]>([]);
+    const [theaterItems, setTheaterItems] = useState<ITheaterItem[]>([]);
     const [activeCategory, setActiveCategory] = useState(TheaterCategory.everything);
+    const featuredItemData: FeaturedTheaterItem[] = useMemo(() => theaterItems.filter(v => v.featured).map(v => ({
+        title: v.title,
+        description: v.description,
+        backgroundImage: v.featuredPictureUrl,
+        episode: v.episode,
+        id: v.id
+    })), [theaterItems]);
     
     useEffect(() => {
         async function fetchTheaterItems() {    
@@ -23,23 +31,7 @@ export const TheaterPage = () => {
         fetchTheaterItems();
     }, []);
 
-
-    const featuredMovies: FeaturedTheaterItem[] = [
-        {
-            title: 'Spider-Man: No Way Home',
-            description: 'Watch Spider-Man take on villians from the multiverse.',
-            backgroundImage: 'https://www.cnet.com/a/img/K4UATXNGIzmj16LfEm2of9Osytg=/1092x0/2021/11/29/82fb5acc-9155-4844-be9c-e0831a6b837c/nowayhome.jpg',
-            id: 1
-        },
-        {
-            title: 'Uncharted',
-            description: 'Watch Two partners on a dangerous quest to find a mysterious treasure.',
-            backgroundImage: 'https://sportshub.cbsistatic.com/i/2022/01/13/8417257c-cf55-4e2d-83fe-cf9b00887497/uncharted-movie.jpg',
-            id: 2
-        }
-    ]  
-
-    const featuredItems = featuredMovies.map(v => 
+    const featuredItems = featuredItemData.map(v => 
         <div key={v.id} className="h-100 w-full relative">
             <div className="bg-greatblack fixed top-0 w-screen h-full opacity-80"></div>
             <div 
@@ -56,7 +48,9 @@ export const TheaterPage = () => {
     return (
         <div className="bg-spaceblack h-screen overflow-y-scroll overflow-x-hidden">
             <Navigation />
-            <FeaturedSlider items={featuredItems} />
+            {
+                featuredItems.length > 0 && <FeaturedSlider items={featuredItems} />
+            }
             <TheaterNavBar activeCategory={activeCategory} setActiveCategory={setActiveCategory} searchInput={searchInput} setSearchInput={setSearchInput}  />
             <Schedule searchInput={searchInput} activeCategory={activeCategory} theaterItems={theaterItems}/>
         </div>
