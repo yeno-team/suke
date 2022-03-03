@@ -1,4 +1,4 @@
-import { TheaterCategory, TheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
+import { TheaterCategory, ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale"
 import { getScheduleDayNames } from "@suke/suke-web/src/util/getScheduleDayNames";
 import classNames from "classnames";
@@ -8,7 +8,7 @@ import { SectionSliders } from "./SectionSliders";
 
 
 export interface ScheduleProps {
-    theaterItems: TheaterItem[];
+    theaterItems: ITheaterItem[];
     searchInput: string;
     activeCategory: TheaterCategory;
 }
@@ -26,7 +26,7 @@ export const Schedule = ({searchInput, activeCategory, theaterItems}: SchedulePr
         </div>
     ), [activeDate, scheduleDayNames]);
     
-    const items: TheaterItem[] = useMemo(() => {
+    const items: ITheaterItem[] = useMemo(() => {
         return theaterItems.filter(v => new RegExp(`${searchInput}`, 'i').test(v.title) && (v.category === activeCategory || activeCategory === TheaterCategory.everything))
     }, [activeCategory, searchInput, theaterItems]);
 

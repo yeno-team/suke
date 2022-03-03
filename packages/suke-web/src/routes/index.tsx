@@ -11,6 +11,7 @@ import { RequireAuthPage } from "../pages/RequireAuth";
 import { VerifyEmailPage } from "../pages/VerifyEmail";
 import { TheaterPage } from "../pages/Theater";
 import { TheaterRoomPage } from "../pages/TheaterRoom";
+import { ScheduleAdminPage } from "../pages/ScheduleAdmin";
 
 export const Routes = () => <RouterRoutes>
     <Route path="/" element={<HomePage />}></Route>
@@ -23,6 +24,7 @@ export const Routes = () => <RouterRoutes>
     <Route path="account/">
         <Route path="verifyemail/:token" element={<VerifyEmailPage/>}/>
     </Route>
+    <Route path="/a/theater" element={<ScheduleAdminPage />} />
     <Route path="/:username" element={<UserChannelPage />} />
     <Route path="/categories/:categoryValue" element={<CategoryPage />} />
     <Route path="/theater" element={<TheaterPage />} />

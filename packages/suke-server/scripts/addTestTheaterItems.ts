@@ -110,7 +110,7 @@ createConnection({
         EmailModel, 
         TheaterItemModel, 
         TheaterItemFollower, 
-        TheaterItemScheduleModel
+        TheaterItemScheduleModel 
     ],
     synchronize: true,
 }).then(async () => {
@@ -128,7 +128,7 @@ createConnection({
         itemModel.engine = "movies 1";
         itemModel.sourceUrl = "https://fzmovies.net/movie-Spider%20Man%20No%20Way%20Home--hmp4.htm";
 
-        const testSchedule = new TheaterItemScheduleModel();
+        const testSchedule = new TheaterItemScheduleModel ();
         testSchedule.item = itemModel;
         testSchedule.time = new Date(Date.now() + (30 * 1000));
 
@@ -144,7 +144,7 @@ createConnection({
 
 const cleanup = async () => {
     const theaterItemRepo = getRepository(TheaterItemModel);
-    const scheduleItemRepo = getRepository(TheaterItemScheduleModel);
+    const scheduleItemRepo = getRepository(TheaterItemScheduleModel );
     await scheduleItemRepo.delete({});
     await theaterItemRepo.delete({});
     process.exit();

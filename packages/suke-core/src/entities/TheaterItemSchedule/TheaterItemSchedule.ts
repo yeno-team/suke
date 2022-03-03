@@ -1,5 +1,7 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { TheaterItem, TheaterItemModel } from "../TheaterItem";
+import { PropertyValidationError } from "../../exceptions/ValidationError";
+import { ValueObject } from "../../ValueObject";
+import { ITheaterItem, TheaterItemModel } from "../TheaterItem";
 
 export enum ScheduleState {
     Waiting,
@@ -10,16 +12,46 @@ export enum ScheduleState {
     Canceled
 }
 
-export interface TheaterItemSchedule {
+export interface ITheaterItemSchedule {
     id: number,
     time: Date,
     state: ScheduleState,
-    item: TheaterItem
+    item: ITheaterItem
 }
 
+export class TheaterItemSchedule extends ValueObject implements ITheaterItemSchedule {
+    id: number;
+    time: Date;
+    state: ScheduleState;
+    item: ITheaterItem;
+
+    constructor(item: ITheaterItemSchedule) {
+        super();
+        this.id = item.id;
+        this.time = item.time;
+        this.state = item.state;
+        this.item = item.item;
+        this.IsValid();
+    }
+
+    protected *GetEqualityProperties(): Generator<unknown, unknown, unknown> {
+        yield this.id;
+        yield this.time;
+        yield this.state;
+        yield this.item;
+        return;
+    }
+    protected IsValid(): boolean {
+        if (typeof(this.id) != 'number') throw new PropertyValidationError('id');
+        if (typeof(this.time) != 'object') throw new PropertyValidationError('time');
+        if (typeof(this.state) != 'number') throw new PropertyValidationError('state');
+        if (typeof(this.item) != 'object') throw new PropertyValidationError('item');
+        return true;
+    }
+}
 
 @Entity()
-export class TheaterItemScheduleModel extends BaseEntity implements TheaterItemSchedule {
+export class TheaterItemScheduleModel extends BaseEntity implements ITheaterItemSchedule {
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -29,6 +61,6 @@ export class TheaterItemScheduleModel extends BaseEntity implements TheaterItemS
     @Column('enum', { enum: ScheduleState, default: ScheduleState.Waiting })
     state!: ScheduleState;
 
-    @ManyToOne(() => TheaterItemModel, item => item.schedules, { eager: true, cascade: true })
+    @ManyToOne(() => TheaterItemModel, item => item.schedules, { eager: true, onDelete: 'CASCADE' })
     item!: TheaterItemModel
 }
