@@ -1,10 +1,10 @@
-import { IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
 import { RealtimeTheaterRoomData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import classNames from 'classnames';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { VideoMenuHeader } from './VideoMenuHeader';
-import { browserName } from 'react-device-detect';
+
+import { VideoPlayer } from '@suke/suke-web/src/components/VideoPlayer';
 
 
 export interface VideoMenuProps {
@@ -74,34 +74,11 @@ const VideoMenuComponent = ({ viewerCount, className, playerHeight, playerWidth,
         setClientPaused(false);
         setPlaying(true);
     }
-
-    const currentVideoSource = useMemo(() => {
-        const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4382/";
-        let highestQuality: IVideoSource | undefined;
-        
-        for (const v of roomData.currentVideo?.sources) {
-            const canPlay = (v.proxyRequired ? ReactPlayer.canPlay(serverUrl + v.url.toString()) : ReactPlayer.canPlay(v.url.toString()));
-
-            if (canPlay && highestQuality == null) {
-                highestQuality = v;
-                continue;
-            } 
-
-            if ((canPlay || (v.url.toString().endsWith('.mkv') && browserName === "Chrome")) && v.quality > highestQuality!.quality) {
-                highestQuality = v;
-            }
-        }
-        
-        if (highestQuality != null) {
-            return (highestQuality.proxyRequired ? serverUrl : '') + highestQuality.url.toString();
-        }
-    }, [roomData.currentVideo?.sources]);
-
     
     return (
         <div className={classNames('h-full', className, 'flex flex-col')}>
             <VideoMenuHeader viewerCount={viewerCount ?? 0} title={roomData.title}/>
-            <ReactPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} url={currentVideoSource} style={{backgroundColor: 'black'}} controls={true} config={{ file: { attributes: {crossOrigin: 'anonymous'}}}}/>
+            <VideoPlayer playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} sources={roomData.currentVideo.sources} />
         </div>
     )
 }

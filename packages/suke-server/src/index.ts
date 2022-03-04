@@ -11,7 +11,6 @@ import { Follower, TheaterItemFollower } from '@suke/suke-core/src/entities/Foll
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
 import { NodeMailerService } from '@suke/suke-server/src/services/nodemailer';
 import { Email, EmailModel } from '@suke/suke-core/src/entities/Email';
-import cors_proxy from "cors-anywhere";
 import { TheaterItemModel } from '@suke/suke-core/src/entities/TheaterItem';
 import { TheaterItemScheduleModel } from '@suke/suke-core/src/entities/TheaterItemSchedule';
 import { startScheduler } from "@suke/suke-scheduler/src";
@@ -82,12 +81,4 @@ createConnection({
 }).catch(error => {
     console.error(`Couldn't connect to the database!`);
     console.error(error);
-});
-
-cors_proxy.createServer({
-    originWhitelist: [], // WARNING: DO NOT ALLOW ALL ORIGINS IN PRODUCTION
-    requireHeader: ['origin', 'x-requested-with'],
-    removeHeaders: ['cookie', 'cookie2']
-}).listen(config.corsProxy.port, config.server.host, function() {
-    console.log('Running CORS Anywhere on ' + config.server.host + ':' + config.corsProxy.port);
 });
