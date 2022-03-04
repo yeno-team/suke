@@ -116,8 +116,6 @@ createConnection({
 }).then(async () => {
     console.log("Connected to DB");
 
-    const theaterItemRepo = getRepository(TheaterItemModel);
-
     for (const item of testItems) {
         const itemModel = new TheaterItemModel();
         itemModel.category = item.category;

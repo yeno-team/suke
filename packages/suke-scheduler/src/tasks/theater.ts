@@ -141,7 +141,7 @@ export class TheaterTask implements ScheduledTask {
 const findSources = async (parser: IParser, item: TheaterItemScheduleModel ) => {
     const foundSources: IVideoSource[] = [];
     try {
-        const data = await parser.getData(new URL(item.item.sourceUrl), {season: item.item.season});
+        const data = await parser.getData(new URL(item.item.sourceUrl));
         if (data != null) {
             let sources: IVideoSource[] = [];
 

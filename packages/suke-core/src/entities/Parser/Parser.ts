@@ -42,5 +42,5 @@ export interface IParser {
     // get source if required for an engine. This method should return an empty array if grabbing the sources is not required.
     getSource(url: URL): Promise<IVideoSource[]>;
 
-    getData(url: URL, opts?: {season?: number,  episode?: number}): Promise<ParserDataResponse | undefined>;
+    getData(url: URL): Promise<ParserDataResponse | undefined>;
 }
