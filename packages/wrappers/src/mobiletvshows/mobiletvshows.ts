@@ -1,7 +1,7 @@
 import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { AxiosRequest } from "@suke/requests/src";
-import { IMultiData, IMultiStandaloneData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
+import { IMultiData, IStandaloneData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
 import { FzMovie } from "../fzmovies";
 import { RequestOptions } from "@suke/requests/src/IRequest";
 
@@ -54,10 +54,10 @@ export class MobileTvShowsWrapper {
         ];
     } 
 
-    public async search(searchTerm: string, pageNumber = 1): Promise<IMultiData[]> {
+    public async search(searchTerm: string, pageNumber = 1): Promise<IStandaloneData[]> {
         const resp = await this.request.post<string>(new URL(this.host + `search.php?search=${searchTerm}&by=series&beginSearch=search&pg=${pageNumber}`), this.requestConfig);
         let $ = cheerio.load(resp);
-        const results: IMultiData[] = [];
+        const results: IStandaloneData[] = [];
         
         const anchorElements = $('.mainbox > table a');
         const images = $('.mainbox > table img');
@@ -81,10 +81,15 @@ export class MobileTvShowsWrapper {
                 const seasonPageUrl = el.attribs['href'];
                 if (seasonPageUrl != null) {
                     results.push({
-                        id: btoa(el.attribs['href'].slice(6)),
+                        type: StandaloneType.Movie,
+                        initRequired: true,
+                        id: Buffer.from(el.attribs['href'].slice(6)).toString('base64'),
                         thumbnail_url: s.posterUrl.toString(),
                         name: s.name + " - " + $(el).text().trim(),
-                        data: await this.extractSeasonData(new URL(this.host + seasonPageUrl))
+                        sources: [{
+                            url: new URL(this.host + seasonPageUrl),
+                            quality: Quality.auto
+                        }]
                     });
                 }
             }
@@ -93,8 +98,9 @@ export class MobileTvShowsWrapper {
         return results;
     }
 
-    private async extractSeasonData(seasonPageUrl: URL): Promise<IMultiStandaloneData[]> {
+    public async extractSeasonData(seasonPageUrl: URL): Promise<IMultiData> {
         const pageSource = await this.request.get<string>(seasonPageUrl);
+
         const $ = cheerio.load(pageSource);
         const anchorElements = $('.mainbox > table a');
         const images = $('.mainbox > table img');
@@ -109,20 +115,26 @@ export class MobileTvShowsWrapper {
             });
         });
 
-
+        const titleAndLinkEle = $('.seriesname a')[0];
+        const link = titleAndLinkEle.attribs['href'];
+        const title = $(titleAndLinkEle).html()?.trim() as string;
         let i = 0;
-        return [
-            ...episodeData.map(v => {
-                i++;
-                return {
-                    type: StandaloneType.Movie, 
-                    name: v.name, 
-                    sources: [{url: v.url, quality: Quality.auto}], 
-                    index: i
-                };
-            })
-        ];
-
+        return {
+            id: Buffer.from(link.slice(6)).toString('base64'),
+            thumbnail_url: episodeData[0].posterUrl.toString(),
+            name: title,
+            data: [
+                ...episodeData.map(v => {
+                    i++;
+                    return {
+                        type: StandaloneType.Movie, 
+                        name: v.name, 
+                        sources: [{url: v.url, quality: Quality.auto}], 
+                        index: i
+                    };
+                })
+            ]
+        };
     }
 
     private async extractSources(downloadPageSource: string): Promise<URL[]> {

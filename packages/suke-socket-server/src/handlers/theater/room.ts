@@ -3,7 +3,7 @@ import { SocketServer, WebSocketConnection } from "../../server";
 import { Handler } from "../Handler";
 
 export const createTheaterRoomHandler: Handler = (server: SocketServer) => (): void => {
-    server.on('message', async (message: SocketMessage, ws: WebSocketConnection, user) => {
+    server.on('message', async (message: SocketMessage, ws: WebSocketConnection) => {
         const msg = message as SocketMessageInput; // For type-safe data type
         const roomManager = server.getRoomManager('theater');
     

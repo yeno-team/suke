@@ -32,6 +32,7 @@ export interface IStandaloneData {
     name: string | null;
     id: string,
     thumbnail_url: string | null;
+    initRequired?: boolean;
     sources: IVideoSource[];
 }
 
@@ -39,6 +40,11 @@ export interface IVideoSource {
     url: URL;
     quality: Quality;
     proxyRequired?: boolean;
+    referer?: string,
+    subtitles?: {
+        lang: string,
+        url: URL
+    }[];
 }
 
 export interface IMultiData {

@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { Container} from "typedi";
+import { Fast32Parser } from "./fast32";
 import { FzMoviesParser } from "./fzmovies";
 import { GogoAnimeParser } from "./gogoanime";
 import KickAssAnimeParser from "./kickassanime";
@@ -11,5 +12,6 @@ export const parsers = [
     Container.get(KickAssAnimeParser),
     Container.get(GogoAnimeParser),
     Container.get(FzMoviesParser),
-    Container.get(MobileTvShowsParser)
+    Container.get(MobileTvShowsParser),
+    Container.get(Fast32Parser)
 ];

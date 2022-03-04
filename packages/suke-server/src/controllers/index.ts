@@ -17,6 +17,7 @@ import { TheaterItemsController } from "./theater/items";
 import { TheaterItemController } from "./theater";
 import { TheaterScheduleItemController } from "./theater/scheduleItem";
 import { TheaterScheduleItemsController } from "./theater/scheduleItems";
+import { SourceGetDataController } from "./source/getData";
 
 export default [
     AuthController,
@@ -27,6 +28,7 @@ export default [
     SourceSearchController,
     SourceListController,
     SourceGetController,
+    SourceGetDataController,
     GlobalEmojiGetController,
     SourceGetController,
     CategoryGetController,

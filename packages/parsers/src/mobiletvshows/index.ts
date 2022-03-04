@@ -13,8 +13,11 @@ export class MobileTvShowsParser implements IParser {
         private wrapper: MobileTvShowsWrapper 
     ) { }
     
-    getData(url: URL): Promise<ParserDataResponse> {
-        throw new Error("Method not implemented.");
+    async getData(url: URL): Promise<ParserDataResponse> {
+        return {
+            multi: true,
+            data: await this.wrapper.extractSeasonData(new URL(url))
+        };
     }
 
     async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {
@@ -28,8 +31,8 @@ export class MobileTvShowsParser implements IParser {
         
         return {
             results: {
-                standalone: [],
-                multi: data
+                standalone: data,
+                multi: []
             }, 
             nextPageToken: data.length >= 20 ? btoa(String(pageNumber+1)) : undefined
         };
