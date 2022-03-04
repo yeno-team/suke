@@ -15,7 +15,7 @@ import handlers from "@suke/suke-socket-server/src/handlers";
 import { TypeormStore } from 'connect-typeorm';
 import { getRepository } from "typeorm";
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
-
+import { createProxyMiddleware } from 'http-proxy-middleware';
 interface ExpressLocals {
     user?: UserModel;
     limiters? : Array<RateLimiterOpts>
@@ -65,12 +65,24 @@ export class Server {
 
 
     public start(): void {
+        this.app.use(cors({origin: "*"}));
+        this.app.use('/api/proxy/referer/:referer/:url', createProxyMiddleware({
+            router: (req) => decodeURIComponent(req.params.url),
+            pathRewrite: () => '',
+            onProxyReq: (proxyReq, req) => {
+                proxyReq.setHeader('Referer', decodeURIComponent(req.params.referer));
+            },
+            changeOrigin: true
+        }));
+        this.app.use('/api/proxy/:url', createProxyMiddleware({
+            router: (req) => decodeURIComponent(req.params.url),
+            pathRewrite: () => '',
+            changeOrigin: true
+        }));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(cors({origin: "*"}));
         this.app.use(this.sessionParser);
         this.app.use(setGlobalRateLimiter());
-
         this.setupControllers();
         this.app.use(ErrorHandler);
         

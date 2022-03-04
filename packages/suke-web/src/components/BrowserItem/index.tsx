@@ -4,7 +4,10 @@ import useAuth from "../../hooks/useAuth";
 import { useChannel } from "../../hooks/useChannel";
 import { Button } from "../Button";
 import { Request } from "@suke/suke-core/src/entities/Request";
-import { getUrlSources } from "../../api/source";
+import { getDataSource, getUrlSources } from "../../api/source";
+import { useState } from "react";
+import { ParserDataResponse } from "@suke/suke-core/src/entities/Parser";
+import { MultiBrowserItem } from "./MultiBrowserItem";
 
 export interface BrowserItemProps {
     key: string,
@@ -44,7 +47,18 @@ export interface MultiBrowserStandaloneItemProps {
 export function BrowserItem({data, category, roomId, requestedBy, requestedObject, toggleModal, activeSource}: BrowserItemProps) {
     const { createRequest, removeRequest, updateRealtimeRoomData } = useChannel();
     const { user } = useAuth();
+    const [localData, setLocalData] = useState<ParserDataResponse>({multi: false, data});
+    const [loadedData, setLoadedData] = useState(false);
+    const [loading, setLoading] = useState(false);
     
+    if (loadedData) {
+        if (localData.multi) {
+            return <MultiBrowserItem activeSource={activeSource} toggleModal={toggleModal} data={{...localData.data, name: data.name as string}} key={data.id} roomId={roomId} category={"Category"} ></MultiBrowserItem>
+        } else {
+            return <BrowserItem activeSource={activeSource} toggleModal={toggleModal} data={{...localData.data, name: data.name}} key={data.id} roomId={roomId} category={"Category"}></BrowserItem>
+        }
+    }
+
     const requestObj: Request = {
         requestType: 'standalone',
         requestedData: data,
@@ -87,8 +101,22 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
                 console.error(e);
             }
         }
-
         sendRequest();
+    }
+
+    const handleInit = async () => {
+        try {
+            const engine = requestedObject?.engine ? requestedObject?.engine : activeSource
+            setLoading(true);
+            const dataSource = await getDataSource({engine, url: data.sources[0].url});
+            setLocalData(dataSource);
+            setLoadedData(true);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+        
     }
 
     const revertOrRequestButton = requestedBy && requestedBy.findIndex(v => v.toLowerCase() === user?.name.toLowerCase()) !== -1 ?
@@ -110,7 +138,8 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
                 }
                 {
                      user && user.name === roomId ?
-                     <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleSet} backgroundColor={"coolorange"}>
+                     data.initRequired ? <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleInit} backgroundColor={loading ? "green" : "darkgray"} >{loading ? "Loading..." : "Load"}</Button> :
+                     <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleSet} backgroundColor={"coolorange"} disabled={loading}>
                         Set  
                      </Button>
                      : revertOrRequestButton
