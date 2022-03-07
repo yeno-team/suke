@@ -4,9 +4,8 @@ import { RedisClientType } from '@suke/suke-server/src/config';
 import Container from 'typedi';
 import { RealtimeTheaterRoomData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { parsers } from "@suke/parsers/src";
-import { IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
+import { IMultiData, IMultiStandaloneData, IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
 import { IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
-import { getVideoDurationInSeconds } from "get-video-duration";
 import { IParser } from '@suke/suke-core/src/entities/Parser';
 import { ScheduledTask } from '../ScheduledTask';
 
@@ -16,16 +15,16 @@ export class TheaterTask implements ScheduledTask {
     intervalTime: number = 15 * 1000;
 
     // How much time to give for the scheduler to find the source until it delays
-    // TODO: CHANGE BACK TO 5 MINUTES
-    private minDelayTime =  1 * (1000*60);
+    // private minDelayTime =  1 * (1000*60);
+    private minDelayTime =  5 * (1000*60);
     
     // Time given until it cancels the scheduled time, from Delayed State.
-    // TODO: CHANGE BACK TO AN HOUR
-    private minCancelTime = 1 * (1000*60);
+    //private minCancelTime = 1 * (1000*60);
+    private minCancelTime =  30 * (1000*60);
 
     // How much time to give users to join before starting the video
-    // TODO: CHANGE BACK TO 15 MINUTES
-    private gracePeriod = 30 * 1000;
+    // private gracePeriod = 30 * 1000;
+    private gracePeriod = 15 * (60 * 1000);
 
     private redisClient: RedisClientType;
     private scheduleItemRepo: Repository<TheaterItemScheduleModel >;
@@ -64,7 +63,7 @@ export class TheaterTask implements ScheduledTask {
                     } 
                     
                     item.state = ScheduleState.Starting; 
-                    const defaultData = await getDefaultTheaterRoomData(item, foundSources);
+                    const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
                     await this.redisClient.set(key, JSON.stringify(defaultData));
                     await item.save();
                     break;
@@ -86,7 +85,7 @@ export class TheaterTask implements ScheduledTask {
                     } 
 
                     item.state = ScheduleState.Starting; 
-                    const defaultData = await getDefaultTheaterRoomData(item, foundSources);
+                    const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
                     await this.redisClient.set(key, JSON.stringify(defaultData));
                     break;
                 }
@@ -129,7 +128,7 @@ export class TheaterTask implements ScheduledTask {
         if (value == null) {
             const parser = parsers.find(v => v.name?.toLowerCase() === item.item.engine?.toLowerCase());
             const foundSources = await findSources(parser, item);
-            const defaultData = await getDefaultTheaterRoomData(item, foundSources);
+            const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
             await this.redisClient.set(key, JSON.stringify(defaultData));
             value = defaultData;
         }
@@ -147,8 +146,7 @@ const findSources = async (parser: IParser, item: TheaterItemScheduleModel ) => 
 
             if (item == null) return;
             if (item.item == null) return;
-
-            if (data.multi && data.data.data.length < (item.item.episode - 1)) {
+            if (data.multi && data.data.data.length > (item.item.episode - 1)) {
                 sources = data.data.data[item.item.episode - 1].sources;
             } else if (!data.multi) {
                 sources = (data.data as IStandaloneData).sources;
@@ -164,7 +162,7 @@ const findSources = async (parser: IParser, item: TheaterItemScheduleModel ) => 
     return foundSources;
 };
 
-const getDefaultTheaterRoomData = async (item: TheaterItemScheduleModel , foundSources: IVideoSource[]) => {
+const getDefaultTheaterRoomData = async (item: TheaterItemScheduleModel , foundSources: IVideoSource[], gracePeriodTime: number) => {
     return {
         id: item.id.toString(),
         title: item.item.title,
@@ -184,8 +182,8 @@ const getDefaultTheaterRoomData = async (item: TheaterItemScheduleModel , foundS
         password: "",
         followerOnlyChat: false,
         live: false,
-        duration: await getVideoDurationInSeconds(foundSources[0].url.toString()),
-        startedAt: 0
+        duration: typeof item.item.duration == 'string' ? parseFloat(item.item.duration) : item.item.duration,
+        startedAt: -gracePeriodTime
     };
 };
 

@@ -86,7 +86,7 @@ export class YoutubeParser implements IParser {
         for (let renderer of contents.itemSectionRenderer.contents) {
             const shelfRenderer = (renderer as unknown as IHasShelfRenderer).shelfRenderer;
 
-            if (shelfRenderer != null) {
+            if (shelfRenderer != null && shelfRenderer.content.verticalListRenderer != null) {
                 for (const videoRenderer of shelfRenderer.content.verticalListRenderer.items) {
                     standalones.push({
                         id: 'youtube-' + videoRenderer.videoRenderer.videoId,

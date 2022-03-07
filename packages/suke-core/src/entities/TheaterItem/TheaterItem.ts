@@ -32,6 +32,8 @@ export interface ITheaterItem {
     featured: boolean,
     engine: string,
     sourceUrl: string,
+    // in seconds
+    duration: number,
     schedules: ITheaterItemSchedule[]
 }
 
@@ -49,6 +51,7 @@ export class TheaterItem extends ValueObject implements ITheaterItem {
     sourceUrl: string;
     description: string;
     featuredPictureUrl: string;
+    duration: number;
 
     constructor(item: ITheaterItem) {
         super();
@@ -65,8 +68,10 @@ export class TheaterItem extends ValueObject implements ITheaterItem {
         this.sourceUrl = item.sourceUrl;
         this.description = item.description;
         this.featuredPictureUrl = item.featuredPictureUrl;
+        this.duration = item.duration;
         this.IsValid();
     }
+    
     
     
 
@@ -120,6 +125,12 @@ export class TheaterItemModel extends BaseEntity implements ITheaterItem {
         type: 'integer'
     })
     season!: number | undefined;
+
+    @Column({
+        type: 'decimal',
+        default: 0
+    })
+    duration!: number;
 
     @Column({
         nullable: true,

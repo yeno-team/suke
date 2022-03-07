@@ -34,15 +34,13 @@ export const TheaterRoomPage = ({}: TheaterRoomPageProps) => {
         requestRoomData(roomId as string);
     }, [joinTheaterRoom, requestRoomData, roomId]);
 
-    console.log(roomData);
-
     return (
         <div className="bg-spaceblack overflow-hidden flex flex-col lg:h-screen lg:block channel_elements lg:overflow-hidden lg:relative lg:mt-17 lg:mr-96">
             <Navigation className="lg:fixed z-10 lg:top-0"/>
             { 
                 roomData?.live ?
-                <VideoMenu roomData={roomData} className={classNames(' md:max-h-full flex-grow', 'bg-darkblack')} isAuthenticated={user?.id !== 0} channelId={roomId!} playerHeight={screen.isTablet || screen.isMobile ? "350px" : "87.2%"} viewerCount={roomData.viewerCount} /> :
-                <div className="w-full bg-spaceblack h-full flex justify-center items-center text-white">{roomData != null && roomData.startedAt === 0 ? 'The theater will start shortly! ' : 'This Schedule does not exist or has ended.'}</div>
+                <VideoMenu roomData={roomData} className={classNames(' md:max-h-full flex-grow', 'bg-darkblack')} isAuthenticated={user?.id !== 0} channelId={roomId!} playerHeight={screen.isTablet || screen.isMobile ? "350px" : "85.2%"} viewerCount={roomData.viewerCount} /> :
+                <div className="w-full bg-spaceblack h-full flex justify-center items-center text-white">{roomData != null && roomData.startedAt <= 0 ? 'The theater will start shortly! ' : 'This Schedule does not exist or has ended.'}</div>
             }
 
             <ChatBox channel="theater" className={"lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-94p lg:w-96 h-bigger"} identifier={roomId as string} height="6/20"  title={"Welcome the chat room! No Spoilers Please."} />
