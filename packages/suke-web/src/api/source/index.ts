@@ -12,7 +12,7 @@ export const searchSource = async (body: {engine: string, query: string, options
 }
 
 export const getUrlSources = async (body: {engine: string, url: URL}): Promise<IVideoSource[]> => {
-    return parseFetchResponse(await postWithJsonData('api/source/get', body));
+    return parseFetchResponse(await postWithJsonData('/api/source/get', body));
 }
 
 export const getDataSource = async (body: {engine: string, url: URL}): Promise<ParserDataResponse> => {

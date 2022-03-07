@@ -14,7 +14,7 @@ export interface SectionSlidersProps {
 export const SectionSliders = ({title, items, className, activeDate}: SectionSlidersProps) => {
     const [aliceRef, setAliceRef] = useState<AliceCarousel>();
     const itemElements = useMemo(() => items.map((v, i) => {
-        const availableSchedules = v.schedules.filter(v=>new Date(v.time).getMonth() === activeDate.getMonth() && new Date(v.time).getDate() === activeDate.getDate());
+        const availableSchedules = v.schedules.filter(v=>new Date(v.time).getMonth() === activeDate.getMonth() && new Date(v.time).getDate() === activeDate.getDate()).sort((a,b) => new Date(a.time).getTime() - new Date(b.time).getTime());
         return availableSchedules.length > 0 ? <TheaterItemComponent key={i} index={i} slideTo={aliceRef?.slideTo} item={v} schedules={availableSchedules}></TheaterItemComponent> : null;
     }).filter(v => v != null), [activeDate, aliceRef?.slideTo, items]);
 
