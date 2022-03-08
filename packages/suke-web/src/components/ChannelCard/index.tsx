@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { Circle } from "../Circle"
 import { ImageCircle } from "../ImageCircle"
 import numeral from "numeral";
+import { useCategory } from "@suke/suke-web/src/hooks/useCategory";
 
 export interface ChannelCardProps {
     viewerCount: number;
@@ -15,6 +16,10 @@ export interface ChannelCardProps {
 }
 
 export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}: ChannelCardProps) => {
+    const { categories } = useCategory();
+
+    const currentCategory = categories.find(v => v.value === category)?.label || category;
+
     return (
         <div className="font-sans inline-block my-1 mr-3 relative w-full md:w-5/12 max-w-300">
             <div className="absolute z-30 right-2 top-2 leading-none bg-newblack bg-opacity-80 p-1 cursor-default h-6 text-white text-sm px-2">
@@ -37,7 +42,7 @@ export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}
                         <div className="flex mt-1 ml-3 font-light">
                             <p className="align-top text-sm leading-none transform hover:text-gray cursor-pointer">{author.name}</p>
                             <Circle size={0.5} backgroundColor="lightgray" className="mt-1.5 mx-1.2"/>
-                            <p className="align-top text-sm text-lightgray leading-none hover:text-gray cursor-pointer">{category.charAt(0).toUpperCase() + category.slice(1)}</p>
+                            <p className="align-top text-sm text-lightgray leading-none hover:text-gray cursor-pointer">{currentCategory?.charAt(0).toUpperCase() + currentCategory!.slice(1)}</p>
                         </div>
                     </Link>
                 </div>
