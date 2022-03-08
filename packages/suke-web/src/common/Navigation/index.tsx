@@ -6,8 +6,11 @@ import './navigation.css';
 import { SearchBar } from '../../components/SearchBar';
 import { MobileMenu } from './MobileMenu';
 import { NotificationIcon } from '../../components/NotificationIcon';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useScreenSize } from '@suke/suke-web/src/hooks/useScreenSize';
+import useAuth from '@suke/suke-web/src/hooks/useAuth';
+import { ImageCircle } from '@suke/suke-web/src/components/ImageCircle';
+import { logout } from '@suke/suke-web/src/api/auth';
 
 export interface NavigationProps {
     position?: 'sticky' | 'fixed' | 'absolute' | 'relative' | 'static',
@@ -16,7 +19,21 @@ export interface NavigationProps {
 
 export const Navigation = ({position, className}: NavigationProps): JSX.Element => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
+    const [userDropdownActive, setUserDropdownActive] = useState(false);
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const isLoggedIn = user != null && user.id !== 0;
     const screen = useScreenSize();
+
+    const handleLogout = () => {
+        const sendRequest = async () => {
+            await logout();
+            window.location.href = "/";
+        }
+
+        sendRequest();
+    }
+
     return (
         <nav className={classNames(
             position ? position : 'sticky',
@@ -29,7 +46,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
             'pt-1 lg:pt-3',
             'pb-4',
             'px-4 lg:px-6',
-            'lg:px-8',
+            'lg:px-8 z-50',
             className
         )}>
             <div className={classNames(
@@ -89,25 +106,36 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 </div>
                 
                 <NotificationIcon className={classNames(
-                    'mr-10'
+                    'mr-12'
                 )} size={7} count={3} handleClick={() => {}} />
 
-                <Link to="/login">
-                    <button className={classNames(
-                        'inline-block',
-                        'text-md',
-                        'px-5',
-                        'py-3',
-                        'leading-none',
-                        'rounded',
-                        'bg-blue',
-                        'hover:blue-100',
-                        'text-white',
-                        'lg:px-10'
-                    )}>
-                        Login
-                    </button>
-                </Link>
+                {
+                    isLoggedIn ?
+                    <ImageCircle className="mr-10 cursor-pointer" width={10} height={10} src="https://picsum.photos/200/300" alt="profile picture" onClick={() => setUserDropdownActive(prev => !prev)} />
+                    :
+                    <Link to="/login">
+                        <button className={classNames(
+                            'inline-block',
+                            'text-md',
+                            'px-5',
+                            'py-3',
+                            'leading-none',
+                            'rounded',
+                            'bg-blue',
+                            'hover:blue-100',
+                            'text-white',
+                            'lg:px-10'
+                        )}>
+                            Login
+                        </button>
+                    </Link>
+                }
+
+                <div className={classNames("flex-col bg-coolblack py-2 absolute z-50 w-48 text-center font-sans right-16 select-none top-16 text-white", userDropdownActive ? 'flex' : 'hidden')}>
+                    <div className="py-2 w-full hover:bg-newblack cursor-pointer" onClick={() => navigate("/" + user!.name)}>Your Channel</div>
+                    <div className="py-2 w-full hover:bg-newblack cursor-pointer">Account Settings</div>
+                    <div className="py-2 w-full hover:bg-newblack cursor-pointer" onClick={() => handleLogout()}>Log Out</div>
+                </div>
                 
             </div>
         </nav>
