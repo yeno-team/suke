@@ -40,7 +40,7 @@ export const TheaterRoomPage = ({}: TheaterRoomPageProps) => {
             { 
                 roomData?.live ?
                 <VideoMenu roomData={roomData} className={classNames(' md:max-h-full flex-grow', 'bg-darkblack')} isAuthenticated={user?.id !== 0} channelId={roomId!} playerHeight={screen.isTablet || screen.isMobile ? "350px" : "85.2%"} viewerCount={roomData.viewerCount} /> :
-                <div className="w-full bg-spaceblack h-full flex justify-center items-center text-white">{roomData != null && roomData.startedAt <= 0 ? 'The theater will start shortly! ' : 'This Schedule does not exist or has ended.'}</div>
+                <div className="w-full bg-spaceblack h-72 flex justify-center items-center text-white">{roomData != null && roomData.startedAt <= 0 ? 'The theater will start shortly! ' : 'This Schedule does not exist or has ended.'}</div>
             }
 
             <ChatBox channel="theater" className={"lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-94p lg:w-96 h-bigger"} identifier={roomId as string} height="6/20"  title={"Welcome the chat room! No Spoilers Please."} />
