@@ -14,7 +14,7 @@ import { TheaterRoomPage } from "../pages/TheaterRoom";
 import { ScheduleAdminPage } from "../pages/ScheduleAdmin";
 
 export const Routes = () => <RouterRoutes>
-    <Route path="/" element={<HomePage />}></Route>
+    <Route path="/" element={<HomePage />} />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
     <Route path="/explore" element={<ExplorePage />} />

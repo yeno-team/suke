@@ -13,6 +13,7 @@ export const LoginPage = () => {
     const notificationStore = useNotification();
     const { login, user } = useAuth();
     const navigate = useNavigate();
+    
     useEffect(() => {
         if (user?.id !== 0) {
             navigate("/");
