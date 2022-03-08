@@ -21,7 +21,7 @@ export class TheaterManager {
         this.server = socketServer;
         this.redisClient = socketServer.getRedisClient();
         this.roomManager = socketServer.getRoomManager('theater');
-        this.ITheaterItemScheduleRepo = getRepository(TheaterItemScheduleModel );
+        this.ITheaterItemScheduleRepo = getRepository(TheaterItemScheduleModel);
     }
     
     public async getRoom(roomId: string): Promise<RealtimeTheaterRoomData> {
@@ -33,6 +33,22 @@ export class TheaterManager {
             return;
 
         return JSON.parse(val);
+    }
+
+    public async editRoom(roomId: string, editedData: Partial<RealtimeTheaterRoomData>) {
+        const key = this.getRedisKey(roomId);
+        const room = await this.getRoom(roomId);
+
+        if (room == null) return;
+
+        const updatedData: RealtimeTheaterRoomData = {
+            ...room,
+            ...editedData
+        };
+
+        await this.redisClient.set(key, JSON.stringify(updatedData));
+
+        return updatedData;
     }
 
     private getRedisKey(key: string) {

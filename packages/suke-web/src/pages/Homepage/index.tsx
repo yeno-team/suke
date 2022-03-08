@@ -74,7 +74,7 @@ export const HomePage = () => {
                 <div>
                     {
                         theaterItemsStarting.length > 0 ?
-                        theaterItemsStarting.map(v => <TheaterCard subheading={v.episode ? "EPISODE " + v.episode.toString() : ""} title={v.title} scheduleId={v.schedules.find(v => v.state === ScheduleState.Starting)!.id} viewerCount={v.viewerCount} coverUrl={v.posterUrl}/>) :
+                        theaterItemsStarting.map(v => <TheaterCard key={v.id} subheading={v.episode ? "EPISODE " + v.episode.toString() : ""} title={v.title} scheduleId={v.schedules.find(v => v.state === ScheduleState.Starting)!.id} viewerCount={numeral(v.viewerCount).format("0.[0]a")} coverUrl={v.posterUrl}/>) :
                         <h1 className="text-brightRed font-semibold">There are currently no theater rooms starting.</h1>
                     }
                 </div>
