@@ -8,7 +8,7 @@ export interface TheaterCardProps {
     scheduleId: number,
     subheading: string;
     title: string;
-    viewerCount: number;
+    viewerCount: string;
     coverUrl: string;
 }
 
