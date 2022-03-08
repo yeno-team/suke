@@ -27,7 +27,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
             'flex-wrap',
             'bg-newblack',
             'pt-1 lg:pt-3',
-            'pb-3',
+            'pb-4',
             'px-4 lg:px-6',
             'lg:px-8',
             className

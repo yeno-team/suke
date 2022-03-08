@@ -111,7 +111,6 @@ const VideoMenuComponent = ({ viewerCount, setThumbnail, handleOpenBrowser, clas
             setSeeking(true);
             player?.seekTo(channelData.progress?.currentTime);
             setPlaying(true);
-
             setSeekingTimer(setTimeout(() => setSeeking(false), 2000) as unknown as number);
         }
     }

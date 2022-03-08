@@ -16,7 +16,7 @@ export const createTheaterHandler: Handler = (server: SocketServer) => (): void 
         const handleSchedulerEvents = async (data: string) => {
             try {
                 const roomData: RealtimeTheaterRoomData = JSON.parse(data);
-                console.log(roomData);
+
                 await roomManager.broadcastToRoom(new SocketMessage({
                     type: 'THEATER_ROOM_UPDATE',
                     data: roomData

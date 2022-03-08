@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import ReactPlayer, { ReactPlayerProps } from "react-player";
 import { browserName } from 'react-device-detect';
 
-export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources: IVideoSource[]}, ref: React.ForwardedRef<ReactPlayer>) => {
+export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources: IVideoSource[], children: React.ReactNode}, ref: React.ForwardedRef<ReactPlayer>) => {
 
     const currentVideoSource = useMemo(() => {
         const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4000/api/proxy/";
@@ -32,7 +32,7 @@ export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources:
     }, [props.sources]);
 
     
-    return <ReactPlayer {...props} ref={ref} url={currentVideoSource?.url.toString()} style={{backgroundColor: 'black'}} controls={true} config={{ 
+    return <ReactPlayer {...props} children={props.children} ref={ref} url={currentVideoSource?.url.toString()} style={{backgroundColor: 'black'}} controls={true} config={{ 
         file: { 
             attributes: {
                 crossOrigin: 'anonymous',

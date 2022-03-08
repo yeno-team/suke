@@ -12,7 +12,7 @@ import { ScheduledTask } from '../ScheduledTask';
 const getRoomKey = (id: number) => 'theater:rooms:' + id;
 
 export class TheaterTask implements ScheduledTask {
-    intervalTime: number = 15 * 1000;
+    intervalTime: number = 7 * 1000;
 
     // How much time to give for the scheduler to find the source until it delays
     // private minDelayTime =  1 * (1000*60);
@@ -63,8 +63,7 @@ export class TheaterTask implements ScheduledTask {
                     } 
                     
                     item.state = ScheduleState.Starting; 
-                    const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
-                    await this.redisClient.set(key, JSON.stringify(defaultData));
+                    this.createDefaultRoomData(item, foundSources, key);
                     await item.save();
                     break;
                 }
@@ -85,16 +84,16 @@ export class TheaterTask implements ScheduledTask {
                     } 
 
                     item.state = ScheduleState.Starting; 
-                    const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
-                    await this.redisClient.set(key, JSON.stringify(defaultData));
+                    await this.createDefaultRoomData(item, foundSources, key);
+                    await item.save();
                     break;
                 }
                 case ScheduleState.Starting: {
                     console.log("STARTING");
+                    const value: RealtimeTheaterRoomData = await this.getTheaterRoomData(key, item);
                     // start after 15 minutes
                     if (now.getTime() - item.time.getTime() >= this.gracePeriod) {
                         item.state = ScheduleState.Started;
-                        const value: RealtimeTheaterRoomData = await this.getTheaterRoomData(key, item);
                         value.live = true;
                         value.startedAt = new Date(Date.now()).getTime();
                         await this.redisClient.set(key, JSON.stringify(value));
@@ -122,15 +121,23 @@ export class TheaterTask implements ScheduledTask {
         });
     }
 
+    private async createDefaultRoomData(item: TheaterItemScheduleModel, foundSources: IVideoSource[], key: string) {
+        const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
+        await this.redisClient.set(key, JSON.stringify(defaultData));
+    }
+
     private async getTheaterRoomData(key: string, item: TheaterItemScheduleModel ): Promise<RealtimeTheaterRoomData> {
-        let value: RealtimeTheaterRoomData = JSON.parse(await this.redisClient.get(key) as string);
-                    
-        if (value == null) {
+        const valueS: string = await this.redisClient.get(key);
+        let value: RealtimeTheaterRoomData;
+
+        if (valueS == null) {
             const parser = parsers.find(v => v.name?.toLowerCase() === item.item.engine?.toLowerCase());
             const foundSources = await findSources(parser, item);
             const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
             await this.redisClient.set(key, JSON.stringify(defaultData));
             value = defaultData;
+        } else {
+            value = JSON.parse(valueS);
         }
 
         return value;
