@@ -160,15 +160,13 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
         try {
             
             let currDate = addScheduleVal;
-            let started = false;
             let items = [];
-            while (currDate.getDay() !== 1 || !started) {
-                started = true;
-                
+            let passFirstDay = false;
+            while (true) {
                 currDate = new Date(currDate);
-
+                if (currDate.getHours() + 3 >= 24) passFirstDay = true;
                 currDate.setHours(currDate.getHours() + 3);
-                if (currDate.getDay() === 1) break;
+                if (passFirstDay && currDate.getDay() === 1) break;
                 items.push({
                     item: {
                         time: currDate,
