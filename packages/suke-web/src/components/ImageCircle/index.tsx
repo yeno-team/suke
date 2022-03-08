@@ -6,11 +6,12 @@ export interface ImageCircleProps {
     width?: number;
     height?: number;
     className?: string;
+    onClick?: () => void;
 }
 
-export const ImageCircle = ({src, alt, width, height, className}: ImageCircleProps) => {
+export const ImageCircle = ({src, alt, width, height, className, onClick}: ImageCircleProps) => {
     return (
-        <img src={src} alt={alt} className={classNames(
+        <img onClick={onClick} src={src} alt={alt} className={classNames(
             "rounded-full",
             width ? "w-" + width : "w-12",
             height ? "h-" + height : "h-12",
