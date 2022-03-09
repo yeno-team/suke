@@ -115,7 +115,7 @@ export const Chat = (
             </header>
             <Messages className={classNames("text-white p-4 text-sm xl:text-base lg:flex-grow overflow-y-scroll bg-spaceblack", 'h-' + height)} messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji} title={title}/>
             <div className="p-5 bg-spaceblack">
-                <div className="w-full flex items-center bg-black rounded-md pr-5 relative">
+                <div className="w-full flex items-center bg-newblack rounded-md pr-5 relative">
                     {
                         (!isUserAbleToChat) &&
                             <div className="absolute text-white -top-8 w-full px-4 py-2 text-sm bg-black flex items-center rounded"> 
