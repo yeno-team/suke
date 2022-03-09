@@ -1,10 +1,16 @@
 import classNames from 'classnames';
+import { IUser } from '@suke/suke-core/src/entities/User';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface MobileMenuProps {
-    active: boolean
+    active: boolean,
+    user?: IUser,
+    handleLogout: () => void
 }
 
-export const MobileMenu = ({active}: MobileMenuProps) => {
+export const MobileMenu = ({active, user, handleLogout}: MobileMenuProps) => {
+    const navigate = useNavigate();
     return (
         <div className={classNames(
             active ? '' : 'hidden',
@@ -13,17 +19,32 @@ export const MobileMenu = ({active}: MobileMenuProps) => {
             'w-full',
             'left-0',
             'top-16',
-            'mobile-menu'
+            'mobile-menu',
+            'text-left'
         )}>
-            <a href="/explore" className="mobile-nav-link lg:ml-2">
-                EXPLORE
-            </a>
-            <a href="/theater" className="mobile-nav-link">
-                THEATER
-            </a>
-            <a href="/login" className="mobile-nav-link" >
-                LOGIN / SIGNUP
-            </a>
+            <button onClick={() => navigate("/explore")} className="mobile-nav-link lg:ml-2">
+                Explore
+            </button>
+            <button onClick={() => navigate("/theater")} className="mobile-nav-link">
+                Theater
+            </button>
+            
+            {
+                user != null && user.id !== 0 ? <React.Fragment>
+                    <button onClick={() => navigate("/" + user!.name)} className="mobile-nav-link" >
+                        Your Channel
+                    </button>
+                    <button onClick={() => navigate("/my/account")} className="mobile-nav-link" >
+                        Account Settings
+                    </button>
+                    <button onClick={handleLogout} className="mobile-nav-link w-full" >
+                        Log Out
+                    </button>
+                </React.Fragment> :
+                <a href="/login" className="mobile-nav-link" >
+                    LOGIN / SIGNUP
+                </a>
+            }
         </div>
     )
 }
