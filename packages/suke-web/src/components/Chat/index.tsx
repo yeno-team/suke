@@ -104,16 +104,6 @@ export const Chat = (
         setMessageInput(`${messageInput} @${authorName} `)
     }
 
-    const emojiOnClickHandler = useCallback((emojiType : string , emojiId : string) => {
-        return () => {  
-            if (!isUserGuest) {
-                setMessageInput((prevState) => prevState + `<@${emojiId}:${emojiType}/>`)
-            }
-            
-            // setChatPanelVisiblity(false)
-        }
-    } , [isUserGuest, setMessageInput]);
-
     return (
         <div className={classNames(
             className,

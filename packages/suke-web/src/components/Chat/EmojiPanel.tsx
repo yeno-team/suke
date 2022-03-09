@@ -17,7 +17,7 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis, setChatPanelVisiblity ,
     const [ searchInput , setSearchInput ] = useState("");   
     const [ placeholder , setPlaceHolder ] = useState("");
     const [ emotePreview , setEmotePreview ] = useState<Emoji>();
-
+    
     const emojiOnClickHandler = useCallback((name: string) => {
         return () => {  
             if (!isUserGuest) {
@@ -26,41 +26,32 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis, setChatPanelVisiblity ,
             
             setChatPanelVisiblity(false)
         }
-    } , [isUserGuest, setChatPanelVisiblity, setMessageInput])
+    } , [isUserGuest, setChatPanelVisiblity, setMessageInput]);
 
-    // Optimize the search feature.
-    const globalEmojiComponents = useMemo(() => {
-        // don't create the map again just store this shit somewhere XD.
+    const filteredEmojiComponents = useMemo(() => {
+        const getEmoteComponents = (emojis: Emoji[]) => {
+            return emojis?.map((emoji, index) => (
+                <LazyLoad once placeholder={<EmojiPlaceholder/>} key={emoji.url}>
+                    <div 
+                        className="p-0.5 hover:bg-coolblack rounded cursor-pointer"
+                        onMouseOver={() => {
+                            setPlaceHolder(emoji.name)
+                            setEmotePreview(emoji)
+                        }}
+                        onClick={emojiOnClickHandler(emoji.name)}
+                    >
+                        <EmojiComponent emoji={emoji} height={32} width={32}/>
+                    </div>
+                </LazyLoad>
+            ));
+        }
+
         return (
-            globalEmojis?.map((emoji, index) => 
-            <LazyLoad overflow once placeholder={<EmojiPlaceholder/>} key={emoji.url}>
-                <div 
-                    className="p-0.5 hover:bg-coolblack rounded cursor-pointer"
-                    onMouseOver={() => {
-                        setPlaceHolder(emoji.name)
-                        setEmotePreview(emoji)
-                    }}
-                    onClick={emojiOnClickHandler(emoji.name)}
-                >
-                    <EmojiComponent emoji={emoji} height={32} width={32}/>
-                </div>
-            </LazyLoad>
-        ))
-    } , [ emojiOnClickHandler, globalEmojis ])
-
-    // const filteredGlobalEmojiComponents = useMemo(() => {
-    //     const filteredEmojis : Array<JSX.Element> = []
-        
-    //     if(searchInput) {
-    //         for(let i = 0; i < globalEmojiComponents.length; i++) {
-    //             if(globalEmojiComponents[i].key!.toString().indexOf(searchInput) !== -1) {
-    //                 filteredEmojis.push(globalEmojiComponents[i])
-    //             }
-    //         }
-    //     }
-
-    //     return filteredEmojis
-    // } , [globalEmojiComponents , searchInput])
+            searchInput === "" ?
+            getEmoteComponents(globalEmojis) :
+            getEmoteComponents(globalEmojis.filter((v, i) => globalEmojis[i].name.indexOf(searchInput) !== -1))
+        );
+    } , [emojiOnClickHandler, globalEmojis, searchInput])
 
     return (
         <div 
@@ -91,10 +82,10 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis, setChatPanelVisiblity ,
                 />
             </nav>
             <div
-                className="flex-1 overflow-y-scroll flex flex-wrap p-1 items-center gap-2" 
+                className="flex-1 overflow-y-scroll flex flex-wrap p-1 gap-2" 
                 style={{ "scrollbarWidth" : "thin" , "scrollbarColor" : "#252B3A #0000"}}
             >
-                {globalEmojiComponents}
+                {filteredEmojiComponents}
             </div>
                 { emotePreview && 
                     <div className="bg-black rounded-b-md p-2 flex items-center"> 
