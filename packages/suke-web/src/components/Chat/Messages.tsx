@@ -74,7 +74,16 @@ export const Messages = ({messages , channelId , className , replyHandler , does
 
     const parsedMessages = useMemo(() => {
         return messages.map((message , index) => {
-            const parsedMessage = parseMessage(emojis , message.content)
+            const emoteRegex = /:([a-zA-Z]*):/g;
+
+            const parsedMessage = parseMessage(
+                emojis, 
+                message.content.replaceAll(emoteRegex, (match) => {
+                    const foundEmote = emojis.find(v => v.name === match);
+                    if (foundEmote == null) return match;
+                    return `<@${foundEmote.id}:${foundEmote.type}/>`;
+                })
+            );
 
             return (
                 <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex flex-row items-center flex-wrap">

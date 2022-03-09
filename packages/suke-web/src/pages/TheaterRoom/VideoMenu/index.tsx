@@ -76,9 +76,9 @@ const VideoMenuComponent = ({ viewerCount, className, playerHeight, playerWidth,
     }
     
     return (
-        <div className={classNames('h-full', className, 'flex flex-col relative')}>
+        <div className={classNames('h-full relative', className, 'flex flex-col relative')}>
             <VideoMenuHeader viewerCount={viewerCount ?? 0} title={roomData.title}/>
-            <VideoPlayer className="absolute top-0 left-0" playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} sources={roomData.currentVideo.sources}></VideoPlayer>
+            <VideoPlayer className="" playing={!clientPaused && playing} ref={ref => setPlayer(ref)} onPause={handlePause} onStart={handleStart} onPlay={handlePlay} onProgress={handleProgress} width={playerWidth ?? "100%"} height={playerHeight ?? "100%"} sources={roomData.currentVideo.sources}></VideoPlayer>
         </div>
     )
 }

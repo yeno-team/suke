@@ -40,7 +40,10 @@ createConnection({
     Container.set<string>("email_jwt_secret_key" , config.email.jwtSecret);
 
     const categoryRepository = getRepository(CategoryModel);
+    const theaterItemRepo = getRepository(TheaterItemModel);
     await categoryRepository.update({viewerCount: Not(0)}, {viewerCount: 0});
+    await theaterItemRepo.update({viewerCount: Not(0)}, {viewerCount: 0});
+    
     console.log("Reset Categories Viewer Counts Successfully.");
     
     const nodeMailerService = new NodeMailerService();
