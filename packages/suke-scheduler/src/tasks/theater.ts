@@ -23,8 +23,8 @@ export class TheaterTask implements ScheduledTask {
     private minCancelTime =  30 * (1000*60);
 
     // How much time to give users to join before starting the video
-    // private gracePeriod = 30 * 1000;
-    private gracePeriod = 15 * (60 * 1000);
+    private gracePeriod = 30 * 1000;
+    // private gracePeriod = 15 * (60 * 1000);
 
     private redisClient: RedisClientType;
     private scheduleItemRepo: Repository<TheaterItemScheduleModel >;

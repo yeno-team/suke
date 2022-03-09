@@ -1,4 +1,4 @@
-import React,  { useState , useMemo } from 'react';
+import React,  { useState , useMemo, useCallback } from 'react';
 import  { Icon } from "@iconify/react";
 import { Messages } from './Messages';
 import { IUser } from '@suke/suke-core/src/entities/User';
@@ -103,6 +103,16 @@ export const Chat = (
     const replyHandler = (authorName : string) : void => {
         setMessageInput(`${messageInput} @${authorName} `)
     }
+
+    const emojiOnClickHandler = useCallback((emojiType : string , emojiId : string) => {
+        return () => {  
+            if (!isUserGuest) {
+                setMessageInput((prevState) => prevState + `<@${emojiId}:${emojiType}/>`)
+            }
+            
+            // setChatPanelVisiblity(false)
+        }
+    } , [isUserGuest, setMessageInput]);
 
     return (
         <div className={classNames(

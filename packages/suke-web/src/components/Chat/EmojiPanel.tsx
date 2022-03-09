@@ -13,15 +13,15 @@ export interface ChatPanelProps {
     isUserGuest: boolean;
 }
 
-export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity , setMessageInput, isUserGuest } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
-    const [ searchInput , setSearchInput ] = useState("") ;   
+export const EmojiPanel = ({ globalEmotes: globalEmojis, setChatPanelVisiblity , setMessageInput, isUserGuest } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
+    const [ searchInput , setSearchInput ] = useState("");   
     const [ placeholder , setPlaceHolder ] = useState("");
     const [ emotePreview , setEmotePreview ] = useState<Emoji>();
 
-    const emojiOnClickHandler = useCallback((emojiType : string , emojiId : string) => {
+    const emojiOnClickHandler = useCallback((name: string) => {
         return () => {  
             if (!isUserGuest) {
-                setMessageInput((prevState) => prevState + `<@${emojiId}:${emojiType}/>`)
+                setMessageInput((prevState) => prevState + `${name}`);
             }
             
             setChatPanelVisiblity(false)
@@ -40,7 +40,7 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis , setChatPanelVisiblity 
                         setPlaceHolder(emoji.name)
                         setEmotePreview(emoji)
                     }}
-                    onClick={emojiOnClickHandler(emoji.type , emoji.id)}
+                    onClick={emojiOnClickHandler(emoji.name)}
                 >
                     <EmojiComponent emoji={emoji} height={32} width={32}/>
                 </div>
