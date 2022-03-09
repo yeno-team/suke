@@ -6,6 +6,8 @@
     "prepack": "yarn workspaces foreach run yarn clean && yarn compile",
     "build": "yarn workspaces foreach run build",
     "start": "yarn workspaces foreach run start",
+    "start:server": "yarn workspace @suke/suke-server start",
+    "start:web": "yarn workspace @suke/suke-web start",
     "lint": "eslint .",
     "prettier": "yarn workspaces foreach run prettier --config .prettierrc 'src/**/*.ts' --write",
     "clean": "yarn workspaces foreach run clean",
