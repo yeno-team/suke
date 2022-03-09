@@ -13,7 +13,6 @@ export const MobileMenu = ({active}: MobileMenuProps) => {
             'w-full',
             'left-0',
             'top-16',
-            'mt-2',
             'mobile-menu'
         )}>
             <a href="/explore" className="mobile-nav-link lg:ml-2">
