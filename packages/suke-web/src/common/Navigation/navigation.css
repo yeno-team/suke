@@ -3,5 +3,5 @@
 }
 
 .mobile-nav-link {
-    @apply block p-5 text-gray bg-coolblack hover:bg-darkgray hover:text-white;
+    @apply block p-5 text-gray w-full text-left bg-coolblack hover:bg-darkgray hover:text-white;
 }

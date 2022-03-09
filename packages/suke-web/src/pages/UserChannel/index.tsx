@@ -190,10 +190,10 @@ export const UserChannelPage = (): JSX.Element => {
         <ChannelSettingsBrowserModal roomId={username!} className="z-20" active={settingsActive} setActive={setSettingsActive} />
         {
             channelData.live ?
-            <VideoMenu channelData={channelData} ownerView={isOwner} className={classNames(mobileClassListIfBrowserActive, 'md:h-5/6', 'bg-darkblack')} handleOpenBrowser={toggleBrowserActive} handleOpenSettings={toggleSettingsActive} isAuthenticated={user?.id !== 0} channelId={username!} playerHeight={screen.isTablet || screen.isMobile ? "100%" : "91.2%"} viewerCount={channelData.viewerCount} setThumbnail={changeChannelThumbnail} /> :
+            <VideoMenu channelData={channelData} ownerView={isOwner} className={classNames(mobileClassListIfBrowserActive, 'md:h-5/6', 'bg-darkblack')} handleOpenBrowser={toggleBrowserActive} handleOpenSettings={toggleSettingsActive} isAuthenticated={user?.id !== 0} channelId={username!} playerHeight={screen.isTablet || screen.isMobile ? "300px" : "91.2%"} viewerCount={channelData.viewerCount} setThumbnail={changeChannelThumbnail} /> :
             <div className="w-full bg-spaceblack h-6/20 flex justify-center items-center text-white">This channel is offline.</div>
         }
-        <ChatBox channel="channel" className={classNames(mobileClassListIfBrowserActive, "lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-94p lg:w-96")} height={screen.width <= 600 ? "80" : "72"}  identifier={username as string} />
+        <ChatBox channel="channel" className={classNames(mobileClassListIfBrowserActive, "lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-94p lg:w-96")} height={screen.isTablet || screen.isMobile ? "80" : "72"}  identifier={username as string} />
         <Profile className={classNames(mobileClassListIfBrowserActive, "z-10 pb-24 lg:pb-96")} username={username as string} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={channel ? {title: channel.desc_title  , content: channel.desc} : {title: "Loading", content: "Loading..."}}/>
     </div> : <PasswordPage active={!joinedRoom} channelId={username!} setJoinedRoom={setJoinedRoom} ></PasswordPage>
 

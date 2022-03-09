@@ -22,7 +22,7 @@ export const ExplorePage = () => {
         <div className="bg-darkblack h-full flex flex-col flex-wrap text-center md:text-left" onScroll={handleScroll}>
             <Navigation />
             <div className="flex mt-12 mb-4 md:ml-20 font-sans">
-                <h1 className="text-white font-semibold text-2xl"><h3 className="inline-block font-black">Categories</h3></h1>
+                <h1 className="text-white text-2xl font-black">Categories</h1>
                 <div className="ml-auto md:mr-20 flex">
                     <h1 className="text-white font-semibold mr-3 leading-none my-auto">Sort By</h1>
                     <select className="bg-black text-lightgray rounded text-sm p-1" value={sortDirection} onChange={(e) => setSortDirection(e.target.value as "ASC" | "DESC")}>
@@ -34,7 +34,7 @@ export const ExplorePage = () => {
             <div className="w-full px-20 min-h-screen">
                 {
                     categories.length > 0 ?
-                    categories.map(v => <Link to={"/categories/" + v.value} ><CategoryCard key={v.id} name={v.label} viewerCount={numeral(v.viewerCount).format("0.[0]a")} imageUrl={v.thumbnail_url}></CategoryCard></Link>) :
+                    categories.map(v => <Link key={v.id} to={"/categories/" + v.value} ><CategoryCard key={v.id} name={v.label} viewerCount={numeral(v.viewerCount).format("0.[0]a")} imageUrl={v.thumbnail_url}></CategoryCard></Link>) :
                     <h1 className="text-white">Loading...</h1>
                 }
             </div>

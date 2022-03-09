@@ -64,7 +64,7 @@ export const ChannelSettings = ({setActive, active, roomId}: ChannelSettingsProp
 
     
     return (
-        <div className="w-full h-screen top-0 z-30 fixed text-white font-sans bg-spaceblack lg:w-reallybig lg:h-big lg:left-1/2 lg:top-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-xl">
+        <div className="w-full h-screen top-0 z-40 absolute text-white font-sans bg-spaceblack lg:w-reallybig lg:h-big lg:left-1/2 lg:top-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-xl">
             <Button fontWeight="semibold" backgroundColor="red" onClick={() => setActive(false)} className="w-full py-4 lg:hidden">
                 Close Settings
             </Button>

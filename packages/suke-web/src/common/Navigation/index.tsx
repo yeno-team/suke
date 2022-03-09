@@ -43,10 +43,10 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
             'lg:justify-between',
             'flex-wrap',
             'bg-newblack',
-            'pt-1 lg:pt-3',
+            'pt-2 lg:pt-3',
             'pb-4',
             'px-4 lg:px-6',
-            'lg:px-8 z-50',
+            'lg:px-8 z-20',
             className
         )}>
             <div className={classNames(
@@ -62,7 +62,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 </button>
             </div>
 
-            <MobileMenu active={mobileMenuActive} />
+            <MobileMenu active={mobileMenuActive} user={user} handleLogout={handleLogout} />
             
             <div className={classNames(
                 'mr-2',
@@ -74,10 +74,9 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 </Link>
             </div>
 
-            <SearchBar size="52" className={classNames(
+            <SearchBar size={screen.width < 1300 ? '40' : '128'} py="2" rounded className={classNames(
                 'lg:hidden',
-                'ml-3',
-                'py-2'
+                'ml-3'
             )} />
 
             <div className={classNames(
@@ -111,9 +110,9 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
 
                 {
                     isLoggedIn ?
-                    <ImageCircle className="mr-10 cursor-pointer" width={10} height={10} src="https://picsum.photos/200/300" alt="profile picture" onClick={() => setUserDropdownActive(prev => !prev)} />
+                    <ImageCircle className="ml-auto mr-6 cursor-pointer" width={10} height={10} src="https://picsum.photos/200/300" alt="profile picture" onClick={() => setUserDropdownActive(prev => !prev)} />
                     :
-                    <Link to="/login">
+                    <Link to="/login" className="ml-auto mr-6">
                         <button className={classNames(
                             'inline-block',
                             'text-md',
@@ -133,11 +132,11 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
 
                 <div className={classNames("flex-col bg-coolblack py-2 absolute z-50 w-48 text-center font-sans right-16 select-none top-16 text-white", userDropdownActive ? 'flex' : 'hidden')}>
                     <div className="py-2 w-full hover:bg-newblack cursor-pointer" onClick={() => navigate("/" + user!.name)}>Your Channel</div>
-                    <div className="py-2 w-full hover:bg-newblack cursor-pointer">Account Settings</div>
+                    <div className="py-2 w-full hover:bg-newblack cursor-pointer" onClick={() => navigate('/my/account')}>Account Settings</div>
                     <div className="py-2 w-full hover:bg-newblack cursor-pointer" onClick={() => handleLogout()}>Log Out</div>
                 </div>
-                
             </div>
+        
         </nav>
     );
 }
