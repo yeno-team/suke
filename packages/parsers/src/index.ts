@@ -9,11 +9,11 @@ import { VumooParser } from "./vumoo";
 import { YoutubeParser } from "./youtube";
 
 export const parsers = [
+    Container.get(VumooParser),
     Container.get(YoutubeParser),
     Container.get(KickAssAnimeParser),
     Container.get(GogoAnimeParser),
     Container.get(FzMoviesParser),
     Container.get(MobileTvShowsParser),
-    Container.get(Fast32Parser),
-    Container.get(VumooParser)
+    Container.get(Fast32Parser)
 ];

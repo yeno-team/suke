@@ -28,10 +28,10 @@ export class VumooWrapper {
             proxyRequired: true,
             url: new URL("https:" + jwplayerConfig.playlist[0].file),
             quality: Quality.auto,
-            subtitles: jwplayerConfig.playlist[0].tracks.map((v: any) => ({
+            subtitles: jwplayerConfig.playlist[0].tracks != null ? jwplayerConfig.playlist[0].tracks.map((v: any) => ({
                 lang: v.label,
                 url: "https:" + v.file
-            }))
+            })) : []
         };
     }
 
