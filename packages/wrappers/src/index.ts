@@ -5,6 +5,7 @@ import { KickAssAnimeApiWrapper } from "./kickassanime";
 import { FzMoviesWrapper } from "./fzmovies";
 import { MobileTvShowsWrapper } from "./mobiletvshows";
 import { Fast32Wrapper } from "./fast32";
+import { VumooWrapper } from "./vumoo";
 
 export {
     GogoPlayApiWrapper,
@@ -12,5 +13,6 @@ export {
     KickAssAnimeApiWrapper,
     FzMoviesWrapper,
     MobileTvShowsWrapper,
-    Fast32Wrapper
+    Fast32Wrapper,
+    VumooWrapper
 };

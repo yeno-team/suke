@@ -5,6 +5,7 @@ import { FzMoviesParser } from "./fzmovies";
 import { GogoAnimeParser } from "./gogoanime";
 import KickAssAnimeParser from "./kickassanime";
 import { MobileTvShowsParser } from "./mobiletvshows";
+import { VumooParser } from "./vumoo";
 import { YoutubeParser } from "./youtube";
 
 export const parsers = [
@@ -13,5 +14,6 @@ export const parsers = [
     Container.get(GogoAnimeParser),
     Container.get(FzMoviesParser),
     Container.get(MobileTvShowsParser),
-    Container.get(Fast32Parser)
+    Container.get(Fast32Parser),
+    Container.get(VumooParser)
 ];
