@@ -67,7 +67,7 @@ export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources:
                 crossOrigin: 'anonymous'
             },
             hlsOptions: {
-                pLoader: subtitlePloader,
+                // pLoader: subtitlePloader,
                 subtitleDisplay: true
             },
             tracks: [...currentVideoSource?.subtitles != null ? currentVideoSource!.subtitles.map((v, i) => ({kind: 'subtitles', label: v.lang, src: serverUrl + v.url.toString(), srcLang: v.lang, default: i === 0})) : []],
