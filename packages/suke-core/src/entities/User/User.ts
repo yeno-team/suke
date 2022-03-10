@@ -123,7 +123,7 @@ export class UserModel extends BaseEntity implements IDBUser  {
     @PrimaryGeneratedColumn()
     public id!: number;
 
-    @Index({ unique: true })
+    @Index({ unique: true, fulltext: true })
     @Column({
         unique: true,
         nullable: false,

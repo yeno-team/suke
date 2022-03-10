@@ -66,7 +66,7 @@ export class Server {
 
     public start(): void {
         this.app.use(cors({origin: "*"}));
-        this.app.use('/api/proxy/referer/:referer/:url', createProxyMiddleware({
+        this.app.use('/api/proxy/referer/:referer/:url(*)', createProxyMiddleware({
             router: (req) => decodeURIComponent(req.params.url),
             pathRewrite: () => '',
             onProxyReq: (proxyReq, req) => {
@@ -74,7 +74,7 @@ export class Server {
             },
             changeOrigin: true
         }));
-        this.app.use('/api/proxy/:url', createProxyMiddleware({
+        this.app.use('/api/proxy/:url(*)', createProxyMiddleware({
             router: (req) => decodeURIComponent(req.params.url),
             pathRewrite: () => '',
             changeOrigin: true

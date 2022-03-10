@@ -1,4 +1,4 @@
-import React,  { useState , useMemo, useCallback } from 'react';
+import React,  { useState , useMemo } from 'react';
 import  { Icon } from "@iconify/react";
 import { Messages } from './Messages';
 import { IUser } from '@suke/suke-core/src/entities/User';
@@ -10,6 +10,7 @@ import './Chat.css';
 import { IReceivedMessage } from '@suke/suke-core/src/entities/ReceivedMessage';
 import { ISentMessage } from '@suke/suke-core/src/entities/SentMessage';
 import { Emoji } from '@suke/suke-web/src/components/Emoji';
+import { EmoteCounter } from '../EmoteCounter';
 
 export interface ChatProps {
     className?: string;
@@ -44,7 +45,7 @@ export const Chat = (
 
     const isUserAbleToChat = useMemo(() => {
         return doesChannelExist && hasGlobalEmojiBeenFetched && hasUserJoinedRoom && channelId
-    } , [ doesChannelExist , hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
+    } , [ doesChannelExist, hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
     
     const isUserGuest = user!.id === 0;
 
@@ -110,6 +111,9 @@ export const Chat = (
             "lg:flex",
             "lg:flex-col"
         )}>
+            {/* {
+                hasGlobalEmojiBeenFetched && <EmoteCounter emote={globalEmoji[0]} counter={2} emoteSize={50} className="absolute left-5 top-80 mt-6 md:left-14 md:fixed md:top-17/20" />
+            } */}
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
                 CHAT
             </header>

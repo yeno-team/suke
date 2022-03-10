@@ -26,7 +26,7 @@ export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources:
             const referer = highestQuality.referer;
             return {
                 ...highestQuality,
-                url: new URL(highestQuality.proxyRequired ? serverUrl + (highestQuality.referer ? 'referer/' + encodeURIComponent(referer as string) + "/" : "") + encodeURIComponent(highestQuality.url.toString()) : highestQuality.url.toString())
+                url: new URL(highestQuality.proxyRequired ? serverUrl + (highestQuality.referer ? 'referer/' + encodeURIComponent(referer as string) + "/" : "") + highestQuality.url.toString() : highestQuality.url.toString())
             } as IVideoSource;
         }
     }, [props.sources]);
@@ -35,7 +35,7 @@ export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources:
     return <ReactPlayer {...props} children={props.children} ref={ref} url={currentVideoSource?.url.toString()} style={{backgroundColor: 'black'}} controls={true} config={{ 
         file: { 
             attributes: {
-                crossOrigin: 'anonymous',
+                crossOrigin: 'anonymous'
             },
             tracks: [...currentVideoSource?.subtitles != null ? currentVideoSource!.subtitles.map(v => ({kind: 'subtitles', label: v.lang, src: v.url.toString(), srcLang: v.lang})) : []],
         },
