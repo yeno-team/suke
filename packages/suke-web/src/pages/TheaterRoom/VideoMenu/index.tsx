@@ -5,6 +5,7 @@ import ReactPlayer from 'react-player';
 import { VideoMenuHeader } from './VideoMenuHeader';
 
 import { VideoPlayer } from '@suke/suke-web/src/components/VideoPlayer';
+import Hls from 'hls.js';
 
 
 export interface VideoMenuProps {
@@ -74,7 +75,7 @@ const VideoMenuComponent = ({ viewerCount, className, playerHeight, playerWidth,
         setClientPaused(false);
         setPlaying(true);
     }
-    
+
     return (
         <div className={classNames('h-full relative', className, 'flex flex-col relative')}>
             <VideoMenuHeader viewerCount={viewerCount ?? 0} title={roomData.title}/>
