@@ -1,13 +1,15 @@
+import { UserModel } from "@suke/suke-core/src/entities/User";
 import { IUserChannel, UserChannel, UserChannelModel } from "@suke/suke-core/src/entities/UserChannel";
 import { Service } from "typedi";
-import { Repository } from "typeorm";
+import { Like, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 
 @Service()
 export class UserChannelService {
     constructor(
-        @InjectRepository(UserChannelModel) private userChannelRepository: Repository<UserChannelModel>
+        @InjectRepository(UserChannelModel) private userChannelRepository: Repository<UserChannelModel>,
+        @InjectRepository(UserModel) private userRepository: Repository<UserModel>
     ) {}
 
     public async findById(id: number): Promise<UserChannelModel> {
@@ -40,5 +42,24 @@ export class UserChannelService {
         }
 
         return channel.save();
+    }
+
+    public async search(term: string, pageNumber=1, limit = 20, order: "ASC" | "DESC" = "DESC") {
+        return await this.userRepository.find({
+            relations: ["channel"],
+            skip: Math.max((pageNumber-1) * limit, 0),
+            take: limit,
+            where: [
+                {
+                    name: Like(`%${term}%`)
+                },
+                {
+                    channel: {
+                        desc: Like(`%${term}%`),
+                        desc_title: Like(`%${term}%`)
+                    }
+                }
+            ]
+        });
     }
 }
