@@ -102,6 +102,7 @@ export const Chat = (
 
     // Handles the logic when the client wants to reply to a user in the chat.
     const replyHandler = (authorName : string) : void => {
+        if (user == null || user.id === 0) return;
         setMessageInput(`${messageInput} @${authorName} `)
     }
 
@@ -117,7 +118,7 @@ export const Chat = (
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
                 CHAT
             </header>
-            <Messages className={classNames("text-white p-4 text-sm xl:text-base lg:flex-grow overflow-y-scroll bg-spaceblack", 'h-' + height)} messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji} title={title}/>
+            <Messages className={classNames("text-white p-4 text-sm xl:text-base lg:flex-grow overflow-y-auto bg-spaceblack", 'h-' + height)} messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji} title={title}/>
             <div className="p-5 bg-spaceblack">
                 <div className="w-full flex items-center bg-newblack rounded-md pr-5 relative">
                     {
