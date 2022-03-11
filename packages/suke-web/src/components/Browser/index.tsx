@@ -168,6 +168,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                 <SearchBar loading={loading} value={searchInput} setValue={setSearchInput} onSubmit={onSearchSubmit} size='full' placeholder={"Search " + (activeSource ? activeSource.charAt(0).toUpperCase() + activeSource.slice(1) : "Videos") + "..."} className={classNames(
                     'py-2',
                     'mx-auto ml-3 w-9/12 lg:mx-auto lg:w-7/12',
+                    "text-spaceblack",
                     'lg:ml-72'
                 )} rounded/>
                 <button>
