@@ -76,8 +76,8 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
             ...Array.from(requestedItems.values()),
             ...items
         ]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [multis, standalones])
+
+    }, [active, activeSource, multis, requests, roomId, setActive, standalones])
 
     const closeMobileMenu = () => {
         setMobileMenuActive(false);
