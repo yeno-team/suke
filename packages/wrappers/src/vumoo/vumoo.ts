@@ -38,22 +38,24 @@ export class VumooWrapper {
     public async search(searchData: string): Promise<ISearchData> {
         const resp = await this.request.get<string>(new URL(`https://vumoo.to/search?t=2018BC65S4359XSMloz2HpQU2bXW4T_cTmTZFKx_zfeb1NAvH2OpqEK-aJloaWZL-xo426IMAVLtpWZ3SK1d==&q=${searchData}`), {headers: {"Referer": this.host, "User-Agent": "Mozilla/5.0 (Android 4.4; Mobile; rv:41.0) Gecko/41.0 Firefox/41.0"}});
         const json = JSON.parse(JSON.stringify(resp));
-
         return {
             results: {
-                standalone: json.suggestions.map((v: any) => ({
-                    type: StandaloneType.Movie,
-                    name: v.value,
-                    id: Buffer.from(v.data.href).toString('base64'),
-                    thumbnail_url: v.data.image,
-                    initRequired: true,
-                    sources: [
-                        {
-                            url: new URL(`${this.host.slice(0, this.host.length-1)}${v.data.href}`),
-                            quality: Quality.auto
-                        } as IVideoSource
-                    ]
-                } as IStandaloneData)) as IStandaloneData[],
+                standalone: json.suggestions.map((v: any) => {
+                    const url = new URL(`${this.host.slice(0, this.host.length-1)}${v.data.href}`);
+                    return {
+                        type: StandaloneType.Movie,
+                        name: v.value,
+                        id: Buffer.from(url.pathname).toString('base64'),
+                        thumbnail_url: v.data.image,
+                        initRequired: true,
+                        sources: [
+                            {
+                                url,
+                                quality: Quality.auto
+                            } as IVideoSource
+                        ]
+                    };
+                }),
                 multi: []
             }
         };
