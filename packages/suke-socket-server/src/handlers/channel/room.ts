@@ -67,8 +67,9 @@ export const createChannelRoomHandler: Handler = (server: SocketServer) => (): v
                 if(user.Name().Equals(ownerName)) {
                     await channelManager.editRealtimeChannel(msg.data.roomId, {live: true});
                 }
-
+                
                 await sendUpdateMessage(msg.data.roomId);
+
                 ws.send(JSON.stringify(new SocketMessage({
                     type: 'CHANNEL_ROOM_JOIN',
                     data: msg.data

@@ -24,7 +24,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         return server.emit('clientError', new Error("You need an account to access requests feature."), ws);
                     }
 
-                    if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
+                    if (!await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                         return server.emit('clientError', new Error("You have not joined the channel's room."), ws);
                     }
 
@@ -44,12 +44,12 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         return server.emit('clientError', new Error("You need an account to access requests feature."), ws);
                     }
 
-                    if (await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
+                    if (!await roomManager.CheckIfUserInRoom(ws.id, msg.data.roomId)) {
                         return server.emit('clientError', new Error("You have not joined the channel's room."), ws);
                     }
 
                     if (msg.data?.requestedBy.find(v => !(new UserId(v.userId).Equals(user.Id())) && msg.data.roomId.toLowerCase() != user.name.toLowerCase())) {
-                        server.emit('clientError', new Error("You do not have permission to remove this request."), ws);
+                        return server.emit('clientError', new Error("You do not have permission to remove this request."), ws);
                     }
 
                     await requestManager.removeRequest(msg.data.roomId, msg.data);
@@ -64,7 +64,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                 break;
             case 'CHANNEL_REQUESTS_GET':
                 try {
-                    if (await roomManager.CheckIfUserInRoom(ws.id, msg.data)) {
+                    if (!await roomManager.CheckIfUserInRoom(ws.id, msg.data)) {
                         return;
                     }
                     const channel = await channelManager.getChannel(msg.data);
