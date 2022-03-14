@@ -66,17 +66,18 @@ export class Server {
 
     public start(): void {
         this.app.use(cors({origin: "*"}));
+
         this.app.use('/api/proxy/referer/:referer/:url(*)', createProxyMiddleware({
-            router: (req) => decodeURIComponent(req.params.url),
-            pathRewrite: () => '',
+            router: this.proxyRouterFunction,
+            pathRewrite: (p, req) => new URL(decodeURIComponent(req.params.url)).pathname,
             onProxyReq: (proxyReq, req) => {
                 proxyReq.setHeader('Referer', decodeURIComponent(req.params.referer));
             },
             changeOrigin: true
         }));
         this.app.use('/api/proxy/:url(*)', createProxyMiddleware({
-            router: (req) => decodeURIComponent(req.params.url),
-            pathRewrite: () => '',
+            router: this.proxyRouterFunction,
+            pathRewrite: (p, req) => '',
             changeOrigin: true
         }));
         this.app.use(express.json());
@@ -93,5 +94,11 @@ export class Server {
 
         // Listening from the socket server will listen on the httpServer that is shared from express.
         this.socketServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));
+    }
+
+    private proxyRouterFunction(req) {
+        const mainUrl = new URL(req.protocol + '://' + req.get('host') + req.originalUrl);
+        const proxyUrl = new URL(decodeURIComponent(req.params.url));
+        return proxyUrl.toString() + mainUrl.search;
     }
 }
