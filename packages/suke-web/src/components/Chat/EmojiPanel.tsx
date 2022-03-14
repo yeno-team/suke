@@ -9,11 +9,11 @@ import { Icon } from "@iconify/react";
 export interface ChatPanelProps {
     globalEmotes : Emoji[];
     setChatPanelVisiblity :  React.Dispatch<React.SetStateAction<boolean>>;
-    setMessageInput : React.Dispatch<React.SetStateAction<string>>;
+    appendMessageInput : (val: string) => void;
     isUserGuest: boolean;
 }
 
-export const EmojiPanel = ({ globalEmotes: globalEmojis, setChatPanelVisiblity , setMessageInput, isUserGuest } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
+export const EmojiPanel = ({ globalEmotes: globalEmojis, setChatPanelVisiblity , appendMessageInput, isUserGuest } : ChatPanelProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> ) : JSX.Element => {
     const [ searchInput , setSearchInput ] = useState("");   
     const [ placeholder , setPlaceHolder ] = useState("");
     const [ emotePreview , setEmotePreview ] = useState<Emoji>();
@@ -21,12 +21,12 @@ export const EmojiPanel = ({ globalEmotes: globalEmojis, setChatPanelVisiblity ,
     const emojiOnClickHandler = useCallback((name: string) => {
         return () => {  
             if (!isUserGuest) {
-                setMessageInput((prevState) => prevState + `${name}`);
+                appendMessageInput(`${name}`);
             }
             
             setChatPanelVisiblity(false)
         }
-    } , [isUserGuest, setChatPanelVisiblity, setMessageInput]);
+    } , [isUserGuest, setChatPanelVisiblity, appendMessageInput]);
 
     const filteredEmojiComponents = useMemo(() => {
         const getEmoteComponents = (emojis: Emoji[]) => {

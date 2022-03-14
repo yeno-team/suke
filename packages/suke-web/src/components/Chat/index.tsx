@@ -1,4 +1,4 @@
-import React,  { useState , useMemo } from 'react';
+import React,  { useState , useMemo, useRef } from 'react';
 import  { Icon } from "@iconify/react";
 import { Messages } from './Messages';
 import { IUser } from '@suke/suke-core/src/entities/User';
@@ -42,7 +42,7 @@ export const Chat = (
     const [ globalEmoji , hasGlobalEmojiBeenFetched ] = useGlobalEmoji(); 
     const [ messageInput, setMessageInput ] = useState("");
     const [ isChatPanelActive , setIsChatPanelActive ] = useState(false);
-
+    const inputRef = useRef<HTMLTextAreaElement | null>();
     const isUserAbleToChat = useMemo(() => {
         return doesChannelExist && hasGlobalEmojiBeenFetched && hasUserJoinedRoom && channelId
     } , [ doesChannelExist, hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
@@ -106,6 +106,14 @@ export const Chat = (
         setMessageInput(`${messageInput} @${authorName} `)
     }
 
+    const appendMessageInput = (input: string) => {
+        setMessageInput(prev => prev + input);
+
+        if (inputRef.current != null) {
+            inputRef.current.focus();
+        }
+    }
+
     return (
         <div className={classNames(
             className,
@@ -129,6 +137,7 @@ export const Chat = (
                         </div>
                     }
                     <TextAreaAutoResize 
+                        ref={ref => inputRef.current = ref}
                         value={messageInput} maxRows={3} 
                         onChange={e => setMessageInput(e.target.value)} 
                         className={classNames("relative p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto", isUserGuest ? "cursor-not-allowed" : "")}
@@ -137,7 +146,7 @@ export const Chat = (
                         disabled={!isUserAbleToChat || isUserGuest}
                     />
                     {chatEmojiIcon}
-                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} setMessageInput={setMessageInput} isUserGuest={isUserGuest}/>}
+                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} appendMessageInput={appendMessageInput} isUserGuest={isUserGuest}/>}
                 </div>
             </div>
         </div>
