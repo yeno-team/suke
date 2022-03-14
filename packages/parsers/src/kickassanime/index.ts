@@ -24,7 +24,7 @@ export type KickAssAnimeQuerySearchResponse = {
  */
 @Service()
 export default class KickAssAnimeParser implements IParser {
-    name = "anime 2"
+    name = "anime 3"
     hostname : URL = new URL("https://www2.kickassanime.ro/")
 
     constructor(

@@ -115,7 +115,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
             setLoading(true);
 
             if (searchData.nextPageToken != null) {
-                const data = await continueSearch(searchData.nextPageToken, activeSource);
+                const data = await continueSearch(searchData.nextPageToken, activeSource, searchInput);
                 setSearchData(data);
                 setStandalones(prevStandalones => [
                     ...prevStandalones,
