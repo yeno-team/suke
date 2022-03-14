@@ -16,6 +16,7 @@ export class GogoAnimeParser implements IParser {
     constructor(
         private gogoAnimeApiWrapper : GogoAnimeApiWrapper
     ) {}
+    
     getData(url: URL): Promise<ParserDataResponse> {
         throw new Error("Method not implemented.");
     }

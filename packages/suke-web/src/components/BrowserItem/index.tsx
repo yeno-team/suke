@@ -136,7 +136,7 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
                     requestedBy && !data.initRequired ? <h4 className="text-xs font-signika text-blue font-bold">REQUESTED BY: {requestedBy.join(", ")}</h4> : null
                 }
                 {
-                     user && user.name === roomId ?
+                     user && user.name === roomId && !data.initRequired ?
                      <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleSet} backgroundColor={"coolorange"} disabled={loading}>
                         Set  
                      </Button>
