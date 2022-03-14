@@ -77,7 +77,7 @@ export class Server {
         }));
         this.app.use('/api/proxy/:url(*)', createProxyMiddleware({
             router: this.proxyRouterFunction,
-            pathRewrite: (p, req) => '',
+            pathRewrite: () => '',
             changeOrigin: true
         }));
         this.app.use(express.json());

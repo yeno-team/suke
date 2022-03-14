@@ -10,7 +10,7 @@ export interface GogoAnimeQuerySearhcResponse {
 
 @Service()
 export class GogoAnimeParser implements IParser {
-    name = "anime 1";
+    name = "anime 2";
     hostname: URL = new URL("https://ww2.gogoanimes.org/");
 
     constructor(
