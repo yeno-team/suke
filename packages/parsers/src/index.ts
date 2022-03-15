@@ -1,17 +1,19 @@
 import "reflect-metadata";
 import { Container} from "typedi";
+import { AnimeFoxParser } from "./animefox";
 import { Fast32Parser } from "./fast32";
 import { FzMoviesParser } from "./fzmovies";
-import { GogoAnimeParser } from "./gogoanime";
-import KickAssAnimeParser from "./kickassanime";
+// import { GogoAnimeParser } from "./gogoanime";
+// import KickAssAnimeParser from "./kickassanime";
 import { MobileTvShowsParser } from "./mobiletvshows";
+import { VumooParser } from "./vumoo";
 import { YoutubeParser } from "./youtube";
 
 export const parsers = [
+    Container.get(VumooParser),
+    Container.get(Fast32Parser),
+    Container.get(AnimeFoxParser),
     Container.get(YoutubeParser),
-    Container.get(KickAssAnimeParser),
-    Container.get(GogoAnimeParser),
     Container.get(FzMoviesParser),
-    Container.get(MobileTvShowsParser),
-    Container.get(Fast32Parser)
+    Container.get(MobileTvShowsParser)
 ];

@@ -40,10 +40,10 @@ export class SocketBroadcaster {
 
         roomConnections.forEach(async id => {
             if (opts != null) {
-                if (opts.blacklist?.indexOf(id) !== -1) 
+                if (opts.blacklist != null && opts.blacklist?.indexOf(id) !== -1) 
                     return;
 
-                if (opts.whitelist?.indexOf(id) === -1) {
+                if (opts.whitelist != null && opts.whitelist?.indexOf(id) === -1) {
                     return;
                 }
             }

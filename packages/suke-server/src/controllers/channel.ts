@@ -25,7 +25,7 @@ export class UserChannelController extends BaseController {
 
         res.send({
             ...user.channel,
-            followers: user.channel.followers.length
+            followers: null
         });
     }
 }

@@ -1,4 +1,4 @@
-import React,  { useState , useMemo, useCallback } from 'react';
+import React,  { useState , useMemo, useRef } from 'react';
 import  { Icon } from "@iconify/react";
 import { Messages } from './Messages';
 import { IUser } from '@suke/suke-core/src/entities/User';
@@ -41,10 +41,10 @@ export const Chat = (
     const [ globalEmoji , hasGlobalEmojiBeenFetched ] = useGlobalEmoji(); 
     const [ messageInput, setMessageInput ] = useState("");
     const [ isChatPanelActive , setIsChatPanelActive ] = useState(false);
-
+    const inputRef = useRef<HTMLTextAreaElement | null>();
     const isUserAbleToChat = useMemo(() => {
         return doesChannelExist && hasGlobalEmojiBeenFetched && hasUserJoinedRoom && channelId
-    } , [ doesChannelExist , hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
+    } , [ doesChannelExist, hasGlobalEmojiBeenFetched , hasUserJoinedRoom , channelId ])
     
     const isUserGuest = user!.id === 0;
 
@@ -101,7 +101,16 @@ export const Chat = (
 
     // Handles the logic when the client wants to reply to a user in the chat.
     const replyHandler = (authorName : string) : void => {
+        if (user == null || user.id === 0) return;
         setMessageInput(`${messageInput} @${authorName} `)
+    }
+
+    const appendMessageInput = (input: string) => {
+        setMessageInput(prev => prev + input);
+
+        if (inputRef.current != null) {
+            inputRef.current.focus();
+        }
     }
 
     return (
@@ -110,10 +119,13 @@ export const Chat = (
             "lg:flex",
             "lg:flex-col"
         )}>
+            {/* {
+                hasGlobalEmojiBeenFetched && <EmoteCounter emote={globalEmoji[0]} counter={2} emoteSize={50} className="absolute left-5 top-80 mt-6 md:left-14 md:fixed md:top-17/20" />
+            } */}
             <header className="w-full text-white text-lg tracking-wide text-center p-4 bg-black font-semibold">
                 CHAT
             </header>
-            <Messages className={classNames("text-white p-4 text-sm xl:text-base lg:flex-grow overflow-y-scroll bg-spaceblack", 'h-' + height)} messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji} title={title}/>
+            <Messages className={classNames("text-white p-4 text-sm xl:text-base lg:flex-grow overflow-y-auto bg-spaceblack", 'h-' + height)} messages={messages} channelId={channelId} replyHandler={replyHandler} doesChannelExist={doesChannelExist} emojis={globalEmoji} title={title}/>
             <div className="p-5 bg-spaceblack">
                 <div className="w-full flex items-center bg-newblack rounded-md pr-5 relative">
                     {
@@ -124,6 +136,7 @@ export const Chat = (
                         </div>
                     }
                     <TextAreaAutoResize 
+                        ref={ref => inputRef.current = ref}
                         value={messageInput} maxRows={3} 
                         onChange={e => setMessageInput(e.target.value)} 
                         className={classNames("relative p-3 rounded-l-md text-sm md:text-base focus:outline-none text-white resize-none overflow-hidden bg-transparent flex-1 h-auto", isUserGuest ? "cursor-not-allowed" : "")}
@@ -132,7 +145,7 @@ export const Chat = (
                         disabled={!isUserAbleToChat || isUserGuest}
                     />
                     {chatEmojiIcon}
-                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} setMessageInput={setMessageInput} isUserGuest={isUserGuest}/>}
+                    {(isChatPanelActive && isUserAbleToChat) && <EmojiPanel setChatPanelVisiblity={setIsChatPanelActive} globalEmotes={globalEmoji} appendMessageInput={appendMessageInput} isUserGuest={isUserGuest}/>}
                 </div>
             </div>
         </div>

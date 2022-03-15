@@ -116,7 +116,6 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
         } finally {
             setLoading(false);
         }
-        
     }
 
     const revertOrRequestButton = requestedBy && requestedBy.findIndex(v => v.toLowerCase() === user?.name.toLowerCase()) !== -1 ?
@@ -132,17 +131,16 @@ export function BrowserItem({data, category, roomId, requestedBy, requestedObjec
             <img src={data.thumbnail_url!} className="m-0 max-w-128 w-auto h-auto object-cover" alt={`${data.name} thumbnail`}></img>
             <div className="inline-block text-white align-middle m-0 ml-2 py-2 flex-grow">
                 <h1 className="font-bold text-sm">{data.name?.toUpperCase()}</h1>
-                <h3 className="m-0 p-0 text-xs">{category}</h3>
+                {/* <h3 className="m-0 p-0 text-xs">{category}</h3> */}
                 {
-                    requestedBy ? <h4 className="text-xs font-signika text-blue font-bold">REQUESTED BY: {requestedBy.join(", ")}</h4> : null
+                    requestedBy && !data.initRequired ? <h4 className="text-xs font-signika text-blue font-bold">REQUESTED BY: {requestedBy.join(", ")}</h4> : null
                 }
                 {
-                     user && user.name === roomId ?
-                     data.initRequired ? <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleInit} backgroundColor={loading ? "green" : "darkgray"} >{loading ? "Loading..." : "Load"}</Button> :
+                     user && user.name === roomId && !data.initRequired ?
                      <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleSet} backgroundColor={"coolorange"} disabled={loading}>
                         Set  
                      </Button>
-                     : revertOrRequestButton
+                     : data.initRequired ? <Button className={classNames("m-0 mt-3 rounded-md relative")} fontWeight="semibold" size={3} fontSize="xs" onClick={handleInit} backgroundColor={loading ? "green" : "darkgray"} >{loading ? "Loading..." : "Load"}</Button> :revertOrRequestButton
                 }
                 
             </div>

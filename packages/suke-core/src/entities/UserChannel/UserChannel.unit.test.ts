@@ -15,6 +15,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: 1 as unknown as string,
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });}).toThrow(ValidationError);
 
@@ -23,6 +24,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: 1 as unknown as string,
+                followerCount: 0,
                 roledUsers: []
             });}).toThrow(ValidationError);
         });
@@ -33,6 +35,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });}).not.toThrow(ValidationError);
         });
@@ -43,6 +46,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });}).toThrow();
 
@@ -51,6 +55,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: 1 as unknown as string,
+                followerCount: 0,
                 roledUsers: []
             });}).toThrow();
         });
@@ -61,6 +66,7 @@ describe('UserChannel class', () => {
                 followers: null as unknown as [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });
 
@@ -73,6 +79,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });
 
@@ -81,6 +88,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: null as unknown as string,
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });
 
@@ -94,6 +102,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });
 
@@ -102,6 +111,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: null as unknown as string,
+                followerCount: 0,
                 roledUsers: []
             });
 
@@ -117,6 +127,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });
 
@@ -129,6 +140,7 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });
 
@@ -137,9 +149,9 @@ describe('UserChannel class', () => {
                 followers: [],
                 desc_title: '',
                 desc: '',
+                followerCount: 0,
                 roledUsers: []
             });
-
 
             expect(channel.Equals(channel2)).toBeFalsy();
         });

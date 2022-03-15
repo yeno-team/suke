@@ -1,24 +1,28 @@
 import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
-import { getCategoryChannels } from "@suke/suke-web/src/api/category";
+import { searchChannels } from "@suke/suke-web/src/api/search";
 import { ChannelCard } from "@suke/suke-web/src/components/ChannelCard";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation";
 
-type CategoryPageParams = {
-    categoryValue: string
+type SearchPageParams = {
+    searchTerm: string
 }
 
-export const CategoryPage = () => {
+export const SearchPage = () => {
     const [channels, setChannels] = useState<RealtimeRoomData[]>([]);
     const [loading, setLoading] = useState(true);
-    const { categoryValue } = useParams<CategoryPageParams>();
+    const { searchTerm } = useParams<SearchPageParams>();
     const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
     const [pageNumber, setPageNumber] = useState(1);
 
     const getNextPage = async () => {
         try {
-            const channels = await getCategoryChannels(categoryValue as string, pageNumber+1, 25, sortDirection);
+            const channels = await searchChannels(searchTerm || "", {
+                pageNumber: pageNumber+1, 
+                limit: 25, 
+                sortDirection
+            });
             if (channels.length > 0) {
                 setChannels(prev => [...prev, ...channels]);
                 setPageNumber(pageNumber + 1);
@@ -41,7 +45,11 @@ export const CategoryPage = () => {
     useEffect(() => {
         const getChannels = async () => {
             try {
-                const channels = await getCategoryChannels(categoryValue as string, 1, 25, sortDirection);
+                const channels = await searchChannels(searchTerm || "", {
+                    pageNumber: 1, 
+                    limit: 25, 
+                    sortDirection
+                });
                 setChannels(channels);
             } catch (e) {
                 console.error(e);
@@ -50,19 +58,15 @@ export const CategoryPage = () => {
             }
         }
         getChannels();
-    }, [categoryValue, sortDirection]);
+    }, [searchTerm, sortDirection]);
 
-    const categoryDisplayName = categoryValue?.split("_").flatMap(v => v.charAt(0).toUpperCase() + v.substr(1)).join(" ");
 
     return (
         <div className="bg-darkblack h-full flex flex-col flex-wrap text-center md:text-left" onScroll={handleScroll}>
             <Navigation></Navigation>
             <div className="flex mt-12 mb-4 md:ml-20 font-sans">
                 <h1 className="text-white font-semibold text-2xl">
-                    <span className="inline-block font-black">
-                        { categoryDisplayName }
-                    </span> 
-                    Channels
+                    Search Results for "{searchTerm}"
                 </h1>
                 <div className="ml-auto md:mr-20 flex">
                     <h1 className="text-white font-semibold mr-3 leading-none my-auto">Sort By</h1>
@@ -79,7 +83,7 @@ export const CategoryPage = () => {
                     (
                         loading ?
                         <h1 className="text-gray">Searching...</h1> :
-                        <h1 className="text-brightRed font-semibold">There are currently no public channels live for this category.</h1>
+                        <h1 className="text-brightRed font-semibold">No results.</h1>
                     )
                 }
             </div>
