@@ -33,6 +33,32 @@ export class RealtimeChannelService {
         };  
     }
 
+    public async searchChannels(cursor = 0, limit = 20, searchTerm: string): Promise<{data: RealtimeRoomData[], nextCursor: number}> {
+        const keyPattern = `channel:${searchTerm}*`;
+        const channelScan = await this.redisClient.scan(cursor, { MATCH: keyPattern, COUNT: limit});
+        
+        const data: RealtimeRoomData[] = [];
+
+        for (const key of channelScan.keys) {
+            const channel = await this.redisClient.get(key);
+            
+            if (channel != null ) {
+                const parsedChannel: RealtimeRoomData = JSON.parse(channel);
+                if (parsedChannel.live) {
+                    data.push({
+                        ...parsedChannel,
+                        password: "*".repeat(parsedChannel.password.length)
+                    });
+                }
+            }
+        }
+
+        return {
+            data,
+            nextCursor: channelScan.cursor
+        };  
+    }
+
     public async getSortedChannels(pageNumber = 1, limit = 20, order: "ASC" | "DESC" = "DESC"): Promise<RealtimeRoomData[]> {
         if (pageNumber <= 0) throw new Error("Page Number should be greater than 0");
         

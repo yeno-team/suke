@@ -1,10 +1,7 @@
-import { IParser, ParserDataResponse, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
+import { IParser, ParserDataResponse } from "@suke/suke-core/src/entities/Parser";
 import { ISearchData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { VumooWrapper } from "@suke/wrappers/src";
 import { Service } from "typedi";
-
-
-
 
 @Service()
 export class VumooParser implements IParser {
@@ -15,7 +12,7 @@ export class VumooParser implements IParser {
         private wrapper: VumooWrapper
     ) {}
 
-    async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {
+    async search(searchTerm: string): Promise<ISearchData> {
         return await this.wrapper.search(searchTerm);
     }
 

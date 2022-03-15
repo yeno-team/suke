@@ -3,9 +3,7 @@ import classNames from 'classnames';
 import React, { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { VideoMenuHeader } from './VideoMenuHeader';
-
 import { VideoPlayer } from '@suke/suke-web/src/components/VideoPlayer';
-import Hls from 'hls.js';
 
 
 export interface VideoMenuProps {

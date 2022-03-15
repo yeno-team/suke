@@ -16,7 +16,7 @@ type TheaterRoomPageParams = {
     roomId: string
 }
 
-export const TheaterRoomPage = ({}: TheaterRoomPageProps) => {
+export const TheaterRoomPage = () => {
     const { roomId } = useParams<TheaterRoomPageParams>()
     const { roomData, requestRoomData, joinTheaterRoom } = useTheaterRoom();
     const { user } = useAuth();

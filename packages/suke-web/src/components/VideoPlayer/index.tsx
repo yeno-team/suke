@@ -1,9 +1,7 @@
 import { IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
-import React, { SyntheticEvent, useMemo } from "react";
+import React, { useMemo } from "react";
 import ReactPlayer, { ReactPlayerProps } from "react-player";
 import { browserName } from 'react-device-detect';
-import Hls, { HlsConfig } from "hls.js"
-import { SimpleConsoleLogger } from "typeorm";
 
 const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4000/api/proxy/";
 

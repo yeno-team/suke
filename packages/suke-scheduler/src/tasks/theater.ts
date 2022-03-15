@@ -4,7 +4,7 @@ import { RedisClientType } from '@suke/suke-server/src/config';
 import Container from 'typedi';
 import { RealtimeTheaterRoomData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { parsers } from "@suke/parsers/src";
-import { IMultiData, IMultiStandaloneData, IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
+import { IVideoSource } from '@suke/suke-core/src/entities/SearchResult';
 import { IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
 import { IParser } from '@suke/suke-core/src/entities/Parser';
 import { ScheduledTask } from '../ScheduledTask';

@@ -1,5 +1,5 @@
 import { AxiosRequest } from "@suke/requests/src";
-import { IMultiData, ISearchData, IStandaloneData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
+import { IMultiData, ISearchData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
 import { Service } from "typedi";
 import { ParserDataResponse } from "@suke/suke-core/src/entities/Parser";
 import * as cheerio from 'cheerio';

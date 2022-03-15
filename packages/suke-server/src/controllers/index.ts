@@ -18,7 +18,8 @@ import { TheaterItemController } from "./theater";
 import { TheaterScheduleItemController } from "./theater/scheduleItem";
 import { TheaterScheduleItemsController } from "./theater/scheduleItems";
 import { SourceGetDataController } from "./source/getData";
-import { ChannelSearchController } from "./search/channel";
+import { UserSearchController } from "./search/user";
+import { RealtimeChannelSearchController } from "./search/realtimeChannel";
 
 export default [
     AuthController,
@@ -42,5 +43,6 @@ export default [
     TheaterItemController,
     TheaterScheduleItemController,
     TheaterScheduleItemsController,
-    ChannelSearchController
+    UserSearchController,
+    RealtimeChannelSearchController
 ];

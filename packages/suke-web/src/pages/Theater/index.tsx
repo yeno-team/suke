@@ -5,8 +5,6 @@ import { TheaterNavBar } from "./TheaterNavBar";
 import { Schedule } from "./Schedule";
 import { useEffect, useMemo, useState } from "react";
 import { getTheaterItems } from "@suke/suke-web/src/api/theater";
-import classNames from "classnames";
-
 
 export const TheaterPage = () => {
     const [searchInput, setSearchInput] = useState("");

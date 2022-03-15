@@ -14,7 +14,7 @@ export class YoutubeParser implements IParser {
         private wrapper: YoutubeApiWrapper
     ) {  }
 
-    getData(url: URL): Promise<ParserDataResponse> {
+    getData(): Promise<ParserDataResponse> {
         throw new Error("Method not implemented.");
     }
 
