@@ -80,7 +80,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 </Link>
             </div>
 
-            <SearchBar size={screen.width < 1300 ? '40' : '128'} py="2" value={searchVal} setValue={setSearchVal} onSubmit={handleSearch} rounded className={classNames(
+            <SearchBar size={screen.width < 1300 ? '52' : '128'} py="2" value={searchVal} setValue={setSearchVal} onSubmit={handleSearch} rounded className={classNames(
                 'lg:hidden',
                 'ml-3',
                 'text-coolblack'
