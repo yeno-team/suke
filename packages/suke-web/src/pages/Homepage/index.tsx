@@ -11,7 +11,6 @@ import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime"
 import { getRealtimeChannels } from "@suke/suke-web/src/api/realtime";
 import numeral from "numeral";
 import { useNavigate } from "react-router-dom";
-import { useTheaterRoom } from "@suke/suke-web/src/hooks/useTheaterRoom";
 import { getTheaterItems } from "@suke/suke-web/src/api/theater";
 import { ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { ScheduleState } from "@suke/suke-core/src/entities/TheaterItemSchedule";
