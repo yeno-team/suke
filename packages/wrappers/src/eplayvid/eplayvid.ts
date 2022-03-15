@@ -18,11 +18,23 @@ export class EPlayVidWrapper {
         if (sources.length <= 0) {
             throw new Error("Unexpected Source Error, Is the URL correct?");
         }
-  
+
+        const subtitles:  {lang: string, url: URL}[] = [];
+        const tracks = $('track');
+        if (tracks.length > 0) {
+            tracks.each((i, el) =>  {
+                subtitles.push({
+                    lang: el.attribs["label"],
+                    url: new URL(el.attribs["src"])
+                }); 
+            });
+        }
+        
         return {
             url: new URL(sources[0].attribs['src']),
             quality: Quality.auto,
             proxyRequired: true,
+            subtitles,
             referer: this.host
         };
     }

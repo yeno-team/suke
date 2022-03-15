@@ -10,13 +10,14 @@ export interface GogoAnimeQuerySearhcResponse {
 
 @Service()
 export class GogoAnimeParser implements IParser {
-    name = "anime 1";
+    name = "anime 2";
     hostname: URL = new URL("https://ww2.gogoanimes.org/");
 
     constructor(
         private gogoAnimeApiWrapper : GogoAnimeApiWrapper
     ) {}
-    getData(url: URL): Promise<ParserDataResponse> {
+    
+    getData(): Promise<ParserDataResponse> {
         throw new Error("Method not implemented.");
     }
     

@@ -14,9 +14,9 @@ export const useSource = () => {
         fetchSources();
     }, []);
 
-    const continueSearch = (pageToken: string, engine: string): Promise<ISearchData> => {
+    const continueSearch = (pageToken: string, engine: string, searchTerm: string): Promise<ISearchData> => {
         return searchSource({
-            query: "",
+            query: searchTerm,
             engine,
             options: {
                 token: pageToken

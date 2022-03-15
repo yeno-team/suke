@@ -29,7 +29,7 @@ export const UserChannelPage = (): JSX.Element => {
     const [init, setInit] = useState(false);
     const [browserActive, setBrowserActive] = useState(false);
     const [settingsActive, setSettingsActive] = useState(false);
-    const [channel, setChannel] = useState<(Omit<IUserChannel, 'followers'> & {followers: number}) | null>();
+    const [channel, setChannel] = useState<(Omit<IUserChannel, 'followers'>) | null>();
     const [searching, setSearching] = useState(true);
     const [clientFollowed, setClientFollowed] = useState(false);
     const [joinedRoom, setJoinedRoom] = useState(false);
@@ -194,7 +194,7 @@ export const UserChannelPage = (): JSX.Element => {
             <div className="w-full bg-spaceblack h-6/20 flex justify-center items-center text-white">This channel is offline.</div>
         }
         <ChatBox channel="channel" className={classNames(mobileClassListIfBrowserActive, "lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-94p lg:w-96")} height={screen.isTablet || screen.isMobile ? "80" : "72"}  identifier={username as string} />
-        <Profile className={classNames(mobileClassListIfBrowserActive, "z-10 pb-24 lg:pb-96")} username={username as string} followerCount={channel?.followers ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={channel ? {title: channel.desc_title  , content: channel.desc} : {title: "Loading", content: "Loading..."}}/>
+        <Profile className={classNames(mobileClassListIfBrowserActive, "z-10 pb-24 lg:pb-96")} username={username as string} followerCount={channel?.followerCount ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={channel ? {title: channel.desc_title  , content: channel.desc} : {title: "Loading", content: "Loading..."}}/>
     </div> : <PasswordPage active={!joinedRoom} channelId={username!} setJoinedRoom={setJoinedRoom} ></PasswordPage>
 
     return (

@@ -52,6 +52,7 @@ export class UserService {
         const newChannel = new UserChannel({
             id: 0,
             followers: [],
+            followerCount: 0,
             desc_title: 'About Me',
             desc: "Welcome to my channel!",
             roledUsers: []
@@ -109,8 +110,6 @@ export class UserService {
         if (found == null) {
             throw new Error("Not followed to User.");
         }
-
-        
 
         const removedFollowers = channel.followers.filter(v => v.follower.id == userUnfollowing.id);
         await this.followerRepository.remove(removedFollowers);

@@ -4,7 +4,6 @@ import { TheaterItemScheduleModel } from "@suke/suke-core/src/entities/TheaterIt
 import { SocketBroadcaster } from "@suke/suke-socket-server/src/extensions/Broadcaster";
 import { TheaterManager } from "@suke/suke-socket-server/src/extensions/TheaterManager";
 import { getRepository } from "typeorm";
-import { Broadcaster } from "typeorm/subscriber/Broadcaster";
 import { SocketServer, WebSocketConnection } from "../../server";
 import { Handler } from "../Handler";
 

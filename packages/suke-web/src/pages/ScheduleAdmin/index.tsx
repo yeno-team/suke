@@ -1,6 +1,6 @@
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
 import { Role } from "@suke/suke-core/src/Role";
-import React, { MutableRefObject, Ref, RefObject, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Navigation } from "../../common/Navigation";
 import { ITheaterItemSchedule, ScheduleState } from "@suke/suke-core/src/entities/TheaterItemSchedule";
@@ -34,7 +34,6 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
     const [featuredPictureUrl, setFeaturedPictureUrl] = useState(item.featuredPictureUrl);
     const [scheduleDate, setScheduleDate] = useState(new Date(Date.now()));
     const [duration, setDuration] = useState(item.duration);
-    const [schedules, setSchedules] = useState(item.schedules);
     const [addScheduleVal, setAddScheduleVal] = useState(new Date(Date.now()));
     const notificationStore = useNotification();
 

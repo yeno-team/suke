@@ -52,7 +52,7 @@ export interface DesktopSourceButtonsProps {
 }
 
 export const DesktopSourceButtons = ({className, sources, activeSource, setActiveSource}: DesktopSourceButtonsProps) => {
-    const buttons = sources.sort().map(sourceName => <BrowserSourceButton key={sourceName} onClick={() => setActiveSource(sourceName)} active={activeSource?.toLowerCase() === sourceName.toLowerCase()}>{sourceName.toUpperCase()}</BrowserSourceButton>);
+    const buttons = sources.map(sourceName => <BrowserSourceButton key={sourceName} onClick={() => setActiveSource(sourceName)} active={activeSource?.toLowerCase() === sourceName.toLowerCase()}>{sourceName.toUpperCase()}</BrowserSourceButton>);
     
     return <div className={classNames("flex flex-col absolute bg-newblack h-full lg:w-56", className)}>
         {buttons}

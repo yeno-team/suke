@@ -3,10 +3,12 @@ import React, { useMemo } from "react";
 import ReactPlayer, { ReactPlayerProps } from "react-player";
 import { browserName } from 'react-device-detect';
 
+const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4000/api/proxy/";
+
 export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources: IVideoSource[], children: React.ReactNode}, ref: React.ForwardedRef<ReactPlayer>) => {
 
     const currentVideoSource = useMemo(() => {
-        const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4000/api/proxy/";
+       
         let highestQuality: IVideoSource | undefined;
         
         for (const v of props.sources) {
@@ -26,19 +28,22 @@ export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources:
             const referer = highestQuality.referer;
             return {
                 ...highestQuality,
-                url: new URL(highestQuality.proxyRequired ? serverUrl + (highestQuality.referer ? 'referer/' + encodeURIComponent(referer as string) + "/" : "") + encodeURIComponent(highestQuality.url.toString()) : highestQuality.url.toString())
+                url: new URL(highestQuality.proxyRequired ? serverUrl + (highestQuality.referer ? 'referer/' + encodeURIComponent(referer as string) + "/" : "") + highestQuality.url.toString() : highestQuality.url.toString())
             } as IVideoSource;
         }
     }, [props.sources]);
 
-    
     return <ReactPlayer {...props} children={props.children} ref={ref} url={currentVideoSource?.url.toString()} style={{backgroundColor: 'black'}} controls={true} config={{ 
         file: { 
             attributes: {
-                crossOrigin: 'anonymous',
+                crossOrigin: 'anonymous'
             },
-            tracks: [...currentVideoSource?.subtitles != null ? currentVideoSource!.subtitles.map(v => ({kind: 'subtitles', label: v.lang, src: v.url.toString(), srcLang: v.lang})) : []],
-        },
+            hlsOptions: {
+                // pLoader: subtitlePloader,
+                subtitleDisplay: true
+            },
+            tracks: [...currentVideoSource?.subtitles != null ? currentVideoSource!.subtitles.map((v, i) => ({kind: 'subtitles', label: v.lang, src: serverUrl + v.url.toString(), srcLang: v.lang, default: i === 0})) : []],
+        }
     }}
     />
 });

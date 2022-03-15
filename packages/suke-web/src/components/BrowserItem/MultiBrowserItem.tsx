@@ -61,7 +61,7 @@ export function MultiBrowserItem({data, category, roomId, requestedBy, requested
             <img src={data.thumbnail_url!} className="m-0 max-w-128 max-h-32 w-auto h-auto object-cover" alt={`${data.name} thumbnail`}></img>
             <div className="inline-block text-white align-middle m-0 ml-2 py-2 flex-grow">
                 <h1 className="font-bold text-sm">{data.name?.toUpperCase()}</h1>
-                <h3 className="m-0 p-0 text-xs">{category}</h3>
+                {/* <h3 className="m-0 p-0 text-xs">{category}</h3> */}
                 {
                     requestedBy ? <h4 className="text-xs font-signika text-blue font-bold">REQUESTED BY: {requestedBy.join(", ")}</h4> : null
                 }

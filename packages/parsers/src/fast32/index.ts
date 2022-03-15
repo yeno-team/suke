@@ -6,7 +6,7 @@ import { Service } from "typedi";
 
 @Service()
 export class Fast32Parser implements IParser {
-    name = "Main";
+    name = "main 2";
     hostname = new URL("https://fast32.com");
 
     constructor (

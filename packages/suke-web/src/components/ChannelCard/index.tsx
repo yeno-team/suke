@@ -18,7 +18,8 @@ export interface ChannelCardProps {
 export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}: ChannelCardProps) => {
     const { categories } = useCategory();
 
-    const currentCategory = categories.find(v => v.value === category)?.label || category;
+    const foundCategory = categories.find(v => v.value === category);
+    const currentCategory = foundCategory?.label || category;
 
     return (
         <div className="font-sans inline-block my-1 mr-3 relative w-full md:w-5/12 max-w-300">
@@ -42,7 +43,9 @@ export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}
                         <div className="flex mt-1 ml-3 font-light">
                             <p className="align-top text-sm leading-none transform hover:text-gray cursor-pointer">{author.name}</p>
                             <Circle size={0.5} backgroundColor="lightgray" className="mt-1.5 mx-1.2"/>
-                            <p className="align-top text-sm text-lightgray leading-none hover:text-gray cursor-pointer">{currentCategory?.charAt(0).toUpperCase() + currentCategory!.slice(1)}</p>
+                            <Link to={"/categories/"+foundCategory?.value}>
+                                <p className="align-top text-sm text-lightgray leading-none hover:text-gray cursor-pointer">{currentCategory?.charAt(0).toUpperCase() + currentCategory!.slice(1)}</p>
+                            </Link>
                         </div>
                     </Link>
                 </div>
