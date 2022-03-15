@@ -12,11 +12,13 @@ import { VerifyEmailPage } from "../pages/VerifyEmail";
 import { TheaterPage } from "../pages/Theater";
 import { TheaterRoomPage } from "../pages/TheaterRoom";
 import { ScheduleAdminPage } from "../pages/ScheduleAdmin";
+import { SearchPage } from "../pages/Search";
 
 export const Routes = () => <RouterRoutes>
     <Route path="/" element={<HomePage />} />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
+    <Route path="/search/:searchTerm" element={<SearchPage />} />
     <Route path="/explore" element={<ExplorePage />} />
     <Route path="my/">
         <Route path="account" element={<RequireAuthPage component={<AccountPage/>}/>} />

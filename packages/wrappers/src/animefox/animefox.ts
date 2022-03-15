@@ -3,7 +3,6 @@ import { AxiosRequest } from "@suke/requests/src";
 import { IMultiData, ISearchData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
 import cheerio from "cheerio";
 import { ParserDataResponse } from "@suke/suke-core/src/entities/Parser";
-import { watch } from "fs";
 
 @Service()
 export class AnimeFoxWrapper {

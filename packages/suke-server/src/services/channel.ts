@@ -1,7 +1,7 @@
 import { UserModel } from "@suke/suke-core/src/entities/User";
 import { IUserChannel, UserChannel, UserChannelModel } from "@suke/suke-core/src/entities/UserChannel";
 import { Service } from "typedi";
-import { Like, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 
@@ -45,21 +45,15 @@ export class UserChannelService {
     }
 
     public async search(term: string, pageNumber=1, limit = 20, order: "ASC" | "DESC" = "DESC") {
-        return await this.userRepository.find({
-            relations: ["channel"],
-            skip: Math.max((pageNumber-1) * limit, 0),
-            take: limit,
-            where: [
-                {
-                    name: Like(`%${term}%`)
-                },
-                {
-                    channel: {
-                        desc: Like(`%${term}%`),
-                        desc_title: Like(`%${term}%`)
-                    }
-                }
-            ]
-        });
+        return await this.userRepository
+                .createQueryBuilder('user')
+                .select()
+                .leftJoinAndSelect('user.channel', 'channel')
+                .where('name ILIKE :searchTerm', {searchTerm: `%${term}%`})
+                .orWhere('channel.desc_title ILIKE :searchTerm', {searchTerm: `%${term}%`})
+                .orWhere('channel.desc ILIKE :searchTerm', {searchTerm: `%${term}%`})
+                .skip(Math.max((pageNumber-1) * limit, 0))
+                .take(limit)
+                .getMany();
     }
 }

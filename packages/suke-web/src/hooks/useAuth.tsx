@@ -56,6 +56,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                         id: 0,
                         followers: [],
                         desc: "",
+                        followerCount: 0,
                         desc_title: "",
                         roledUsers: []
                     }

@@ -84,6 +84,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                         channel: new UserChannel({
                             id: 0,
                             followers: [],
+                            followerCount: 0,
                             desc: "",
                             desc_title: "",
                             roledUsers: []

@@ -10,7 +10,6 @@ import './Chat.css';
 import { IReceivedMessage } from '@suke/suke-core/src/entities/ReceivedMessage';
 import { ISentMessage } from '@suke/suke-core/src/entities/SentMessage';
 import { Emoji } from '@suke/suke-web/src/components/Emoji';
-import { EmoteCounter } from '../EmoteCounter';
 
 export interface ChatProps {
     className?: string;

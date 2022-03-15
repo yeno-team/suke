@@ -31,7 +31,7 @@ export default class KickAssAnimeParser implements IParser {
         private wrapper : KickAssAnimeApiWrapper
     ){}
 
-    getData(url: URL): Promise<ParserDataResponse> {
+    getData(): Promise<ParserDataResponse> {
         throw new Error("Method not implemented.");
     }
     

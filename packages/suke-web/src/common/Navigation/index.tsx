@@ -20,6 +20,7 @@ export interface NavigationProps {
 export const Navigation = ({position, className}: NavigationProps): JSX.Element => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
     const [userDropdownActive, setUserDropdownActive] = useState(false);
+    const [searchVal, setSearchVal] = useState("");
     const { user } = useAuth();
     const navigate = useNavigate();
     const isLoggedIn = user != null && user.id !== 0;
@@ -32,6 +33,11 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
         }
 
         sendRequest();
+    }
+
+    const handleSearch = (e: any) => {
+        e.preventDefault();
+        navigate("/search/" + searchVal)
     }
 
     return (
@@ -74,9 +80,10 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                 </Link>
             </div>
 
-            <SearchBar size={screen.width < 1300 ? '40' : '128'} py="2" rounded className={classNames(
+            <SearchBar size={screen.width < 1300 ? '40' : '128'} py="2" value={searchVal} setValue={setSearchVal} onSubmit={handleSearch} rounded className={classNames(
                 'lg:hidden',
-                'ml-3'
+                'ml-3',
+                'text-coolblack'
             )} />
 
             <div className={classNames(
@@ -100,7 +107,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                         THEATER
                     </a>
                     <span className="nav-link mx-5">
-                        <SearchBar size={screen.width < 1300 ? '64' : '128'} py="2" rounded/>
+                        <SearchBar size={screen.width < 1300 ? '64' : '128'} py="2" rounded onSubmit={handleSearch} value={searchVal} setValue={setSearchVal} className="text-coolblack"/>
                     </span>
                 </div>
                 
