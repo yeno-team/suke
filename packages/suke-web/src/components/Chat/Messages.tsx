@@ -6,6 +6,7 @@ import { InlineIcon } from "@iconify/react";
 import { IReceivedMessage } from "@suke/suke-core/src/entities/ReceivedMessage";
 import { parseMessage } from "@suke/suke-web/src/util/parseMessage";
 import { Emoji } from "@suke/suke-core/src/types/Emoji";
+import AdminBadge from "@suke/suke-web/src/assets/icons/owner-tag.svg";
 
 export interface MessagesProps {
     className?: string;
@@ -87,6 +88,10 @@ export const Messages = ({messages , channelId , className , replyHandler , does
 
             return (
                 <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex flex-row items-center flex-wrap">
+                    {
+                        message.author.name.toLowerCase() === channelId?.toLowerCase() &&
+                        <img className="w-5 text-blue inline-block mr-1" src={AdminBadge} alt="users badge" />
+                    }
                     <StringColor className="mr-1 cursor-pointer" baseString={message.author.name} brightness={5} bold>{message.author.name}: </StringColor> 
                     <div className="whitespace-normal break-words ml-2 flex flex-row flex-wrap items-center">{parsedMessage}</div>
                     <Button className="group-hover:visible invisible absolute right-0 -top-3 rounded shadow-2xl" backgroundColor="darkgray" onClick={() => replyHandler(message.author.name)}>
