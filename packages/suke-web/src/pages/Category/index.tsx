@@ -2,7 +2,7 @@ import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime"
 import { getCategoryChannels } from "@suke/suke-web/src/api/category";
 import { ChannelCard } from "@suke/suke-web/src/components/ChannelCard";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation";
 
 type CategoryPageParams = {
@@ -59,7 +59,7 @@ export const CategoryPage = () => {
             <Navigation></Navigation>
             <div className="flex mt-12 mb-4 md:ml-20 font-sans">
                 <h1 className="text-white font-semibold text-2xl">
-                    <span className="inline-block font-black">
+                    <span className="inline-block font-black mr-2">
                         { categoryDisplayName }
                     </span> 
                     Channels
