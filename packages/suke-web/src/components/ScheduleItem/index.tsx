@@ -1,7 +1,7 @@
 import { ScheduleState, ITheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale"
 import classNames from "classnames"
-
+import React from "react";
 
 export interface ScheduleItemProps {
     item: ITheaterItemSchedule,

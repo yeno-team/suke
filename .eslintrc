@@ -4,13 +4,20 @@
       "semi": "error"
     },
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "react"
     ],
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended"
     ],
     "env": {
       "node": true

@@ -1,6 +1,8 @@
 {
   "name": "@suke/wrappers",
   "packageManager": "yarn@3.0.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@suke/requests": "workspace:packages/requests",
     "@suke/suke-core": "workspace:packages/suke-core",

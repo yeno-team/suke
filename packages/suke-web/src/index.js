@@ -1,6 +1,6 @@
-import 'reflect-metadata';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'reflect-metadata';
 import './index.css';
 import "animate.css";
 import App from './App';

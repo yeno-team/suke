@@ -1,3 +1,4 @@
+import React from "react";
 import { Emoji as EmojiType } from '@suke/suke-core/src/types/Emoji';
 import { Emoji } from '@suke/suke-web/src/components/Emoji';
 import classNames from 'classnames';

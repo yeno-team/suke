@@ -1,6 +1,8 @@
 {
   "name": "@suke/parsers",
   "packageManager": "yarn@3.0.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "private": true,
   "dependencies": {
     "@suke/requests": "workspace:packages/requests",

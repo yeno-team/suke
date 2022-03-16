@@ -3,7 +3,7 @@ import { FeaturedSlider } from "./FeaturedSlider"
 import { FeaturedTheaterItem, TheaterCategory, ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { TheaterNavBar } from "./TheaterNavBar";
 import { Schedule } from "./Schedule";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getTheaterItems } from "@suke/suke-web/src/api/theater";
 
 export const TheaterPage = () => {

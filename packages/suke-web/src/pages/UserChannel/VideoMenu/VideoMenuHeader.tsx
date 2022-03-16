@@ -35,7 +35,7 @@ export const VideoMenuHeader = ({viewerCount, handleOpenBrowser, isAuthenticated
                             }
                         </span>
                     </div>
-                    <p className="text-sm font-light text-gray leading-none">{ categories.find(v => v.value.toLowerCase() === category?.toLowerCase())?.label ?? "Unknown Category" }</p>
+                    <p className="text-sm font-light text-gray leading-none">{categories.find(v => v.value.toLowerCase() === category?.toLowerCase())?.label ?? "Unknown Category" }</p>
                 </div>
             </span>
             {

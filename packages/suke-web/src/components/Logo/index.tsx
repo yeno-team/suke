@@ -1,3 +1,4 @@
+import React from "react";
 import logo from '../../assets/logo-x2.png';
 import classNames from 'classnames';
 

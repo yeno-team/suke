@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { useCategory } from "../../hooks/useCategory";
 import { useChannel } from "../../hooks/useChannel"

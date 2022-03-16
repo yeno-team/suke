@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom"
 import { Circle } from "../Circle"
 import { ImageCircle } from "../ImageCircle"
@@ -18,7 +19,7 @@ export interface ChannelCardProps {
 export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}: ChannelCardProps) => {
     const { categories } = useCategory();
 
-    const foundCategory = categories.find(v => v.value === category);
+    const foundCategory = categories && categories.find(v => v.value === category);
     const currentCategory = foundCategory?.label || category;
 
     return (
@@ -38,16 +39,17 @@ export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}
                     <ImageCircle src={author.pictureUrl} alt={"profile picture of user " + author.name} className="p-1 transform hover:scale-95 cursor-pointer"></ImageCircle>
                 </Link>
                 <div className="text-white">
-                    <Link to={"/" + author.name}>
-                        <h4 className="font-semibold ml-3 mt-1 leading-none transform hover:text-gray cursor-pointer">{title}</h4>
+                    <h4 className="font-semibold ml-3 mt-1 leading-none transform hover:text-gray cursor-pointer">{title}</h4>
                         <div className="flex mt-1 ml-3 font-light">
-                            <p className="align-top text-sm leading-none transform hover:text-gray cursor-pointer">{author.name}</p>
+                            <Link to={"/" + author.name}>
+                                <p className="align-top text-sm leading-none transform hover:text-gray cursor-pointer">{author.name}</p>
+                            </Link>
                             <Circle size={0.5} backgroundColor="lightgray" className="mt-1.5 mx-1.2"/>
                             <Link to={"/categories/"+foundCategory?.value}>
                                 <p className="align-top text-sm text-lightgray leading-none hover:text-gray cursor-pointer">{currentCategory?.charAt(0).toUpperCase() + currentCategory!.slice(1)}</p>
                             </Link>
                         </div>
-                    </Link>
+                    
                 </div>
             </div>
         </div>

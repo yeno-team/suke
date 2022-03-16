@@ -1,4 +1,4 @@
-
+import React from "react";
 
 export interface CategoryCardProps {
     name: string;

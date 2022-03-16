@@ -1,5 +1,5 @@
 import classNames from "classnames"
-
+import React from "react";
 export interface HeroImageProps {
     imageUrl: string;
     className?: string;

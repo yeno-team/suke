@@ -5,7 +5,7 @@ import { useChannel } from "../../hooks/useChannel";
 import { Button } from "../Button";
 import { Request } from "@suke/suke-core/src/entities/Request";
 import { getDataSource, getUrlSources } from "../../api/source";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ParserDataResponse } from "@suke/suke-core/src/entities/Parser";
 import { MultiBrowserItem } from "./MultiBrowserItem";
 

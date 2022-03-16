@@ -2,7 +2,7 @@ import { ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem"
 import { ScheduleState, ITheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
 import { Button } from "../../components/Button";
 import classNames from "classnames";
-import { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import { ScheduleItem } from "../ScheduleItem";
 import { useNavigate } from "react-router-dom";

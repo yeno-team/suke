@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"module": "es6",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"target": "es6",
+		"composite": true
+	},
+	"exclude": ["**/*.test.ts", "**/lib"]
+}

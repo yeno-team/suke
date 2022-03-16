@@ -1,3 +1,4 @@
+import React from "react";
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
 import classNames from "classnames";
 import { Chat } from "../../components/Chat";

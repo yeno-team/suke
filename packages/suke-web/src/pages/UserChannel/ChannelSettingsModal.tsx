@@ -1,5 +1,6 @@
 import { ChannelSettings } from "../../components/ChannelSettings";
 import { Modal } from "../../components/Modal"
+import React from "react";
 
 export interface ChannelSettingsModalProps {
     active: boolean;

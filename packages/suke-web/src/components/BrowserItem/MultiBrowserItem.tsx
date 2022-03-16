@@ -1,6 +1,6 @@
 import { IMultiStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
 import classNames from "classnames";
-import { Key, useEffect, useMemo, useState } from "react";
+import React, { Key, useEffect, useMemo, useState } from "react";
 import { MultiBrowserItemProps, MultiBrowserStandaloneItemProps } from ".";
 import useAuth from "../../hooks/useAuth";
 import { useChannel } from "../../hooks/useChannel";

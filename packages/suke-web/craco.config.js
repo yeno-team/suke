@@ -37,7 +37,13 @@ module.exports = {
               }
             }
 
-            webpackConfig.externals = ['aws-sdk', 'mock-aws-s3', 'nock', 'npm', 'react-native-sqlite-storage'];
+            webpackConfig.externals = {
+              'aws-sdk': 'aws-sdk', 
+              'mock-aws-s3': 'mock-aws-s3', 
+              'nock': 'nock', 
+              'npm': 'npm', 
+              'react-native-sqlite-storage': 'react-native-sqlite-storage'
+            };
 
 
             return webpackConfig;

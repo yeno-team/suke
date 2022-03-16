@@ -1,3 +1,4 @@
+import React from "react";
 import useAuth from "@suke/suke-web/src/hooks/useAuth";
 import { useScreenSize } from "@suke/suke-web/src/hooks/useScreenSize";
 import { useTheaterRoom } from "@suke/suke-web/src/hooks/useTheaterRoom";

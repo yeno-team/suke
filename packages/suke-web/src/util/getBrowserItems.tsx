@@ -1,3 +1,4 @@
+import React from "react";
 import { IMultiData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult";
 import { BrowserItem, MultiBrowserItem } from "../components/BrowserItem";
 

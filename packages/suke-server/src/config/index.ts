@@ -30,7 +30,7 @@ RedisClient.connect().then(() => {
 RedisPubClient.connect().then(() => console.log("Connected to Pub redis instance.")).catch(err => console.error(err));
 
 const config: IConfiguration = {
-    "node_env" : getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",
+    node_env: getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",
     "production_url" : getEnvironmentVariable("PRODUCTION_URL" , true),
     server: {
         host: getEnvironmentVariable("HOST", false, "0.0.0.0") as string,

@@ -1,7 +1,7 @@
 import { ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
 import { TheaterItemComponent } from "@suke/suke-web/src/components/TheaterItemComponent";
 import classNames from "classnames";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
 
 export interface SectionSlidersProps {

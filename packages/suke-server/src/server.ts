@@ -8,7 +8,7 @@ import { SocketServer } from "@suke/suke-socket-server/src/server";
 import session from 'express-session';
 import http from 'http';
 import { IUser, UserModel } from "@suke/suke-core/src/entities/User";
-import { RedisClient } from "./config";
+import config, { RedisClient } from "./config";
 import { setGlobalRateLimiter } from "./middlewares/setGlobalRateLimiter";
 import { RateLimiterOpts } from "@suke/suke-core/src/entities/RateLimiterOpts";
 import handlers from "@suke/suke-socket-server/src/handlers";
@@ -16,6 +16,9 @@ import { TypeormStore } from 'connect-typeorm';
 import { getRepository } from "typeorm";
 import { SessionModel } from '@suke/suke-core/src/entities/Session';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import compression from 'compression';
+import helmet from 'helmet';
+import path from 'path';
 interface ExpressLocals {
     user?: UserModel;
     limiters? : Array<RateLimiterOpts>
@@ -65,6 +68,8 @@ export class Server {
 
 
     public start(): void {
+        this.app.use(compression());
+        this.app.use(helmet());
         this.app.use(cors({origin: "*"}));
 
         this.app.use('/api/proxy/referer/:referer/:url(*)', createProxyMiddleware({
@@ -90,6 +95,13 @@ export class Server {
         // create socket handlers
         for (const createHandler of handlers) {
             createHandler(this.socketServer)();
+        }
+
+        if (process.env.NODE_ENV == 'production') {
+            console.log("Serving production build of suke-web");
+            this.app.get('*', (req, res) => {
+                res.sendFile(path.resolve(__dirname, '../../../suke-web/build', 'index.html'));
+            });
         }
 
         // Listening from the socket server will listen on the httpServer that is shared from express.

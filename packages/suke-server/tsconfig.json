@@ -8,10 +8,7 @@
 		"outDir": "dist",
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-        "lib": ["es2019", "DOM","DOM.Iterable"],
-		"paths": {
-			"cors-anywhere": ["./cors-anywhere.d.ts"]
-		}
+        "lib": ["ESNext", "DOM","DOM.Iterable"]
 	},
 	"references": [{
 			"path": "../suke-util"

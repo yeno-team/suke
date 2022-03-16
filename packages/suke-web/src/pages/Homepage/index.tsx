@@ -1,3 +1,4 @@
+import React, { useEffect, useMemo, useState } from "react";
 import { Navigation } from "../../common/Navigation"
 import { HeroImage } from "../../components/HeroImage"
 import HeroImageFile from "../../assets/hero.png";
@@ -6,7 +7,6 @@ import { ChannelCard } from "../../components/ChannelCard";
 import { TheaterCard } from "../../components/TheaterCard";
 import { CategoryCard } from "../../components/CategoryCard";
 import { useCategory } from "../../hooks/useCategory";
-import React, { useEffect, useMemo, useState } from "react";
 import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
 import { getRealtimeChannels } from "@suke/suke-web/src/api/realtime";
 import numeral from "numeral";

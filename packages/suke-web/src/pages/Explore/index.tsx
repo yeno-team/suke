@@ -1,3 +1,4 @@
+import React from "react";
 import { CategoryCard } from "@suke/suke-web/src/components/CategoryCard";
 import { useCategory } from "@suke/suke-web/src/hooks/useCategory";
 import numeral from "numeral";

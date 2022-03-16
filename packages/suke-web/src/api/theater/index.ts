@@ -1,5 +1,5 @@
 import { ITheaterItem } from "@suke/suke-core/src/entities/TheaterItem";
-import { ITheaterItemSchedule } from "packages/suke-core/src/entities/TheaterItemSchedule";
+import { ITheaterItemSchedule } from "@suke/suke-core/src/entities/TheaterItemSchedule";
 import { parseFetchResponse } from "../parseFetchResponse"
 import { postWithJsonData, requestWithJsonData } from "../request";
 

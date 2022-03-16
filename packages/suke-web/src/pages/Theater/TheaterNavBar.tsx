@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { TheaterCategory } from "@suke/suke-core/src/entities/TheaterItem";
 import classNames from "classnames";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export interface TheaterNavBarProps {
     searchInput: string,

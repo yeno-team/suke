@@ -2,7 +2,7 @@ import { TheaterCategory, ITheaterItem } from "@suke/suke-core/src/entities/Thea
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale"
 import { getScheduleDayNames } from "@suke/suke-web/src/util/getScheduleDayNames";
 import classNames from "classnames";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
 import { SectionSliders } from "./SectionSliders";
 

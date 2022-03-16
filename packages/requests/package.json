@@ -1,7 +1,10 @@
 {
   "name": "@suke/requests",
   "packageManager": "yarn@3.0.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
+    "@types/tough-cookie": "^4.0.1",
     "axios": "^0.22.0",
     "axios-cookiejar-support": "^2.0.3",
     "tough-cookie": "^4.0.0"

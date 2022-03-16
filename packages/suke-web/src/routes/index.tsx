@@ -1,3 +1,4 @@
+import React from "react";
 import { Route, Routes as RouterRoutes} from "react-router-dom";
 import { CategoryPage } from "../pages/Category";
 import { ChatEmbed } from "../pages/Embeds/Chat";
