@@ -87,7 +87,6 @@ export const HomePage = () => {
                         categories.map(v => <CategoryCard key={v.id} onClick={() => navigate('/categories/' + v.value)} name={v.label} viewerCount={numeral(v.viewerCount).format("0.[0]a")} imageUrl={v.thumbnail_url}></CategoryCard>) :
                         <h1 className="text-gray font-semibold">Fetching categories...</h1>
                     }
-                    
                 </div>
             </div>
 

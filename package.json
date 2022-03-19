@@ -1,6 +1,6 @@
 {
   "name": "suke",
-  "packageManager": "yarn@3.1.1",
+  "packageManager": "yarn@3.2.0",
   "private": true,
   "scripts": {
     "prepack": "yarn workspaces foreach run yarn clean && yarn compile",
@@ -12,7 +12,8 @@
     "prettier": "yarn workspaces foreach run prettier --config .prettierrc 'src/**/*.ts' --write",
     "clean": "yarn workspaces foreach run clean",
     "test": "jest && yarn test:web",
-    "test:web": "yarn workspace @suke/suke-web test"
+    "test:web": "yarn workspace @suke/suke-web test",
+    "fix-ts-refs": "utils-typescript-references"
   },
   "workspaces": [
     "packages/*"
@@ -22,6 +23,7 @@
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
+    "@goldstack/utils-typescript-references": "^0.1.8",
     "@testing-library/jest-dom": "^5.14.1",
     "@types/eslint": "^7",
     "@types/jest": "^27.0.2",
@@ -31,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "^5.12.0",
     "@yarnpkg/pnpify": "^3.0.1-rc.5",
+    "@zerollup/ts-transform-paths": "^1.7.18",
     "autoprefixer": "^10.4.2",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^7.0.0",
@@ -45,10 +48,14 @@
     "react-error-overlay": "6.0.9",
     "tailwindcss": "latest",
     "ts-jest": "^27.0.5",
-    "typescript": "4.4.4"
+    "tsconfig-paths": "^3.14.0",
+    "tscpaths": "^0.0.9",
+    "ttypescript": "^1.5.13",
+    "typescript": "^4.6.2"
   },
   "dependencies": {
     "@ffprobe-installer/ffprobe": "^1.4.1",
+    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
     "@types/bcryptjs": "^2.4.2",
     "@types/node": "^17.0.18",
     "@types/react-notifications-component": "^3.1.1",

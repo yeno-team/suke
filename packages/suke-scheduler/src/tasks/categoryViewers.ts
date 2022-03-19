@@ -1,5 +1,5 @@
 import { CategoryModel } from "@suke/suke-core/src/entities/Category";
-import { RedisClientType } from "@suke/suke-server/src/config";
+import { RedisClient, RedisClientType } from "@suke/suke-server/src/config";
 import Container from "typedi";
 import { getRepository, Repository } from "typeorm";
 import { ScheduledTask } from "../ScheduledTask";
@@ -7,8 +7,8 @@ import { ScheduledTask } from "../ScheduledTask";
 
 export class CategoryViewerTask implements ScheduledTask {
     intervalTime = 10000;
-    private redisClient: RedisClientType;
-    private categoryRepository: Repository<CategoryModel>;
+    private redisClient!: RedisClient;
+    private categoryRepository!: Repository<CategoryModel>;
 
     async execute(): Promise<void> {
         this.redisClient = Container.get<RedisClientType>('redis');

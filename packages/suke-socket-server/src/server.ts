@@ -18,7 +18,7 @@ import { Name } from '@suke/suke-core/src/entities/Name/Name';
 export interface SocketServerEvents {
     error: (error: Error) => void,
     clientError: (error: Error, ws: WebSocket) => void,
-    message: (json: SocketMessage, ws: WebSocket, user?: User) => void
+    message: (json: SocketMessage, ws: WebSocketConnection, user?: User) => void
 }
 
 export type UserDataWithWebSocket = {
@@ -119,7 +119,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
             try {
                 ws.id = uuid();
                 ws.isAlive = true;
-                ws.remoteAddress = req.socket.remoteAddress;
+                ws.remoteAddress = req.socket.remoteAddress || "";
                 const user = new User(req.session.user);
 
                 console.log(user.name + " Connected!");
@@ -217,7 +217,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
 
     public createRoomManager(key: string): RoomManager {
         const updated = this.roomManagers.set(key, new RoomManager(key+"_", this));
-        return updated.get(key);
+        return updated.get(key)!;
     }
 
     public getCategoryManager(): CategoryManager {

@@ -17,16 +17,16 @@ export const createTheaterRoomHandler: Handler = (server: SocketServer) => (): v
         const scheduleTheaterItemRepo = getRepository(TheaterItemScheduleModel);
         const sendUpdateMessage = async (roomId: string) => {
             const updatedRoom = await roomManager.getRoom(roomId);
-            const roomConnectionsNoDuplicates = {};
+            const roomConnectionsNoDuplicates: any = {};
 
             for (const id of updatedRoom) {
-                roomConnectionsNoDuplicates[server.getConnection(id)?.remoteAddress] = id;
+                roomConnectionsNoDuplicates[server.getConnection(id)?.remoteAddress!] = id;
             }
             
             const updated = await theaterManager.editRoom(roomId, {viewerCount: Math.max(Object.keys(roomConnectionsNoDuplicates).length - 1, 0)});
             
             if (updated != null) {
-                const schedule = await scheduleTheaterItemRepo.find({where: {id: roomId}, relations: ["item"]});
+                const schedule: TheaterItemScheduleModel[] = await scheduleTheaterItemRepo.find({where: {id: roomId}, relations: ["item"]});
                 if (schedule.length > 0) {
                     await theaterItemRepo.update(schedule[0].item.id, {viewerCount: updated.viewerCount});
                 }

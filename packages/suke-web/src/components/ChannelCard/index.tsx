@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom"
 import { Circle } from "../Circle"
 import { ImageCircle } from "../ImageCircle"
@@ -19,7 +19,7 @@ export interface ChannelCardProps {
 export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}: ChannelCardProps) => {
     const { categories } = useCategory();
 
-    const foundCategory = categories && categories.find(v => v.value === category);
+    const foundCategory = useMemo(() => categories.find(v => v.value === category), [categories, category]);
     const currentCategory = foundCategory?.label || category;
 
     return (

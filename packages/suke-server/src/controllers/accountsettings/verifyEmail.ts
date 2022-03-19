@@ -24,7 +24,7 @@ export class VerifyEmailController extends BaseController {
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
         const { token : tokenAsJWT } = req.body;
-        const user = res.locals.user;
+        const user = res.locals.user!;
 
         if(!(tokenAsJWT)) {
             res.status(400).json({ message : "Token field is missing."});

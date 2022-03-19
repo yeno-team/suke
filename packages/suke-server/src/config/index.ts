@@ -1,16 +1,18 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { IConfiguration } from './Configuration';
-import { getEnvironmentVariable } from "@suke/suke-util";
-import { createClient } from 'redis';
+import { getEnvironmentVariable } from "@suke/suke-util/src";
+import redis, { createClient } from 'redis';
 import Redis from 'ioredis';
 dotenv.config({
     path: path.resolve(__dirname, "../../server.conf")
 });
 
+export type RedisClient = ReturnType<typeof createClient>
+
 const redisUrl = getEnvironmentVariable("REDIS_CONNECTION_URI", true) as string;
-export const RedisClient = createClient({ url: redisUrl});
-export const RedisPubClient = createClient({ url: redisUrl});
+export const RedisClient: RedisClient = createClient({ url: redisUrl});
+export const RedisPubClient: RedisClient = createClient({ url: redisUrl});
 export const TempRedisClientForRateLimiter = new Redis(redisUrl);
 export type RedisClientType  = typeof RedisClient;
 
@@ -31,7 +33,7 @@ RedisPubClient.connect().then(() => console.log("Connected to Pub redis instance
 
 const config: IConfiguration = {
     node_env: getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",
-    "production_url" : getEnvironmentVariable("PRODUCTION_URL" , true),
+    "production_url" : getEnvironmentVariable("PRODUCTION_URL" , true) as string,
     server: {
         host: getEnvironmentVariable("HOST", false, "0.0.0.0") as string,
         port: parseInt(getEnvironmentVariable("PORT", false, "3000") as string)
@@ -53,7 +55,7 @@ const config: IConfiguration = {
     },
     email : {
         host : getEnvironmentVariable("SMTP_HOST" , true) as string,
-        port : parseInt(getEnvironmentVariable("SMTP_PORT" , true)) as number,
+        port : parseInt(getEnvironmentVariable("SMTP_PORT" , true) as string) as number,
         username : getEnvironmentVariable("SMTP_USERNAME",true) as string,
         password : getEnvironmentVariable("SMTP_PASSWORD" , true) as string,
         jwtSecret : getEnvironmentVariable("EMAIL_JWT_SECRET" , true) as string

@@ -16,7 +16,8 @@
     "tough-cookie": "^4.0.0"
   },
   "scripts": {
-    "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "clean": "rimraf ./node_modules && rimraf ./dist && rimraf ./build"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.0"

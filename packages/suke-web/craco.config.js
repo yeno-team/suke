@@ -45,7 +45,6 @@ module.exports = {
               'react-native-sqlite-storage': 'react-native-sqlite-storage'
             };
 
-
             return webpackConfig;
         },
       },

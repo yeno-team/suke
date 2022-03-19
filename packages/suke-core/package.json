@@ -4,9 +4,6 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "exports": {
-    ".": "./dist"
-  },
   "files": [
     "dist"
   ],
@@ -14,7 +11,7 @@
   "scripts": {
     "build": "tsc -b",
     "start": "node dist/index.js",
-    "clean": "rm -rf ./dist && rm tsconfig.tsbuildinfo"
+    "clean": "rimraf ./node_modules && rimraf ./dist && rimraf ./build"
   },
   "dependencies": {
     "@suke/suke-util": "workspace:packages/suke-util",

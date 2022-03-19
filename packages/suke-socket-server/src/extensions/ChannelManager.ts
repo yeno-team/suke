@@ -24,12 +24,12 @@ export class ChannelManager {
         this.userRepository = getRepository(UserModel);
     }
 
-    public async getChannel(channelId: string, createIfNotExist = true): Promise<RealtimeRoomData> {
+    public async getChannel(channelId: string, createIfNotExist = true): Promise<RealtimeRoomData | undefined> {
         const key = this.getRedisKey(channelId);
 
         const foundUser = await this.userRepository.findOne({where: {name: channelId.toLowerCase()}});
         if (foundUser == null) {
-            return;
+            return foundUser;
         }
 
         const val = await this.redisClient.get(key);
@@ -65,10 +65,10 @@ export class ChannelManager {
             await this.redisClient.ZADD("channel_viewers", [{score: 0, value: key}]);
             return defaultValue;
         } 
-        return JSON.parse(val);
+        return typeof(val) == 'string' ? JSON.parse(val) : undefined;
     }
     
-    public async editRealtimeChannel(channelId: string, editedData: Partial<RealtimeRoomData>): Promise<RealtimeRoomData> {
+    public async editRealtimeChannel(channelId: string, editedData: Partial<RealtimeRoomData>): Promise<RealtimeRoomData | undefined> {
         const key = this.getRedisKey(channelId);
         const channel = await this.getChannel(channelId);
         
@@ -95,7 +95,7 @@ export class ChannelManager {
 
         if (editedData.private === false) {
             await this.redisClient.ZREM("channel_viewers", key);
-            await this.redisClient.ZADD("channel_viewers", [{value: key, score: editedData.viewerCount}]);
+            await this.redisClient.ZADD("channel_viewers", [{value: key, score: editedData.viewerCount!}]);
         }
 
         const updatedData: RealtimeRoomData = {

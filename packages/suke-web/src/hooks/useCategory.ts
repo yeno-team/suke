@@ -41,7 +41,7 @@ export const useCategory = () => {
         async function getInitCategories() {
             try {
                 const fetchedCategories = await getCategories(1, 20, sortDirection);
-                setCategories(fetchedCategories);
+                setCategories([...fetchedCategories]);
             } catch (e) {
                 setErrors(prevError => [...prevError, e as Error]);
             } finally {

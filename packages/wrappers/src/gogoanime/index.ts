@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Service } from "typedi";
 import * as cheerio from "cheerio";
 import { AxiosRequest } from "@suke/requests/src";

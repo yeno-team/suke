@@ -35,7 +35,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         data: msg.data
                     }), msg.data.roomId, roomManager);
                 } catch (e) {
-                    server.emit('error', e);
+                    server.emit('error', new Error(e as string));
                 }
                 break;
             case 'CHANNEL_REQUEST_REMOVE':
@@ -59,7 +59,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         data: msg.data
                     }), msg.data.roomId, roomManager);
                 } catch (e) {
-                    server.emit('error', e);
+                    server.emit('error', new Error(e as string));
                 }
                 break;
             case 'CHANNEL_REQUESTS_GET':
@@ -77,16 +77,16 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         type: 'CHANNEL_UPDATE',
                         data: {
                             ...channel,
-                            password: "*".repeat(channel.password.length)
+                            password: "*".repeat(channel!.password.length)
                         }
                     })));
                 } catch (e) {
-                    server.emit('error', e);
+                    server.emit('error', new Error(e as string));
                 }
                 break;
             case 'CHANNEL_UPDATE':
                 try {
-                    if (!user.Name().Equals(new Name(msg.data.channelId.toLowerCase()))) {
+                    if (!user || !user.Name().Equals(new Name(msg.data.channelId!.toLowerCase()))) {
                         return server.emit('clientError', new Error("You do not have permission to edit channel data."), ws);
                     }   
 
@@ -94,7 +94,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         return server.emit('clientError', new Error("Title should be smaller than 35 characters."), ws); 
                     }
 
-                    const updated = await channelManager.editRealtimeChannel(msg.data.channelId, msg.data);
+                    const updated = await channelManager.editRealtimeChannel(msg.data.channelId!, msg.data);
                     
                     if (updated != null) {
                         broadcaster.broadcastToRoom(new SocketMessage({
@@ -103,7 +103,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                                 ...updated,
                                 password: "*".repeat(updated.password.length)
                             }
-                        }), msg.data.channelId, roomManager);
+                        }), msg.data.channelId!, roomManager);
                     } else {
                         ws.send(JSON.stringify(new SocketMessage({
                             type: 'SERVER_ERROR',
@@ -111,7 +111,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         })));
                     }
                 } catch (e) {
-                    server.emit('clientError', e, ws);
+                    server.emit('clientError', new Error(e as string), ws);
                 }
                 break;
             case 'CHANNEL_GET':
@@ -127,7 +127,7 @@ export const createChannelHandler: Handler = (server: SocketServer) => (): void 
                         })));
                     }
                 } catch (e) {
-                    server.emit('clientError', e, ws);
+                    server.emit('clientError', new Error(e as string), ws);
                 }
                 break;
         }

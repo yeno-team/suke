@@ -13,7 +13,8 @@
     "hjson": "^3.2.2"
   },
   "scripts": {
-    "start": "ts-node ./src/test"
+    "start": "ts-node ./src/test",
+    "clean": "rimraf ./node_modules && rimraf ./dist && rimraf ./build"
   },
   "devDependencies": {
     "@types/hjson": "^2.4.3"

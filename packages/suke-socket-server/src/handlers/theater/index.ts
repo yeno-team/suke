@@ -22,7 +22,7 @@ export const createTheaterHandler: Handler = (server: SocketServer) => (): void 
                     data: roomData
                 }), roomData.id);
             } catch (e) { 
-                server.emit('error', e);
+                server.emit('error', new Error(e as string));
             }
         };
 
@@ -39,11 +39,11 @@ export const createTheaterHandler: Handler = (server: SocketServer) => (): void 
                     ws.send(JSON.stringify(new SocketMessage({
                         type: 'THEATER_ROOM_UPDATE',
                         data: {
-                            ...theaterData
+                            ...theaterData!
                         }
                     })));
                 } catch (e) {
-                    server.emit('error', e);
+                    server.emit('error', new Error(e as string));
                 }
         }  
     });

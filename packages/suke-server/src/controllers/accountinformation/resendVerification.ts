@@ -24,7 +24,7 @@ export class ResendVerificationController extends BaseController {
     }
 
     public Post = async(req : Request , res : Response) : Promise<void> => {
-        const user = res.locals.user;
+        const user = res.locals.user!;
 
         if(user.isVerified) {
             res.status(400).json({ 

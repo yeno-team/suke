@@ -10,7 +10,7 @@ export interface FindGlobalEmojiOpts {
 @Service()
 export class GlobalEmojiCacheService {
     @Inject("redis")
-    private redisClient : RedisClientType;
+    private redisClient!: RedisClientType;
 
     public async getGlobalEmojiCache() : Promise<Array<Emoji> | null> {
         const globalEmojisCache = await this.redisClient.get('GlobalEmojiCache');
@@ -28,6 +28,8 @@ export class GlobalEmojiCacheService {
 
     private async binary_search(id : string) : Promise<Emoji | null> {
         const globalEmojiCache = await this.getGlobalEmojiCache();
+
+        if (globalEmojiCache == null) throw new Error("Unknown Error Occured while grabing emoji cache.");
 
         let startIndex = 0;
         let stopIndex = globalEmojiCache.length;

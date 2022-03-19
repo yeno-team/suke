@@ -1,24 +1,24 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "outDir": "dist",
-        "rootDir": "src",
-        "composite": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
-    },
-    "references": [
-        {
-          "path": [
-            "../suke-util"
-          ]
-        }
-    ],
-    "include": [
-        "src/"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ]
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "baseUrl": "./",
+    "rootDir": "src",
+    "composite": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true
+  },
+  "references": [
+    {
+      "path": "../suke-util"
+    }
+  ],
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

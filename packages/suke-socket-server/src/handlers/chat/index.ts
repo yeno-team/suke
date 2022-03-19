@@ -26,7 +26,7 @@ const createChatMessageHandler: Handler = (server: SocketServer, roomManagerKey:
             if (channel != null && channel.followerOnlyChat) {
                 const owner = await userRepository.findOne({where: {name: message.data.channelId}, relations: ['channel', 'channel.followers', 'channel.followers.follower']});
 
-                if (owner != null && owner.id != user.id && owner.channel.followers.find(v => v.follower.id === user.id) == null) {
+                if (owner != null && owner.id != user!.id && owner.channel.followers.find(v => v.follower.id === user!.id) == null) {
                     return server.emit('clientError', new Error("The chat is on follower only mode! Follow if you want to chat!"), ws);
                 }
             }

@@ -2,8 +2,8 @@ import nodemailer , { SendMailOptions , TestAccount, Transporter } from "nodemai
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 export class NodeMailerService {
-    public transporter : nodemailer.Transporter<unknown> | null;
-    public testAccount : TestAccount | null;
+    public transporter! : nodemailer.Transporter<unknown> | null;
+    public testAccount! : TestAccount | null;
 
     public async setTestAccount() : Promise<TestAccount> {
         this.testAccount = await nodemailer.createTestAccount();

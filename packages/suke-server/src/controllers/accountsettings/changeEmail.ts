@@ -28,6 +28,13 @@ export class ChangeEmailController extends BaseController {
         const user = res.locals.user;
         const { email , password } = req.body;
 
+        if (user == null) {
+            res.status(401).json({
+                message : "Unauthorized."
+            });
+            return;
+        }
+
         if(!(password)) {
             res.status(400).json({
                 message : "Password field is missing."
@@ -87,11 +94,11 @@ export class ChangeEmailController extends BaseController {
         this.emailUtilService.sendReverifyEmailAddress({
             tokenAsJWT : verificationTokenAsJWT,
             email : newEmail,
-            username : new Name(req.session.user.name),
+            username : new Name(user.name),
         });
 
         this.emailUtilService.sendEmailChangeToNewEmail({
-            username : new Name(req.session.user.name),
+            username : new Name(user.name),
             oldEmail : new Email(user.email.previousEmail),
             newEmail
         });

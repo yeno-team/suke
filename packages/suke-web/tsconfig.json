@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.react.build.json",
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
@@ -11,7 +11,6 @@
     "allowJs": true,
     "skipLibCheck": true,
     "declaration": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "composite": true,
@@ -28,13 +27,15 @@
   },
   "references": [
     {
-      "path": "../suke-util"
+      "path": "../suke-core"
     },
     {
-      "path": "../suke-core"
+      "path": "../suke-util"
     }
   ],
   "include": [
-    "src"
+    "src",
+    "../suke-core",
+    "../suke-util"
   ]
 }

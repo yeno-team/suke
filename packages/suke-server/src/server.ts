@@ -1,4 +1,4 @@
-import express, { RequestHandler } from "express";
+import express, { Request, RequestHandler } from "express";
 import { IConfiguration } from "./config/Configuration";
 import cors from 'cors';
 import { ErrorHandler } from "./middlewares/errorHandler";
@@ -19,6 +19,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import compression from 'compression';
 import helmet from 'helmet';
 import path from 'path';
+
 interface ExpressLocals {
     user?: UserModel;
     limiters? : Array<RateLimiterOpts>
@@ -69,9 +70,10 @@ export class Server {
 
     public start(): void {
         this.app.use(compression());
-        this.app.use(helmet());
+        this.app.use(helmet({
+            contentSecurityPolicy: false
+          }));
         this.app.use(cors({origin: "*"}));
-
         this.app.use('/api/proxy/referer/:referer/:url(*)', createProxyMiddleware({
             router: this.proxyRouterFunction,
             pathRewrite: (p, req) => new URL(decodeURIComponent(req.params.url)).pathname,
@@ -89,26 +91,27 @@ export class Server {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(this.sessionParser);
         this.app.use(setGlobalRateLimiter());
+
         this.setupControllers();
-        this.app.use(ErrorHandler);
-        
+        if (process.env.NODE_ENV == 'production') {
+            console.log("---===[[ Serving production build of suke-web ]]===---");
+            this.app.use(express.static(path.join(__dirname, '../../../packages/suke-web/build')));
+            this.app.get('*', (req, res) => {
+                res.sendFile(path.join(__dirname, '../../../packages/suke-web/build', 'index.html'));
+            });
+        }
+   
         // create socket handlers
         for (const createHandler of handlers) {
             createHandler(this.socketServer)();
         }
 
-        if (process.env.NODE_ENV == 'production') {
-            console.log("Serving production build of suke-web");
-            this.app.get('*', (req, res) => {
-                res.sendFile(path.resolve(__dirname, '../../../suke-web/build', 'index.html'));
-            });
-        }
-
+        this.app.use(ErrorHandler);
         // Listening from the socket server will listen on the httpServer that is shared from express.
         this.socketServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));
     }
 
-    private proxyRouterFunction(req) {
+    private proxyRouterFunction(req: Request) {
         const mainUrl = new URL(req.protocol + '://' + req.get('host') + req.originalUrl);
         const proxyUrl = new URL(decodeURIComponent(req.params.url));
         return proxyUrl.toString() + mainUrl.search;

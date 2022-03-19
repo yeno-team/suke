@@ -1,20 +1,52 @@
 {
-	"compilerOptions": {
-		"jsx": "react",
-		"baseUrl": ".",
-		"declaration": true,
-		"declarationMap": true,
-		"sourceMap": true,
-		"strict": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"target": "es2015",
-		"emitDecoratorMetadata": true,
-		"resolveJsonModule": true,
-		"experimentalDecorators": true,
-		"composite": true
-	},
-	"exclude": ["**/dist", "dist"]
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": "./",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "composite": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*", "dist"],
+  "references": [
+    {
+      "path": "packages/parsers",
+      "name": "@suke/parsers"
+    },
+    {
+      "path": "packages/requests",
+      "name": "@suke/requests"
+    },
+    {
+      "path": "packages/suke-core",
+      "name": "@suke/suke-core"
+    },
+    {
+      "path": "packages/suke-scheduler",
+      "name": "@suke/suke-scheduler"
+    },
+    {
+      "path": "packages/suke-socket-server",
+      "name": "@suke/suke-socket-server"
+    },
+    {
+      "path": "packages/suke-util",
+      "name": "@suke/suke-util"
+    },
+    {
+      "path": "packages/wrappers",
+      "name": "@suke/wrappers"
+    }
+  ]
 }

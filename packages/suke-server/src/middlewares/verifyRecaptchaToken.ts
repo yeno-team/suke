@@ -13,6 +13,12 @@ export const verifyRecaptchaToken = () : RequestHandler => catchErrorAsync(async
         ipAddress : req.ip
     });
 
+    if (resp == null) {
+        return res.status(400).send({
+            "error": true
+        });
+    }
+
     if(!(resp.success)) {
         return res.status(400).json({
             success : false,
@@ -20,7 +26,7 @@ export const verifyRecaptchaToken = () : RequestHandler => catchErrorAsync(async
         });
     }
 
-    if(resp.score < 0.8) {
+    if(resp.score! < 0.8) {
         return res.status(400).json({
             success : false,
             message : "Client interactions poses high risk and might be fradulent. Please try again later."

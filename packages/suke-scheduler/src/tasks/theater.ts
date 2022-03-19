@@ -1,6 +1,6 @@
 import { getRepository, LessThan, Repository } from 'typeorm';
 import { ScheduleState, TheaterItemScheduleModel } from '@suke/suke-core/src/entities/TheaterItemSchedule';
-import { RedisClientType } from '@suke/suke-server/src/config';
+import { RedisClient, RedisClientType } from '@suke/suke-server/src/config';
 import Container from 'typedi';
 import { RealtimeTheaterRoomData } from '@suke/suke-core/src/types/UserChannelRealtime';
 import { parsers } from "@suke/parsers/src";
@@ -26,8 +26,8 @@ export class TheaterTask implements ScheduledTask {
     private gracePeriod = 30 * 1000;
     // private gracePeriod = 15 * (60 * 1000);
 
-    private redisClient: RedisClientType;
-    private scheduleItemRepo: Repository<TheaterItemScheduleModel >;
+    private redisClient!: RedisClient;
+    private scheduleItemRepo!: Repository<TheaterItemScheduleModel>;
 
     async execute(): Promise<void> {
         this.redisClient = Container.get<RedisClientType>('redis');
@@ -127,13 +127,13 @@ export class TheaterTask implements ScheduledTask {
     }
 
     private async getTheaterRoomData(key: string, item: TheaterItemScheduleModel ): Promise<RealtimeTheaterRoomData> {
-        const valueS: string = await this.redisClient.get(key);
+        const valueS: string = await this.redisClient.get(key) as string;
         let value: RealtimeTheaterRoomData;
 
         if (valueS == null) {
             const parser = parsers.find(v => v.name?.toLowerCase() === item.item.engine?.toLowerCase());
-            const foundSources = await findSources(parser, item);
-            const defaultData = await getDefaultTheaterRoomData(item, foundSources, this.gracePeriod);
+            const foundSources = await findSources(parser as IParser, item);
+            const defaultData = await getDefaultTheaterRoomData(item, foundSources!, this.gracePeriod);
             await this.redisClient.set(key, JSON.stringify(defaultData));
             value = defaultData;
         } else {
@@ -153,7 +153,7 @@ const findSources = async (parser: IParser, item: TheaterItemScheduleModel ) => 
 
             if (item == null) return;
             if (item.item == null) return;
-            if (data.multi && data.data.data.length > (item.item.episode - 1)) {
+            if (data.multi && item.item.episode && data.data.data.length > (item.item.episode - 1)) {
                 sources = data.data.data[item.item.episode - 1].sources;
             } else if (!data.multi) {
                 sources = (data.data as IStandaloneData).sources;

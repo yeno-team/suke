@@ -37,8 +37,7 @@ export class UserChannelFollowController extends BaseController {
         }
         
         const currentAuthUser = await this.userService.findById(req.session.user.id);
-
-        await this.userService.followChannel(user.channel, currentAuthUser);
+        await this.userService.followChannel(user.channel, currentAuthUser!);
         
         res.send({
             message: 'Followed user'

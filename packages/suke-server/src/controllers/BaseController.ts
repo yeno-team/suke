@@ -5,7 +5,7 @@ export abstract class BaseController {
     public abstract route: string;
     // Global Middlewares defined for this controller, 
     // automatically adds all middlewares in this array to all methods.
-    readonly middlewares?: RequestHandler[] = [];
+    readonly middlewares: RequestHandler[] = [];
 
     public execute(app: Express): void {
         app.route(this.route)

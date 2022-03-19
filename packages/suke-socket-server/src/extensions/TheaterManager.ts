@@ -24,7 +24,7 @@ export class TheaterManager {
         this.ITheaterItemScheduleRepo = getRepository(TheaterItemScheduleModel);
     }
     
-    public async getRoom(roomId: string): Promise<RealtimeTheaterRoomData> {
+    public async getRoom(roomId: string): Promise<RealtimeTheaterRoomData | undefined> {
         const key = this.getRedisKey(roomId);
 
         const val = await this.redisClient.get(key);

@@ -34,12 +34,12 @@ export class AuthController extends BaseController {
 
         if (check) {
             // Login fail Rate Limiter
-            const { limiter , key } = res.locals.limiters[1];
+            const { limiter , key } = res.locals.limiters![1];
             await limiter.delete(key);
 
             req.session.user = new User({
-                ...res.locals.user,
-                email: res.locals.user.email.currentEmail
+                ...res.locals.user!,
+                email: res.locals.user!.email.currentEmail
             });
 
             res.send({

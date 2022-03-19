@@ -39,7 +39,7 @@ export class UserChannelUnfollowController extends BaseController {
         
         const currentAuthUser = await this.userService.findById(req.session.user.id);
 
-        await this.userService.unfollowChannel(user.channel, currentAuthUser);
+        await this.userService.unfollowChannel(user.channel, currentAuthUser!);
         
         res.send({
             message: 'Unfollowed user'

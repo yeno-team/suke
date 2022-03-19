@@ -1,33 +1,35 @@
 {
-	"ts-node": {
-		"files": true
-	},
-	"extends": "../../tsconfig.build.json",
-	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "dist",
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-        "lib": ["ESNext", "DOM","DOM.Iterable"]
-	},
-	"references": [{
-			"path": "../suke-util"
-		},
-		{
-			"path": "../suke-core"
-		},
-		{
-			"path": "../parsers"
-		},
-		{
-			"path": "../wrappers"
-		}
-	],
-	"include": [
-        "./src/**/*.ts"
-    ],
-	"exclude": [
-		"node_modules",
-		"dist"
-	]
+  "ts-node": {
+    "files": true
+  },
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+	  "baseUrl": "./",
+    "outDir": "./dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+	  "composite": true,
+    "downlevelIteration": true
+  },
+  "references": [
+    {
+      "path": "../parsers"
+    },
+    {
+      "path": "../suke-core"
+    },
+    {
+      "path": "../suke-util"
+    },
+    {
+      "path": "../wrappers"
+    }
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "../dist"
+  ]
 }

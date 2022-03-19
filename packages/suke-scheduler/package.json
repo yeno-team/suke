@@ -11,12 +11,12 @@
     "build": "tsc -b",
     "start": "node dist/index.js",
     "start:dev": "ts-node src/index.ts",
-    "clean": "rm -rf ./dist && rm tsconfig.tsbuildinfo"
+    "clean": "rimraf ./node_modules && rimraf ./dist && rimraf ./build"
   },
   "dependencies": {
-    "@suke/parsers": "workspace:^",
-    "@suke/suke-core": "workspace:^",
-    "@suke/suke-server": "workspace:^",
+    "@suke/parsers": "workspace:packages/parsers",
+    "@suke/suke-core": "workspace:packages/suke-core",
+    "@suke/suke-server": "workspace:packages/suke-server",
     "@types/node-cron": "^3.0.1",
     "form-data": "^4.0.0",
     "get-video-duration": "3.0.2",

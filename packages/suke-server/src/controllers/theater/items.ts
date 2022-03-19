@@ -1,7 +1,7 @@
 import { TheaterItemService } from "@suke/suke-server/src/services/theater";
 import { Service } from "typedi";
 import { BaseController } from "../BaseController";
-
+import { Request, Response } from "express";
 @Service()
 export class TheaterItemsController extends BaseController {
     public route = "/api/theater/items";
@@ -11,7 +11,7 @@ export class TheaterItemsController extends BaseController {
         super();
     }
 
-    public Get = async (req, res): Promise<void> => {
+    public Get = async (req: Request, res: Response): Promise<void> => {
         const featured = req.query.featured;
 
         let items;

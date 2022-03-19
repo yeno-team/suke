@@ -29,7 +29,7 @@ export interface SendEmailChangeToNewEmailOpts {
 @Service()
 export class EmailUtilService { // i don't know what do call this
     @Inject("email_jwt_secret_key")
-    private secretKey : string;
+    private secretKey! : string;
 
     constructor(
         @Inject("NodeMailerService")
@@ -144,7 +144,7 @@ export class EmailService {
         newEmail.verificationToken = email.verificationToken;
         newEmail.currentEmail = email.currentEmail;
         newEmail.previousEmail = email.previousEmail;
-        newEmail.originalEmail = email.originalEmail;
+        newEmail.originalEmail = email.originalEmail as string;
 
         return newEmail.save();
     }

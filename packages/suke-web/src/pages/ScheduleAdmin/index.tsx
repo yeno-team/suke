@@ -14,13 +14,13 @@ import { Button } from "@suke/suke-web/src/components/Button";
 import { useLocale } from "@suke/suke-web/src/hooks/useLocale";
 import DatePicker from "react-datepicker";
 import Datetime from 'react-datetime';
-import "react-datepicker/dist/react-datepicker.css";
-import "react-datetime/css/react-datetime.css";
 import classNames from "classnames";
 import { VideoPlayer } from "@suke/suke-web/src/components/VideoPlayer";
 import ReactPlayer from "react-player";
 import { IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import { getUrlSources } from "@suke/suke-web/src/api/source";
+import "react-datepicker/dist/react-datepicker.min.css";
+import "react-datetime/css/react-datetime.css";
 
 const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item: ITheaterItem, onSubmit?: () => void, sources: string[], create?: boolean, deleteCreateItem?: () => void}) => {
     const [title, setTitle] = useState(item.title);
@@ -42,7 +42,7 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
     const [videoSources, setVideoSources] = useState<IVideoSource[]>([]);
     const locale = useLocale();
     const localDuration = player?.getDuration() || duration;
-    console.log(player?.getDuration());
+ 
     const categories = useMemo(() => {
         const keys = Object.keys(TheaterCategory).filter(v => isNaN(Number(v)));
 
@@ -72,6 +72,14 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
 
     const submitChanges = async () => {
         try {
+            if (localDuration === 0) {
+                return notificationStore.addNotification({
+                    ...defaultNotificationOpts,
+                    type : "danger",
+                    title : "Error",
+                    message : "Duration cannot be 0, make sure to correctly supply it."
+                });
+            }
             await editTheaterItem(item.id, {
                 title, posterUrl, category, featured, engine, sourceUrl, episode, description, featuredPictureUrl, duration: localDuration
             });
@@ -222,7 +230,12 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
                 const sources = await getUrlSources({engine: item.engine, url: new URL(item.sourceUrl)});
                 setVideoSources && setVideoSources(sources);
             } catch (e) {
-                console.error(e);
+                return notificationStore.addNotification({
+                    ...defaultNotificationOpts,
+                    type : "danger",
+                    title : "Error",
+                    message : (e as Error).message
+                });
             }
         }
         sendRequest();

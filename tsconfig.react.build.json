@@ -4,11 +4,12 @@
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
-		"module": "es6",
-		"moduleResolution": "node",
+		"downlevelIteration": true,
 		"esModuleInterop": true,
-		"target": "es6",
-		"composite": true
+		"composite": true,
+		"target": "es5",
+		"module": "esnext",
+		"moduleResolution": "node"
 	},
 	"exclude": ["**/*.test.ts", "**/lib"]
 }

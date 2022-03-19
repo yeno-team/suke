@@ -44,15 +44,16 @@ export class EmojiController extends BaseController {
 
         let index = 0;
 
-        const jimpEmotes : Array<Jimp> = await Promise.all(emotes.map(async ({ url }) => {
+        const jimpEmotes: Array<Jimp> = await Promise.all(emotes.map(async ({ url }) => {
             try {
                 const jimpEmote = await Jimp.read(url.href);
-                await jimpEmote.resize(iconWidth , iconHeight);
-                return jimpEmote;
+                jimpEmote.resize(iconWidth , iconHeight);
+                return jimpEmote!;
             // eslint-disable-next-line no-empty
             } catch (e) {
+                throw e;
             }
-        }));
+        })) ;
 
         for(let curRow = 0; curRow < rows; curRow++) {
             for(let curCol = 0; curCol < cols; curCol++) {                

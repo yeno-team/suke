@@ -13,14 +13,13 @@ export const createChannelRoomHandler: Handler = (server: SocketServer) => (): v
         const broadcaster = new SocketBroadcaster(server);
         const categoryManager = server.getCategoryManager();
 
-        const setupListeners = {};
-
+        const setupListeners: any = {};
         const sendUpdateMessage = async (roomId: string) => {
             const updatedRoom = await roomManager.getRoom(roomId);
-            const roomConnectionsNoDuplicates = {};
+            const roomConnectionsNoDuplicates: any = {};
 
             for (const id of updatedRoom) {
-                roomConnectionsNoDuplicates[server.getConnection(id)?.remoteAddress] = id;
+                roomConnectionsNoDuplicates[server.getConnection(id)?.remoteAddress!] = id;
             }
             
             const updated = await channelManager.editRealtimeChannel(roomId, {viewerCount: Math.max(Object.keys(roomConnectionsNoDuplicates).length - 1, 0)});
@@ -55,7 +54,7 @@ export const createChannelRoomHandler: Handler = (server: SocketServer) => (): v
                 }
                 const ownerName = new Name(msg.data.roomId.toLowerCase());
                 const channel = await channelManager.getChannel(msg.data.roomId);
-                if (!user.Name().Equals(ownerName) && channel != null && channel.private) {
+                if (!user!.Name().Equals(ownerName) && channel != null && channel.private) {
                     if (channel.password !== (msg.data.password || "")) {
                         return server.emit('clientError', new Error("Incorrect Password."), ws);
                     }
@@ -64,7 +63,7 @@ export const createChannelRoomHandler: Handler = (server: SocketServer) => (): v
                 await roomManager.addUser(msg.data.roomId, ws.id);
 
                 // if user is owner set channel to live
-                if(user.Name().Equals(ownerName)) {
+                if(user!.Name().Equals(ownerName)) {
                     await channelManager.editRealtimeChannel(msg.data.roomId, {live: true});
                 }
                 
