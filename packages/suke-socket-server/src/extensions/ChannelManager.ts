@@ -48,7 +48,7 @@ export class ChannelManager {
                 },
                 currentVideo: {
                     sources: [{
-                        url: new URL("https://www.youtube.com/watch?v=NpEaa2P7qZI"), 
+                        url: new URL("https://www.youtube.com/embed/NpEaa2P7qZI"), 
                         quality: Quality.auto
                     }], 
                     name: 'Looking for a Video.',

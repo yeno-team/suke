@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { RateLimiterOpts } from "@suke/suke-core/src/entities/RateLimiterOpts";
 import { GlobalRateLimiter } from "../limiters";
 import { catchErrorAsync } from "./catchErrorAsync";
-import { createRateLimiter } from "./createRateLimiter";
+import { handleRateLimiter } from "./handleRateLimiter";
 import { Role } from "@suke/suke-core/src/Role";
 
 export const setGlobalRateLimiter = () : RequestHandler => catchErrorAsync(async (req , res , next) => {
@@ -14,7 +14,7 @@ export const setGlobalRateLimiter = () : RequestHandler => catchErrorAsync(async
         isGlobalLimiter : true
     });
 
-    const { isRateLimited } = await createRateLimiter(res , opts);
+    const { isRateLimited } = await handleRateLimiter(res , opts);
 
     if(isRateLimited) {
         return;

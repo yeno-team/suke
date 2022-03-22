@@ -18,6 +18,7 @@ describe("User Class: Value Object", () => {
                 isVerified : false,
                 role: Role.User,
                 following: [],
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -35,6 +36,7 @@ describe("User Class: Value Object", () => {
                 role: Role.User,
                 following: [],
                 isVerified : false,
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -52,6 +54,7 @@ describe("User Class: Value Object", () => {
                 role: Role.User,
                 isVerified : false,
                 following: [],
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -70,6 +73,7 @@ describe("User Class: Value Object", () => {
                 role: '' as unknown as number,
                 following: [],
                 isVerified : false,
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -89,6 +93,7 @@ describe("User Class: Value Object", () => {
                 role: Role.User,
                 following: [],
                 isVerified : false,
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -106,6 +111,7 @@ describe("User Class: Value Object", () => {
                 role: Role.User,
                 isVerified : false,
                 following: [],
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -125,6 +131,7 @@ describe("User Class: Value Object", () => {
                 role: null as unknown as Role,
                 following: [],
                 isVerified : false,
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -146,6 +153,7 @@ describe("User Class: Value Object", () => {
                 isVerified : false,
                 role: Role.User,
                 following: [],
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -167,6 +175,7 @@ describe("User Class: Value Object", () => {
                 isVerified : false,
                 role: 0,
                 following: [],
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -184,6 +193,7 @@ describe("User Class: Value Object", () => {
                 role: 0,
                 following: [],
                 isVerified : false,
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -205,6 +215,7 @@ describe("User Class: Value Object", () => {
                 role: 0,
                 following: [],
                 isVerified : false,
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],
@@ -222,6 +233,7 @@ describe("User Class: Value Object", () => {
                 role: 0,
                 following: [],
                 isVerified : false,
+                pictureUrl: "",
                 channel: {
                     id: 0,
                     followers: [],

@@ -2,8 +2,9 @@ import { IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
 import React, { useMemo } from "react";
 import ReactPlayer, { ReactPlayerProps } from "react-player";
 import { browserName } from 'react-device-detect';
+import apiUrl from "../../util/apiUrl";
 
-const serverUrl = process.env.REACT_APP_PROXY_URL || "http://localhost:4000/api/proxy/";
+const serverUrl = apiUrl("/api/proxy/");
 
 export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources: IVideoSource[], children: React.ReactNode}, ref: React.ForwardedRef<ReactPlayer>) => {
 
@@ -40,7 +41,7 @@ export const VideoPlayer = React.forwardRef((props: ReactPlayerProps & {sources:
             },
             hlsOptions: {
                 // pLoader: subtitlePloader,
-                subtitleDisplay: true
+                
             },
             tracks: [...currentVideoSource?.subtitles != null ? currentVideoSource!.subtitles.map((v, i) => ({kind: 'subtitles', label: v.lang, src: serverUrl + v.url.toString(), srcLang: v.lang, default: i === 0})) : []],
         }

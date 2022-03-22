@@ -42,7 +42,7 @@ export const MobileMenu = ({active, user, handleLogout}: MobileMenuProps) => {
                     </button>
                 </React.Fragment> :
                 <a href="/login" className="mobile-nav-link" >
-                    LOGIN / SIGNUP
+                    Login / Sign Up
                 </a>
             }
         </div>

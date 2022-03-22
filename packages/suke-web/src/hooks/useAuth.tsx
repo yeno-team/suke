@@ -4,12 +4,13 @@ import { useLocation } from "react-router-dom";
 import * as userApi from "../api/user";
 import * as authApi from "../api/auth";
 import { Role } from "@suke/suke-core/src/Role";
+import apiUrl from "../util/apiUrl";
 
 export interface AuthContextInterface {
     errors: Error[];
     user?: IUser;
     login: (name: string, password: string , reCaptchaToken : string) => Promise<boolean>;
-    register: (name: string, email: string, password: string , reCaptchaToken : string) => void;
+    register: (name: string, email: string, password: string , reCaptchaToken : string) => Promise<void>;
     logout: () => void;
     updateUser: () => void;
     loading: boolean;
@@ -52,6 +53,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                     role: Role.Guest,
                     isVerified : false,
                     following: [],
+                    pictureUrl: apiUrl("/api/images/PngItem_307416.png").toString(),
                     channel: {
                         id: 0,
                         followers: [],
@@ -86,7 +88,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
             .finally(() => setLoading(false));
     } 
 
-    const register = (name: string, email: string, password: string , reCaptchaToken : string) => {
+    const register = async (name: string, email: string, password: string , reCaptchaToken : string): Promise<void> => {
         setLoading(true);
 
         userApi.signup({name, email}, password , reCaptchaToken)
@@ -101,6 +103,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
             })
             .catch((e: Error) => {
                 setErrors([...errors, e]);
+                return Promise.reject(e);
             })
             .finally(() => setLoading(false));
     }

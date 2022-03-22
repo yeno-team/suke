@@ -4,10 +4,15 @@ import { useNotification , defaultNotificationOpts } from "@suke/suke-web/src/ho
 import { IUser } from "@suke/suke-core/src/entities/User";
 import { Navigation } from "../../common/Navigation";
 import { Button } from "@suke/suke-web/src/components/Button";
+import { ImageCircle } from "../../components/ImageCircle";
+import apiUrl from "../../util/apiUrl";
+import { Modal } from "../../components/Modal";
 
 export interface AccountPageProps {
     user? : IUser
 }
+
+const Title = ({title}: {title: string}) => <h1 className="text-white text-xl font-bold mb-3">{title}</h1>;
 
 export const AccountPage = ({ user } : AccountPageProps) => {
     const [ newEmailFieldInput , setNewEmailInput ] = useState("");
@@ -65,27 +70,47 @@ export const AccountPage = ({ user } : AccountPageProps) => {
         <React.Fragment>
             <Navigation />
             {
-                user && 
+                user &&
                 <div className="font-sans mx-10 my-4">
-                    <h1 className="text-white text-xl font-bold mb-3">Account Settings</h1>
-                    <div className="text-white mb-2">
-                        <h1> <b className="font-semibold text-lightgray mr-2">Username:</b>  {user.name} </h1>
-                        <h1> 
-                            <b className="font-semibold text-lightgray mr-2">Email:</b>  
-                            {user.email} 
-                            {user.isVerified ? 
-                                <span className="text-green ml-1">{"\u2714"}</span> : 
-                                (<React.Fragment><span className="text-red ml-1 mr-2">{"\u2716"}</span><span className="text-blue hover:underline cursor-pointer" onClick={() => resendEmailHandler()}>Resend Email</span></React.Fragment>)} 
-                            </h1>
+                    <div>
+                        <Title title={"Profile Information"} />
+                        
+                        <div className="mb-2">
+                            <ImageCircle className="bg-black " alt="profile picture" src={user.pictureUrl || apiUrl("/api/images/PngItem_307416.png").toString()}></ImageCircle>
+                            <Button>Change</Button>
+                        </div>
+
+                        <div className="text-white mb-6">
+                            <h1> <b className="font-semibold text-lightgray mr-2">Username:</b>  {user.name} </h1>
+                            <h1> 
+                                <b className="font-semibold text-lightgray mr-2">Email:</b>  
+                                {user.email} 
+                                {user.isVerified ? 
+                                    <span className="text-green ml-1">{"\u2714"}</span> : 
+                                    (<React.Fragment><span className="text-red ml-1 mr-2">{"\u2716"}</span><span className="text-blue hover:underline cursor-pointer" onClick={() => resendEmailHandler()}>Resend Email</span></React.Fragment>)} 
+                                </h1>
+                        </div>
+                        <h1 className="text-white font-semibold mb-2">Change your Email</h1>
+                        <input type="email" autoComplete="false" className="bg-black p-2 mb-1 text-sm w-52" name="newEmailField" aria-autocomplete="none" placeholder="New Email" onChange={(e) => setNewEmailInput(e.target.value)} value={newEmailFieldInput}/>
+                        <br/>
+                        <input type="password" className="bg-black p-2 w-52 text-sm" name="passField" autoComplete="new-password" placeholder="Password" onChange={(e) => setPasswordFieldInput(e.target.value)}value={passwordFieldInput}/>
+                        <br/>
+                        <Button className="mt-2 cursor-pointer" backgroundColor="green" size={2} onClick={changeEmailHandler}> Change Email </Button>
                     </div>
-                    <h1 className="text-white font-semibold mb-2"> Change Email </h1>
-                    <input type="email" autoComplete="false" className="bg-gray border" name="newEmailField" placeholder="New Email" onChange={(e) => setNewEmailInput(e.target.value)} value={newEmailFieldInput}/>
-                    <br/>
-                    <input type="password" className="bg-gray border" name="passField" placeholder="Password" onChange={(e) => setPasswordFieldInput(e.target.value)}value={passwordFieldInput}/>
-                    <br/>
-                    <Button className="mt-1 cursor-pointer" backgroundColor="green" size={2} onClick={changeEmailHandler}> Change Email </Button>
+                    <div>
+
+                    </div>
                 </div>
             }
         </React.Fragment>
     )
+}
+
+const changeProfilePictureModal = ({active}: {active: boolean, setActive: (p: boolean) => void}) => {
+
+    return <Modal className="absolute" active={active}>
+        <div>
+            <h1>Upload Profile Picture</h1>
+        </div>
+    </Modal>
 }

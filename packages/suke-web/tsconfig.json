@@ -34,8 +34,6 @@
     }
   ],
   "include": [
-    "src",
-    "../suke-core",
-    "../suke-util"
+    "src"
   ]
 }

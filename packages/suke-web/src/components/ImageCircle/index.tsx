@@ -12,7 +12,7 @@ export interface ImageCircleProps {
 
 export const ImageCircle = ({src, alt, width, height, className, onClick}: ImageCircleProps) => {
     return (
-        <img onClick={onClick} src={src} alt={alt} className={classNames(
+        <img onClick={onClick} src={src} alt={alt} crossOrigin="anonymous" className={classNames(
             "rounded-full",
             width ? "w-" + width : "w-12",
             height ? "h-" + height : "h-12",

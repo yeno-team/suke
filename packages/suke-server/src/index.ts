@@ -15,6 +15,7 @@ import { TheaterItemModel } from '@suke/suke-core/src/entities/TheaterItem';
 import { TheaterItemScheduleModel } from '@suke/suke-core/src/entities/TheaterItemSchedule';
 import { startScheduler } from "@suke/suke-scheduler/src";
 import { UserService } from '@suke/suke-server/src/services/user';
+import { S3Client } from "@aws-sdk/client-s3";
 import { Role } from '@suke/suke-core/src/Role';
 useContainer(typeORMContainer);
 
@@ -62,6 +63,12 @@ createConnection({
     Container.set<typeof nodeMailerService>("NodeMailerService", nodeMailerService);
     console.log("Mail server has been initalized.");
 
+    const client = new S3Client({
+        region: "us-east-1"
+    });
+
+    Container.set<S3Client>("S3Client", client);
+
     startScheduler();
     console.log("Scheduler Started.");
 
@@ -73,6 +80,7 @@ createConnection({
             isVerified: true,
             following: [],
             role: Role.Admin,
+            pictureUrl: "",
             channel: {} as IUserChannel,
             id: 0
         }), new Email('admin@suke.app'), config.db.defaultAdminPassword);

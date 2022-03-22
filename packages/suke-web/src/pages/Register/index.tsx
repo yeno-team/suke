@@ -65,9 +65,18 @@ export const RegisterPage = () => {
             })
         }
 
-        // Need to fix this
-        await register(usernameInput, emailInput, passwordInput , reCaptchaToken);
-
+        try {
+            // Need to fix this
+            await register(usernameInput, emailInput, passwordInput , reCaptchaToken);
+        } catch (e) {
+            return notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                title : "Error",
+                type : "danger",
+                message : (e as Error).message
+            });
+        }
+        
         return notificationStore.addNotification({
             ...defaultNotificationOpts,
             type : "success",
