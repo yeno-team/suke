@@ -1,8 +1,9 @@
 import { Service } from "typedi";
 import { AxiosRequest } from "@suke/requests/src";
 import { IMultiData, ISearchData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
-import cheerio from "cheerio";
+import { load } from "cheerio";
 import { ParserDataResponse } from "@suke/suke-core/src/entities/Parser";
+import { VM } from "vm2";
 
 @Service()
 export class AnimeFoxWrapper {
@@ -12,7 +13,7 @@ export class AnimeFoxWrapper {
 
     public async search(searchTerm: string, page = 1): Promise<ISearchData> {
         const resp = await this.request.get<string>(new URL(`/search?keyword=${searchTerm}&page=${Math.max(page, 1)}`, this.host));
-        const $ = cheerio.load(resp);
+        const $ = load(resp);
         const result: ISearchData = {
             results: {
                 multi: [],
@@ -55,13 +56,13 @@ export class AnimeFoxWrapper {
 
     public async getData(url: URL): Promise<ParserDataResponse> {
         const resp = await this.request.get<string>(url);
-        let $ = cheerio.load(resp);
+        let $ = load(resp);
         const posterUrl = $('.film-poster-img').attr('data-src');
         const title = $(".film-name").html()?.trim() as string;
         const watchLink = $(".btn-play").attr('href');
 
         const watchResp = await this.request.get<string>(new URL(watchLink as string, this.host));
-        $ = cheerio.load(watchResp);
+        $ = load(watchResp);
         const episodes = $('.ep-item');
         
         const data: ParserDataResponse = {
@@ -91,11 +92,22 @@ export class AnimeFoxWrapper {
 
     public async getSource(url: URL): Promise<IVideoSource> {
         const resp = await this.request.get<string>(url);
-        const $ = cheerio.load(resp);
+        let $ = load(resp);
         const playerLinkUrl = new URL($('#iframe-to-load').attr('src') as string);
+        const serverLink = new URL("https://mplayer.sbs/server2.php?id=" + playerLinkUrl.searchParams.get('id'));
+        const serverResp = await this.request.get<string>(serverLink);
+        
+        const matches = serverResp.match(/eval\((.*)\)/gm);
 
+        if (matches == null || matches.length <= 0) {
+            throw new Error("Unknown Error Occured");
+        }
+
+        const evalOutput = new VM().run("jwplayer=function(){return {setup: (v) => v}};" + matches[0]);
+
+        const link = !evalOutput.file.startsWith("https:") && !evalOutput.file.startsWith("http:") ? new URL(evalOutput.file, "https://mplayer.sbs") : new URL(evalOutput.file);
         return {
-            url: new URL(`https://mplayer.sbs/caching/${playerLinkUrl.searchParams.get('id')}.m3u8`),
+            url: link,
             quality: Quality.auto,
             proxyRequired: true
         };

@@ -5370,6 +5370,7 @@ __metadata:
     crypto-js: ^4.1.1
     hjson: ^3.2.2
     tough-cookie: ^4.0.0
+    vm2: ^3.9.9
   languageName: unknown
   linkType: soft
 
@@ -7138,7 +7139,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-walk@npm:^8.1.1":
+"acorn-walk@npm:^8.1.1, acorn-walk@npm:^8.2.0":
   version: 8.2.0
   resolution: "acorn-walk@npm:8.2.0"
   checksum: 1715e76c01dd7b2d4ca472f9c58968516a4899378a63ad5b6c2d668bba8da21a71976c14ec5f5b75f887b6317c4ae0b897ab141c831d741dc76024d8745f1ad1
@@ -7163,7 +7164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.2.4, acorn@npm:^8.4.1, acorn@npm:^8.5.0":
+"acorn@npm:^8.2.4, acorn@npm:^8.4.1, acorn@npm:^8.5.0, acorn@npm:^8.7.0":
   version: 8.7.0
   resolution: "acorn@npm:8.7.0"
   bin:
@@ -24710,6 +24711,18 @@ __metadata:
   version: 1.1.2
   resolution: "vm-browserify@npm:1.1.2"
   checksum: 10a1c50aab54ff8b4c9042c15fc64aefccce8d2fb90c0640403242db0ee7fb269f9b102bdb69cfb435d7ef3180d61fd4fb004a043a12709abaf9056cfd7e039d
+  languageName: node
+  linkType: hard
+
+"vm2@npm:^3.9.9":
+  version: 3.9.9
+  resolution: "vm2@npm:3.9.9"
+  dependencies:
+    acorn: ^8.7.0
+    acorn-walk: ^8.2.0
+  bin:
+    vm2: bin/vm2
+  checksum: ea4859565668918b53cf8c087bc18e2a9506f9f4ef919528707a6fecf50a110a2a8c48bc0c7a754c9d12b97cd16775f005b2b941e99d3a52aadfaac5ce77e04d
   languageName: node
   linkType: hard
 

@@ -13,7 +13,8 @@
     "cheerio": "^1.0.0-rc.10",
     "crypto-js": "^4.1.1",
     "hjson": "^3.2.2",
-    "tough-cookie": "^4.0.0"
+    "tough-cookie": "^4.0.0",
+    "vm2": "^3.9.9"
   },
   "scripts": {
     "start": "ts-node ./src/index.ts",
