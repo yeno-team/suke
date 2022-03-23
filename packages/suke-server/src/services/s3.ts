@@ -4,6 +4,8 @@ import { Inject, Service } from "typedi";
 import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import config from "../config";
 import { Readable } from "stream";
+import fs from "fs";
+import path from "path";
 
 @Service()
 export class S3Service {
@@ -11,17 +13,18 @@ export class S3Service {
     private s3Client!: S3Client;
     
     public async getObject(key: string) {
-        return this.s3Client.send(new GetObjectCommand({
+        return await this.s3Client.send(new GetObjectCommand({
             Bucket: 'suke',
             Key: key
         }));
     }
 
-    public async putObject(key: string, file: Buffer) {
-        return this.s3Client.send(new PutObjectCommand({
+    public async putObject(key: string, file: Express.Multer.File) {
+        console.log(file);
+        return await this.s3Client.send(new PutObjectCommand({
             Bucket: 'suke',
             Key: key,
-            Body: file
+            Body: fs.createReadStream(path.join(__dirname, "../../" + file.path))
         }));
     }
 }

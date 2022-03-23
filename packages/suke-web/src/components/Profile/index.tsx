@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { ImageCircle } from "../ImageCircle"
 import { Button } from "../Button"
 import classNames from "classnames"
+import { UserProfilePicture } from "../../common/UserProfilePicture";
 
 export type ProfileParams = {
     username?: string;
@@ -12,18 +13,19 @@ export type ProfileParams = {
     };
     followerButtonActive?: boolean;
     followerCount?: number;
+    pictureFileName?: string;
     className: string;
     followed?: boolean;
     handleFollow?: () => void;
     handleUnfollow?: () => void;
 } 
 
-export const Profile = ({username, followerCount, className, followed, handleFollow, handleUnfollow, description, followerButtonActive}: ProfileParams) => {
+export const Profile = ({username, pictureFileName, followerCount, className, followed, handleFollow, handleUnfollow, description, followerButtonActive}: ProfileParams) => {
     return (
         <div className={classNames("flex flex-col bg-black font-sans", className)}>
             <div className="flex flex-1">
                 <div className="flex px-4 py-5 flex-grow lg:pl-10">
-                    <ImageCircle src="https://picsum.photos/200" alt="user profile pic"></ImageCircle>
+                    <UserProfilePicture fileName={pictureFileName} />
                     <div className="flex flex-col justify-center text-left  leading-none items-center">
                         <span className="block font-bold w-full ml-7 text-white">{username}</span>
                         <span className="font-normal text-sm w-full ml-7 text-gray">{followerCount} followers</span>

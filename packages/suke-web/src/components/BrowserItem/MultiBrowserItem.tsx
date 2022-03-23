@@ -7,6 +7,7 @@ import { useChannel } from "../../hooks/useChannel";
 import { Button } from "../Button";
 import { Request } from "@suke/suke-core/src/entities/Request";
 import { getUrlSources } from "../../api/source";
+import { Image } from "../Image";
 
 export function MultiBrowserItem({data, category, roomId, requestedBy, requestedStandalones, toggleModal, activeSource, requestedObject}: MultiBrowserItemProps) {
     const [toggleEpisodes, setToggleEpisodes] = useState(false);
@@ -58,7 +59,7 @@ export function MultiBrowserItem({data, category, roomId, requestedBy, requested
     return (
         <div>
             <div className="font-sans bg-coolblack mb-2 flex m-0">
-            <img src={data.thumbnail_url!} className="m-0 max-w-128 max-h-32 w-auto h-auto object-cover" alt={`${data.name} thumbnail`}></img>
+            <Image src={data.thumbnail_url!} className="m-0 max-w-128 max-h-32 w-auto h-auto object-cover" alt={`${data.name} thumbnail`}></Image>
             <div className="inline-block text-white align-middle m-0 ml-2 py-2 flex-grow">
                 <h1 className="font-bold text-sm">{data.name?.toUpperCase()}</h1>
                 {/* <h3 className="m-0 p-0 text-xs">{category}</h3> */}

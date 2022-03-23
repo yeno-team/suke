@@ -53,7 +53,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
                     role: Role.Guest,
                     isVerified : false,
                     following: [],
-                    pictureUrl: apiUrl("/api/images/PngItem_307416.png").toString(),
+                    pictureFilename: "PngItem_307416.png",
                     channel: {
                         id: 0,
                         followers: [],

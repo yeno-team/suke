@@ -60,7 +60,7 @@ export const HomePage = () => {
                 <div>
                     {
                         realtimeChannels != null && realtimeChannels.length > 0 ?
-                        realtimeChannels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id, pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
+                        realtimeChannels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
                         (
                             <h1 className="text-brightRed font-semibold">There are currently no public channels live.</h1>
                         )
@@ -93,11 +93,12 @@ export const HomePage = () => {
             <div className="bg-darkblack h-full pt-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Channels You Follow</h3>
                 <div>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading..", pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
+                    
                 </div>
             </div>
         </div>

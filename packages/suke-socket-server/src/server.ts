@@ -80,7 +80,6 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
                         name: 'Guest',
                         role: Role.Guest,
                         isVerified : false,
-                        pictureUrl: "",
                         following: [],
                         channel: new UserChannel({
                             id: 0,

@@ -80,7 +80,6 @@ createConnection({
             isVerified: true,
             following: [],
             role: Role.Admin,
-            pictureUrl: "",
             channel: {} as IUserChannel,
             id: 0
         }), new Email('admin@suke.app'), config.db.defaultAdminPassword);

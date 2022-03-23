@@ -1,9 +1,12 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom"
 import { Circle } from "../Circle"
 import { ImageCircle } from "../ImageCircle"
 import numeral from "numeral";
 import { useCategory } from "@suke/suke-web/src/hooks/useCategory";
+import { UserProfilePicture } from "../../common/UserProfilePicture";
+import { getUserByName } from "../../api/user";
+import { IUser } from "@suke/suke-core/src/entities/User";
 
 export interface ChannelCardProps {
     viewerCount: number;
@@ -11,13 +14,22 @@ export interface ChannelCardProps {
     title: string;
     author: {
         name: string;
-        pictureUrl: string;
     },
     category: string;
 }
 
 export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}: ChannelCardProps) => {
     const { categories } = useCategory();
+    const [user, setUser] = useState<IUser | null>();
+
+    useEffect(() => {
+        const sendRequest = async () => {
+            const grabbedUser = await getUserByName(author.name);
+
+            setUser(grabbedUser);
+        }
+        sendRequest();
+    }, [author.name])
 
     const foundCategory = useMemo(() => categories.find(v => v.value === category), [categories, category]);
     const currentCategory = foundCategory?.label || category;
@@ -36,7 +48,7 @@ export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}
             </Link>
             <div className="flex p-2 pl-0">
                 <Link to={"/" + author.name}>
-                    <ImageCircle src={author.pictureUrl} alt={"profile picture of user " + author.name} className="p-1 transform hover:scale-95 cursor-pointer"></ImageCircle>
+                    <UserProfilePicture fileName={user?.pictureFilename} />
                 </Link>
                 <div className="text-white">
                     <h4 className="font-semibold ml-3 mt-1 leading-none transform hover:text-gray cursor-pointer">{title}</h4>

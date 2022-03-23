@@ -21,7 +21,8 @@ import { SourceGetDataController } from "./source/getData";
 import { UserSearchController } from "./search/user";
 import { RealtimeChannelSearchController } from "./search/realtimeChannel";
 import { ImageGetController } from "./images/get";
-import { ImageUploadController } from "./images/upload";
+import { ImageUploadController } from "./images/uploadProfilePicture";
+import { UsersController } from "./users";
 
 export default [
     AuthController,
@@ -46,6 +47,7 @@ export default [
     TheaterScheduleItemController,
     TheaterScheduleItemsController,
     UserSearchController,
+    UsersController,
     RealtimeChannelSearchController,
     ImageGetController,
     ImageUploadController

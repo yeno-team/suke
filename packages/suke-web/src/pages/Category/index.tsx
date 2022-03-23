@@ -75,7 +75,7 @@ export const CategoryPage = () => {
             <div className="w-full px-20 min-h-screen">
                 {
                     channels.length > 0 ?
-                    channels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id, pictureUrl: "https://picsum.photos/100"}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
+                    channels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
                     (
                         loading ?
                         <h1 className="text-gray">Searching...</h1> :

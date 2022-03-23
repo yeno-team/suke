@@ -12,7 +12,7 @@ export const RequireAuthPage  = ({ component } : RequireAuthPageProps ) : JSX.El
 
     return (
         <React.Fragment>
-            {user && user.name !== "Guest" ? React.cloneElement<AccountPageProps>(component , { user }) : <Navigate to="/"/>}
+            {user && user.id !== 0 ? React.cloneElement<AccountPageProps>(component , { user }) : <Navigate to="/"/>}
         </React.Fragment>
     )
 }

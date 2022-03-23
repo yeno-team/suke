@@ -18,6 +18,7 @@ import classNames from "classnames";
 import { VideoPlayer } from "@suke/suke-web/src/components/VideoPlayer";
 import ReactPlayer from "react-player";
 import { IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
+import { Image } from "../../components/Image";
 import { getUrlSources } from "@suke/suke-web/src/api/source";
 import "react-datepicker/dist/react-datepicker.min.css";
 import "react-datetime/css/react-datetime.css";
@@ -246,7 +247,7 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
             <h1 className="font-semibold text-white">Title</h1>
             <input value={title} onChange={e => setTitle(e.target.value)} className="p-2 rounded w-full bg-spaceblack text-lightgray"></input>
             <h1 className="font-semibold text-white mt-3">Poster Url</h1>
-            <img src={posterUrl} className="w-40 mb-2" alt={"Movie Poster Of " + title}></img>
+            <Image src={posterUrl} className="w-40 mb-2" alt={"Movie Poster Of " + title}></Image>
             <input value={posterUrl} onChange={e => setPosterUrl(e.target.value)} className="p-2 rounded w-full bg-spaceblack text-lightgray"></input>
             <h1 className="font-semibold text-white mt-3">Category</h1>
             <Select styles={customStyles} options={categories} className="w-3/12 mt-2" value={categories.find(v => v.label === category)!} onChange={(e) => setCategory(TheaterCategory[e!.value as keyof typeof TheaterCategory] as any)} ></Select>

@@ -18,7 +18,7 @@ export interface IBaseUser {
     isVerified : boolean;
     channel : IUserChannel;
     following : Follower[];
-    pictureUrl: string;
+    pictureFilename?: string;
     role : Role;
 }
 export interface IUser extends IBaseUser {
@@ -42,8 +42,8 @@ export class User extends ValueObject implements IUser {
     public role: Role;
     public email : string;
     public channel: IUserChannel;
+    public pictureFilename?: string;
     public following: Follower[];
-    public pictureUrl: string;
 
     private _name : Name;
     private _id : UserId;
@@ -60,7 +60,7 @@ export class User extends ValueObject implements IUser {
         this.role = user.role;
         this.channel = user.channel;
         this.following = user.following;
-        this.pictureUrl = user.pictureUrl;
+        this.pictureFilename = user.pictureFilename;
 
         this.IsValid();
     }
@@ -139,7 +139,7 @@ export class UserModel extends BaseEntity implements IDBUser  {
         nullable: true,
         type: 'text'
     })
-    pictureUrl!: string;
+    pictureFilename?: string;
 
     @OneToOne(() => EmailModel , emailModel => emailModel.user)
     @JoinColumn()

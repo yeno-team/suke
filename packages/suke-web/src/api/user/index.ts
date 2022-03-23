@@ -16,3 +16,7 @@ export const signup = async (user: Pick<IUser, 'name' | 'email'>, password: stri
 export const getAuthenticatedUser = async () => {
     return parseFetchResponse(await fetch('/api/user'));
 }
+
+export const getUserByName = async (name: string) => {
+    return parseFetchResponse(await fetch('/api/users/' + name));
+}

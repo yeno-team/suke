@@ -3,7 +3,7 @@ import { TempRedisClientForRateLimiter } from "../config";
 
 const opts : IRateLimiterStoreOptions = {
     storeClient : TempRedisClientForRateLimiter,
-    points : 60,
+    points : 3,
     duration : 60,
     blockDuration : 60 * 1,
     keyPrefix : "upload_file_limiter"
