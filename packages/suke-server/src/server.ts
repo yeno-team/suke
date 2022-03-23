@@ -69,11 +69,15 @@ export class Server {
 
 
     public start(): void {
-        this.app.use(compression());
-        this.app.use(helmet({
-            contentSecurityPolicy: false
-          }));
-        this.app.use(cors({origin: "*"}));
+        if (config.node_env == 'production') {
+            this.app.use(compression());
+            this.app.use(helmet({
+                contentSecurityPolicy: false
+            }));
+        } else {
+            this.app.use(cors({origin: "*"}));
+        }
+        
         this.app.use('/api/proxy/referer/:referer/:url(*)', createProxyMiddleware({
             router: this.proxyRouterFunction,
             pathRewrite: (p, req) => new URL(decodeURIComponent(req.params.url)).pathname,
