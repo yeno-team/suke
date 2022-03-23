@@ -1,7 +1,7 @@
 
 import { IUserChannel } from "@suke/suke-core/src/entities/UserChannel/UserChannel";
 import classNames from "classnames";
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom";
 import { followChannel, getChannel, unfollowChannel } from "../../api/channel";
 import { Navigation } from "../../common/Navigation"
@@ -20,6 +20,8 @@ import { PasswordPage } from "./PasswordPage";
 import { useChanged } from "@suke/suke-web/src/hooks/useChanged";
 import { useSocket } from "@suke/suke-web/src/hooks/useSocket";
 import { SocketMessageInput } from "@suke/suke-core/src/entities/SocketMessage";
+import { getUserByName } from "../../api/user";
+import { IUser } from "@suke/suke-core/src/entities/User";
 
 type UserChannelPageParams = {
     username: string
@@ -37,6 +39,7 @@ export const UserChannelPage = (): JSX.Element => {
     const { username } = useParams<UserChannelPageParams>();
     const { joinChannelRoom } = useRoom();
     const { user, updateUser } = useAuth();
+    const [channelUser, setChannelUser] = useState<IUser | null>();
     const { channelData, requestChannelData, updateRealtimeRoomData } = useChannel();
     const { messageHistory, setReconnectCallback } = useSocket();
     const [ socketMessagesChanged, prevSocketMessages] = useChanged<SocketMessageInput[]>(messageHistory);
@@ -45,19 +48,30 @@ export const UserChannelPage = (): JSX.Element => {
     
     const isOwner = user ? user.name === username : false;
     
-    useEffect(() => {
-        const sendGetChannel = async () => {
-            try {
-                setSearching(true);
-                const channelResp = await getChannel(username!);
-                setChannel(channelResp);
-            } catch (e) {
-                console.warn(e);
-            } finally { 
-                setSearching(false);
+    const sendUpdateChannel = async () => {
+        try {
+            const channelResp = await getChannel(username!);
+            setChannel(channelResp);
+
+            if (!isOwner) {
+                const channelUser = await getUserByName(username as string);
+                setChannelUser(channelUser);
             }
+        } catch (e) {
+            notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                type: "danger",
+                title: "Server Error",
+                message: (e as Error).message
+            });
+        } finally { 
+            setSearching(false);
         }
-        sendGetChannel();
+    }
+
+    useEffect(() => {
+        setSearching(true);
+        sendUpdateChannel();
         requestChannelData(username!);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -127,6 +141,7 @@ export const UserChannelPage = (): JSX.Element => {
         try {
             await followChannel(username!);
             updateUser();
+            sendUpdateChannel();
             setClientFollowed(true);
         } catch (e) {
             notifyError(e);
@@ -137,6 +152,7 @@ export const UserChannelPage = (): JSX.Element => {
         try {   
             await unfollowChannel(username!);
             setClientFollowed(false);
+            sendUpdateChannel();
             updateUser();
         } catch (e) {
             notifyError(e);
@@ -182,7 +198,7 @@ export const UserChannelPage = (): JSX.Element => {
 
 
     const mobileClassListIfBrowserActive = browserActive ? "hidden lg:flex" : "block";
-    const alreadyFollowed = user?.following?.find(v => v.followedTo?.id === channel?.id) != null || clientFollowed;
+    const alreadyFollowed = useMemo(() => user?.following?.find(v => v.followedTo?.id === channel?.id) != null || clientFollowed, [channel?.id, clientFollowed, user?.following]);
 
     const ChannelPage = joinedRoom ? 
     <div className="h-screen flex flex-col lg:block channel_elements lg:overflow-y-scroll lg:relative lg:mt-17 lg:mr-96">
@@ -194,7 +210,7 @@ export const UserChannelPage = (): JSX.Element => {
             <div className="w-full bg-spaceblack h-6/20 flex justify-center items-center text-white">This channel is offline.</div>
         }
         <ChatBox channel="channel" className={classNames(mobileClassListIfBrowserActive, "lg:mt-24px lg:fixed lg:right-0 lg:top-17 lg:h-94p lg:w-96")} height={screen.isTablet || screen.isMobile ? "80" : "72"}  identifier={username as string} />
-        <Profile pictureFileName={user?.pictureFilename} className={classNames(mobileClassListIfBrowserActive, "z-10 pb-24 lg:pb-96")} username={username as string} followerCount={channel?.followerCount ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={channel ? {title: channel.desc_title  , content: channel.desc} : {title: "Loading", content: "Loading..."}}/>
+        <Profile followerButtonActive pictureFileName={isOwner ? user?.pictureFilename : channelUser?.pictureFilename} className={classNames(mobileClassListIfBrowserActive, "z-10 pb-24 lg:pb-96")} username={username as string} followerCount={channel?.followerCount ?? 0} followed={alreadyFollowed} handleFollow={handleFollow} handleUnfollow={handleUnfollow} description={channel ? {title: channel.desc_title  , content: channel.desc} : {title: "Loading", content: "Loading..."}}/>
     </div> : <PasswordPage active={!joinedRoom} channelId={username!} setJoinedRoom={setJoinedRoom} ></PasswordPage>
 
     return (

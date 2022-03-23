@@ -106,7 +106,7 @@ export class UserChannelModel extends BaseEntity implements IUserChannel {
     @AfterLoad()
     async countFollowers() {
         const { count } = await Follower.createQueryBuilder('follower')
-            .where('follower.followerId = :id', {id: this.id})
+            .where('follower.followedTo.id = :id', {id: this.id})
             .select('COUNT(*)', 'count')
             .getRawOne();
         this.followerCount = parseInt(count);
