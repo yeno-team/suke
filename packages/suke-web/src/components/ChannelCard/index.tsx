@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom"
 import { Circle } from "../Circle"
-import { ImageCircle } from "../ImageCircle"
 import numeral from "numeral";
 import { useCategory } from "@suke/suke-web/src/hooks/useCategory";
 import { UserProfilePicture } from "../../common/UserProfilePicture";

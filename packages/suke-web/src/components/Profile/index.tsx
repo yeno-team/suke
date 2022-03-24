@@ -1,6 +1,5 @@
 import React from "react"
 import { Icon } from '@iconify/react';
-import { ImageCircle } from "../ImageCircle"
 import { Button } from "../Button"
 import classNames from "classnames"
 import { UserProfilePicture } from "../../common/UserProfilePicture";

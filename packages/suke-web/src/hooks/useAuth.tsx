@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import * as userApi from "../api/user";
 import * as authApi from "../api/auth";
 import { Role } from "@suke/suke-core/src/Role";
-import apiUrl from "../util/apiUrl";
 
 export interface AuthContextInterface {
     errors: Error[];
