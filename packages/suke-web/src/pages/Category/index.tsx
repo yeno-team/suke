@@ -79,7 +79,7 @@ export const CategoryPage = () => {
                     (
                         loading ?
                         <h1 className="text-gray">Searching...</h1> :
-                        <h1 className="text-brightRed font-semibold">There are currently no public channels live for this category.</h1>
+                        <h1 className="text-brightred font-semibold">There are currently no public channels live for this category.</h1>
                     )
                 }
             </div>

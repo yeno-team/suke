@@ -76,7 +76,7 @@ export const Messages = ({messages , channelId , className , replyHandler , does
 
     const parsedMessages = useMemo(() => {
         return messages.map((message , index) => {
-            const emoteRegex = /:([a-zA-Z]*):/g;
+            const emoteRegex = /:([a-zA-Z0-9]*):/g;
 
             const parsedMessage = parseMessage(
                 emojis, 

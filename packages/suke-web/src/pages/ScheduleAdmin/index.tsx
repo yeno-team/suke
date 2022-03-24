@@ -279,7 +279,7 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
             {
                 item.schedules.filter(v => new Date(v.time).getDate() === scheduleDate.getDate() && new Date(v.time).getMonth() === scheduleDate.getMonth() && new Date(v.time).getFullYear() === scheduleDate.getFullYear()).map(v => <div key={v.id} className="bg-gray w-fit-content p-1 inline-block ml-0 m-1 text-center">
                     {new Date(v.time).toLocaleString(locale, { hour: 'numeric', minute: 'numeric', hour12: true })}
-                    <span className="ml-2 text-brightRed text-sm font-black cursor-pointer" onClick={() => deleteSchedule(v.id)}>X</span>
+                    <span className="ml-2 text-brightred text-sm font-black cursor-pointer" onClick={() => deleteSchedule(v.id)}>X</span>
                 </div>)
             }
             <br />

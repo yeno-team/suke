@@ -66,7 +66,7 @@ export const HomePage = () => {
                         realtimeChannels != null && realtimeChannels.length > 0 ?
                         realtimeChannels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
                         (
-                            <h1 className="text-brightRed font-semibold">There are currently no public channels live.</h1>
+                            <h1 className="text-brightred font-semibold">There are currently no public channels live.</h1>
                         )
                     }
                 </div>
@@ -78,7 +78,7 @@ export const HomePage = () => {
                     {
                         theaterItemsStarting.length > 0 ?
                         theaterItemsStarting.map(v => <TheaterCard key={v.id} subheading={v.episode ? "EPISODE " + v.episode.toString() : ""} title={v.title} scheduleId={v.schedules.find(v => v.state === ScheduleState.Starting)!.id} viewerCount={numeral(v.viewerCount).format("0.[0]a")} coverUrl={v.posterUrl}/>) :
-                        <h1 className="text-brightRed font-semibold">There are currently no theater rooms starting.</h1>
+                        <h1 className="text-brightred font-semibold">There are currently no theater rooms starting.</h1>
                     }
                 </div>
             </div>
@@ -101,7 +101,7 @@ export const HomePage = () => {
                         followedChannels != null && followedChannels.length > 0 ?
                         followedChannels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
                         (
-                            <h1 className="text-brightRed font-semibold">There are currently no public channels live that you are following.</h1>
+                            <h1 className="text-brightred font-semibold">There are currently no public channels live that you are following.</h1>
                         )
                     }
                 </div>

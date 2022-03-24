@@ -21,7 +21,7 @@ export const NotificationIcon = ({ count, handleClick, color, size, className }:
             className
         )}>
             <Icon className={classNames(size ? `h-${size} w-${size}` : 'h-7 w-7')} icon="ci:notification" />
-            <Circle size={size ? CircleSize : 5} fontWeight="semibold" textSize="xs" backgroundColor="brightRed" className={classNames(
+            <Circle size={size ? CircleSize : 5} fontWeight="semibold" textSize="xs" backgroundColor="brightred" className={classNames(
                 'absolute',
                 'top-0',
                 'ml-4',

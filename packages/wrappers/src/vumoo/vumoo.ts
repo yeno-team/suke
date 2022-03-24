@@ -14,6 +14,13 @@ export class VumooWrapper {
     
     // a meomeo.pw url is the passed in url
     public async getSource(url: URL): Promise<IVideoSource> {
+        if (url.host.startsWith("vumoo.to")) {
+            const data = await this.getData(url);
+            const sources = (data.data as IMultiData).data;
+            if (sources.length < 0) throw new Error("Could not grab source.");
+
+            url = sources[0].sources[0].url;
+        }
         const resp = await this.request.get<string>(url, {headers: {"Referer": this.host, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0"}});
         const fileRegex = /jwplayer\('player'\)\.setup\((.*)\)/gm;
         const matches = fileRegex.exec(resp);

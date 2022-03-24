@@ -83,7 +83,7 @@ export const SearchPage = () => {
                     (
                         loading ?
                         <h1 className="text-gray">Searching...</h1> :
-                        <h1 className="text-brightRed font-semibold">No results.</h1>
+                        <h1 className="text-brightred font-semibold">No results.</h1>
                     )
                 }
             </div>

@@ -11,6 +11,7 @@ import { useScreenSize } from '@suke/suke-web/src/hooks/useScreenSize';
 import useAuth from '@suke/suke-web/src/hooks/useAuth';
 import { ImageCircle } from '@suke/suke-web/src/components/ImageCircle';
 import { logout } from '@suke/suke-web/src/api/auth';
+import { UserProfilePicture } from '../UserProfilePicture';
 
 export interface NavigationProps {
     position?: 'sticky' | 'fixed' | 'absolute' | 'relative' | 'static',
@@ -117,7 +118,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
 
                 {
                     isLoggedIn ?
-                    <ImageCircle className="ml-auto mr-6 cursor-pointer" width={10} height={10} src="https://picsum.photos/200/300" alt="profile picture" onClick={() => setUserDropdownActive(prev => !prev)} />
+                    <UserProfilePicture className="ml-auto mr-6 cursor-pointer" fileName={user.pictureFilename} onClick={() => setUserDropdownActive(prev => !prev)} />
                     :
                     <Link to="/login" className="ml-auto mr-6">
                         <button className={classNames(

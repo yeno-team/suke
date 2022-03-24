@@ -37,7 +37,7 @@ export const MobileSourceButtons = ({sources, activeSource, closeMobileMenu, set
     return (
         <div className="absolute flex flex-col bg-coolblack w-full h-full z-10">
             <header className="flex">
-                <Icon icon="ant-design:close-circle-outlined" onClick={closeMobileMenu} className="text-brightRed ml-auto text-2xl my-4 mr-4 cursor-pointer" />
+                <Icon icon="ant-design:close-circle-outlined" onClick={closeMobileMenu} className="text-brightred ml-auto text-2xl my-4 mr-4 cursor-pointer" />
             </header>
             {buttons}
         </div>

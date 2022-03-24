@@ -150,11 +150,15 @@ const findSources = async (parser: IParser, item: TheaterItemScheduleModel ) => 
         const data = await parser.getData(new URL(item.item.sourceUrl));
         if (data != null) {
             let sources: IVideoSource[] = [];
-
+            let episode = item.item.episode 
             if (item == null) return;
             if (item.item == null) return;
-            if (data.multi && item.item.episode && data.data.data.length > (item.item.episode - 1)) {
-                sources = data.data.data[item.item.episode - 1].sources;
+            if (episode == null) {
+                console.log(data);
+                episode = 1;
+            }
+            if (data.multi && data.data.data.length > (episode - 1)) {
+                sources = data.data.data[episode - 1].sources;
             } else if (!data.multi) {
                 sources = (data.data as IStandaloneData).sources;
             }
