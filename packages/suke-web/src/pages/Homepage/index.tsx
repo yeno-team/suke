@@ -8,7 +8,7 @@ import { TheaterCard } from "../../components/TheaterCard";
 import { CategoryCard } from "../../components/CategoryCard";
 import { useCategory } from "../../hooks/useCategory";
 import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
-import { getRealtimeChannels } from "@suke/suke-web/src/api/realtime";
+import { getRealtimeChannels, getFollowedRealtimeChannels } from "@suke/suke-web/src/api/realtime";
 import numeral from "numeral";
 import { useNavigate } from "react-router-dom";
 import { getTheaterItems } from "@suke/suke-web/src/api/theater";
@@ -19,14 +19,18 @@ export const HomePage = () => {
     const [realtimeChannels, setRealtimeChannels] = useState<RealtimeRoomData[]>();
     const { categories } = useCategory();
     const [theaterItems, setTheaterItems] = useState<ITheaterItem[]>([]);
+    const [followedChannels, setFollowedChannels] = useState<RealtimeRoomData[]>([]);
     const navigate = useNavigate();
+
     useEffect(() => {
         async function sendInitRequest() {
             try {
                 const channelsData = await getRealtimeChannels();
                 const theaterItems = await getTheaterItems();
+                const followedChannels = await getFollowedRealtimeChannels();
                 setRealtimeChannels(channelsData);
                 setTheaterItems(theaterItems);
+                setFollowedChannels(followedChannels);
             } catch (e) {
                 console.error(e);
             }
@@ -90,15 +94,16 @@ export const HomePage = () => {
                 </div>
             </div>
 
-            <div className="bg-darkblack h-full pt-6 px-4 lg:pl-32">
+            <div className="bg-darkblack h-full py-6 px-4 lg:pl-32">
                 <h3 className="text-reallywhite font-base font-signika text-big mb-3">Channels You Follow</h3>
                 <div>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    <ChannelCard viewerCount={0} title={"Loading..."} author={{name: "Loading.."}} thumbnailUrl={""} category="loading"></ChannelCard>
-                    
+                    {
+                        followedChannels != null && followedChannels.length > 0 ?
+                        followedChannels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
+                        (
+                            <h1 className="text-brightRed font-semibold">There are currently no public channels live that you are following.</h1>
+                        )
+                    }
                 </div>
             </div>
         </div>

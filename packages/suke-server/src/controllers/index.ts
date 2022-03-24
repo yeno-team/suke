@@ -8,7 +8,7 @@ import { GlobalEmojiGetController } from "./globalemoji/get";
 import { UserChannelFollowController } from "./follow";
 import { UserChannelUnfollowController } from "./unfollow";
 import { CategoryGetController } from "./categories/get";
-import { RealtimeChannelsController } from "./realtimeChannel";
+import { RealtimeChannelsController } from "./realtime/realtimeChannels";
 import { CategoryChannelsController } from "./categories/channels";
 import { VerifyEmailController } from "./accountsettings/verifyEmail";
 import { ResendVerificationController } from "./accountinformation/resendVerification";
@@ -23,6 +23,8 @@ import { RealtimeChannelSearchController } from "./search/realtimeChannel";
 import { ImageGetController } from "./images/get";
 import { ImageUploadController } from "./images/uploadProfilePicture";
 import { UsersController } from "./users";
+import { RealtimeChannelGetController } from "./realtime/get";
+import { RealtimeFollowedChannelsController } from "./realtime/followingChannels";
 
 export default [
     AuthController,
@@ -49,6 +51,8 @@ export default [
     UserSearchController,
     UsersController,
     RealtimeChannelSearchController,
+    RealtimeChannelGetController,
+    RealtimeFollowedChannelsController,
     ImageGetController,
     ImageUploadController
 ];

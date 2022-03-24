@@ -3,7 +3,7 @@ import { TempRedisClientForRateLimiter } from "../config";
 
 const opts : IRateLimiterStoreOptions = {
     storeClient : TempRedisClientForRateLimiter,
-    points : 60,
+    points : 300,
     duration : 60,
     blockDuration : 60 * 5,
     keyPrefix : "global_rate_limiter"

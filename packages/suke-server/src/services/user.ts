@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { User, UserModel } from '@suke/suke-core/src/entities/User';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { UserChannel, UserChannelModel } from '@suke/suke-core/src/entities/UserChannel';
 import { UserChannelService } from './channel';
 import * as bcrypt from 'bcryptjs';
@@ -17,6 +17,10 @@ export class UserService {
         private emailDBService : EmailService,
         private emailUtilService : EmailUtilService
     ) {}
+
+    public async find(opts: FindManyOptions<UserModel>) {
+        return (await this.userRepository.find(opts));
+    }
 
     public async findById(id : number) : Promise<UserModel | undefined> {
         return (await this.userRepository.findOne({
@@ -100,7 +104,6 @@ export class UserService {
         followerObj.date = new Date();
         followerObj.followedTo = channel;
         followerObj.follower = userFollowing;
-        
         followerObj.save();
     }
 

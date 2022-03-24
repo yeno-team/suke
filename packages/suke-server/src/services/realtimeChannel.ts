@@ -86,4 +86,9 @@ export class RealtimeChannelService {
 
         return data;
     }
+
+    public async getChannel(id: string): Promise<RealtimeRoomData | null> {
+        const channel = await this.redisClient.get("channel:"+id.toLowerCase());
+        return channel ? await JSON.parse(channel) : null;
+    }
 }

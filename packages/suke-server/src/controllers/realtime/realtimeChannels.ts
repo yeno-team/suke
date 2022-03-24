@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { BaseController } from "./BaseController";
+import { BaseController } from "../BaseController";
 import { Request, Response } from "express";
 import { RealtimeChannelService } from "@suke/suke-server/src/services/realtimeChannel";
 

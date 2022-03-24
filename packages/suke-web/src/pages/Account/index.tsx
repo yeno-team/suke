@@ -37,6 +37,7 @@ const ChangeProfilePictureModal = ({active, setActive, updateUser}: {active: boo
             }
             await uploadProfileImage(file);
             updateUser();
+            setActive(false);
             return notificationStore.addNotification({
                 ...defaultNotificationOpts,
                 type : "success",
@@ -57,10 +58,10 @@ const ChangeProfilePictureModal = ({active, setActive, updateUser}: {active: boo
         <div className="relative px-20 py-10">
             <h1 className="text-lg font-semibold mb-5 inline-block">Change Profile Picture </h1>
             <div className="absolute right-5 top-3 text-xl hover:bg-opacity-90 cursor-pointer" onClick={() => setActive(false)}>x</div>
-            <input type="file" onChange={onFileChange}></input>
+            <input type="file" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={onFileChange}></input>
             {
                 file && <React.Fragment>
-                    <ImageCircle className="mx-auto bg-coolblack w-20 h-20" src={URL.createObjectURL(file)}  alt=""/>
+                    <ImageCircle className="mx-auto bg-coolblack w-20 h-20" src={URL.createObjectURL(file)} noproxy="true" alt=""/>
                     <Button className="mt-4" backgroundColor="coolgray" onClick={onSubmit}>Set Picture</Button>
                 </React.Fragment>
             }
