@@ -23151,6 +23151,7 @@ __metadata:
     reflect-metadata: ^0.1.13
     tailwindcss: latest
     ts-jest: ^27.0.5
+    ts-node: ^10.7.0
     tsconfig-paths: ^3.14.0
     tscpaths: ^0.0.9
     ttypescript: ^1.5.13
@@ -23820,7 +23821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.6.0":
+"ts-node@npm:^10.6.0, ts-node@npm:^10.7.0":
   version: 10.7.0
   resolution: "ts-node@npm:10.7.0"
   dependencies:

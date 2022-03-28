@@ -8,3 +8,4 @@ export * from './stringToColor';
 export * from './colorShade';
 export * from './captureFrame';
 export * from './canPlayVideoUrl';
+export * from './validatePassword';

@@ -65,6 +65,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "rate-limiter-flexible": "^2.3.6",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.7.0",
     "typedi": "^0.10.0",
     "typeorm": "^0.2.41"
   }

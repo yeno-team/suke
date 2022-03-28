@@ -25,6 +25,7 @@ import { ImageUploadController } from "./images/uploadProfilePicture";
 import { UsersController } from "./users";
 import { RealtimeChannelGetController } from "./realtime/get";
 import { RealtimeFollowedChannelsController } from "./realtime/followingChannels";
+import { ChangePasswordController } from "./accountsettings/changePassword";
 
 export default [
     AuthController,
@@ -44,6 +45,7 @@ export default [
     VerifyEmailController,
     ResendVerificationController,
     ChangeEmailController,
+    ChangePasswordController,
     TheaterItemsController,
     TheaterItemController,
     TheaterScheduleItemController,
