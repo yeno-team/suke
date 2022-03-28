@@ -8,7 +8,7 @@
    ],
    "private": true,
    "scripts": {
-      "build": "tsc -b && tsc-alias",
+      "build": "tsc -b",
       "start": "ts-node src/index.ts",
       "setup": "yarn setup:categories",
       "setup:categories": "ts-node scripts/createDefaultCategories.ts",
