@@ -20,7 +20,6 @@ export class S3Service {
     }
 
     public async putObject(key: string, file: Express.Multer.File) {
-        console.log(file);
         return await this.s3Client.send(new PutObjectCommand({
             Bucket: 'suke',
             Key: key,

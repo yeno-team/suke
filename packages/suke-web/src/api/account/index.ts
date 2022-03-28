@@ -21,3 +21,7 @@ export const changeEmail = async (body : ChangeEmailOptions) => {
 export const resendEmail = async() => {
     await postWithJsonData("/api/accountinformation/resendverification" , {});
 }
+
+export const changePassword = async (body: {newPassword: string, password: string}) => {
+    await parseFetchResponse(await postWithJsonData("/api/accountsettings/change-password", body));
+}

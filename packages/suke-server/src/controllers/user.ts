@@ -10,6 +10,7 @@ import { EmailUtilService } from "@suke/suke-server/src/services/email";
 import { Name } from "@suke/suke-core/src/entities/Name";
 import { Email } from "@suke/suke-core/src/entities/Email";
 import { hideEmail } from "@suke/suke-util/src/hideEmail";
+import { validatePassword } from "@suke/suke-util";
 @Service()
 export class UserController extends BaseController {
     public rateLimiters!: Map<string, RateLimiterAbstract>;
@@ -74,6 +75,11 @@ export class UserController extends BaseController {
 
     public Post = async (req: Request, res: Response): Promise<void> => {
         const userObj = new User({ id: 0, ...req.body , isVerified : false });
+        
+        if (!validatePassword(req.body.password)) {
+            throw new Error("Password has to be 8 - 15 characters, containing at least one number and one upper case letter.");
+        }
+
         const createdUser = await this.userService.create(userObj , new Email(req.body.email) , req.body.password);
         const tokenAsJWT = await this.emailUtilService.signVerificationToken(createdUser.email.verificationToken!);
 
