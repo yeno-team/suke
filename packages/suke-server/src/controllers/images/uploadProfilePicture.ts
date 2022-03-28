@@ -11,6 +11,9 @@ import UploadFileRateLimiter from "../../limiters/UploadFileRateLimiter";
 import { isAuthenticated } from "../../middlewares/IsAuthenticated";
 import { createUserAttacher, UserIdentifier } from "../../middlewares/createUserAttacher";
 import { UserService } from "../../services/user";
+import { unlink } from "fs";
+import path from 'path';
+import { promisify } from "util";
 
 const upload = multer({dest: 'uploads/', limits: {fileSize: 0.75 * 1000000}});
 
@@ -40,8 +43,9 @@ export class ImageUploadController extends BaseController {
         const filename = res.locals.user!.name + Date.now() + "." + req.file.mimetype.split('/').pop();
         await this.s3Service.putObject(filename, req.file);
         res.locals.user!.pictureFilename = filename;
-        res.locals.user!.save();
+        await res.locals.user!.save();
 
+        await promisify(unlink)(path.join(__dirname, "../../../" + req.file.path));
         res.send({
             filename,
             success: true

@@ -6,7 +6,7 @@ import { UserService } from "@suke/suke-server/src/services/user";
 import { createUserAttacher, UserIdentifier } from "@suke/suke-server/src/middlewares/createUserAttacher";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import { isAuthenticated } from "src/middlewares/IsAuthenticated";
+import { isAuthenticated } from "../../middlewares/IsAuthenticated";
 import { validatePassword } from "@suke/suke-util";
 
 @Service()
