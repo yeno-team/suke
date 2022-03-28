@@ -1,9 +1,11 @@
+import { IUser } from "@suke/suke-core/src/entities/User";
 import { RealtimeRoomData } from "@suke/suke-core/src/types/UserChannelRealtime";
-import { searchChannels } from "@suke/suke-web/src/api/search";
+import { searchChannels, searchUsers } from "@suke/suke-web/src/api/search";
 import { ChannelCard } from "@suke/suke-web/src/components/ChannelCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation";
+import apiUrl from "../../util/apiUrl";
 
 type SearchPageParams = {
     searchTerm: string
@@ -12,6 +14,7 @@ type SearchPageParams = {
 export const SearchPage = () => {
     const [channels, setChannels] = useState<RealtimeRoomData[]>([]);
     const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState<IUser[]>([]);
     const { searchTerm } = useParams<SearchPageParams>();
     const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
     const [pageNumber, setPageNumber] = useState(1);
@@ -43,13 +46,20 @@ export const SearchPage = () => {
     }
 
     useEffect(() => {
-        const getChannels = async () => {
+        const init = async () => {
             try {
                 const channels = await searchChannels(searchTerm || "", {
                     pageNumber: 1, 
                     limit: 25, 
                     sortDirection
                 });
+                const users = await searchUsers(searchTerm || "", {
+                    pageNumber: 1,
+                    limit: 5,
+                    sortDirection
+                });
+
+                setUsers(users);
                 setChannels(channels);
             } catch (e) {
                 console.error(e);
@@ -57,9 +67,13 @@ export const SearchPage = () => {
                 setLoading(false);
             }
         }
-        getChannels();
+        init();
     }, [searchTerm, sortDirection]);
 
+
+    const filteredUsers = useMemo(() => {
+        return users.filter(v => !channels.find(channel => channel.id.toLowerCase() === v.name.toLowerCase()));
+    }, [channels, users]);
 
     return (
         <div className="bg-darkblack h-full flex flex-col flex-wrap text-center md:text-left" onScroll={handleScroll}>
@@ -78,8 +92,16 @@ export const SearchPage = () => {
             </div>
             <div className="w-full px-20 min-h-screen">
                 {
-                    channels.length > 0 ?
-                    channels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>) :
+                    channels.length > 0 || users.length > 0 ? (
+                        <React.Fragment>
+                            {
+                                channels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>)
+                            }
+                            {
+                                users.map(v => <ChannelCard key={v.id} offline={true} viewerCount={0} title={"Offline"} author={{name: v.name}} thumbnailUrl={""} category={"Offline"}></ChannelCard>)
+                            }
+                        </React.Fragment>
+                    ) :
                     (
                         loading ?
                         <h1 className="text-gray">Searching...</h1> :

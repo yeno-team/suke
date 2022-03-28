@@ -14,10 +14,11 @@ export interface ChannelCardProps {
     author: {
         name: string;
     },
+    offline?: boolean;
     category: string;
 }
 
-export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}: ChannelCardProps) => {
+export const ChannelCard = ({viewerCount, offline, title, author, thumbnailUrl, category}: ChannelCardProps) => {
     const { categories } = useCategory();
     const [user, setUser] = useState<IUser | null>();
 
@@ -35,15 +36,26 @@ export const ChannelCard = ({viewerCount, title, author, thumbnailUrl, category}
 
     return (
         <div className="font-sans inline-block my-1 mr-3 relative w-full md:w-5/12 max-w-300">
-            <div className="absolute z-30 right-2 top-2 leading-none bg-newblack bg-opacity-80 p-1 cursor-default h-6 text-white text-sm px-2">
-                {numeral(viewerCount).format("0.[0]a")} viewers
-            </div>
-            <div className="absolute z-30 left-2 bottom-20 font-base leading-none bg-red cursor-default text-white font-semibold text-xs p-1.2 py-0.5">
-                LIVE
-            </div>
+            
+            {
+                !offline && 
+                <React.Fragment>
+                    <div className="absolute z-30 right-2 top-2 leading-none bg-newblack bg-opacity-80 p-1 cursor-default h-6 text-white text-sm px-2">
+                        {numeral(viewerCount).format("0.[0]a")} viewers
+                    </div>
+                    <div className="absolute z-30 left-2 bottom-20 font-base leading-none bg-red cursor-default text-white font-semibold text-xs p-1.2 py-0.5">
+                        LIVE
+                    </div>
+                </React.Fragment>
+            }
 
             <Link to={"/" + author.name}>
-                <div className="h-44 bg-cover bg-no-repeat bg-center transform hover:scale-105" style={{backgroundImage: `url(${thumbnailUrl})`}}></div>
+                {
+                    offline ? 
+                    <div className="h-44 bg-darkgray text-center transform hover:scale-105"></div>   :
+                    <div className="h-44 bg-cover bg-no-repeat bg-center transform hover:scale-105" style={{backgroundImage: `url(${thumbnailUrl})`}}></div>
+                }
+                
             </Link>
             <div className="flex p-2 pl-0">
                 <Link to={"/" + author.name}>
