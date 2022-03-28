@@ -8,7 +8,7 @@ import { hideEmail } from "@suke/suke-util/src/hideEmail";
 import { randomString } from "@suke/suke-util/src/randomString";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import config from "@suke/suke-server/src/config";
-import { NodeMailerService } from "./nodeMailer";
+import { NodeMailerService } from "./nodemailer";
 
 export interface DecodedEmailTokenJWT extends jwt.JwtPayload {
     t : string;
