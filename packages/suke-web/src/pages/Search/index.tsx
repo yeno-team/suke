@@ -92,13 +92,13 @@ export const SearchPage = () => {
             </div>
             <div className="w-full px-20 min-h-screen">
                 {
-                    channels.length > 0 || users.length > 0 ? (
+                    channels.length > 0 || filteredUsers.length > 0 ? (
                         <React.Fragment>
                             {
                                 channels.map(v => <ChannelCard key={v.id} viewerCount={v.viewerCount} title={v.title} author={{name: v.id}} thumbnailUrl={v.thumbnail.url.toString()} category={v.category}></ChannelCard>)
                             }
                             {
-                                users.map(v => <ChannelCard key={v.id} offline={true} viewerCount={0} title={"Offline"} author={{name: v.name}} thumbnailUrl={""} category={"Offline"}></ChannelCard>)
+                                filteredUsers.map(v => <ChannelCard key={v.id} offline={true} viewerCount={0} title={"Offline"} author={{name: v.name}} thumbnailUrl={""} category={"Offline"}></ChannelCard>)
                             }
                         </React.Fragment>
                     ) :
