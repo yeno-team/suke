@@ -69,6 +69,7 @@ export class Server {
 
 
     public start(): void {
+        this.app.use(express.static(__dirname + "/static", {dotfiles: 'allow'}));
         if (config.node_env == 'production') {
             this.app.use(compression());
             this.app.use(helmet({
