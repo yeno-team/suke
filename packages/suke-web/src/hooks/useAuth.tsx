@@ -39,7 +39,6 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
     const updateUser = () => {
         userApi.getAuthenticatedUser()
             .then((user) => {
-                console.log(user);
                 setUser(user)
             })
             .catch((e) => {

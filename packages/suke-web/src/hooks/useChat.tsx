@@ -25,8 +25,6 @@ export const useChat = (defaultMessages: IReceivedMessage[] = []) => {
 
         } catch (e) {
             console.error(e);
-        } finally {
-            console.log('Received Messages: ', chatMessages);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatMessages, socketMessagesChanged])

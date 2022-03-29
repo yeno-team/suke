@@ -61,7 +61,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
     constructor({httpServer, sessionParser, redisClient }: SocketServerConfig) {
         super();
 
-        const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
+        const wss = new WebSocket.Server({ path: "/api/socket", clientTracking: false, noServer: true });
         
         httpServer.on('upgrade', (req: EventRequest, socket, head) => {
             sessionParser(req, {} as Response, () => {
