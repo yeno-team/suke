@@ -2,7 +2,6 @@ import { SocketMessage, SocketMessageInput, SocketMessageType } from "@suke/suke
 import React, { useContext, useRef } from "react";
 import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
-import apiUrl from "../util/apiUrl";
 
 export type MessageListener = (message: SocketMessage) => void;
 
@@ -24,7 +23,7 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
     const reconnectCallbackRef = useRef<(closeEvent: CloseEvent) => void>();
     reconnectCallbackRef.current = reconnectCallback;
     
-    const resp = useWebSocket("ws://" + apiUrl("/").toString(), {
+    const resp = useWebSocket("ws://" + process.env.REACT_APP_SERVER_URL as string, {
         onOpen: () => console.log('Connected to WebSocket.'),
         onError: (err) => {},
         shouldReconnect: (closeEvent) => {
