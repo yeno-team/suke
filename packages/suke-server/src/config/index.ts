@@ -23,13 +23,13 @@ RedisClient.connect().then(() => {
     RedisClient.flushDb()
     .then(() => {
         console.log("Connected to clean redis instance.");
+        RedisPubClient.connect().then(() => console.log("Connected to Pub redis instance.")).catch(err => console.error(err));
     })
     .catch((err) => {
         console.error(err);
     });
 }).catch(err => console.error(err));
 
-RedisPubClient.connect().then(() => console.log("Connected to Pub redis instance.")).catch(err => console.error(err));
 
 const config: IConfiguration = {
     node_env: getEnvironmentVariable("NODE_ENV" , false , "development") as "production" | "development",
