@@ -228,7 +228,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
         return this._redisClient;
     }
 
-    public start(port: number, cb: () => void): void {
-        this.server.listen(port, cb);
+    public start(port: number, hostname: string, cb: () => void): void {
+        this.server.listen(port, hostname, cb);
     }
 }

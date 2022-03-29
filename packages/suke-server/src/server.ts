@@ -112,7 +112,9 @@ export class Server {
 
         this.app.use(ErrorHandler);
         // Listening from the socket server will listen on the httpServer that is shared from express.
-        this.socketServer.start(this.config.server.port, () => console.log("Suke Server started listening on PORT " + this.config.server.port));
+        this.socketServer.start(this.config.server.port, "0.0.0.0", () => {
+            console.log("Suke Server Listening on " + this.config.server.port);
+        });
     }
 
     private proxyRouterFunction(req: Request) {
