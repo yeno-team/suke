@@ -55,7 +55,7 @@ const ChangeProfilePictureModal = ({active, setActive, updateUser}: {active: boo
 
     return <Modal className="absolute text-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-greatblack" active={active}>
         <div className="relative px-20 py-10">
-            <h1 className="text-lg font-semibold mb-5 inline-block">Change Profile Picture </h1>
+            <h1 className="text-lg font-semibold mb-5">Change Profile Picture </h1>
             <div className="absolute right-5 top-3 text-xl hover:bg-opacity-90 cursor-pointer" onClick={() => setActive(false)}>x</div>
             <input type="file" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={onFileChange}></input>
             {
