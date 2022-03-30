@@ -24,7 +24,7 @@ export const SocketContextProvider = ({children}: {children: React.ReactNode}): 
     const reconnectCallbackRef = useRef<(closeEvent: CloseEvent) => void>();
     reconnectCallbackRef.current = reconnectCallback;
     const url = apiUrl("/api/socket");
-    const resp = useWebSocket("ws://" + url.hostname + ":" + url.port + url.pathname, {
+    const resp = useWebSocket(process.env.NODE_ENV === 'production' ? "wss://" : "ws://" + url.hostname + ":" + url.port + url.pathname, {
         onOpen: () => console.log('Connected to WebSocket.'),
         onError: (err) => {},
         shouldReconnect: (closeEvent) => {
