@@ -91,7 +91,7 @@ export const Messages = ({messages , channelId , className , replyHandler , does
                 <div key={index} className="group px-1.5 py-0.5 hover:bg-coolgray rounded relative flex flex-row items-center flex-wrap">
                     {
                         message.author.name.toLowerCase() === channelId?.toLowerCase() &&
-                        <Image className="w-5 text-blue inline-block mr-1" src={AdminBadge} alt="users badge" />
+                        <Image className="w-5 text-blue inline-block mr-1" src={AdminBadge} noproxy='true' alt="users badge" />
                     }
                     <StringColor className="mr-1 cursor-pointer" baseString={message.author.name} brightness={5} bold>{message.author.name}: </StringColor> 
                     <div className="whitespace-normal break-words ml-2 flex flex-row flex-wrap items-center">{parsedMessage}</div>
