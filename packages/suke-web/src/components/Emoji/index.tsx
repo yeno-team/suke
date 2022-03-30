@@ -2,6 +2,7 @@ import React from "react";
 import { Emoji as EmojiType } from "@suke/suke-core/src/types/Emoji";
 import classNames from "classnames";
 import { Image } from "../Image";
+import apiUrl from "../../util/apiUrl";
 
 export interface EmojiProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
     emoji : EmojiType;
@@ -13,7 +14,7 @@ export interface EmojiProps extends React.DetailedHTMLProps<React.ImgHTMLAttribu
 export const Emoji = ({ emoji , height , width , className } : EmojiProps) : JSX.Element => {
     return (
         <Image 
-            src={emoji.url} 
+            src={apiUrl("/api/proxy/" + emoji.url).toString()} 
             alt={""}
             height={height} 
             width={width}
