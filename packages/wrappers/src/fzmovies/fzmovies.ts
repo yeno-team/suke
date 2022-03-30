@@ -12,7 +12,7 @@ export type FzMovie = {
 @Service()
 export class FzMoviesWrapper {
     private host = "https://www.fzmovies.net/";
-    private requestOptions: RequestOptions = { CORS: true, cookies: true}
+    private requestOptions: RequestOptions = { CORS: true }
     constructor(
         private request : AxiosRequest
     ) {}

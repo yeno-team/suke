@@ -14,7 +14,7 @@ export type MobileTVShow = {
 @Service()
 export class MobileTvShowsWrapper {
     private host = "https://www.tvseries.in/";
-    private requestConfig: RequestOptions = {CORS: true, cookies: true};
+    private requestConfig: RequestOptions = {CORS: true };
 
     constructor(
         private request : AxiosRequest

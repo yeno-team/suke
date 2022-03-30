@@ -9,7 +9,11 @@ export const useGlobalEmoji = () => {
     useEffect(() => {
         (async() => {
             try {
-                setGlobalEmotes(await getGlobalEmojis())
+                const globalemojis = await getGlobalEmojis();
+                if (globalemojis && globalemojis.length > 0) {
+                    setGlobalEmotes(globalemojis)
+                }
+                
             } catch {
                 setGlobalEmotes([])
             }

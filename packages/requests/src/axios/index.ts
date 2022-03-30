@@ -29,7 +29,7 @@ export class AxiosRequest implements IRequest {
     }
 
     async request<R>(options: RequestOptions):  Promise<R> {
-        const instance = options.cookies ? this.axiosCookieInstance : this.axiosInstance;
+        const instance = !options.disableCookies ? this.axiosCookieInstance : this.axiosInstance;
         const req = await instance.request(this.convertToAxiosOpts(options));
         return req.data;
     }
