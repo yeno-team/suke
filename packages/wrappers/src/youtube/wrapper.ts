@@ -35,7 +35,9 @@ export class YoutubeApiWrapper {
             body: {
                 context: this.mockContext,
                 query
-            }
+            },
+            disableCookies: true,
+            headers: {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0"}
         });
 
         return resp;
@@ -51,6 +53,7 @@ export class YoutubeApiWrapper {
         const apiUrl = new URL(`https://www.youtube.com/youtubei/v1/search?key=${await this.getInnertubeApiKey()}`);
         
         const resp = await this.request.post<YoutubeApiSearchContinuationResponse>(apiUrl, {
+            disableCookies: true,
             body: {
                 context: this.mockContext,
                 continuation: continuationToken
@@ -85,6 +88,7 @@ export class YoutubeApiWrapper {
         const apiUrl = new URL(`https://www.youtube.com/youtubei/v1/next?key=${await this.getInnertubeApiKey()}`);
         
         const resp = await this.request.post<YoutubeApiNextResponse>(apiUrl, {
+            disableCookies: true,
             body: {
                 context: this.mockContext,
                 ...opts
