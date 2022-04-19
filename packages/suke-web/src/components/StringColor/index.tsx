@@ -1,4 +1,4 @@
-import { colorShade, stringToColor } from "@suke/suke-util"
+import { colorShade, stringToColor } from "@suke/suke-util/src"
 import React from "react";
 
 export interface StringColorProps {
