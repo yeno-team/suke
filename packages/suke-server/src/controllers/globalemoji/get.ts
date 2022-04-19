@@ -4,10 +4,11 @@ import { Request , Response } from "express";
 import { GlobalEmojiGetService } from "./GetGlobalEmojiService";
 import { GlobalEmojiCacheService } from "@suke/suke-server/src/services/globalemoji";
 import { createSHA256Hash } from "@suke/suke-util/src/createSha256Hash";
+import config from "../../config";
 
 @Service()
 export class GlobalEmojiGetController extends BaseController {
-    public route = "/asset/globalemojis";
+    public route = "/api/asset/globalemojis";
 
     constructor(
         private GlobalEmojiCacheService : GlobalEmojiCacheService,
@@ -19,7 +20,9 @@ export class GlobalEmojiGetController extends BaseController {
     public Get = async (req : Request , res : Response) : Promise<void> => {
         const globalEmojiCache = await this.GlobalEmojiCacheService.getGlobalEmojiCache();
         
-        res.setHeader("Cache-Control","no-cache");
+        if (config.node_env == "development") {
+            res.setHeader("Cache-Control","no-cache");
+        }
 
         if(globalEmojiCache) {
             res.setHeader("ETag", createSHA256Hash(JSON.stringify(globalEmojiCache)));
