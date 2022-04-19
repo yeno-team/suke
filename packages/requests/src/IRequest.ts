@@ -12,7 +12,7 @@ export type RequestOptions = {
     httpsAgent?: Agent,
     responseType?: string,
     disableCookies?: boolean,
-    proxy?: { host: string, port: number, auth: Record<string , unknown> }
+    proxy?: {protocol: string, host: string, port: number, auth: Record<string , unknown> }
 }
 
 export interface IRequest {
