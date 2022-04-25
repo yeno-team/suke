@@ -13,4 +13,4 @@ export const AxiosInstanceToken = new Token<string>("AxiosInstance");
 Container.set(AxiosInstanceToken, axios.create({ timeout : 15000, proxy }));
 
 export const AxiosCookieJarInstanceToken = new Token<string>("AxiosInstanceCookieJar");
-Container.set(AxiosCookieJarInstanceToken, wrapper(axios.create({ timeout : 15000, proxy })));
+Container.set(AxiosCookieJarInstanceToken, wrapper(axios.create({ timeout : 15000, jar, proxy })));

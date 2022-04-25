@@ -111,11 +111,7 @@ export const Navigation = ({position, className}: NavigationProps): JSX.Element 
                         <SearchBar size={screen.width < 1300 ? '64' : '128'} py="2" rounded onSubmit={handleSearch} value={searchVal} setValue={setSearchVal} className="text-coolblack"/>
                     </span>
                 </div>
-                
-                <NotificationIcon className={classNames(
-                    'mr-12'
-                )} size={7} count={3} handleClick={() => {}} />
-
+            
                 {
                     isLoggedIn ?
                     <UserProfilePicture className="ml-auto mr-6 cursor-pointer" fileName={user.pictureFilename} onClick={() => setUserDropdownActive(prev => !prev)} />
