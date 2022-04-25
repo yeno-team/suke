@@ -14,11 +14,11 @@ export class YoutubeParser implements IParser {
         private wrapper: YoutubeApiWrapper
     ) {  }
 
-    getData(): Promise<ParserDataResponse> {
+    getData(url: URL): Promise<ParserDataResponse> {
         throw new Error("Method not implemented.");
     }
 
-    async getSource(): Promise<IVideoSource[]> {
+    async getSource(url: URL): Promise<IVideoSource[]> {
         return [];
     }
 

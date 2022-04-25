@@ -36,7 +36,6 @@ export const ChannelCard = ({viewerCount, offline, title, author, thumbnailUrl, 
 
     return (
         <div className="font-sans inline-block my-1 mr-3 relative w-full md:w-5/12 max-w-300">
-            
             {
                 !offline && 
                 <React.Fragment>
