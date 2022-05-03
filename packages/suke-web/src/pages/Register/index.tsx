@@ -66,8 +66,23 @@ export const RegisterPage = () => {
         }
 
         try {
-            // Need to fix this
-            await register(usernameInput, emailInput, passwordInput , reCaptchaToken);
+            const resp = await register(usernameInput, emailInput, passwordInput , reCaptchaToken);
+            
+            if (resp.error) {
+                return notificationStore.addNotification({
+                    ...defaultNotificationOpts,
+                    type : "danger",
+                    title : "Error",
+                    message : resp.message
+                });
+            }
+
+            return notificationStore.addNotification({
+                ...defaultNotificationOpts,
+                type : "success",
+                title : "Success",
+                message : "You successfully registered an account."
+            })
         } catch (e) {
             return notificationStore.addNotification({
                 ...defaultNotificationOpts,
@@ -76,13 +91,6 @@ export const RegisterPage = () => {
                 message : (e as Error).message
             });
         }
-        
-        return notificationStore.addNotification({
-            ...defaultNotificationOpts,
-            type : "success",
-            title : "Success",
-            message : "You successfully registered an account."
-        })
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

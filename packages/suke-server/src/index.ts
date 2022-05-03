@@ -48,17 +48,22 @@ createConnection({
     console.log("Reset Categories Viewer Counts Successfully.");
     
     const nodeMailerService = new NodeMailerService();
-    await nodeMailerService.setTestAccount() , await nodeMailerService.setTransport();
-    // const
-    // await nodeMailerService.createTransport({
-    //     host : config.email.host,
-    //     port : config.email.port,
-    //     auth : {
-    //         user : config.email.username,
-    //         pass : config.email.password
-    //     },
-    //     secure : true
-    // });
+    
+
+    if (config.node_env == 'production') {
+        await nodeMailerService.setTransport({
+            host : config.email.host,
+            port : config.email.port,
+            auth : {
+                user : config.email.username,
+                pass : config.email.password
+            },
+            secure : true
+        });
+    } else {
+        await nodeMailerService.setTestAccount();
+        await nodeMailerService.setTransport();
+    }
 
     Container.set<typeof nodeMailerService>("NodeMailerService", nodeMailerService);
     console.log("Mail server has been initalized.");

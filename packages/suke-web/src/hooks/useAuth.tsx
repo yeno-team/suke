@@ -9,7 +9,7 @@ export interface AuthContextInterface {
     errors: Error[];
     user?: IUser;
     login: (name: string, password: string , reCaptchaToken : string) => Promise<boolean>;
-    register: (name: string, email: string, password: string , reCaptchaToken : string) => Promise<void>;
+    register: (name: string, email: string, password: string , reCaptchaToken : string) => Promise<{message: string, error: boolean}>;
     logout: () => void;
     updateUser: () => void;
     loading: boolean;
@@ -86,22 +86,23 @@ export const AuthProvider = ({children}: {children: React.ReactNode}): JSX.Eleme
             .finally(() => setLoading(false));
     } 
 
-    const register = async (name: string, email: string, password: string , reCaptchaToken : string): Promise<void> => {
+    const register = async (name: string, email: string, password: string , reCaptchaToken : string): Promise<{message: string, error: boolean}> => {
         setLoading(true);
 
-        userApi.signup({name, email}, password , reCaptchaToken)
+        return userApi.signup({name, email}, password , reCaptchaToken)
             .then((data) => {
                 if (data.error === true) {
                     setErrors([...errors, new Error(data.message)]);
-                    return;
+                    return {error: true, message: data.message};
                 }
 
                 setUser(data);
                 window.location.assign("/");
+                return {error: false, message: "Success"};
             })
             .catch((e: Error) => {
                 setErrors([...errors, e]);
-                return Promise.reject(e);
+                return {error: true, message: e.message}
             })
             .finally(() => setLoading(false));
     }

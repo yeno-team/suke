@@ -1,5 +1,6 @@
 import nodemailer , { SendMailOptions , TestAccount, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import config from "../config";
 
 export class NodeMailerService {
     public transporter! : nodemailer.Transporter<unknown> | null;
@@ -11,7 +12,7 @@ export class NodeMailerService {
     }
 
     public async setTransport(options? : SMTPTransport | SMTPTransport.Options) : Promise<Transporter<unknown>> {
-        if(!(options) && (this.testAccount)) {
+        if(config.node_env == 'development' && this.testAccount) {
             this.transporter = nodemailer.createTransport({
                 host : "smtp.ethereal.email",
                 port : 587,
