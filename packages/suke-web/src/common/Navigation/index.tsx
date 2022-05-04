@@ -5,11 +5,9 @@ import { Logo } from '../../components/Logo';
 import './navigation.css';
 import { SearchBar } from '../../components/SearchBar';
 import { MobileMenu } from './MobileMenu';
-import { NotificationIcon } from '../../components/NotificationIcon';
 import { Link, useNavigate } from 'react-router-dom';
 import { useScreenSize } from '@suke/suke-web/src/hooks/useScreenSize';
 import useAuth from '@suke/suke-web/src/hooks/useAuth';
-import { ImageCircle } from '@suke/suke-web/src/components/ImageCircle';
 import { logout } from '@suke/suke-web/src/api/auth';
 import { UserProfilePicture } from '../UserProfilePicture';
 

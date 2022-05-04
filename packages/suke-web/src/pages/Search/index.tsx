@@ -5,7 +5,6 @@ import { ChannelCard } from "@suke/suke-web/src/components/ChannelCard";
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Navigation } from "../../common/Navigation";
-import apiUrl from "../../util/apiUrl";
 
 type SearchPageParams = {
     searchTerm: string

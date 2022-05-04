@@ -34,7 +34,7 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
     const [description, setDescription] = useState(item.description);
     const [featuredPictureUrl, setFeaturedPictureUrl] = useState(item.featuredPictureUrl);
     const [scheduleDate, setScheduleDate] = useState(new Date(Date.now()));
-    const [duration, setDuration] = useState(item.duration);
+    const [duration] = useState(item.duration);
     const [addScheduleVal, setAddScheduleVal] = useState(new Date(Date.now()));
     const notificationStore = useNotification();
 
@@ -299,7 +299,7 @@ const TheaterItem = ({item, onSubmit, sources, create, deleteCreateItem}: {item:
 }
 
 export const ScheduleAdminPage = () => {
-    const [schedules, setSchedules] = useState<ITheaterItemSchedule[]>([]);
+    const [, setSchedules] = useState<ITheaterItemSchedule[]>([]);
     const [items, setItems] = useState<ITheaterItem[]>([]);
     const [createItems, setCreateItems] = useState<ITheaterItem[]>([]);
     const { sources } = useSource();

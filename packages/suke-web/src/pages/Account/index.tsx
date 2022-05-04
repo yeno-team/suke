@@ -1,4 +1,4 @@
-import React , { ChangeEvent, ChangeEventHandler, useState } from "react";
+import React , { ChangeEvent, useState } from "react";
 import { changeEmail , changePassword, resendEmail } from "@suke/suke-web/src/api/account";
 import { useNotification , defaultNotificationOpts } from "@suke/suke-web/src/hooks/useNotifications";
 import { IUser } from "@suke/suke-core/src/entities/User";
