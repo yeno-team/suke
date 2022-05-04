@@ -119,7 +119,7 @@ export class SocketServer extends (EventEmitter as unknown as new () => TypedEmi
             try {
                 ws.id = uuid();
                 ws.isAlive = true;
-                ws.remoteAddress = req.socket.remoteAddress || "";
+                ws.remoteAddress = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] as string : req.socket.remoteAddress || ""; // #118 , use header X-FORWARDED-FOR to get the IP if behind a proxy
                 const user = new User(req.session.user);
 
                 console.log(user.name + " Connected!");
