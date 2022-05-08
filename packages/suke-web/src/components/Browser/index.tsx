@@ -10,7 +10,6 @@ import { Modal } from "../Modal"
 import { SearchBar } from "../SearchBar"
 import { DesktopSourceButtons, MobileSourceButtons } from "./SourceButtons"
 import { getBrowserItems } from "../../util/getBrowserItems"
-import ReactDOM from "react-dom"
 
 export interface BrowserProps {
     setActive: (active: boolean) => void;
