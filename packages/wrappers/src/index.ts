@@ -7,6 +7,7 @@ import { MobileTvShowsWrapper } from "./mobiletvshows";
 import { Fast32Wrapper } from "./fast32";
 import { VumooWrapper } from "./vumoo";
 import { AnimeFoxWrapper } from "./animefox";
+import { DailymotionApiWrapper } from "./dailymotion";
 
 export {
     GogoPlayApiWrapper,
@@ -16,5 +17,6 @@ export {
     MobileTvShowsWrapper,
     Fast32Wrapper,
     VumooWrapper,
-    AnimeFoxWrapper
+    AnimeFoxWrapper,
+    DailymotionApiWrapper
 };
