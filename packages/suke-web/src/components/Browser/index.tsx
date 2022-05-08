@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react"
 import { IMultiData, IMultiStandaloneData, ISearchData, IStandaloneData } from "@suke/suke-core/src/entities/SearchResult"
 import classNames from "classnames"
-import React, { UIEvent, useEffect, useMemo, useState } from "react"
+import React, { UIEvent, useEffect, useMemo, useRef, useState } from "react"
 import { useSource } from "../../hooks/useSource"
 import { BrowserItem, MultiBrowserItem } from "../BrowserItem"
 import { Button } from "../Button"
@@ -10,6 +10,7 @@ import { Modal } from "../Modal"
 import { SearchBar } from "../SearchBar"
 import { DesktopSourceButtons, MobileSourceButtons } from "./SourceButtons"
 import { getBrowserItems } from "../../util/getBrowserItems"
+import ReactDOM from "react-dom"
 
 export interface BrowserProps {
     setActive: (active: boolean) => void;
@@ -27,7 +28,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
     const [searchData, setSearchData] = useState<ISearchData>({} as ISearchData);
     const [loading, setLoading] = useState(false);
     const [searchInput, setSearchInput] = useState("");
-
+    const searchDivRef = useRef<HTMLDivElement>();
     useEffect(() => {
         // default source
         if (activeSource === "" || activeSource == null) {
@@ -104,6 +105,9 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                 console.warn(e);
             } finally {
                 setLoading(false);
+                if (searchDivRef.current != null) {
+                    searchDivRef.current.scrollTop = 0;
+                }
             }
         }
 
@@ -175,7 +179,7 @@ export const Browser = ({ setActive, roomId, requests, active }: BrowserProps) =
                     <Icon icon="bi:x" onClick={() => setActive(false)} className={classNames('text-white m-4 text-3xl hidden lg:block')} />
                 </button>
             </nav>
-            <div className="lg:pl-56 flex-grow bg-black overflow-y-auto" onScroll={handleScroll}>
+            <div ref={ref => searchDivRef.current = ref as HTMLDivElement || undefined} className="lg:pl-56 flex-grow bg-black overflow-y-auto" onScroll={handleScroll} id="">
                 {
                     browserElements
                 }
