@@ -7,6 +7,7 @@ A web application to watch videos online with others.
 * Search for videos from supported third parties using the Browser Feature.
 * Request System for the channels included in the Browser.
 * Browse/Search public channels using standard searching mechanisms.
+* Watch Videos on scheduled time through the theater feature which is managed with an admin panel.
 
 
 ## License
