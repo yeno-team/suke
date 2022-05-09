@@ -9,6 +9,9 @@ A web application to watch videos online with others.
 * Browse/Search public channels using standard searching mechanisms.
 * Watch Videos on scheduled time through the theater feature which is managed with an admin panel.
 
+### Supported Sources
+* Youtube
+* Dailymotion
 
 ## License
 MIT
