@@ -1,5 +1,5 @@
 import { IParser, ParserDataResponse, ParserSearchOptions } from "@suke/suke-core/src/entities/Parser";
-import { ISearchData, IVideoSource } from "@suke/suke-core/src/entities/SearchResult";
+import { ISearchData, IStandaloneData, IVideoSource, Quality, StandaloneType } from "@suke/suke-core/src/entities/SearchResult";
 import { DailymotionApiWrapper } from "@suke/wrappers";
 import { Service } from "typedi";
 
@@ -19,9 +19,25 @@ export class DailymotionParser implements IParser {
         return await this.wrapper.search(searchTerm, Math.max(parseInt(pageNumber), 1), options?.limit || 30);
     }
     async getSource(url: URL): Promise<IVideoSource[]> {
-        return [];
+        return [
+            {
+                url,
+                quality: Quality.auto
+            }
+        ];
     }
-    getData(url: URL): Promise<ParserDataResponse | undefined> {
-        throw new Error("Method not implemented.");
+    
+    async getData(url: URL): Promise<ParserDataResponse> {
+        return {
+            multi: false,
+            data: {
+                quality: Quality.auto,
+                thumbnail_url: "",
+                type: StandaloneType.Video,
+                name: "",
+                id: this.hostname.toString() + Date.now() + Math.random()*50,
+                sources: await this.getSource(url)
+            } as IStandaloneData
+        }
     }
 }

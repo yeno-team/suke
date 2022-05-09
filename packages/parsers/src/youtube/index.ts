@@ -14,12 +14,27 @@ export class YoutubeParser implements IParser {
         private wrapper: YoutubeApiWrapper
     ) {  }
 
-    getData(url: URL): Promise<ParserDataResponse> {
-        throw new Error("Method not implemented.");
+    async getData(url: URL): Promise<ParserDataResponse> {
+        return {
+            multi: false,
+            data: {
+                quality: Quality.auto,
+                thumbnail_url: "",
+                type: StandaloneType.Video,
+                name: "",
+                id: this.hostname.toString() + Date.now() + Math.random()*50,
+                sources: await this.getSource(url)
+            } as IStandaloneData
+        }
     }
 
     async getSource(url: URL): Promise<IVideoSource[]> {
-        return [];
+        return [
+            {
+                url,
+                quality: Quality.auto
+            }
+        ]
     }
 
     async search(searchTerm: string, options?: ParserSearchOptions): Promise<ISearchData> {        
