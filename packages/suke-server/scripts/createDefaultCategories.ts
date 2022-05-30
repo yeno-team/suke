@@ -7,27 +7,27 @@ const defaultCategories = [
     {
         value: "browsing",
         label: "Browsing",
-        thumbnail_url: "https://images.pexels.com/photos/2115217/pexels-photo-2115217.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+        thumbnail_url: "https://i.vgy.me/6nNr8D.jpg"
     },
     {
         value: "movies",
         label: "Movies",
-        thumbnail_url: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-movies-1614634680.jpg"
+        thumbnail_url: "https://i.vgy.me/M92qiY.jpg"
     },
     {
         value: "tv_shows",
         label: "TV Shows",
-        thumbnail_url: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fall-movies-index-1628968089.jpg"
+        thumbnail_url: "https://i.vgy.me/yUcJ6b.jpg"
     },
     {
         value: "videos",
         label: "Videos",
-        thumbnail_url: "https://images.pexels.com/photos/34407/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+        thumbnail_url: "https://i.vgy.me/QE0x55.jpg"
     },
     {
         value: "anime",
         label: "Anime",
-        thumbnail_url: "https://www.fortressofsolitude.co.za/wp-content/uploads/2019/05/The-15-Most-Powerful-Anime-Characters-Of-All-Time-scaled.jpg"
+        thumbnail_url: "https://i.vgy.me/gRW6i8.jpg"
     }
 ];
 
