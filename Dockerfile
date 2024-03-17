@@ -11,7 +11,7 @@ COPY ./packages/$BUILD_CONTEXT packages/$BUILD_CONTEXT
 RUN yarn build
 
 #webserver
-FROM nginx:stable-alpine
+FROM nginx:1.24-alpine3.17
 ARG BUILD_CONTEXT
 COPY --from=build /app/packages/$BUILD_CONTEXT/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
